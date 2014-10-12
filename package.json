@@ -14,9 +14,14 @@
     "web",
     "mobile",
     "ios",
-    "android"
+    "android",
+    "react-component"
   ],
   "author": "Josh Perez <josh@goatslacker.com>",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/dogfessional/react-swipeable.git"
+  },
   "license": "MIT",
   "dependencies": {
     "react": "^0.11.2"
