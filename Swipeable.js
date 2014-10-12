@@ -114,7 +114,7 @@ var Swipeable = React.createClass({
       if (isFlick) {
         this.props.onFlick && this.props.onFlick(e, pos.deltaX, pos.deltaY)
       } else {
-        this.props.onSwiped && this.props.onSwiped(e, pos.absX, pos.absY)
+        this.props.onSwiped && this.props.onSwiped(e, pos.deltaX, pos.deltaY)
       }
     }
     this.setState(this.getInitialState())
