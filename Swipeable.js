@@ -1,8 +1,11 @@
 var React = require('react')
 
+var FLICK_THRESHOLD = 0.3
+
 var Swipeable = React.createClass({
   propTypes: {
     onSwiped: React.PropTypes.func,
+    onFlick: React.PropTypes.func,
     onSwipingUp: React.PropTypes.func,
     onSwipingRight: React.PropTypes.func,
     onSwipingDown: React.PropTypes.func,
@@ -14,7 +17,8 @@ var Swipeable = React.createClass({
     return {
       x: null,
       y: null,
-      swiping: false
+      swiping: false,
+      start: 0
     }
   },
 
@@ -47,6 +51,7 @@ var Swipeable = React.createClass({
       return
     }
     this.setState({
+      start: Date.now(),
       x: e.touches[0].clientX,
       y: e.touches[0].clientY,
       swiping: false
@@ -61,7 +66,7 @@ var Swipeable = React.createClass({
     var cancelPageSwipe = false
     var pos = this.calculatePos(e)
 
-    if (pos.absX < this.props.delta && pos.abxY < this.props.delta) {
+    if (pos.absX < this.props.delta && pos.absY < this.props.delta) {
       return
     }
 
@@ -101,7 +106,16 @@ var Swipeable = React.createClass({
   touchEnd: function (e) {
     if (this.state.swiping) {
       var pos = this.calculatePos(e)
-      this.props.onSwiped && this.props.onSwiped(e, pos.absX, pos.abxY)
+
+      var time = Date.now() - this.state.start
+      var distance = pos.absX + pos.absY
+      var isFlick = (time / distance) > FLICK_THRESHOLD
+
+      if (isFlick) {
+        this.props.onFlick && this.props.onFlick(e, pos.deltaX, pos.deltaY)
+      } else {
+        this.props.onSwiped && this.props.onSwiped(e, pos.absX, pos.absY)
+      }
     }
     this.setState(this.getInitialState())
   },
