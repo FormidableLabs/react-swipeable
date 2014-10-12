@@ -1,6 +1,6 @@
 var React = require('react')
 
-var FLICK_THRESHOLD = 0.3
+var FLICK_THRESHOLD = 0.5
 
 var Swipeable = React.createClass({
   propTypes: {
@@ -109,7 +109,7 @@ var Swipeable = React.createClass({
 
       var time = Date.now() - this.state.start
       var distance = pos.absX + pos.absY
-      var isFlick = (time / distance) > FLICK_THRESHOLD
+      var isFlick = (time / distance) < FLICK_THRESHOLD
 
       if (isFlick) {
         this.props.onFlick && this.props.onFlick(e, pos.deltaX, pos.deltaY)
