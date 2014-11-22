@@ -23,7 +23,7 @@
     "url": "http://github.com/dogfessional/react-swipeable.git"
   },
   "license": "MIT",
-  "dependencies": {
+  "peerDependencies": {
     "react": "^0.12.1"
   }
 }
