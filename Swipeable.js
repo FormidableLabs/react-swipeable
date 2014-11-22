@@ -1,10 +1,10 @@
 var React = require('react')
+var assign = require('object-assign')
 
 var FLICK_THRESHOLD = 0.6
 
 var Swipeable = React.createClass({
   propTypes: {
-    className: React.PropTypes.string,
     onSwiped: React.PropTypes.func,
     onFlick: React.PropTypes.func,
     onSwipingUp: React.PropTypes.func,
@@ -25,7 +25,6 @@ var Swipeable = React.createClass({
 
   getDefaultProps: function () {
     return {
-      className: '',
       delta: 10
     }
   },
@@ -123,12 +122,11 @@ var Swipeable = React.createClass({
   },
 
   render: function () {
-    return React.createElement('div', {
-      className: this.props.className,
+    return React.createElement('div', assign({
       onTouchStart: this.touchStart,
       onTouchMove: this.touchMove,
       onTouchEnd: this.touchEnd
-    }, this.props.children)
+    }, this.props), this.props.children)
   }
 })
 
