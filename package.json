@@ -24,6 +24,6 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "react": "^0.12.1"
+    "react": ">=0.12.x"
   }
 }
