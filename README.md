@@ -31,9 +31,9 @@ None of the props are required.
 `onSwipingUp`, `onSwipingRight`, `onSwipingDown`, `onSwipingLeft` calls back with the event
 as well as the absolute delta of where the swipe started and where it's currently at.
 
-`onSwiped` calls back with the event and the X and Y delta.
+`onSwiped` calls back with the event, the X and Y delta, and whether or not the event was a flick `this.props.onSwiped(ev, x, y, isFlick)`
 
-`onFlick` is called only if a flick is detected with the event and the X and Y delta.
+`flickThreshold` is a number (float) which determines the max velocity of a swipe before it's considered a flick.
 
 `delta` is the amount of px before we start firing events. The default value is 10.
 
@@ -43,6 +43,7 @@ as well as the absolute delta of where the swipe started and where it's currentl
     onSwipingRight: React.PropTypes.func,
     onSwipingDown: React.PropTypes.func,
     onSwipingLeft: React.PropTypes.func,
+    flickThreshold: React.PropTypes.number,
     delta: React.PropTypes.number
 
 # License
