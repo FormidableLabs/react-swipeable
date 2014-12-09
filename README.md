@@ -37,6 +37,8 @@ as well as the absolute delta of where the swipe started and where it's currentl
 
 `delta` is the amount of px before we start firing events. The default value is 10.
 
+`cancelPageSwipe` should the `preventDefault()` function be called appon each swipe. Default is true.
+
     onFlick: React.PropTypes.func,
     onSwiped: React.PropTypes.func,
     onSwipingUp: React.PropTypes.func,
@@ -44,7 +46,8 @@ as well as the absolute delta of where the swipe started and where it's currentl
     onSwipingDown: React.PropTypes.func,
     onSwipingLeft: React.PropTypes.func,
     flickThreshold: React.PropTypes.number,
-    delta: React.PropTypes.number
+    delta: React.PropTypes.number,
+    cancelPageSwipe: React.PropTypes.bool
 
 # License
 
