@@ -8,10 +8,10 @@ var Swipeable = React.createClass({
     onSwipingRight: React.PropTypes.func,
     onSwipingDown: React.PropTypes.func,
     onSwipingLeft: React.PropTypes.func,
-    onSwipedLeft: React.PropTypes.func,
-    onSwipedRight: React.PropTypes.func,
     onSwipedUp: React.PropTypes.func,
+    onSwipedRight: React.PropTypes.func,
     onSwipedDown: React.PropTypes.func,
+    onSwipedLeft: React.PropTypes.func,
     flickThreshold: React.PropTypes.number,
     delta: React.PropTypes.number
   },
