@@ -8,8 +8,10 @@ var Swipeable = React.createClass({
     onSwipingRight: React.PropTypes.func,
     onSwipingDown: React.PropTypes.func,
     onSwipingLeft: React.PropTypes.func,
-    onSwipeLeft: React.PropTypes.func,
-    onSwipeRight: React.PropTypes.func,
+    onSwipedLeft: React.PropTypes.func,
+    onSwipedRight: React.PropTypes.func,
+    onSwipedUp: React.PropTypes.func,
+    onSwipedDown: React.PropTypes.func,
     flickThreshold: React.PropTypes.number,
     delta: React.PropTypes.number
   },
@@ -122,9 +124,15 @@ var Swipeable = React.createClass({
       
       if (pos.absX > pos.absY) {
         if (pos.deltaX > 0) {
-          this.props.onSwipeLeft && this.props.onSwipeLeft(ev, pos.deltaX)
+          this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX)
         } else {
-          this.props.onSwipeRight && this.props.onSwipeRight(ev, pos.deltaX)
+          this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX)
+        }
+      } else {
+        if (pos.deltaY < 0) {
+          this.props.onSwipedUp && this.props.onSwipedUp(ev, pos.deltaY)
+        } else {
+          this.props.onSwipedDown && this.props.onSwipedDown(ev, pos.deltaY)
         }
       }
     }
