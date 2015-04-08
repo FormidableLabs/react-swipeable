@@ -1,3 +1,8 @@
+# 2.1.0
+
+* Adds onSwipedUp, onSwipedRight, onSwipedDown, onSwipedLeft callbacks.
+
+
 # 2.0
 
 * `onFlick` prop has been removed.
