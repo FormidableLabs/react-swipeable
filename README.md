@@ -59,6 +59,16 @@ as well as the x distance, + or -, from where the swipe started to where it ende
     flickThreshold: React.PropTypes.number,
     delta: React.PropTypes.number
 
+## Development
+
+Initial set up, run:
+    
+    npm install
+
+For watch on files and JSX transpiling, run:
+
+    gulp
+
 # License
 
 MIT
