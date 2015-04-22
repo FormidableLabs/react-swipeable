@@ -1,5 +1,4 @@
 var React = require('react')
-var assign = require('object-assign')
 
 var Swipeable = React.createClass({
   propTypes: {
@@ -141,11 +140,14 @@ var Swipeable = React.createClass({
   },
 
   render: function () {
-    return React.createElement('div', assign({
-      onTouchStart: this.touchStart,
-      onTouchMove: this.touchMove,
-      onTouchEnd: this.touchEnd
-    }, this.props), this.props.children)
+    return (
+      <div {...this.props}
+        onTouchStart={this.touchStart}
+        onTouchMove={this.touchMove}
+        onTouchEnd={this.touchEnd} >
+          {this.props.children}
+      </div>  
+    )
   }
 })
 
