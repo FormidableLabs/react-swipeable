@@ -128,7 +128,7 @@ var Swipeable = React.createClass({
           this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX)
         }
       } else {
-        if (pos.deltaY < 0) {
+        if (pos.deltaY > 0) {
           this.props.onSwipedUp && this.props.onSwipedUp(ev, pos.deltaY)
         } else {
           this.props.onSwipedDown && this.props.onSwipedDown(ev, pos.deltaY)
