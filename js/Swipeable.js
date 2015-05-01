@@ -86,7 +86,7 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         }
       }
     } else {
-      if (pos.deltaY < 0) {
+      if (pos.deltaY > 0) {
         if (this.props.onSwipingUp) {
           this.props.onSwipingUp(e, pos.absY)
           cancelPageSwipe = true
