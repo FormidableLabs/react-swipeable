@@ -46,7 +46,6 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 ###PropTypes
 
-    onFlick: React.PropTypes.func,
     onSwiped: React.PropTypes.func,
     onSwipingUp: React.PropTypes.func,
     onSwipingRight: React.PropTypes.func,
