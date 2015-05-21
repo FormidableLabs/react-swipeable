@@ -121,6 +121,12 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         isFlick
       )
       
+      isFlick && this.props.onFlick && this.props.onFlick(
+        ev,
+        pos.deltaX,
+        pos.deltaY        
+      )
+      
       if (pos.absX > pos.absY) {
         if (pos.deltaX > 0) {
           this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX)
