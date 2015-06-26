@@ -1,5 +1,4 @@
 var React = require('react')
-var assign = require('object-assign')
 
 var Swipeable = React.createClass({
   propTypes: {
@@ -87,7 +86,7 @@ var Swipeable = React.createClass({
         }
       }
     } else {
-      if (pos.deltaY < 0) {
+      if (pos.deltaY > 0) {
         if (this.props.onSwipingUp) {
           this.props.onSwipingUp(e, pos.absY)
           cancelPageSwipe = true
@@ -129,7 +128,7 @@ var Swipeable = React.createClass({
           this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX)
         }
       } else {
-        if (pos.deltaY < 0) {
+        if (pos.deltaY > 0) {
           this.props.onSwipedUp && this.props.onSwipedUp(ev, pos.deltaY)
         } else {
           this.props.onSwipedDown && this.props.onSwipedDown(ev, pos.deltaY)
@@ -141,11 +140,14 @@ var Swipeable = React.createClass({
   },
 
   render: function () {
-    return React.createElement('div', assign({
-      onTouchStart: this.touchStart,
-      onTouchMove: this.touchMove,
-      onTouchEnd: this.touchEnd
-    }, this.props), this.props.children)
+    return (
+      <div {...this.props}
+        onTouchStart={this.touchStart}
+        onTouchMove={this.touchMove}
+        onTouchEnd={this.touchEnd} >
+          {this.props.children}
+      </div>  
+    )
   }
 })
 

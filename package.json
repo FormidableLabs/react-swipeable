@@ -1,8 +1,8 @@
 {
   "name": "react-swipeable",
-  "version": "2.1.0",
+  "version": "3.0.2",
   "description": "Swipe bindings for react",
-  "main": "Swipeable.js",
+  "main": "js/Swipeable.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,7 +26,8 @@
   "peerDependencies": {
     "react": ">=0.12.x"
   },
-  "dependencies": {
-    "object-assign": "^2.0.0"
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-react": "^3.0.1"
   }
 }

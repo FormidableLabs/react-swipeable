@@ -46,7 +46,6 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 ###PropTypes
 
-    onFlick: React.PropTypes.func,
     onSwiped: React.PropTypes.func,
     onSwipingUp: React.PropTypes.func,
     onSwipingRight: React.PropTypes.func,
@@ -58,6 +57,16 @@ as well as the x distance, + or -, from where the swipe started to where it ende
     onSwipedLeft: React.PropTypes.func,
     flickThreshold: React.PropTypes.number,
     delta: React.PropTypes.number
+
+## Development
+
+Initial set up, run:
+    
+    npm install
+
+For watch on files and JSX transpiling, run:
+
+    gulp
 
 # License
 
