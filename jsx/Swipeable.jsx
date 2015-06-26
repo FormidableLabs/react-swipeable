@@ -123,15 +123,15 @@ var Swipeable = React.createClass({
       
       if (pos.absX > pos.absY) {
         if (pos.deltaX > 0) {
-          this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX)
+          this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX, isFlick)
         } else {
-          this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX)
+          this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX, isFlick)
         }
       } else {
         if (pos.deltaY > 0) {
-          this.props.onSwipedUp && this.props.onSwipedUp(ev, pos.deltaY)
+          this.props.onSwipedUp && this.props.onSwipedUp(ev, pos.deltaY, isFlick)
         } else {
-          this.props.onSwipedDown && this.props.onSwipedDown(ev, pos.deltaY)
+          this.props.onSwipedDown && this.props.onSwipedDown(ev, pos.deltaY, isFlick)
         }
       }
     }
