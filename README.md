@@ -67,6 +67,8 @@ Initial set up, run:
 For watch on files and JSX transpiling, run:
 
     gulp
+    
+#####Please make updates and changes to the `jsx/Swipeable.jsx`, and have gulp/babel compile the `js/Swipeable.js` file.
 
 # License
 
