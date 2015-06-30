@@ -23,11 +23,9 @@
     "url": "http://github.com/dogfessional/react-swipeable.git"
   },
   "license": "MIT",
-  "peerDependencies": {
-    "react": ">=0.12.x"
-  },
   "devDependencies": {
     "gulp": "^3.8.11",
-    "gulp-react": "^3.0.1"
+    "gulp-react": "^3.0.1",
+    "react": ">=0.12.x"
   }
 }
