@@ -1,7 +1,7 @@
 var React = require('react')
 var wasSwipingHorizontally = false
 
-var Swipeable = React.createClass({
+var Swipeable = React.createClass({displayName: "Swipeable",
   propTypes: {
     onSwiped: React.PropTypes.func,
     onSwipingUp: React.PropTypes.func,
