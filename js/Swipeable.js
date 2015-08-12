@@ -1,6 +1,8 @@
 var React = require('react')
+var assign = require('object-assign')
+var wasSwipingHorizontally = false
 
-var Swipeable = React.createClass({displayName: "Swipeable",
+var Swipeable = React.createClass({
   propTypes: {
     onSwiped: React.PropTypes.func,
     onSwipingUp: React.PropTypes.func,
@@ -78,15 +80,17 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         if (this.props.onSwipingLeft) {
           this.props.onSwipingLeft(e, pos.absX)
           cancelPageSwipe = true
+          this.wasSwipingHorizontally = true
         }
       } else {
         if (this.props.onSwipingRight) {
           this.props.onSwipingRight(e, pos.absX)
           cancelPageSwipe = true
+          this.wasSwipingHorizontally = true
         }
       }
     } else {
-      if (pos.deltaY > 0) {
+      if (pos.deltaY < 0) {
         if (this.props.onSwipingUp) {
           this.props.onSwipingUp(e, pos.absY)
           cancelPageSwipe = true
@@ -120,34 +124,33 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         pos.deltaY,
         isFlick
       )
-      
-      if (pos.absX > pos.absY) {
+
+      if (pos.absX > pos.absY || this.wasSwipingHorizontally) {
         if (pos.deltaX > 0) {
-          this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX, isFlick)
+          this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX)
+          this.wasSwipingHorizontally = false
         } else {
-          this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX, isFlick)
+          this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX)
+          this.wasSwipingHorizontally = false
         }
       } else {
-        if (pos.deltaY > 0) {
-          this.props.onSwipedUp && this.props.onSwipedUp(ev, pos.deltaY, isFlick)
+        if (pos.deltaY < 0) {
+          this.props.onSwipedUp && this.props.onSwipedUp(ev, pos.deltaY)
         } else {
-          this.props.onSwipedDown && this.props.onSwipedDown(ev, pos.deltaY, isFlick)
+          this.props.onSwipedDown && this.props.onSwipedDown(ev, pos.deltaY)
         }
       }
     }
-    
+
     this.setState(this.getInitialState())
   },
 
   render: function () {
-    return (
-      React.createElement("div", React.__spread({},  this.props, 
-        {onTouchStart: this.touchStart, 
-        onTouchMove: this.touchMove, 
-        onTouchEnd: this.touchEnd}), 
-          this.props.children
-      )  
-    )
+    return React.createElement('div', assign({
+      onTouchStart: this.touchStart,
+      onTouchMove: this.touchMove,
+      onTouchEnd: this.touchEnd
+    }, this.props), this.props.children)
   }
 })
 
