@@ -37,6 +37,30 @@ var SampleComponent = React.createClass({
 #### Examples:
 [http://dogfessional.github.io/react-swipeable/](http://dogfessional.github.io/react-swipeable/)
 
+    var Swipeable = require('react-swipeable')
+
+    var SampleComponent = React.createClass({
+      render: function () {
+        return (
+          <Swipeable
+            onSwiping={this.swiping}
+            onSwipingUp={this.swipingUp}
+            onSwipingRight={this.swipingRight}
+            onSwipingDown={this.swipingDown}
+            onSwipingLeft={this.swipingLeft}
+            onSwipedUp={this.swipedUp}
+            onSwipedRight={this.swipedRight}
+            onSwipedDown={this.swipedDown}
+            onSwipedLeft={this.swipedLeft}
+            onSwiped={this.handleSwipeAction}>
+            <div>
+              This element can be swiped
+            </div>
+          </Swipeable>
+        )
+      }
+    })
+
 # Props
 
 **None of the props are required.**
@@ -52,22 +76,20 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 `delta` is the amount of px before we start firing events. Also effects how far `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, and `onSwipedLeft` need to be before they fire events. The default value is 10.
 
-### PropTypes
+###PropTypes
 
-```
-  onSwiped: React.PropTypes.func,
-  onSwiping: React.PropTypes.func,
-  onSwipingUp: React.PropTypes.func,
-  onSwipingRight: React.PropTypes.func,
-  onSwipingDown: React.PropTypes.func,
-  onSwipingLeft: React.PropTypes.func,
-  onSwipedUp: React.PropTypes.func,
-  onSwipedRight: React.PropTypes.func,
-  onSwipedDown: React.PropTypes.func,
-  onSwipedLeft: React.PropTypes.func,
-  flickThreshold: React.PropTypes.number,
-  delta: React.PropTypes.number
-```
+    onSwiped: React.PropTypes.func,
+    onSwiping: React.PropTypes.func,
+    onSwipingUp: React.PropTypes.func,
+    onSwipingRight: React.PropTypes.func,
+    onSwipingDown: React.PropTypes.func,
+    onSwipingLeft: React.PropTypes.func,
+    onSwipedUp: React.PropTypes.func,
+    onSwipedRight: React.PropTypes.func,
+    onSwipedDown: React.PropTypes.func,
+    onSwipedLeft: React.PropTypes.func,
+    flickThreshold: React.PropTypes.number,
+    delta: React.PropTypes.number
 
 ## Development
 
