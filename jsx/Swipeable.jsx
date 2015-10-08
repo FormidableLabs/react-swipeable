@@ -3,6 +3,7 @@ var React = require('react')
 var Swipeable = React.createClass({
   propTypes: {
     onSwiped: React.PropTypes.func,
+    onSwiping: React.PropTypes.func,
     onSwipingUp: React.PropTypes.func,
     onSwipingRight: React.PropTypes.func,
     onSwipingDown: React.PropTypes.func,
@@ -71,6 +72,10 @@ var Swipeable = React.createClass({
 
     if (pos.absX < this.props.delta && pos.absY < this.props.delta) {
       return
+    }
+
+    if (this.props.onSwiping) {
+      this.props.onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY)
     }
 
     if (pos.absX > pos.absY) {
