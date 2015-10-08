@@ -119,8 +119,7 @@ var Swipeable = React.createClass({displayName: "Swipeable",
     if (this.state.swiping) {
       var pos = this.calculatePos(ev)
 
-      var velocity = pos.velocity
-      var isFlick = velocity > this.props.flickThreshold
+      var isFlick = pos.velocity > this.props.flickThreshold
 
       this.props.onSwiped && this.props.onSwiped(
         ev,
