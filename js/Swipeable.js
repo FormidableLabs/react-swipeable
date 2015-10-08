@@ -43,7 +43,6 @@ var Swipeable = React.createClass({displayName: "Swipeable",
     var ayd = Math.abs(yd)
 
     var time = Date.now() - this.state.start
-
     var velocity = Math.sqrt(axd * axd + ayd * ayd) / time
 
     return {
@@ -121,7 +120,6 @@ var Swipeable = React.createClass({displayName: "Swipeable",
       var pos = this.calculatePos(ev)
 
       var velocity = pos.velocity
-      console.log('isFlick?', velocity, this.props.flickThreshold);
       var isFlick = velocity > this.props.flickThreshold
 
       this.props.onSwiped && this.props.onSwiped(
@@ -130,7 +128,7 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         pos.deltaY,
         isFlick
       )
-      
+
       if (pos.absX > pos.absY) {
         if (pos.deltaX > 0) {
           this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX, isFlick)
@@ -145,7 +143,7 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         }
       }
     }
-    
+
     this.setState(this.getInitialState())
   },
 
@@ -156,7 +154,7 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         onTouchMove: this.touchMove, 
         onTouchEnd: this.touchEnd}), 
           this.props.children
-      )  
+      )
     )
   }
 })
