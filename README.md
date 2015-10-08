@@ -12,6 +12,7 @@
       render: function () {
         return (
           <Swipeable
+            onSwiping={this.swiping}
             onSwipingUp={this.swipingUp}
             onSwipingRight={this.swipingRight}
             onSwipingDown={this.swipingDown}
@@ -32,7 +33,7 @@
 # Props
 
 **None of the props are required.**
-`onSwipingUp`, `onSwipingRight`, `onSwipingDown`, `onSwipingLeft` calls back with the event
+`onSwiping`, `onSwipingUp`, `onSwipingRight`, `onSwipingDown`, `onSwipingLeft`, calls back with the event
 as well as the absolute delta of where the swipe started and where it's currently at. These constantly fire throughout touch events.
 
 `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, `onSwipedLeft` calls back with the event
@@ -47,6 +48,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 ###PropTypes
 
     onSwiped: React.PropTypes.func,
+    onSwiping: React.PropTypes.func,
     onSwipingUp: React.PropTypes.func,
     onSwipingRight: React.PropTypes.func,
     onSwipingDown: React.PropTypes.func,
