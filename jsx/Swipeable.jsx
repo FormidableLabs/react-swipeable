@@ -79,7 +79,7 @@ var Swipeable = React.createClass({
     }
 
     if (this.props.onSwiping) {
-      this.props.onSwiping(e, pos.deltaX, pos.deltaY, pos.velocity)
+      this.props.onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity)
     }
 
     if (pos.absX > pos.absY) {
