@@ -1,0 +1,32 @@
+{
+  "name": "react-swipeable-examples",
+  "version": "1.0.0",
+  "description": "react-swipeable examples",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "webpack -p --config webpack.config.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dogfessional/react-swipeable.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dogfessional/react-swipeable/issues"
+  },
+  "homepage": "https://github.com/dogfessional/react-swipeable#readme",
+  "devDependencies": {
+    "babel-core": "^6.3.26",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.14.0"
+  },
+  "dependencies": {
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3"
+  }
+}
