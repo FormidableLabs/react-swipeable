@@ -34,6 +34,9 @@ var SampleComponent = React.createClass({
 })
 ```
 
+#### Examples:
+[http://dogfessional.github.io/react-swipeable/](http://dogfessional.github.io/react-swipeable/)
+
 # Props
 
 **None of the props are required.**
@@ -79,7 +82,7 @@ For watch on files and JSX transpiling, run:
 ```console
 $ gulp
 ```
-    
+
 #####Please make updates and changes to the `jsx/Swipeable.jsx`, and have gulp/babel compile the `js/Swipeable.js` file.
 
 # License

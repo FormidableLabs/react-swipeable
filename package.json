@@ -4,7 +4,7 @@
   "description": "Swipe bindings for react",
   "main": "js/Swipeable.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "buildExamples": "./scripts/build_gh_pages.sh",
   },
   "keywords": [
     "swipe",
