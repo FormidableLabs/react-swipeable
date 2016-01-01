@@ -72,8 +72,8 @@ export default class Main extends Component {
     const boundSwipes = getBoundSwipes(this);
     const isFlickThresholdNumber = !(isNaN(flickThreshold) || flickThreshold === '');
     const isDeltaNumber = !(isNaN(delta) || delta === '');
-    const flickThresholdNum = isFlickThresholdNumber ? Number.parseFloat(flickThreshold) : 0.6;
-    const deltaNum = isDeltaNumber ? Number.parseFloat(delta) : 10;
+    const flickThresholdNum = isFlickThresholdNumber ? +flickThreshold : 0.6;
+    const deltaNum = isDeltaNumber ? +delta : 10;
     return (
       <div className="row">
         <div className="medium 6 columns">
