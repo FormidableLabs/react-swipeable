@@ -1,4 +1,5 @@
 var React = require('react')
+var wasSwipingHorizontally = false
 
 var Swipeable = React.createClass({displayName: "Swipeable",
   propTypes: {
@@ -83,11 +84,13 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         if (this.props.onSwipingLeft) {
           this.props.onSwipingLeft(e, pos.absX)
           cancelPageSwipe = true
+          this.wasSwipingHorizontally = true
         }
       } else {
         if (this.props.onSwipingRight) {
           this.props.onSwipingRight(e, pos.absX)
           cancelPageSwipe = true
+          this.wasSwipingHorizontally = true
         }
       }
     } else {
@@ -125,12 +128,14 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         pos.deltaY,
         isFlick
       )
-      
-      if (pos.absX > pos.absY) {
+
+      if (pos.absX > pos.absY || this.wasSwipingHorizontally) {
         if (pos.deltaX > 0) {
           this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX, isFlick)
+          this.wasSwipingHorizontally = false
         } else {
           this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX, isFlick)
+          this.wasSwipingHorizontally = false
         }
       } else {
         if (pos.deltaY > 0) {
@@ -140,18 +145,18 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         }
       }
     }
-    
+
     this.setState(this.getInitialState())
   },
 
   render: function () {
     return (
-      React.createElement("div", React.__spread({},  this.props, 
-        {onTouchStart: this.touchStart, 
-        onTouchMove: this.touchMove, 
-        onTouchEnd: this.touchEnd}), 
+      React.createElement("div", React.__spread({},  this.props,
+        {onTouchStart: this.touchStart,
+        onTouchMove: this.touchMove,
+        onTouchEnd: this.touchEnd}),
           this.props.children
-      )  
+      )
     )
   }
 })
