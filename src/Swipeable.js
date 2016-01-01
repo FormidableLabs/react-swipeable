@@ -1,6 +1,6 @@
-var React = require('react')
+const React = require('react')
 
-var Swipeable = React.createClass({displayName: "Swipeable",
+const Swipeable = React.createClass({
   propTypes: {
     onSwiped: React.PropTypes.func,
     onSwiping: React.PropTypes.func,
@@ -33,14 +33,14 @@ var Swipeable = React.createClass({displayName: "Swipeable",
   },
 
   calculatePos: function (e) {
-    var x = e.changedTouches[0].clientX
-    var y = e.changedTouches[0].clientY
+    const x = e.changedTouches[0].clientX
+    const y = e.changedTouches[0].clientY
 
-    var xd = this.state.x - x
-    var yd = this.state.y - y
+    const xd = this.state.x - x
+    const yd = this.state.y - y
 
-    var axd = Math.abs(xd)
-    var ayd = Math.abs(yd)
+    const axd = Math.abs(xd)
+    const ayd = Math.abs(yd)
 
     return {
       deltaX: xd,
@@ -67,8 +67,8 @@ var Swipeable = React.createClass({displayName: "Swipeable",
       return
     }
 
-    var cancelPageSwipe = false
-    var pos = this.calculatePos(e)
+    let cancelPageSwipe = false
+    const pos = this.calculatePos(e)
 
     if (pos.absX < this.props.delta && pos.absY < this.props.delta) {
       return
@@ -113,11 +113,11 @@ var Swipeable = React.createClass({displayName: "Swipeable",
 
   touchEnd: function (ev) {
     if (this.state.swiping) {
-      var pos = this.calculatePos(ev)
+      const pos = this.calculatePos(ev)
 
-      var time = Date.now() - this.state.start
-      var velocity = Math.sqrt(pos.absX * pos.absX + pos.absY * pos.absY) / time
-      var isFlick = velocity > this.props.flickThreshold
+      const time = Date.now() - this.state.start
+      const velocity = Math.sqrt(pos.absX * pos.absX + pos.absY * pos.absY) / time
+      const isFlick = velocity > this.props.flickThreshold
 
       this.props.onSwiped && this.props.onSwiped(
         ev,
@@ -125,7 +125,7 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         pos.deltaY,
         isFlick
       )
-      
+
       if (pos.absX > pos.absY) {
         if (pos.deltaX > 0) {
           this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX, isFlick)
@@ -140,18 +140,18 @@ var Swipeable = React.createClass({displayName: "Swipeable",
         }
       }
     }
-    
+
     this.setState(this.getInitialState())
   },
 
   render: function () {
     return (
-      React.createElement("div", React.__spread({},  this.props, 
-        {onTouchStart: this.touchStart, 
-        onTouchMove: this.touchMove, 
-        onTouchEnd: this.touchEnd}), 
-          this.props.children
-      )  
+      <div {...this.props}
+        onTouchStart={this.touchStart}
+        onTouchMove={this.touchMove}
+        onTouchEnd={this.touchEnd} >
+          {this.props.children}
+      </div>
     )
   }
 })

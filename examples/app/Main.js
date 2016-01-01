@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Swipeable from '../../js/Swipeable';
+import Swipeable from '../../lib/Swipeable';
 
 const initialState = {
   swiping: false,

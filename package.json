@@ -1,10 +1,11 @@
 {
   "name": "react-swipeable",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Swipe bindings for react",
-  "main": "js/Swipeable.js",
+  "main": "lib/Swipeable.js",
   "scripts": {
-    "buildExamples": "./scripts/build_gh_pages.sh",
+    "build:lib": "babel src --out-dir lib",
+    "build:publish:examples": "./scripts/build_gh_pages.sh"
   },
   "keywords": [
     "swipe",
@@ -24,8 +25,9 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "gulp": "^3.8.11",
-    "gulp-react": "^3.0.1",
+    "babel-cli": "^6.3.17",
+    "babel-preset-es2015-loose": "^6.1.4",
+    "babel-preset-react": "^6.3.13",
     "react": ">=0.12.x"
   }
 }
