@@ -29,6 +29,7 @@ module.exports = {
         exclude: /node_modules/,
         query: {
           cacheDirectory: true,
+          "plugins": ["transform-object-assign"],
           presets: ['es2015', 'react']
         },
         include: path.resolve('..', __dirname),
