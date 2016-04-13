@@ -13,7 +13,8 @@ var Swipeable = React.createClass({
     onSwipedDown: React.PropTypes.func,
     onSwipedLeft: React.PropTypes.func,
     flickThreshold: React.PropTypes.number,
-    delta: React.PropTypes.number
+    delta: React.PropTypes.number,
+    preventDefaultTouchmoveEvent: React.PropTypes.bool
   },
 
   getInitialState: function () {
@@ -28,7 +29,8 @@ var Swipeable = React.createClass({
   getDefaultProps: function () {
     return {
       flickThreshold: 0.6,
-      delta: 10
+      delta: 10,
+      preventDefaultTouchmoveEvent: true
     }
   },
 
@@ -106,7 +108,7 @@ var Swipeable = React.createClass({
 
     this.setState({ swiping: true })
 
-    if (cancelPageSwipe) {
+    if (cancelPageSwipe && this.props.preventDefaultTouchmoveEvent) {
       e.preventDefault()
     }
   },
