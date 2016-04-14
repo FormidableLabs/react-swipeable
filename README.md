@@ -25,7 +25,7 @@ var SampleComponent = React.createClass({
         onSwipedDown={this.swipedDown}
         onSwipedLeft={this.swipedLeft}
         onSwiped={this.handleSwipeAction}
-        preventDefaultTouchMoveEvent={false}>
+        preventDefaultTouchmoveEvent={false}>
         <div>
           This element can be swiped
         </div>
@@ -53,7 +53,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 `delta` is the amount of px before we start firing events. Also effects how far `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, and `onSwipedLeft` need to be before they fire events. The default value is 10.
 
-`preventDefaultTouchMoveEvent` is whether to prevent the browser's `[touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove)` event.  Sometimes you would like the target to scroll natively.  The default value is `true`.
+`preventDefaultTouchmoveEvent` is whether to prevent the browser's `[touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove)` event.  Sometimes you would like the target to scroll natively.  The default value is `true`.
 
 ### PropTypes
 
