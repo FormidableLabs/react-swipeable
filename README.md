@@ -71,19 +71,15 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 ## Development
 
-Initial set up, run:
+Initial set up, run `npm install`.
 
-```console
-$ npm install
-```
+Make changes/updates to the `src/Swipeable.js` file. Then run `npm run build:lib` to build the final output.
 
-For watch on files and JSX transpiling, run:
+#### Test changes/updates with the examples
 
-```console
-$ gulp
-```
+cd into `examples` directory, run `npm install` within that directory, and then run `npm start`.
 
-#####Please make updates and changes to the `jsx/Swipeable.jsx`, and have gulp/babel compile the `js/Swipeable.js` file.
+After the server starts you can then view the examples page with your changes at `http://localhost:3000`.
 
 # License
 
