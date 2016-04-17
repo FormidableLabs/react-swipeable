@@ -27,7 +27,7 @@
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
-    "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1"
   }
 }
