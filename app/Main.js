@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Swipeable from '../../js/Swipeable';
 
+const DIRECTIONS = ['Left', 'Right', 'Up', 'Down'];
+
 const initialState = {
   swiping: false,
   swiped: false,
@@ -11,16 +13,28 @@ const initialStateSwipeable = {
   flickThreshold: '0.6',
   delta: '10',
 };
+const initialStateApplied = {
+  onSwipingApplied: true,
+  onSwipedApplied: true,
+  onSwipingLeftApplied: true,
+  onSwipingRightApplied: true,
+  onSwipingUpApplied: true,
+  onSwipingDownApplied: true,
+  onSwipedLeftApplied: true,
+  onSwipedRightApplied: true,
+  onSwipedUpApplied: true,
+  onSwipedDownApplied: true,
+};
 
 export default class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = Object.assign({}, initialState, initialStateSwipeable);
+    this.state = Object.assign({}, initialState, initialStateSwipeable, initialStateApplied);
   }
 
   resetState(resetAll) {
     if (resetAll) {
-      this.setState(Object.assign({}, initialState, initialStateSwipeable));
+      this.setState(Object.assign({}, initialState, initialStateSwipeable, initialStateApplied));
     } else {
       this.setState(initialState);
     }
@@ -60,6 +74,23 @@ export default class Main extends Component {
     });
   }
 
+  _renderAppliedDirRow(dir) {
+    return (
+      <tr key={`appliedDirRow${dir}`}>
+        <td className="text-center">
+          <input type="checkbox" checked={this.state[`onSwiping${dir}Applied`]}
+            onChange={(e)=>this.updateValue(`onSwiping${dir}Applied`, e.target.checked)} />
+        </td>
+        <td style={{color: this.state[`onSwiping${dir}Applied`] ? '#000000' : '#cccccc', borderRight: "1px solid #cccccc"}}>{dir}</td>
+        <td className="text-center">
+          <input type="checkbox" checked={this.state[`onSwiped${dir}Applied`]}
+            onChange={(e)=>this.updateValue(`onSwiped${dir}Applied`, e.target.checked)} />
+        </td>
+        <td style={{color: this.state[`onSwiped${dir}Applied`] ? '#000000' : '#cccccc'}}>{dir}</td>
+      </tr>
+    )
+  }
+
   render() {
     const {
       swiping,
@@ -68,51 +99,81 @@ export default class Main extends Component {
       swipedDirection,
       flickThreshold,
       delta,
+      onSwipingApplied,
+      onSwipedApplied,
     } = this.state;
-    const boundSwipes = getBoundSwipes(this);
+
     const isFlickThresholdNumber = !(isNaN(flickThreshold) || flickThreshold === '');
     const isDeltaNumber = !(isNaN(delta) || delta === '');
     const flickThresholdNum = isFlickThresholdNumber ? +flickThreshold : 0.6;
     const deltaNum = isDeltaNumber ? +delta : 10;
+
+    const boundSwipes = getBoundSwipes(this);
+    let swipeableDirProps = {};
+    if (onSwipingApplied) {
+      swipeableDirProps.onSwiping = (...args)=>this.onSwiping(...args);
+    }
+    if (onSwipedApplied) {
+      swipeableDirProps.onSwiped = (...args)=>this.onSwiped(...args);
+    }
+
     return (
       <div className="row">
-        <div className="medium 6 columns">
+        <div className="medium-6 column">
           <div className="row">
-            <div className="small-12 columns">
-              <h1>react-swipeable</h1>
-              <h5>Swipe bindings for react</h5>
-              <a href="https://github.com/dogfessional/react-swipeable"> View on GitHub </a>
+            <div className="small-12 column">
+              <h1>react-swipeable&nbsp;<a href="https://github.com/dogfessional/react-swipeable" style={{fontSize: "0.75rem"}}>View on GitHub</a></h1>
             </div>
           </div>
 
           <div className="row">
-            <div className="small-12 columns">
+            <div className="small-12 column">
               <Swipeable {...boundSwipes}
-                onSwiping={(...args)=>this.onSwiping(...args)}
-                onSwiped={(...args)=>this.onSwiped(...args)}
+                {...swipeableDirProps}
                 flickThreshold={flickThresholdNum}
                 delta={deltaNum}>
                 <div className="callout"
                   onTouchStart={()=>this.resetState()}
-                  style={{height: '150px'}}>
-                  <h5>Swipe inside here...</h5>
+                  style={{height: '150px', fontSize: "0.75rem"}}>
+                  <h5>Swipe inside here to test...</h5>
+                  <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output</p>
+                  <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
                 </div>
               </Swipeable>
             </div>
           </div>
 
           <div className="row align-center">
+          <div className="small-12 column">
             <table>
               <thead>
-                <tr><th>Action</th><th>Output</th></tr>
+                <tr><th>Applied?</th><th>Action</th><th>Output</th></tr>
               </thead>
               <tbody>
-                <tr><td>onSwiping</td><td>{swiping ? 'True' : 'False'}</td></tr>
-                <tr><td>onSwiped</td><td>{swiped ? 'True' : 'False'}</td></tr>
-                <tr><td>onSwiping[Direction]</td><td>{swipingDirection}</td></tr>
-                <tr><td>onSwiped[Direction]</td><td>{swipedDirection}</td></tr>
+                <tr style={{color: onSwipingApplied ? '#000000' : '#cccccc'}}>
+                  <td className="text-center">
+                    <input type="checkbox" checked={onSwipingApplied}
+                      onChange={(e)=>this.updateValue('onSwipingApplied', e.target.checked)} />
+                  </td>
+                  <td>onSwiping</td><td>{swiping ? 'True' : 'False'}</td>
+                </tr>
+                <tr style={{color: onSwipedApplied ? '#000000' : '#cccccc'}}>
+                  <td className="text-center">
+                    <input type="checkbox" checked={onSwipedApplied}
+                      onChange={(e)=>this.updateValue('onSwipedApplied', e.target.checked)} />
+                  </td>
+                  <td>onSwiped</td><td>{swiped ? 'True' : 'False'}</td>
+                </tr>
                 <tr>
-                  <td>delta:</td>
+                  <td className="text-center"><a href="#appliedDirs">Below</a></td>
+                  <td>onSwiping[Direction]</td><td>{swipingDirection}</td>
+                </tr>
+                <tr>
+                  <td className="text-center"><a href="#appliedDirs">Below</a></td>
+                  <td>onSwiped[Direction]</td><td>{swipedDirection}</td>
+                </tr>
+                <tr>
+                  <td colSpan="2" className="text-center">delta:</td>
                   <td>
                     <input type="text"
                       style={{margin: '0px', border: !isDeltaNumber ? '2px solid red' : ''}}
@@ -120,7 +181,7 @@ export default class Main extends Component {
                   </td>
                 </tr>
                 <tr>
-                  <td>flickThreshold:</td>
+                  <td colSpan="2" className="text-center">flickThreshold:</td>
                   <td>
                     <input type="text"
                       style={{margin: '0px', border: !isFlickThresholdNumber ? '2px solid red' : ''}}
@@ -130,14 +191,23 @@ export default class Main extends Component {
               </tbody>
             </table>
           </div>
-          <div className="row">
-            <div className="small-12 columns">
-              <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset</button>
-            </div>
           </div>
           <div className="row">
-            <div className="small-12 columns">
-              <h5>You can also check the console log for 'onSwiping' and 'onSwiped' callback output</h5>
+            <div className="small-12 column">
+              <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset All Options</button>
+            </div>
+          </div>
+          <div className="row align-center">
+            <div className="small-12 column">
+              <table id="appliedDirs">
+                <thead>
+                  <tr><th colSpan="2" className="text-center" style={{borderRight: "1px solid #cccccc"}}>onSwiping</th><th colSpan="2" className="text-center">onSwiped</th></tr>
+                  <tr><th>Applied?</th><th style={{borderRight: "1px solid #cccccc"}}>Direction</th><th>Applied?</th><th>Direction</th></tr>
+                </thead>
+                <tbody>
+                  {DIRECTIONS.map(this._renderAppliedDirRow.bind(this))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -147,11 +217,14 @@ export default class Main extends Component {
 }
 
 function getBoundSwipes(component) {
-  const directions = ['Left', 'Right', 'Up', 'Down'];
   let boundSwipes = {};
-  directions.forEach((dir)=>{
-    boundSwipes[`onSwiped${dir}`] = component.onSwipedDirection.bind(component, dir);
-    boundSwipes[`onSwiping${dir}`] = component.onSwipingDirection.bind(component, dir);
+  DIRECTIONS.forEach((dir)=>{
+    if (component.state[`onSwiped${dir}Applied`]) {
+      boundSwipes[`onSwiped${dir}`] = component.onSwipedDirection.bind(component, dir);
+    }
+    if (component.state[`onSwiping${dir}Applied`]) {
+      boundSwipes[`onSwiping${dir}`] = component.onSwipingDirection.bind(component, dir);
+    }
   });
   return boundSwipes;
 }
