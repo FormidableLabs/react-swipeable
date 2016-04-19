@@ -122,107 +122,88 @@ export default class Main extends Component {
     return (
       <div className="row">
         <div className="medium-6 column">
-          <div className="row">
-            <div className="small-12 column">
-              <h1>react-swipeable&nbsp;<a href="https://github.com/dogfessional/react-swipeable" style={{fontSize: "0.75rem"}}>View on GitHub</a></h1>
+          <h1>react-swipeable&nbsp;<a href="https://github.com/dogfessional/react-swipeable" style={{fontSize: "0.75rem"}}>View on GitHub</a></h1>
+          <Swipeable {...boundSwipes}
+            {...swipeableDirProps}
+            flickThreshold={flickThresholdNum}
+            delta={deltaNum}
+            preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}>
+            <div className="callout"
+              onTouchStart={()=>this.resetState()}
+              style={{fontSize: "0.75rem"}}>
+              <h5>Swipe inside here to test...</h5>
+              <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output</p>
+              <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
             </div>
-          </div>
-
-          <div className="row">
-            <div className="small-12 column">
-              <Swipeable {...boundSwipes}
-                {...swipeableDirProps}
-                flickThreshold={flickThresholdNum}
-                delta={deltaNum}
-                preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}>
-                <div className="callout"
-                  onTouchStart={()=>this.resetState()}
-                  style={{fontSize: "0.75rem", overflowY: 'scroll'}}>
-                  <h5>Swipe inside here to test...</h5>
-                  <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output</p>
-                  <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
-                  <p>Scrollable filler: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                </div>
-              </Swipeable>
-            </div>
-          </div>
-
-          <div className="row align-center">
-          <div className="small-12 column">
-            <table>
-              <thead>
-                <tr><th>Applied?</th><th>Action</th><th>Output</th></tr>
-              </thead>
-              <tbody>
-                <tr style={{color: onSwipingApplied ? '#000000' : '#cccccc'}}>
-                  <td className="text-center">
-                    <input type="checkbox" checked={onSwipingApplied}
-                      onChange={(e)=>this.updateValue('onSwipingApplied', e.target.checked)} />
-                  </td>
-                  <td>onSwiping</td><td>{swiping ? 'True' : 'False'}</td>
-                </tr>
-                <tr style={{color: onSwipedApplied ? '#000000' : '#cccccc'}}>
-                  <td className="text-center">
-                    <input type="checkbox" checked={onSwipedApplied}
-                      onChange={(e)=>this.updateValue('onSwipedApplied', e.target.checked)} />
-                  </td>
-                  <td>onSwiped</td><td>{swiped ? 'True' : 'False'}</td>
-                </tr>
-                <tr>
-                  <td className="text-center"><a href="#appliedDirs">Below</a></td>
-                  <td>onSwiping[Direction]</td><td>{swipingDirection}</td>
-                </tr>
-                <tr>
-                  <td className="text-center"><a href="#appliedDirs">Below</a></td>
-                  <td>onSwiped[Direction]</td><td>{swipedDirection}</td>
-                </tr>
-                <tr>
-                  <td colSpan="2" className="text-center">delta:</td>
-                  <td>
-                    <input type="text"
-                      style={{margin: '0px', border: !isDeltaNumber ? '2px solid red' : ''}}
-                      onChange={(e)=>this.updateValue('delta', getVal(e))} value={delta}/>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan="2" className="text-center">flickThreshold:</td>
-                  <td>
-                    <input type="text"
-                      style={{margin: '0px', border: !isFlickThresholdNumber ? '2px solid red' : ''}}
-                      onChange={(e)=>this.updateValue('flickThreshold', getVal(e))} value={flickThreshold}/>
-                  </td>
-                </tr>
-                <tr>
-                  <td>preventDefaultTouchmoveEvent:</td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={preventDefaultTouchmoveEvent}
-                      onChange={(e)=>this.updateValue('preventDefaultTouchmoveEvent', e.target.checked)}/>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          </div>
-          <div className="row">
-            <div className="small-12 column">
-              <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset All Options</button>
-            </div>
-          </div>
-          <div className="row align-center">
-            <div className="small-12 column">
-              <table id="appliedDirs">
-                <thead>
-                  <tr><th colSpan="2" className="text-center" style={{borderRight: "1px solid #cccccc"}}>onSwiping</th><th colSpan="2" className="text-center">onSwiped</th></tr>
-                  <tr><th>Applied?</th><th style={{borderRight: "1px solid #cccccc"}}>Direction</th><th>Applied?</th><th>Direction</th></tr>
-                </thead>
-                <tbody>
-                  {DIRECTIONS.map(this._renderAppliedDirRow.bind(this))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          </Swipeable>
+          <table>
+            <thead>
+              <tr><th>Applied?</th><th>Action</th><th>Output</th></tr>
+            </thead>
+            <tbody>
+              <tr style={{color: onSwipingApplied ? '#000000' : '#cccccc'}}>
+                <td className="text-center">
+                  <input type="checkbox" checked={onSwipingApplied}
+                    onChange={(e)=>this.updateValue('onSwipingApplied', e.target.checked)} />
+                </td>
+                <td>onSwiping</td><td>{swiping ? 'True' : 'False'}</td>
+              </tr>
+              <tr style={{color: onSwipedApplied ? '#000000' : '#cccccc'}}>
+                <td className="text-center">
+                  <input type="checkbox" checked={onSwipedApplied}
+                    onChange={(e)=>this.updateValue('onSwipedApplied', e.target.checked)} />
+                </td>
+                <td>onSwiped</td><td>{swiped ? 'True' : 'False'}</td>
+              </tr>
+              <tr>
+                <td className="text-center"><a href="#appliedDirs">Below</a></td>
+                <td>onSwiping[Direction]</td><td>{swipingDirection}</td>
+              </tr>
+              <tr>
+                <td className="text-center"><a href="#appliedDirs">Below</a></td>
+                <td>onSwiped[Direction]</td><td>{swipedDirection}</td>
+              </tr>
+              <tr>
+                <td colSpan="2" className="text-center">delta:</td>
+                <td>
+                  <input type="text"
+                    style={{margin: '0px', border: !isDeltaNumber ? '2px solid red' : ''}}
+                    onChange={(e)=>this.updateValue('delta', getVal(e))} value={delta}/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2" className="text-center">flickThreshold:</td>
+                <td>
+                  <input type="text"
+                    style={{margin: '0px', border: !isFlickThresholdNumber ? '2px solid red' : ''}}
+                    onChange={(e)=>this.updateValue('flickThreshold', getVal(e))} value={flickThreshold}/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2" className="text-center">preventDefaultTouchmoveEvent:</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={preventDefaultTouchmoveEvent}
+                    onChange={(e)=>this.updateValue('preventDefaultTouchmoveEvent', e.target.checked)}/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset All Options</button>
+          <table id="appliedDirs">
+            <thead>
+              <tr><th colSpan="2" className="text-center" style={{borderRight: "1px solid #cccccc"}}>onSwiping</th><th colSpan="2" className="text-center">onSwiped</th></tr>
+              <tr><th>Applied?</th><th style={{borderRight: "1px solid #cccccc"}}>Direction</th><th>Applied?</th><th>Direction</th></tr>
+            </thead>
+            <tbody>
+              {DIRECTIONS.map(this._renderAppliedDirRow.bind(this))}
+            </tbody>
+          </table>
+          <p>
+            Thanks for checking out the example app! Let us know if you find any bugs, and&nbsp;
+            <a href="https://github.com/dogfessional/react-swipeable/pulls">submit a PR!</a>
+          </p>
         </div>
       </div>
     )
