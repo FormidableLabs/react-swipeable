@@ -13,7 +13,8 @@ var Swipeable = React.createClass({
     onSwipedDown: React.PropTypes.func,
     onSwipedLeft: React.PropTypes.func,
     flickThreshold: React.PropTypes.number,
-    delta: React.PropTypes.number
+    delta: React.PropTypes.number,
+    preventDefaultTouchmoveEvent: React.PropTypes.bool
   },
 
   getInitialState: function () {
@@ -28,7 +29,8 @@ var Swipeable = React.createClass({
   getDefaultProps: function () {
     return {
       flickThreshold: 0.6,
-      delta: 10
+      delta: 10,
+      preventDefaultTouchmoveEvent: true
     }
   },
 
@@ -42,11 +44,15 @@ var Swipeable = React.createClass({
     var axd = Math.abs(xd)
     var ayd = Math.abs(yd)
 
+    var time = Date.now() - this.state.start
+    var velocity = Math.sqrt(axd * axd + ayd * ayd) / time
+
     return {
       deltaX: xd,
       deltaY: yd,
       absX: axd,
-      absY: ayd
+      absY: ayd,
+      velocity: velocity
     }
   },
 
@@ -75,7 +81,7 @@ var Swipeable = React.createClass({
     }
 
     if (this.props.onSwiping) {
-      this.props.onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY)
+      this.props.onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity)
     }
 
     if (pos.absX > pos.absY) {
@@ -106,7 +112,7 @@ var Swipeable = React.createClass({
 
     this.setState({ swiping: true })
 
-    if (cancelPageSwipe) {
+    if (cancelPageSwipe && this.props.preventDefaultTouchmoveEvent) {
       e.preventDefault()
     }
   },
@@ -115,9 +121,7 @@ var Swipeable = React.createClass({
     if (this.state.swiping) {
       var pos = this.calculatePos(ev)
 
-      var time = Date.now() - this.state.start
-      var velocity = Math.sqrt(pos.absX * pos.absX + pos.absY * pos.absY) / time
-      var isFlick = velocity > this.props.flickThreshold
+      var isFlick = pos.velocity > this.props.flickThreshold
 
       this.props.onSwiped && this.props.onSwiped(
         ev,

@@ -24,7 +24,8 @@ var SampleComponent = React.createClass({
         onSwipedRight={this.swipedRight}
         onSwipedDown={this.swipedDown}
         onSwipedLeft={this.swipedLeft}
-        onSwiped={this.handleSwipeAction}>
+        onSwiped={this.handleSwipeAction}
+        preventDefaultTouchmoveEvent={false}>
         <div>
           This element can be swiped
         </div>
@@ -43,6 +44,8 @@ var SampleComponent = React.createClass({
 `onSwiping`, `onSwipingUp`, `onSwipingRight`, `onSwipingDown`, `onSwipingLeft`, calls back with the event
 as well as the absolute delta of where the swipe started and where it's currently at. These constantly fire throughout touch events.
 
+`onSwiping` in addition to the swipe delta, onSwiping also returns the current absolute X and Y position, as well as the current Velocity of the swipe. `this.props.onSwiping(e, deltaX, deltaY, absX, absY, velocity)`
+
 `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, `onSwipedLeft` calls back with the event
 as well as the x distance, + or -, from where the swipe started to where it ended. These only fire at the end of a touch event.
 
@@ -51,6 +54,8 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 `flickThreshold` is a number (float) which determines the max velocity of a swipe before it's considered a flick.
 
 `delta` is the amount of px before we start firing events. Also effects how far `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, and `onSwipedLeft` need to be before they fire events. The default value is 10.
+
+`preventDefaultTouchmoveEvent` is whether to prevent the browser's `[touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove)` event.  Sometimes you would like the target to scroll natively.  The default value is `true`.
 
 ### PropTypes
 
@@ -66,7 +71,8 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   onSwipedDown: React.PropTypes.func,
   onSwipedLeft: React.PropTypes.func,
   flickThreshold: React.PropTypes.number,
-  delta: React.PropTypes.number
+  delta: React.PropTypes.number,
+  preventDefaultTouchmoveEvent: React.PropTypes.bool
 ```
 
 ## Development
