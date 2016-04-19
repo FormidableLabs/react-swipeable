@@ -5,7 +5,8 @@
   "main": "lib/Swipeable.js",
   "scripts": {
     "build:lib": "babel src --out-dir lib",
-    "build:publish:examples": "./scripts/build_gh_pages.sh"
+    "build:publish:examples": "./scripts/build_gh_pages.sh",
+    "prepublish": "npm run build:lib"
   },
   "keywords": [
     "swipe",

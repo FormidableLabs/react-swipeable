@@ -1,3 +1,12 @@
+# 3.3.0
+
+* Adds `velocity` data to `onSwiping` callback
+* Updated the build process introducing ES2015 and babel
+
+# 3.2.0
+
+* Adds `preventDefaultTouchMoveEvent` option, defaults to true
+
 # 3.1.0
 
 * Adds `isFLick` to onSwipe events
