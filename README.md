@@ -44,6 +44,8 @@ var SampleComponent = React.createClass({
 `onSwiping`, `onSwipingUp`, `onSwipingRight`, `onSwipingDown`, `onSwipingLeft`, calls back with the event
 as well as the absolute delta of where the swipe started and where it's currently at. These constantly fire throughout touch events.
 
+`onSwiping` in addition to the swipe delta, onSwiping also returns the current absolute X and Y position, as well as the current Velocity of the swipe. `this.props.onSwiping(e, deltaX, deltaY, absX, absY, velocity)`
+
 `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, `onSwipedLeft` calls back with the event
 as well as the x distance, + or -, from where the swipe started to where it ended. These only fire at the end of a touch event.
 
