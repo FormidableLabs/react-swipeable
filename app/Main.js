@@ -7,11 +7,12 @@ const initialState = {
   swiping: false,
   swiped: false,
   swipingDirection: '',
-  swipedDirection: '',
+  swipedDirection: ''
 };
 const initialStateSwipeable = {
   flickThreshold: '0.6',
   delta: '10',
+  preventDefaultTouchmoveEvent: true
 };
 const initialStateApplied = {
   onSwipingApplied: true,
@@ -101,6 +102,7 @@ export default class Main extends Component {
       delta,
       onSwipingApplied,
       onSwipedApplied,
+      preventDefaultTouchmoveEvent,
     } = this.state;
 
     const isFlickThresholdNumber = !(isNaN(flickThreshold) || flickThreshold === '');
@@ -131,13 +133,15 @@ export default class Main extends Component {
               <Swipeable {...boundSwipes}
                 {...swipeableDirProps}
                 flickThreshold={flickThresholdNum}
-                delta={deltaNum}>
+                delta={deltaNum}
+                preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}>
                 <div className="callout"
                   onTouchStart={()=>this.resetState()}
-                  style={{height: '150px', fontSize: "0.75rem"}}>
+                  style={{fontSize: "0.75rem", overflowY: 'scroll'}}>
                   <h5>Swipe inside here to test...</h5>
                   <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output</p>
                   <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
+                  <p>Scrollable filler: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
               </Swipeable>
             </div>
@@ -186,6 +190,15 @@ export default class Main extends Component {
                     <input type="text"
                       style={{margin: '0px', border: !isFlickThresholdNumber ? '2px solid red' : ''}}
                       onChange={(e)=>this.updateValue('flickThreshold', getVal(e))} value={flickThreshold}/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>preventDefaultTouchmoveEvent:</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={preventDefaultTouchmoveEvent}
+                      onChange={(e)=>this.updateValue('preventDefaultTouchmoveEvent', e.target.checked)}/>
                   </td>
                 </tr>
               </tbody>
