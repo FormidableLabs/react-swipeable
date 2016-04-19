@@ -1,16 +1,4 @@
 react-swipeable examples
 ================
 
-## Install
-
-```
-npm install
-```
-
-## Run
-
-```
-npm start
-```
-
-The examples app will run on `http://localhost:3000`.
+Please look at the steps in the [main readme](https://github.com/dogfessional/react-swipeable#development), up one directory.
