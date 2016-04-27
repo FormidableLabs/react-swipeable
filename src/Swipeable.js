@@ -155,6 +155,7 @@ const Swipeable = React.createClass({
       onTouchMove: this.touchMove,
       onTouchEnd: this.touchEnd,
     })
+    delete mergedProps.children
     return React.cloneElement(this.props.children, mergedProps)
   }
 })
