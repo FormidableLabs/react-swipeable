@@ -14,7 +14,8 @@ const Swipeable = React.createClass({
     onSwipedLeft: React.PropTypes.func,
     flickThreshold: React.PropTypes.number,
     delta: React.PropTypes.number,
-    preventDefaultTouchmoveEvent: React.PropTypes.bool
+    preventDefaultTouchmoveEvent: React.PropTypes.bool,
+    children: React.PropTypes.element.isRequired,
   },
 
   getInitialState: function () {
@@ -149,14 +150,12 @@ const Swipeable = React.createClass({
   },
 
   render: function () {
-    return (
-      <div {...this.props}
-        onTouchStart={this.touchStart}
-        onTouchMove={this.touchMove}
-        onTouchEnd={this.touchEnd} >
-          {this.props.children}
-      </div>
-    )
+    const mergedProps = Object.assign({},this.props,{
+      onTouchStart: this.touchStart,
+      onTouchMove: this.touchMove,
+      onTouchEnd: this.touchEnd,
+    })
+    return React.cloneElement(this.props.children, mergedProps)
   }
 })
 
