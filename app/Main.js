@@ -200,7 +200,7 @@ export default class Main extends Component {
               {DIRECTIONS.map(this._renderAppliedDirRow.bind(this))}
             </tbody>
           </table>
-          <p>
+          <p style={{"margin-bottom": "5rem"}}>
             Thanks for checking out the example app! Let us know if you find any bugs, and&nbsp;
             <a href="https://github.com/dogfessional/react-swipeable/pulls">submit a PR!</a>
           </p>
