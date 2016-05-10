@@ -1,3 +1,7 @@
+# 3.4.0
+
+* Add preventDefault while swiping when props `onSwipedLeft`, `onSwipedRight`, `onSwipedUp`, and `onSwipedDown` are present. See #21 and #37 for more info.
+
 # 3.3.0
 
 * Adds `velocity` data to `onSwiping` callback
