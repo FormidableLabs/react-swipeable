@@ -86,25 +86,25 @@ const Swipeable = React.createClass({
 
     if (pos.absX > pos.absY) {
       if (pos.deltaX > 0) {
-        if (this.props.onSwipingLeft) {
-          this.props.onSwipingLeft(e, pos.absX)
+        if (this.props.onSwipingLeft || this.props.onSwipedLeft) {
+          this.props.onSwipingLeft && this.props.onSwipingLeft(e, pos.absX)
           cancelPageSwipe = true
         }
       } else {
-        if (this.props.onSwipingRight) {
-          this.props.onSwipingRight(e, pos.absX)
+        if (this.props.onSwipingRight || this.props.onSwipedRight) {
+          this.props.onSwipingRight && this.props.onSwipingRight(e, pos.absX)
           cancelPageSwipe = true
         }
       }
     } else {
       if (pos.deltaY > 0) {
-        if (this.props.onSwipingUp) {
-          this.props.onSwipingUp(e, pos.absY)
+        if (this.props.onSwipingUp || this.props.onSwipedUp) {
+          this.props.onSwipingUp && this.props.onSwipingUp(e, pos.absY)
           cancelPageSwipe = true
         }
       } else {
-        if (this.props.onSwipingDown) {
-          this.props.onSwipingDown(e, pos.absY)
+        if (this.props.onSwipingDown || this.props.onSwipedDown) {
+          this.props.onSwipingDown && this.props.onSwipingDown(e, pos.absY)
           cancelPageSwipe = true
         }
       }
