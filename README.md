@@ -1,12 +1,13 @@
-# Swipeable
+# Swipeable 
+[http://dogfessional.github.io/react-swipeable/](http://dogfessional.github.io/react-swipeable/)
 
-## Install
+### Install
 
 ```console
 $ npm install react-swipeable
 ```
 
-## Use
+### Use
 
 ```js
 var Swipeable = require('react-swipeable')
@@ -35,10 +36,7 @@ var SampleComponent = React.createClass({
 })
 ```
 
-#### Examples:
-[http://dogfessional.github.io/react-swipeable/](http://dogfessional.github.io/react-swipeable/)
-
-# Props
+## Props
 
 **None of the props are required.**
 `onSwiping`, `onSwipingUp`, `onSwipingRight`, `onSwipingDown`, `onSwipingLeft`, calls back with the event
@@ -87,6 +85,6 @@ cd into `examples` directory, run `npm install` within that directory, and then 
 
 After the server starts you can then view the examples page with your changes at `http://localhost:3000`.
 
-# License
+## License
 
 MIT
