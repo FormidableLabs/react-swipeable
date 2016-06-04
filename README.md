@@ -1,10 +1,11 @@
-# Swipeable 
+# Swipeable [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable)
+Swipe bindings for react.
 [http://dogfessional.github.io/react-swipeable/](http://dogfessional.github.io/react-swipeable/)
 
 ### Install
-
+Using npm:
 ```console
-$ npm install react-swipeable
+$ npm install --save react-swipeable
 ```
 
 ### Use
@@ -25,8 +26,7 @@ var SampleComponent = React.createClass({
         onSwipedRight={this.swipedRight}
         onSwipedDown={this.swipedDown}
         onSwipedLeft={this.swipedLeft}
-        onSwiped={this.handleSwipeAction}
-        preventDefaultTouchmoveEvent={false}>
+        onSwiped={this.handleSwipeAction}>
         <div>
           This element can be swiped
         </div>
@@ -38,23 +38,25 @@ var SampleComponent = React.createClass({
 
 ## Props
 
-**None of the props are required.**
-`onSwiping`, `onSwipingUp`, `onSwipingRight`, `onSwipingDown`, `onSwipingLeft`, calls back with the event
+**`onSwiping`**, **`onSwipingUp`**, **`onSwipingRight`**, **`onSwipingDown`**, **`onSwipingLeft`**, are called with the event
 as well as the absolute delta of where the swipe started and where it's currently at. These constantly fire throughout touch events.
 
-`onSwiping` in addition to the swipe delta, onSwiping also returns the current absolute X and Y position, as well as the current Velocity of the swipe. `this.props.onSwiping(e, deltaX, deltaY, absX, absY, velocity)`
+**`onSwiping`** in addition to the swipe delta, `onSwiping` also returns the current absolute X and Y position, as well as the current Velocity of the swipe. `this.props.onSwiping(e, deltaX, deltaY, absX, absY, velocity)`
 
-`onSwipedUp`, `onSwipedRight`, `onSwipedDown`, `onSwipedLeft` calls back with the event
+**`onSwipedUp`**, **`onSwipedRight`**, **`onSwipedDown`**, **`onSwipedLeft`** are called with the event
 as well as the x distance, + or -, from where the swipe started to where it ended. These only fire at the end of a touch event.
 
-`onSwiped` calls back with the event, the X and Y delta, and whether or not the event was a flick `this.props.onSwiped(ev, x, y, isFlick)`
+**`onSwiped`** is called with the event, the X and Y delta, and whether or not the event was a flick `this.props.onSwiped(ev, x, y, isFlick)`
 
-`flickThreshold` is a number (float) which determines the max velocity of a swipe before it's considered a flick.
+#####Configuration Props
 
-`delta` is the amount of px before we start firing events. Also effects how far `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, and `onSwipedLeft` need to be before they fire events. The default value is 10.
+**`flickThreshold`** is a number (float) which determines the max velocity of a swipe before it's considered a flick.
 
-`preventDefaultTouchmoveEvent` is whether to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.  Sometimes you would like the target to scroll natively.  The default value is `true`.
+**`delta`** is the amount of px before we start firing events. Also effects how far `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, and `onSwipedLeft` need to be before they fire events. The default value is 10.
 
+**`preventDefaultTouchmoveEvent`** is whether to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.  Sometimes you would like the target to scroll natively.  The default value is `true`.
+
+**None of the props are required.**
 ### PropTypes
 
 ```
