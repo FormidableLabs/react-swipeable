@@ -7,12 +7,13 @@ const initialState = {
   swiping: false,
   swiped: false,
   swipingDirection: '',
-  swipedDirection: ''
+  swipedDirection: '',
 };
 const initialStateSwipeable = {
   flickThreshold: '0.6',
   delta: '10',
-  preventDefaultTouchmoveEvent: true
+  preventDefaultTouchmoveEvent: true,
+  nodeName: 'div',
 };
 const initialStateApplied = {
   onSwipingApplied: true,
@@ -103,6 +104,7 @@ export default class Main extends Component {
       onSwipingApplied,
       onSwipedApplied,
       preventDefaultTouchmoveEvent,
+      nodeName,
     } = this.state;
 
     const isFlickThresholdNumber = !(isNaN(flickThreshold) || flickThreshold === '');
@@ -127,14 +129,15 @@ export default class Main extends Component {
             {...swipeableDirProps}
             flickThreshold={flickThresholdNum}
             delta={deltaNum}
-            preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}>
-            <div className="callout"
-              onTouchStart={()=>this.resetState()}
-              style={{fontSize: "0.75rem"}}>
-              <h5>Swipe inside here to test...</h5>
-              <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output</p>
-              <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
-            </div>
+            preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
+            nodeName={nodeName}
+            className="callout"
+            style={{fontSize: "0.75rem"}}>
+              <div onTouchStart={()=>this.resetState()}>
+                <h5>Swipe inside here to test...</h5>
+                <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output</p>
+                <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
+              </div>
           </Swipeable>
           <table>
             <thead>
@@ -156,11 +159,11 @@ export default class Main extends Component {
                 <td>onSwiped</td><td>{swiped ? 'True' : 'False'}</td>
               </tr>
               <tr>
-                <td className="text-center"><a href="#appliedDirs">Below</a></td>
+                <td className="text-center"><a href="#appliedDirs">↓&nbsp;Below&nbsp;↓</a></td>
                 <td>onSwiping[Direction]</td><td>{swipingDirection}</td>
               </tr>
               <tr>
-                <td className="text-center"><a href="#appliedDirs">Below</a></td>
+                <td className="text-center"><a href="#appliedDirs">↓&nbsp;Below&nbsp;↓</a></td>
                 <td>onSwiped[Direction]</td><td>{swipedDirection}</td>
               </tr>
               <tr>
@@ -188,9 +191,22 @@ export default class Main extends Component {
                     onChange={(e)=>this.updateValue('preventDefaultTouchmoveEvent', e.target.checked)}/>
                 </td>
               </tr>
+              <tr>
+                <td className="text-center">nodeName:</td>
+                <td colSpan="2" className="text-center">
+                    <button type="button" className={`button${nodeName!=='div'?' secondary':''}`}
+                      style={{margin: '.5rem'}}
+                      onClick={()=>this.updateValue('nodeName', 'div')}>{`'div'`}</button>
+                    <button type="button" className={`button${nodeName!=='span'?' secondary':''}`}
+                      style={{margin: '.5rem'}}
+                      onClick={()=>this.updateValue('nodeName', 'span')}>{`'span'`}</button>
+                    <button type="button" className={`button${nodeName!=='li'?' secondary':''}`}
+                      style={{margin: '.5rem'}}
+                      onClick={()=>this.updateValue('nodeName', 'li')}>{`'li'`}</button>
+                </td>
+              </tr>
             </tbody>
           </table>
-          <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset All Options</button>
           <table id="appliedDirs">
             <thead>
               <tr><th colSpan="2" className="text-center" style={{borderRight: "1px solid #cccccc"}}>onSwiping</th><th colSpan="2" className="text-center">onSwiped</th></tr>
@@ -200,7 +216,8 @@ export default class Main extends Component {
               {DIRECTIONS.map(this._renderAppliedDirRow.bind(this))}
             </tbody>
           </table>
-          <p style={{"margin-bottom": "5rem"}}>
+          <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset All Options</button>
+          <p style={{"marginBottom": "5rem"}}>
             Thanks for checking out the example app! Let us know if you find any bugs, and&nbsp;
             <a href="https://github.com/dogfessional/react-swipeable/pulls">submit a PR!</a>
           </p>

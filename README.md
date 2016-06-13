@@ -10,6 +10,8 @@ $ npm install --save react-swipeable
 
 ### Use
 
+react-swipeable generates a React component (defaults to `<div>`) and binds touch events to it.
+
 ```js
 var Swipeable = require('react-swipeable')
 
@@ -27,16 +29,14 @@ var SampleComponent = React.createClass({
         onSwipedDown={this.swipedDown}
         onSwipedLeft={this.swipedLeft}
         onSwiped={this.handleSwipeAction}>
-        <div>
-          This element can be swiped
-        </div>
+          You can be swipe here!
       </Swipeable>
     )
   }
 })
 ```
 
-## Props
+## Event Props
 
 **`onSwiping`**, **`onSwipingUp`**, **`onSwipingRight`**, **`onSwipingDown`**, **`onSwipingLeft`**, are called with the event
 as well as the absolute delta of where the swipe started and where it's currently at. These constantly fire throughout touch events.
@@ -50,11 +50,13 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 #####Configuration Props
 
-**`flickThreshold`** is a number (float) which determines the max velocity of a swipe before it's considered a flick.
+**`flickThreshold`** is a number (float) which determines the max velocity of a swipe before it's considered a flick. The default value is `0.6`.
 
-**`delta`** is the amount of px before we start firing events. Also effects how far `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, and `onSwipedLeft` need to be before they fire events. The default value is 10.
+**`delta`** is the amount of px before we start firing events. Also effects how far `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, and `onSwipedLeft` need to be before they fire events. The default value is `10`.
 
 **`preventDefaultTouchmoveEvent`** is whether to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.  Sometimes you would like the target to scroll natively.  The default value is `true`.
+
+**`nodeName`** is a string which determines the html element/node that this react component binds its touch events to then returns. The default value is `'div'`.
 
 **None of the props are required.**
 ### PropTypes
@@ -73,6 +75,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   flickThreshold: React.PropTypes.number,
   delta: React.PropTypes.number,
   preventDefaultTouchmoveEvent: React.PropTypes.bool
+  nodeName: React.PropTypes.string
 ```
 
 ## Development

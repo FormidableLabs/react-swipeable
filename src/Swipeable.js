@@ -14,7 +14,8 @@ const Swipeable = React.createClass({
     onSwipedLeft: React.PropTypes.func,
     flickThreshold: React.PropTypes.number,
     delta: React.PropTypes.number,
-    preventDefaultTouchmoveEvent: React.PropTypes.bool
+    preventDefaultTouchmoveEvent: React.PropTypes.bool,
+    nodeName: React.PropTypes.string
   },
 
   getInitialState: function () {
@@ -30,7 +31,8 @@ const Swipeable = React.createClass({
     return {
       flickThreshold: 0.6,
       delta: 10,
-      preventDefaultTouchmoveEvent: true
+      preventDefaultTouchmoveEvent: true,
+      nodeName: 'div'
     }
   },
 
@@ -149,14 +151,16 @@ const Swipeable = React.createClass({
   },
 
   render: function () {
-    return (
-      <div {...this.props}
-        onTouchStart={this.touchStart}
-        onTouchMove={this.touchMove}
-        onTouchEnd={this.touchEnd} >
-          {this.props.children}
-      </div>
-    )
+    return React.createElement(
+      this.props.nodeName,
+      {
+        ...this.props,
+        onTouchStart: this.touchStart,
+        onTouchMove: this.touchMove,
+        onTouchEnd: this.touchEnd,
+      },
+      this.props.children
+    );
   }
 })
 
