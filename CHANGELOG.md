@@ -1,5 +1,9 @@
 # 3.4.0
 
+* Add configurable container element via `nodeName` prop, defaults to `'div'`. See [#24](https://github.com/dogfessional/react-swipeable/issues/24) and [#40](https://github.com/dogfessional/react-swipeable/pull/40) for more info.
+
+# 3.4.0
+
 * Add preventDefault while swiping when props `onSwipedLeft`, `onSwipedRight`, `onSwipedUp`, and `onSwipedDown` are present. See #21 and #37 for more info.
 
 # 3.3.0
