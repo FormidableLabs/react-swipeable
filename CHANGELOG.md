@@ -1,4 +1,4 @@
-# 3.4.0
+# 3.5.0
 
 * Add configurable container element via `nodeName` prop, defaults to `'div'`. See [#24](https://github.com/dogfessional/react-swipeable/issues/24) and [#40](https://github.com/dogfessional/react-swipeable/pull/40) for more info.
 
