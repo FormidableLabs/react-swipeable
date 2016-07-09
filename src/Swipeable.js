@@ -151,14 +151,32 @@ const Swipeable = React.createClass({
   },
 
   render: function () {
+    const newProps = {
+      ...this.props,
+      onTouchStart: this.touchStart,
+      onTouchMove: this.touchMove,
+      onTouchEnd: this.touchEnd,
+    }
+
+    delete newProps.onSwiped
+    delete newProps.onSwiping
+    delete newProps.onSwipingUp
+    delete newProps.onSwipingRight
+    delete newProps.onSwipingDown
+    delete newProps.onSwipingLeft
+    delete newProps.onSwipedUp
+    delete newProps.onSwipedRight
+    delete newProps.onSwipedDown
+    delete newProps.onSwipedLeft
+    delete newProps.flickThreshold
+    delete newProps.delta
+    delete newProps.preventDefaultTouchmoveEvent
+    delete newProps.nodeName
+    delete newProps.children
+
     return React.createElement(
       this.props.nodeName,
-      {
-        ...this.props,
-        onTouchStart: this.touchStart,
-        onTouchMove: this.touchMove,
-        onTouchEnd: this.touchEnd,
-      },
+      newProps,
       this.props.children
     );
   }
