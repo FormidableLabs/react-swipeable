@@ -129,7 +129,8 @@ const Swipeable = React.createClass({
         ev,
         pos.deltaX,
         pos.deltaY,
-        isFlick
+        isFlick,
+        pos.velocity
       )
 
       if (pos.absX > pos.absY) {

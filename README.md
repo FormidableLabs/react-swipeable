@@ -41,12 +41,12 @@ var SampleComponent = React.createClass({
 **`onSwiping`**, **`onSwipingUp`**, **`onSwipingRight`**, **`onSwipingDown`**, **`onSwipingLeft`**, are called with the event
 as well as the absolute delta of where the swipe started and where it's currently at. These constantly fire throughout touch events.
 
-**`onSwiping`** in addition to the swipe delta, `onSwiping` also returns the current absolute X and Y position, as well as the current Velocity of the swipe. `this.props.onSwiping(e, deltaX, deltaY, absX, absY, velocity)`
+**`onSwiping`** in addition to the swipe delta, `onSwiping` also returns the current absolute X and Y position, as well as the current velocity of the swipe. `this.props.onSwiping(e, deltaX, deltaY, absX, absY, velocity)`
 
 **`onSwipedUp`**, **`onSwipedRight`**, **`onSwipedDown`**, **`onSwipedLeft`** are called with the event
 as well as the x distance, + or -, from where the swipe started to where it ended. These only fire at the end of a touch event.
 
-**`onSwiped`** is called with the event, the X and Y delta, and whether or not the event was a flick `this.props.onSwiped(ev, x, y, isFlick)`
+**`onSwiped`** is called with the event, the X and Y delta, whether or not the event was a flick, and the current velocity of the swipe. `this.props.onSwiped(ev, x, y, isFlick, velocity)`
 
 #####Configuration Props
 
