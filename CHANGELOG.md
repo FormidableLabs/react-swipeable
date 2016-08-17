@@ -8,7 +8,7 @@
 
 # 3.4.0
 
-* Add preventDefault while swiping when props `onSwipedLeft`, `onSwipedRight`, `onSwipedUp`, and `onSwipedDown` are present. See #21 and #37 for more info.
+* Add preventDefault while swiping when props `onSwipedLeft`, `onSwipedRight`, `onSwipedUp`, and `onSwipedDown` are present. See [#21](https://github.com/dogfessional/react-swipeable/issues/21) and [#37](https://github.com/dogfessional/react-swipeable/pull/37) for more info.
 
 # 3.3.0
 
