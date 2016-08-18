@@ -76,7 +76,8 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   onSwipedLeft: React.PropTypes.func,
   flickThreshold: React.PropTypes.number,
   delta: React.PropTypes.number,
-  preventDefaultTouchmoveEvent: React.PropTypes.bool
+  preventDefaultTouchmoveEvent: React.PropTypes.bool,
+  stopPropagation: React.PropTypes.bool,
   nodeName: React.PropTypes.string
 ```
 
