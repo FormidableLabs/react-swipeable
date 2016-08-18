@@ -13,6 +13,7 @@ const initialStateSwipeable = {
   flickThreshold: '0.6',
   delta: '10',
   preventDefaultTouchmoveEvent: true,
+  stopPropagation: false,
   nodeName: 'div',
 };
 const initialStateApplied = {
@@ -104,6 +105,7 @@ export default class Main extends Component {
       onSwipingApplied,
       onSwipedApplied,
       preventDefaultTouchmoveEvent,
+      stopPropagation,
       nodeName,
     } = this.state;
 
@@ -130,6 +132,7 @@ export default class Main extends Component {
             flickThreshold={flickThresholdNum}
             delta={deltaNum}
             preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
+            stopPropagation= {stopPropagation}
             nodeName={nodeName}
             className="callout"
             style={{fontSize: "0.75rem"}}>
@@ -189,6 +192,15 @@ export default class Main extends Component {
                     type="checkbox"
                     checked={preventDefaultTouchmoveEvent}
                     onChange={(e)=>this.updateValue('preventDefaultTouchmoveEvent', e.target.checked)}/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2" className="text-center">stopPropagation:</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={stopPropagation}
+                    onChange={(e)=>this.updateValue('stopPropagation', e.target.checked)}/>
                 </td>
               </tr>
               <tr>
