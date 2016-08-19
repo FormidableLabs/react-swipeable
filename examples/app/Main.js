@@ -132,7 +132,7 @@ export default class Main extends Component {
             flickThreshold={flickThresholdNum}
             delta={deltaNum}
             preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
-            stopPropagation= {stopPropagation}
+            stopPropagation={stopPropagation}
             nodeName={nodeName}
             className="callout"
             style={{fontSize: "0.75rem"}}>
