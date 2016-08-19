@@ -46,7 +46,7 @@ as well as the absolute delta of where the swipe started and where it's currentl
 **`onSwipedUp`**, **`onSwipedRight`**, **`onSwipedDown`**, **`onSwipedLeft`** are called with the event
 as well as the x distance, + or -, from where the swipe started to where it ended. These only fire at the end of a touch event.
 
-**`onSwiped`** is called with the event, the X and Y delta, whether or not the event was a flick, and the current velocity of the swipe. `this.props.onSwiped(ev, x, y, isFlick, velocity)`
+**`onSwiped`** is called with the event, the X and Y delta, whether or not the event was a flick, and the current velocity of the swipe. `this.props.onSwiped(e, x, y, isFlick, velocity)`
 
 #####Configuration Props
 
@@ -55,6 +55,8 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 **`delta`** is the amount of px before we start firing events. Also affects how far `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, and `onSwipedLeft` need to be before they fire events. The default value is `10`.
 
 **`preventDefaultTouchmoveEvent`** is whether to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.  Sometimes you would like the target to scroll natively.  The default value is `true`.
+
+**`stopPropagation`** automatically calls stopPropagation on all 'swipe' events. The default value is `false`.
 
 **`nodeName`** is a string which determines the html element/node that this react component binds its touch events to then returns. The default value is `'div'`.
 
@@ -74,7 +76,8 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   onSwipedLeft: React.PropTypes.func,
   flickThreshold: React.PropTypes.number,
   delta: React.PropTypes.number,
-  preventDefaultTouchmoveEvent: React.PropTypes.bool
+  preventDefaultTouchmoveEvent: React.PropTypes.bool,
+  stopPropagation: React.PropTypes.bool,
   nodeName: React.PropTypes.string
 ```
 

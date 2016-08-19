@@ -15,6 +15,7 @@ const Swipeable = React.createClass({
     flickThreshold: React.PropTypes.number,
     delta: React.PropTypes.number,
     preventDefaultTouchmoveEvent: React.PropTypes.bool,
+    stopPropagation: React.PropTypes.bool,
     nodeName: React.PropTypes.string
   },
 
@@ -32,6 +33,7 @@ const Swipeable = React.createClass({
       flickThreshold: 0.6,
       delta: 10,
       preventDefaultTouchmoveEvent: true,
+      stopPropagation: false,
       nodeName: 'div'
     }
   },
@@ -62,6 +64,9 @@ const Swipeable = React.createClass({
     if (e.touches.length > 1) {
       return
     }
+
+    if (this.props.stopPropagation) e.stopPropagation()
+
     this.setState({
       start: Date.now(),
       x: e.touches[0].clientX,
@@ -81,6 +86,8 @@ const Swipeable = React.createClass({
     if (pos.absX < this.props.delta && pos.absY < this.props.delta) {
       return
     }
+
+    if (this.props.stopPropagation) e.stopPropagation()
 
     if (this.props.onSwiping) {
       this.props.onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity)
@@ -119,14 +126,16 @@ const Swipeable = React.createClass({
     }
   },
 
-  touchEnd: function (ev) {
+  touchEnd: function (e) {
     if (this.state.swiping) {
-      const pos = this.calculatePos(ev)
+      const pos = this.calculatePos(e)
+
+      if (this.props.stopPropagation) e.stopPropagation()
 
       const isFlick = pos.velocity > this.props.flickThreshold
 
       this.props.onSwiped && this.props.onSwiped(
-        ev,
+        e,
         pos.deltaX,
         pos.deltaY,
         isFlick,
@@ -135,15 +144,15 @@ const Swipeable = React.createClass({
 
       if (pos.absX > pos.absY) {
         if (pos.deltaX > 0) {
-          this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX, isFlick)
+          this.props.onSwipedLeft && this.props.onSwipedLeft(e, pos.deltaX, isFlick)
         } else {
-          this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX, isFlick)
+          this.props.onSwipedRight && this.props.onSwipedRight(e, pos.deltaX, isFlick)
         }
       } else {
         if (pos.deltaY > 0) {
-          this.props.onSwipedUp && this.props.onSwipedUp(ev, pos.deltaY, isFlick)
+          this.props.onSwipedUp && this.props.onSwipedUp(e, pos.deltaY, isFlick)
         } else {
-          this.props.onSwipedDown && this.props.onSwipedDown(ev, pos.deltaY, isFlick)
+          this.props.onSwipedDown && this.props.onSwipedDown(e, pos.deltaY, isFlick)
         }
       }
     }
@@ -172,6 +181,7 @@ const Swipeable = React.createClass({
     delete newProps.flickThreshold
     delete newProps.delta
     delete newProps.preventDefaultTouchmoveEvent
+    delete newProps.stopPropagation
     delete newProps.nodeName
     delete newProps.children
 
