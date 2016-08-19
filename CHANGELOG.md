@@ -1,3 +1,7 @@
+# 3.6.0
+
+* add stopPropagation prop for all swipe events, defaults to `false`. See [#46](https://github.com/dogfessional/react-swipeable/issues/46) for more info.
+
 # 3.5.1
 
 * fix React 15.2.0 warning for unknown properties on DOM elements
