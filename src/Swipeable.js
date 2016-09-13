@@ -162,7 +162,7 @@ const Swipeable = React.createClass({
 
   render: function () {
     const newProps = {
-      ...this.props,
+      style:this.props.style,
       onTouchStart: this.touchStart,
       onTouchMove: this.touchMove,
       onTouchEnd: this.touchEnd,
