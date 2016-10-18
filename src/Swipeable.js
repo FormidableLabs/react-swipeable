@@ -199,6 +199,7 @@ const Swipeable = React.createClass({
     delete newProps.stopPropagation
     delete newProps.nodeName
     delete newProps.children
+    delete newProps.trackMouse
 
     return React.createElement(
       this.props.nodeName,
