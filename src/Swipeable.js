@@ -16,7 +16,8 @@ const Swipeable = React.createClass({
     delta: React.PropTypes.number,
     preventDefaultTouchmoveEvent: React.PropTypes.bool,
     stopPropagation: React.PropTypes.bool,
-    nodeName: React.PropTypes.string
+    nodeName: React.PropTypes.string,
+    trackMouse: React.PropTypes.bool
   },
 
   getInitialState: function () {
@@ -39,8 +40,15 @@ const Swipeable = React.createClass({
   },
 
   calculatePos: function (e) {
-    const x = e.changedTouches[0].clientX
-    const y = e.changedTouches[0].clientY
+    let x, y
+    // If not a touch, determine point from mouse coordinates
+    if (e.changedTouches) {
+        x = e.changedTouches[0].clientX
+        y = e.changedTouches[0].clientY
+    } else {
+        x = e.clientX
+        y = e.clientY
+    }
 
     const xd = this.state.x - x
     const yd = this.state.y - y
@@ -60,23 +68,27 @@ const Swipeable = React.createClass({
     }
   },
 
-  touchStart: function (e) {
-    if (e.touches.length > 1) {
+  eventStart: function (e) {
+    if (e.touches && e.touches.length > 1) {
       return
     }
-
+    // If not a touch, determine point from mouse coordinates
+    let touches = e.touches
+    if (!touches) {
+        touches = [{ clientX: e.clientX, clientY: e.clientY }]
+    }
     if (this.props.stopPropagation) e.stopPropagation()
 
     this.setState({
       start: Date.now(),
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY,
+      x: touches[0].clientX,
+      y: touches[0].clientY,
       swiping: false
     })
   },
 
-  touchMove: function (e) {
-    if (!this.state.x || !this.state.y || e.touches.length > 1) {
+  eventMove: function (e) {
+    if (!this.state.x || !this.state.y || e.touches && e.touches.length > 1) {
       return
     }
 
@@ -126,7 +138,7 @@ const Swipeable = React.createClass({
     }
   },
 
-  touchEnd: function (e) {
+  eventEnd: function (e) {
     if (this.state.swiping) {
       const pos = this.calculatePos(e)
 
@@ -163,9 +175,12 @@ const Swipeable = React.createClass({
   render: function () {
     const newProps = {
       ...this.props,
-      onTouchStart: this.touchStart,
-      onTouchMove: this.touchMove,
-      onTouchEnd: this.touchEnd,
+      onTouchStart: this.eventStart,
+      onTouchMove: this.eventMove,
+      onTouchEnd: this.eventEnd,
+      onMouseDown: this.props.trackMouse && this.eventStart,
+      onMouseMove: this.props.trackMouse && this.eventMove,
+      onMouseUp: this.props.trackMouse && this.eventEnd
     }
 
     delete newProps.onSwiped
@@ -184,6 +199,7 @@ const Swipeable = React.createClass({
     delete newProps.stopPropagation
     delete newProps.nodeName
     delete newProps.children
+    delete newProps.trackMouse
 
     return React.createElement(
       this.props.nodeName,
