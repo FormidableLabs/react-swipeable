@@ -1,3 +1,7 @@
+# 3.7.0
+
+* add ability to track mouse events as touch events. Thanks ([@jakepusateri](https://github.com/jakepusateri) and ([@Marcel-G](https://github.com/Marcel-G). [#51](https://github.com/dogfessional/react-swipeable/issues/51)
+
 # 3.6.0
 
 * add stopPropagation prop for all swipe events, defaults to `false`. See [#46](https://github.com/dogfessional/react-swipeable/issues/46) for more info.

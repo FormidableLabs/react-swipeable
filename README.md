@@ -1,6 +1,6 @@
 # Swipeable [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable)
-Swipe bindings for react.
-[http://dogfessional.github.io/react-swipeable/](http://dogfessional.github.io/react-swipeable/)
+React swipe component - Swipe bindings for react
+[Demo](http://dogfessional.github.io/react-swipeable/)
 
 ### Install
 Using npm:
@@ -29,7 +29,7 @@ var SampleComponent = React.createClass({
         onSwipedDown={this.swipedDown}
         onSwipedLeft={this.swipedLeft}
         onSwiped={this.handleSwipeAction}>
-          You can be swipe here!
+          You can swipe here!
       </Swipeable>
     )
   }
@@ -60,6 +60,8 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`nodeName`** is a string which determines the html element/node that this react component binds its touch events to then returns. The default value is `'div'`.
 
+**`trackMouse`** will allow mouse 'swipes' to be tracked(click, hold, move, let go). See [#51](https://github.com/dogfessional/react-swipeable/issues/51) for more details. The default value is `false`.
+
 **None of the props are required.**
 ### PropTypes
 
@@ -79,6 +81,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   preventDefaultTouchmoveEvent: React.PropTypes.bool,
   stopPropagation: React.PropTypes.bool,
   nodeName: React.PropTypes.string
+  trackMouse: React.PropTypes.bool,
 ```
 
 ## Development
