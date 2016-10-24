@@ -1,5 +1,6 @@
 # Swipeable [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable)
 React swipe component - Swipe bindings for react
+
 [Demo](http://dogfessional.github.io/react-swipeable/)
 
 ### Install
