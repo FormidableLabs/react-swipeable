@@ -15,6 +15,7 @@ const initialStateSwipeable = {
   preventDefaultTouchmoveEvent: true,
   stopPropagation: false,
   nodeName: 'div',
+  trackMouse: false,
 };
 const initialStateApplied = {
   onSwipingApplied: true,
@@ -107,6 +108,7 @@ export default class Main extends Component {
       preventDefaultTouchmoveEvent,
       stopPropagation,
       nodeName,
+      trackMouse,
     } = this.state;
 
     const isFlickThresholdNumber = !(isNaN(flickThreshold) || flickThreshold === '');
@@ -134,6 +136,7 @@ export default class Main extends Component {
             preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
             stopPropagation={stopPropagation}
             nodeName={nodeName}
+            trackMouse={trackMouse}
             className="callout"
             style={{fontSize: "0.75rem"}}>
               <div onTouchStart={()=>this.resetState()}>
@@ -201,6 +204,15 @@ export default class Main extends Component {
                     type="checkbox"
                     checked={stopPropagation}
                     onChange={(e)=>this.updateValue('stopPropagation', e.target.checked)}/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2" className="text-center">trackMouse:</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={trackMouse}
+                    onChange={(e)=>this.updateValue('trackMouse', e.target.checked)}/>
                 </td>
               </tr>
               <tr>
