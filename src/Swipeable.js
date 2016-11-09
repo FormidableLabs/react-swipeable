@@ -69,6 +69,14 @@ const Swipeable = React.createClass({
   },
 
   eventStart: function (e) {
+    if (typeof this.props.onMouseUp === 'function') {
+      this.props.onMouseDown(e);
+    }
+
+    if (e.type === 'mousedown' && !this.props.trackMouse) {
+      return
+    }
+
     if (e.touches && e.touches.length > 1) {
       return
     }
@@ -88,6 +96,14 @@ const Swipeable = React.createClass({
   },
 
   eventMove: function (e) {
+    if (typeof this.props.onMouseMove === 'function') {
+      this.props.onMouseMove(e);
+    }
+
+    if (e.type === 'mousemove' && !this.props.trackMouse) {
+      return
+    }
+
     if (!this.state.x || !this.state.y || e.touches && e.touches.length > 1) {
       return
     }
@@ -139,6 +155,14 @@ const Swipeable = React.createClass({
   },
 
   eventEnd: function (e) {
+    if (typeof this.props.onMouseUp === 'function') {
+      this.props.onMouseUp(e);
+    }
+
+    if (e.type === 'mouseup' && !this.props.trackMouse) {
+      return
+    }
+
     if (this.state.swiping) {
       const pos = this.calculatePos(e)
 
@@ -178,9 +202,9 @@ const Swipeable = React.createClass({
       onTouchStart: this.eventStart,
       onTouchMove: this.eventMove,
       onTouchEnd: this.eventEnd,
-      onMouseDown: this.props.trackMouse && this.eventStart,
-      onMouseMove: this.props.trackMouse && this.eventMove,
-      onMouseUp: this.props.trackMouse && this.eventEnd
+      onMouseDown: this.eventStart,
+      onMouseMove: this.eventMove,
+      onMouseUp: this.eventEnd
     }
 
     delete newProps.onSwiped
