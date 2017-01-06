@@ -1,4 +1,4 @@
-const React = require('react')
+const React = require('react');
 
 const Swipeable = React.createClass({
   propTypes: {
@@ -17,162 +17,156 @@ const Swipeable = React.createClass({
     preventDefaultTouchmoveEvent: React.PropTypes.bool,
     stopPropagation: React.PropTypes.bool,
     nodeName: React.PropTypes.string,
-    trackMouse: React.PropTypes.bool
+    trackMouse: React.PropTypes.bool,
+    children: React.PropTypes.node,
   },
 
-  getInitialState: function () {
-    return {
-      x: null,
-      y: null,
-      swiping: false,
-      start: 0
-    }
-  },
-
-  getDefaultProps: function () {
+  getDefaultProps() {
     return {
       flickThreshold: 0.6,
       delta: 10,
       preventDefaultTouchmoveEvent: true,
       stopPropagation: false,
-      nodeName: 'div'
-    }
+      nodeName: 'div',
+    };
   },
 
-  calculatePos: function (e) {
-    let x, y
+  getInitialState() {
+    return {
+      x: null,
+      y: null,
+      swiping: false,
+      start: 0,
+    };
+  },
+
+  calculatePos(e) {
+    let x;
+    let y;
     // If not a touch, determine point from mouse coordinates
     if (e.changedTouches) {
-        x = e.changedTouches[0].clientX
-        y = e.changedTouches[0].clientY
+      x = e.changedTouches[0].clientX;
+      y = e.changedTouches[0].clientY;
     } else {
-        x = e.clientX
-        y = e.clientY
+      x = e.clientX;
+      y = e.clientY;
     }
 
-    const xd = this.state.x - x
-    const yd = this.state.y - y
+    const xd = this.state.x - x;
+    const yd = this.state.y - y;
 
-    const axd = Math.abs(xd)
-    const ayd = Math.abs(yd)
+    const axd = Math.abs(xd);
+    const ayd = Math.abs(yd);
 
-    const time = Date.now() - this.state.start
-    const velocity = Math.sqrt(axd * axd + ayd * ayd) / time
+    const time = Date.now() - this.state.start;
+    const velocity = Math.sqrt(axd * axd + ayd * ayd) / time;
 
     return {
       deltaX: xd,
       deltaY: yd,
       absX: axd,
       absY: ayd,
-      velocity: velocity
-    }
+      velocity,
+    };
   },
 
-  eventStart: function (e) {
+  eventStart(e) {
     if (e.touches && e.touches.length > 1) {
-      return
+      return;
     }
     // If not a touch, determine point from mouse coordinates
-    let touches = e.touches
+    let touches = e.touches;
     if (!touches) {
-        touches = [{ clientX: e.clientX, clientY: e.clientY }]
+      touches = [{ clientX: e.clientX, clientY: e.clientY }];
     }
-    if (this.props.stopPropagation) e.stopPropagation()
+    if (this.props.stopPropagation) e.stopPropagation();
 
     this.setState({
       start: Date.now(),
       x: touches[0].clientX,
       y: touches[0].clientY,
-      swiping: false
-    })
+      swiping: false,
+    });
   },
 
-  eventMove: function (e) {
+  eventMove(e) {
     if (!this.state.x || !this.state.y || e.touches && e.touches.length > 1) {
-      return
+      return;
     }
 
-    let cancelPageSwipe = false
-    const pos = this.calculatePos(e)
+    let cancelPageSwipe = false;
+    const pos = this.calculatePos(e);
 
     if (pos.absX < this.props.delta && pos.absY < this.props.delta) {
-      return
+      return;
     }
 
-    if (this.props.stopPropagation) e.stopPropagation()
+    if (this.props.stopPropagation) e.stopPropagation();
 
     if (this.props.onSwiping) {
-      this.props.onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity)
+      this.props.onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity);
     }
 
     if (pos.absX > pos.absY) {
       if (pos.deltaX > 0) {
         if (this.props.onSwipingLeft || this.props.onSwipedLeft) {
-          this.props.onSwipingLeft && this.props.onSwipingLeft(e, pos.absX)
-          cancelPageSwipe = true
+          this.props.onSwipingLeft && this.props.onSwipingLeft(e, pos.absX);
+          cancelPageSwipe = true;
         }
-      } else {
-        if (this.props.onSwipingRight || this.props.onSwipedRight) {
-          this.props.onSwipingRight && this.props.onSwipingRight(e, pos.absX)
-          cancelPageSwipe = true
-        }
+      } else if (this.props.onSwipingRight || this.props.onSwipedRight) {
+        this.props.onSwipingRight && this.props.onSwipingRight(e, pos.absX);
+        cancelPageSwipe = true;
       }
-    } else {
-      if (pos.deltaY > 0) {
-        if (this.props.onSwipingUp || this.props.onSwipedUp) {
-          this.props.onSwipingUp && this.props.onSwipingUp(e, pos.absY)
-          cancelPageSwipe = true
-        }
-      } else {
-        if (this.props.onSwipingDown || this.props.onSwipedDown) {
-          this.props.onSwipingDown && this.props.onSwipingDown(e, pos.absY)
-          cancelPageSwipe = true
-        }
+    } else if (pos.deltaY > 0) {
+      if (this.props.onSwipingUp || this.props.onSwipedUp) {
+        this.props.onSwipingUp && this.props.onSwipingUp(e, pos.absY);
+        cancelPageSwipe = true;
       }
+    } else if (this.props.onSwipingDown || this.props.onSwipedDown) {
+      this.props.onSwipingDown && this.props.onSwipingDown(e, pos.absY);
+      cancelPageSwipe = true;
     }
 
-    this.setState({ swiping: true })
+    this.setState({ swiping: true });
 
     if (cancelPageSwipe && this.props.preventDefaultTouchmoveEvent) {
-      e.preventDefault()
+      e.preventDefault();
     }
   },
 
-  eventEnd: function (e) {
+  eventEnd(e) {
     if (this.state.swiping) {
-      const pos = this.calculatePos(e)
+      const pos = this.calculatePos(e);
 
-      if (this.props.stopPropagation) e.stopPropagation()
+      if (this.props.stopPropagation) e.stopPropagation();
 
-      const isFlick = pos.velocity > this.props.flickThreshold
+      const isFlick = pos.velocity > this.props.flickThreshold;
 
       this.props.onSwiped && this.props.onSwiped(
         e,
         pos.deltaX,
         pos.deltaY,
         isFlick,
-        pos.velocity
-      )
+        pos.velocity,
+      );
 
       if (pos.absX > pos.absY) {
         if (pos.deltaX > 0) {
-          this.props.onSwipedLeft && this.props.onSwipedLeft(e, pos.deltaX, isFlick)
+          this.props.onSwipedLeft && this.props.onSwipedLeft(e, pos.deltaX, isFlick);
         } else {
-          this.props.onSwipedRight && this.props.onSwipedRight(e, pos.deltaX, isFlick)
+          this.props.onSwipedRight && this.props.onSwipedRight(e, pos.deltaX, isFlick);
         }
+      } else if (pos.deltaY > 0) {
+        this.props.onSwipedUp && this.props.onSwipedUp(e, pos.deltaY, isFlick);
       } else {
-        if (pos.deltaY > 0) {
-          this.props.onSwipedUp && this.props.onSwipedUp(e, pos.deltaY, isFlick)
-        } else {
-          this.props.onSwipedDown && this.props.onSwipedDown(e, pos.deltaY, isFlick)
-        }
+        this.props.onSwipedDown && this.props.onSwipedDown(e, pos.deltaY, isFlick);
       }
     }
 
-    this.setState(this.getInitialState())
+    this.setState(this.getInitialState());
   },
 
-  render: function () {
+  render() {
     const newProps = {
       ...this.props,
       onTouchStart: this.eventStart,
@@ -180,33 +174,33 @@ const Swipeable = React.createClass({
       onTouchEnd: this.eventEnd,
       onMouseDown: this.props.trackMouse && this.eventStart,
       onMouseMove: this.props.trackMouse && this.eventMove,
-      onMouseUp: this.props.trackMouse && this.eventEnd
-    }
+      onMouseUp: this.props.trackMouse && this.eventEnd,
+    };
 
-    delete newProps.onSwiped
-    delete newProps.onSwiping
-    delete newProps.onSwipingUp
-    delete newProps.onSwipingRight
-    delete newProps.onSwipingDown
-    delete newProps.onSwipingLeft
-    delete newProps.onSwipedUp
-    delete newProps.onSwipedRight
-    delete newProps.onSwipedDown
-    delete newProps.onSwipedLeft
-    delete newProps.flickThreshold
-    delete newProps.delta
-    delete newProps.preventDefaultTouchmoveEvent
-    delete newProps.stopPropagation
-    delete newProps.nodeName
-    delete newProps.children
-    delete newProps.trackMouse
+    delete newProps.onSwiped;
+    delete newProps.onSwiping;
+    delete newProps.onSwipingUp;
+    delete newProps.onSwipingRight;
+    delete newProps.onSwipingDown;
+    delete newProps.onSwipingLeft;
+    delete newProps.onSwipedUp;
+    delete newProps.onSwipedRight;
+    delete newProps.onSwipedDown;
+    delete newProps.onSwipedLeft;
+    delete newProps.flickThreshold;
+    delete newProps.delta;
+    delete newProps.preventDefaultTouchmoveEvent;
+    delete newProps.stopPropagation;
+    delete newProps.nodeName;
+    delete newProps.children;
+    delete newProps.trackMouse;
 
     return React.createElement(
       this.props.nodeName,
       newProps,
-      this.props.children
+      this.props.children,
     );
-  }
-})
+  },
+});
 
-module.exports = Swipeable
+module.exports = Swipeable;
