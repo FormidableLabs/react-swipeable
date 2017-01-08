@@ -1,5 +1,14 @@
 const React = require('react')
 
+function getInitialState () {
+  return {
+    x: null,
+    y: null,
+    swiping: false,
+    start: 0
+  };
+}
+
 const Swipeable = React.createClass({
   propTypes: {
     onSwiped: React.PropTypes.func,
@@ -20,13 +29,8 @@ const Swipeable = React.createClass({
     trackMouse: React.PropTypes.bool
   },
 
-  getInitialState: function () {
-    return {
-      x: null,
-      y: null,
-      swiping: false,
-      start: 0
-    }
+  componentWillMount: function () {
+    this.swipeable = getInitialState();
   },
 
   getDefaultProps: function () {
@@ -50,13 +54,13 @@ const Swipeable = React.createClass({
         y = e.clientY
     }
 
-    const xd = this.state.x - x
-    const yd = this.state.y - y
+    const xd = this.swipeable.x - x
+    const yd = this.swipeable.y - y
 
     const axd = Math.abs(xd)
     const ayd = Math.abs(yd)
 
-    const time = Date.now() - this.state.start
+    const time = Date.now() - this.swipeable.start
     const velocity = Math.sqrt(axd * axd + ayd * ayd) / time
 
     return {
@@ -87,12 +91,12 @@ const Swipeable = React.createClass({
     }
     if (this.props.stopPropagation) e.stopPropagation()
 
-    this.setState({
+    this.swipeable = {
       start: Date.now(),
       x: touches[0].clientX,
       y: touches[0].clientY,
       swiping: false
-    })
+    };
   },
 
   eventMove: function (e) {
@@ -104,7 +108,7 @@ const Swipeable = React.createClass({
       return
     }
 
-    if (!this.state.x || !this.state.y || e.touches && e.touches.length > 1) {
+    if (!this.swipeable.x || !this.swipeable.y || e.touches && e.touches.length > 1) {
       return
     }
 
@@ -147,7 +151,7 @@ const Swipeable = React.createClass({
       }
     }
 
-    this.setState({ swiping: true })
+    this.swipeable.swiping = true;
 
     if (cancelPageSwipe && this.props.preventDefaultTouchmoveEvent) {
       e.preventDefault()
@@ -163,7 +167,7 @@ const Swipeable = React.createClass({
       return
     }
 
-    if (this.state.swiping) {
+    if (this.swipeable.swiping) {
       const pos = this.calculatePos(e)
 
       if (this.props.stopPropagation) e.stopPropagation()
@@ -193,7 +197,7 @@ const Swipeable = React.createClass({
       }
     }
 
-    this.setState(this.getInitialState())
+    this.swipeable = getInitialState();
   },
 
   render: function () {
