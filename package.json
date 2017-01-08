@@ -4,10 +4,17 @@
   "description": "Swipe bindings for react",
   "main": "lib/Swipeable.js",
   "scripts": {
+    "test": "jest",
     "lint": "eslint .",
-    "build:lib": "babel src --out-dir lib",
+    "build:lib": "babel src --out-dir lib --ignore __tests__",
     "build:publish:examples": "./scripts/build_gh_pages.sh",
     "prepublish": "npm run build:lib"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/__tests__/helpers/"
+    ]
   },
   "keywords": [
     "swipe",
@@ -32,15 +39,20 @@
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.3.17",
+    "babel-jest": "^18.0.0",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
     "babel-preset-es2015-loose": "^6.1.4",
     "babel-preset-react": "^6.3.13",
+    "enzyme": "^2.7.0",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
-    "react": ">=0.12.x"
+    "jest": "^18.1.0",
+    "react": ">=0.12.x",
+    "react-addons-test-utils": "^15.4.2",
+    "react-dom": "^15.4.2"
   },
   "peerDependencies": {
     "react": ">=0.12.0 || ^15.0.0-0"
