@@ -69,7 +69,7 @@ const Swipeable = React.createClass({
   },
 
   eventStart: function (e) {
-    if (typeof this.props.onMouseUp === 'function') {
+    if (typeof this.props.onMouseDown === 'function') {
       this.props.onMouseDown(e);
     }
 
