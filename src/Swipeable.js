@@ -1,5 +1,14 @@
 const React = require('react');
 
+function getInitialState() {
+  return {
+    x: null,
+    y: null,
+    swiping: false,
+    start: 0,
+  };
+}
+
 const Swipeable = React.createClass({
   propTypes: {
     onSwiped: React.PropTypes.func,
@@ -31,13 +40,8 @@ const Swipeable = React.createClass({
     };
   },
 
-  getInitialState() {
-    return {
-      x: null,
-      y: null,
-      swiping: false,
-      start: 0,
-    };
+  componentWillMount() {
+    this.swipeable = getInitialState();
   },
 
   calculatePos(e) {
@@ -52,13 +56,13 @@ const Swipeable = React.createClass({
       y = e.clientY;
     }
 
-    const xd = this.state.x - x;
-    const yd = this.state.y - y;
+    const xd = this.swipeable.x - x;
+    const yd = this.swipeable.y - y;
 
     const axd = Math.abs(xd);
     const ayd = Math.abs(yd);
 
-    const time = Date.now() - this.state.start;
+    const time = Date.now() - this.swipeable.start;
     const velocity = Math.sqrt(axd * axd + ayd * ayd) / time;
 
     return {
@@ -71,6 +75,14 @@ const Swipeable = React.createClass({
   },
 
   eventStart(e) {
+    if (typeof this.props.onMouseDown === 'function') { // eslint-disable-line react/prop-types
+      this.props.onMouseDown(e); // eslint-disable-line react/prop-types
+    }
+
+    if (e.type === 'mousedown' && !this.props.trackMouse) {
+      return;
+    }
+
     if (e.touches && e.touches.length > 1) {
       return;
     }
@@ -81,16 +93,24 @@ const Swipeable = React.createClass({
     }
     if (this.props.stopPropagation) e.stopPropagation();
 
-    this.setState({
+    this.swipeable = {
       start: Date.now(),
       x: touches[0].clientX,
       y: touches[0].clientY,
       swiping: false,
-    });
+    };
   },
 
   eventMove(e) {
-    if (!this.state.x || !this.state.y || e.touches && e.touches.length > 1) {
+    if (typeof this.props.onMouseMove === 'function') { // eslint-disable-line react/prop-types
+      this.props.onMouseMove(e); // eslint-disable-line react/prop-types
+    }
+
+    if (e.type === 'mousemove' && !this.props.trackMouse) {
+      return;
+    }
+
+    if (!this.swipeable.x || !this.swipeable.y || e.touches && e.touches.length > 1) {
       return;
     }
 
@@ -127,7 +147,7 @@ const Swipeable = React.createClass({
       cancelPageSwipe = true;
     }
 
-    this.setState({ swiping: true });
+    this.swipeable.swiping = true;
 
     if (cancelPageSwipe && this.props.preventDefaultTouchmoveEvent) {
       e.preventDefault();
@@ -135,7 +155,15 @@ const Swipeable = React.createClass({
   },
 
   eventEnd(e) {
-    if (this.state.swiping) {
+    if (typeof this.props.onMouseUp === 'function') { // eslint-disable-line react/prop-types
+      this.props.onMouseUp(e); // eslint-disable-line react/prop-types
+    }
+
+    if (e.type === 'mouseup' && !this.props.trackMouse) {
+      return;
+    }
+
+    if (this.swipeable.swiping) {
       const pos = this.calculatePos(e);
 
       if (this.props.stopPropagation) e.stopPropagation();
@@ -163,7 +191,7 @@ const Swipeable = React.createClass({
       }
     }
 
-    this.setState(this.getInitialState());
+    this.swipeable = getInitialState();
   },
 
   render() {
@@ -172,9 +200,9 @@ const Swipeable = React.createClass({
       onTouchStart: this.eventStart,
       onTouchMove: this.eventMove,
       onTouchEnd: this.eventEnd,
-      onMouseDown: this.props.trackMouse && this.eventStart,
-      onMouseMove: this.props.trackMouse && this.eventMove,
-      onMouseUp: this.props.trackMouse && this.eventEnd,
+      onMouseDown: this.eventStart,
+      onMouseMove: this.eventMove,
+      onMouseUp: this.eventEnd,
     };
 
     delete newProps.onSwiped;
