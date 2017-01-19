@@ -49,6 +49,8 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`onSwiped`** is called with the event, the X and Y delta, whether or not the event was a flick, and the current velocity of the swipe. `this.props.onSwiped(e, x, y, isFlick, velocity)`
 
+**`onTap`** is called with the onTouchEnd event when the element has been tapped. `this.props.onTap(e)`
+
 #####Configuration Props
 
 **`flickThreshold`** is a number (float) which determines the max velocity of a swipe before it's considered a flick. The default value is `0.6`.
@@ -77,6 +79,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   onSwipedRight: React.PropTypes.func,
   onSwipedDown: React.PropTypes.func,
   onSwipedLeft: React.PropTypes.func,
+  onTap: React.PropTypes.func,
   flickThreshold: React.PropTypes.number,
   delta: React.PropTypes.number,
   preventDefaultTouchmoveEvent: React.PropTypes.bool,

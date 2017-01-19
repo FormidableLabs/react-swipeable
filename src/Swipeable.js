@@ -195,6 +195,8 @@ const Swipeable = React.createClass({
           this.props.onSwipedDown && this.props.onSwipedDown(e, pos.deltaY, isFlick)
         }
       }
+    } else {
+      this.props.onTap && this.props.onTap(e)
     }
 
     this.swipeable = getInitialState();
@@ -221,6 +223,7 @@ const Swipeable = React.createClass({
     delete newProps.onSwipedRight
     delete newProps.onSwipedDown
     delete newProps.onSwipedLeft
+    delete newProps.onTap
     delete newProps.flickThreshold
     delete newProps.delta
     delete newProps.preventDefaultTouchmoveEvent
