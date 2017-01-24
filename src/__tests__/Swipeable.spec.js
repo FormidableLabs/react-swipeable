@@ -33,9 +33,11 @@ describe('Swipeable', () => {
 
   it('handles touch events and fires correct props', () => {
     const swipeFuncs = getMockedSwipeFunctions();
+    const onTap = jest.fn();
     const wrapper = mount((
       <Swipeable
         {...swipeFuncs}
+        onTap={onTap}
       >
         <span>Touch Here</span>
       </Swipeable>
@@ -56,6 +58,7 @@ describe('Swipeable', () => {
     expect(swipeFuncs.onSwipingLeft).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipedRight).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipingRight).not.toHaveBeenCalled();
+    expect(onTap).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwiped).toHaveBeenCalled();
     expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(3);
   });
@@ -65,12 +68,14 @@ describe('Swipeable', () => {
     const onMouseUp = jest.fn();
     const onMouseDown = jest.fn();
     const onMouseMove = jest.fn();
+    const onTap = jest.fn();
     const wrapper = mount((
       <Swipeable
         trackMouse={true}
         onMouseUp={onMouseUp}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
+        onTap={onTap}
         {...swipeFuncs}
       >
         <span>Touch Here</span>
@@ -92,6 +97,7 @@ describe('Swipeable', () => {
     expect(swipeFuncs.onSwipingDown).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipingLeft).not.toHaveBeenCalled();
+    expect(onTap).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwiped).toHaveBeenCalled();
     expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(3);
 
@@ -99,5 +105,38 @@ describe('Swipeable', () => {
     expect(onMouseUp).toHaveBeenCalled();
     expect(onMouseDown).toHaveBeenCalled();
     expect(onMouseMove).toHaveBeenCalledTimes(3);
+  });
+
+  it('calls onTap', () => {
+    const swipeFuncs = getMockedSwipeFunctions();
+    const onTap = jest.fn();
+    const wrapper = mount((
+      <Swipeable
+        {...swipeFuncs}
+        onTap={onTap}
+      >
+        <span>Touch Here</span>
+      </Swipeable>
+    ));
+
+    const touchHere = wrapper.find('span');
+    // simulate what is probably a light tap,
+    //  meaning the user "swiped" just a little, but less than the delta
+    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
+    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 103, y: 100 }));
+    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 107, y: 100 }));
+
+    expect(swipeFuncs.onSwipedRight).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwipingRight).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwipedUp).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwipingUp).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwipedDown).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwipingDown).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwipingLeft).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwiped).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwiping).not.toHaveBeenCalled();
+
+    expect(onTap).toHaveBeenCalled();
   });
 });
