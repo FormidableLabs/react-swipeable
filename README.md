@@ -25,11 +25,12 @@ var SampleComponent = React.createClass({
         onSwipingRight={this.swipingRight}
         onSwipingDown={this.swipingDown}
         onSwipingLeft={this.swipingLeft}
+        onSwiped={this.swiped}
         onSwipedUp={this.swipedUp}
         onSwipedRight={this.swipedRight}
         onSwipedDown={this.swipedDown}
         onSwipedLeft={this.swipedLeft}
-        onSwiped={this.handleSwipeAction}>
+        onTap={this.tapped} >
           You can swipe here!
       </Swipeable>
     )
