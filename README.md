@@ -25,11 +25,12 @@ var SampleComponent = React.createClass({
         onSwipingRight={this.swipingRight}
         onSwipingDown={this.swipingDown}
         onSwipingLeft={this.swipingLeft}
+        onSwiped={this.swiped}
         onSwipedUp={this.swipedUp}
         onSwipedRight={this.swipedRight}
         onSwipedDown={this.swipedDown}
         onSwipedLeft={this.swipedLeft}
-        onSwiped={this.handleSwipeAction}>
+        onTap={this.tapped} >
           You can swipe here!
       </Swipeable>
     )
@@ -48,6 +49,8 @@ as well as the absolute delta of where the swipe started and where it's currentl
 as well as the x distance, + or -, from where the swipe started to where it ended. These only fire at the end of a touch event.
 
 **`onSwiped`** is called with the event, the X and Y delta, whether or not the event was a flick, and the current velocity of the swipe. `this.props.onSwiped(e, x, y, isFlick, velocity)`
+
+**`onTap`** is called with the onTouchEnd event when the element has been tapped. `this.props.onTap(e)`
 
 #####Configuration Props
 
@@ -77,6 +80,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   onSwipedRight: React.PropTypes.func,
   onSwipedDown: React.PropTypes.func,
   onSwipedLeft: React.PropTypes.func,
+  onTap: React.PropTypes.func,
   flickThreshold: React.PropTypes.number,
   delta: React.PropTypes.number,
   preventDefaultTouchmoveEvent: React.PropTypes.bool,

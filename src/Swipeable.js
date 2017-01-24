@@ -21,6 +21,7 @@ const Swipeable = React.createClass({
     onSwipedRight: React.PropTypes.func,
     onSwipedDown: React.PropTypes.func,
     onSwipedLeft: React.PropTypes.func,
+    onTap: React.PropTypes.func,
     flickThreshold: React.PropTypes.number,
     delta: React.PropTypes.number,
     preventDefaultTouchmoveEvent: React.PropTypes.bool,
@@ -189,6 +190,8 @@ const Swipeable = React.createClass({
       } else {
         this.props.onSwipedDown && this.props.onSwipedDown(e, pos.deltaY, isFlick);
       }
+    } else {
+      this.props.onTap && this.props.onTap(e);
     }
 
     this.swipeable = getInitialState();
@@ -215,6 +218,7 @@ const Swipeable = React.createClass({
     delete newProps.onSwipedRight;
     delete newProps.onSwipedDown;
     delete newProps.onSwipedLeft;
+    delete newProps.onTap;
     delete newProps.flickThreshold;
     delete newProps.delta;
     delete newProps.preventDefaultTouchmoveEvent;
