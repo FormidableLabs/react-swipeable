@@ -1,3 +1,8 @@
+# 3.9.0
+
+* add `onTap` functionality. Thanks [@anicke](https://github.com/anicke) . [#61](https://github.com/dogfessional/react-swipeable/pull/61) [#39](https://github.com/dogfessional/react-swipeable/issues/39)
+* added persisting synthetic event in example via `e.persist()`. This should help people see more details in the console when debugging in the [example](http://dogfessional.github.io/react-swipeable/).
+
 # 3.8.0
 
 * Allow `onMouseDown`, `onMouseUp`, and `onMouseMove` props to fire appropriately again. [#55](https://github.com/dogfessional/react-swipeable/pull/55), thanks [@lochstar](https://github.com/lochstar)
