@@ -21,6 +21,7 @@ const Swipeable = React.createClass({
     onSwipedRight: React.PropTypes.func,
     onSwipedDown: React.PropTypes.func,
     onSwipedLeft: React.PropTypes.func,
+    onTap: React.PropTypes.func,
     flickThreshold: React.PropTypes.number,
     delta: React.PropTypes.number,
     preventDefaultTouchmoveEvent: React.PropTypes.bool,
