@@ -3,6 +3,13 @@ import Swipeable from '../../lib/Swipeable';
 
 const DIRECTIONS = ['Left', 'Right', 'Up', 'Down'];
 
+const persistSyntheticEvent = (func, persist) => {
+  return (e, ...rest) => {
+    if (persist) e.persist();
+    return func(e, ...rest);
+  }
+}
+
 const initialState = {
   swiping: false,
   swiped: false,
@@ -30,6 +37,7 @@ const initialStateApplied = {
   onSwipedUpApplied: true,
   onSwipedDownApplied: true,
   onTapApplied: true,
+  persistEvent: true,
 };
 
 export default class Main extends Component {
@@ -117,6 +125,7 @@ export default class Main extends Component {
       onSwipingApplied,
       onSwipedApplied,
       onTapApplied,
+      persistEvent,
       preventDefaultTouchmoveEvent,
       stopPropagation,
       nodeName,
@@ -131,13 +140,13 @@ export default class Main extends Component {
     const boundSwipes = getBoundSwipes(this);
     let swipeableDirProps = {};
     if (onSwipingApplied) {
-      swipeableDirProps.onSwiping = (...args)=>this.onSwiping(...args);
+      swipeableDirProps.onSwiping = persistSyntheticEvent((...args)=>this.onSwiping(...args), persistEvent);
     }
     if (onSwipedApplied) {
-      swipeableDirProps.onSwiped = (...args)=>this.onSwiped(...args);
+      swipeableDirProps.onSwiped = persistSyntheticEvent((...args)=>this.onSwiped(...args), persistEvent);
     }
     if (onTapApplied) {
-      swipeableDirProps.onTap = (...args)=>this.onTap(...args);
+      swipeableDirProps.onTap = persistSyntheticEvent((...args)=>this.onTap(...args), persistEvent);
     }
 
     return (
@@ -238,6 +247,15 @@ export default class Main extends Component {
                 </td>
               </tr>
               <tr>
+                <td colSpan="2" className="text-center">Persist React Events:</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={persistEvent}
+                    onChange={(e)=>this.updateValue('persistEvent', e.target.checked)}/>
+                </td>
+              </tr>
+              <tr>
                 <td className="text-center">nodeName:</td>
                 <td colSpan="2" className="text-center">
                     <button type="button" className={`button${nodeName!=='div'?' secondary':''}`}
@@ -274,13 +292,14 @@ export default class Main extends Component {
 }
 
 function getBoundSwipes(component) {
+  const {persistEvent} = component.state;
   let boundSwipes = {};
   DIRECTIONS.forEach((dir)=>{
     if (component.state[`onSwiped${dir}Applied`]) {
-      boundSwipes[`onSwiped${dir}`] = component.onSwipedDirection.bind(component, dir);
+      boundSwipes[`onSwiped${dir}`] = persistSyntheticEvent(component.onSwipedDirection.bind(component, dir), persistEvent);
     }
     if (component.state[`onSwiping${dir}Applied`]) {
-      boundSwipes[`onSwiping${dir}`] = component.onSwipingDirection.bind(component, dir);
+      boundSwipes[`onSwiping${dir}`] = persistSyntheticEvent(component.onSwipingDirection.bind(component, dir), persistEvent);
     }
   });
   return boundSwipes;
