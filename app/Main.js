@@ -6,6 +6,7 @@ const DIRECTIONS = ['Left', 'Right', 'Up', 'Down'];
 const initialState = {
   swiping: false,
   swiped: false,
+  tap: false,
   swipingDirection: '',
   swipedDirection: '',
 };
@@ -28,6 +29,7 @@ const initialStateApplied = {
   onSwipedRightApplied: true,
   onSwipedUpApplied: true,
   onSwipedDownApplied: true,
+  onTapApplied: true,
 };
 
 export default class Main extends Component {
@@ -72,6 +74,14 @@ export default class Main extends Component {
     });
   }
 
+  onTap(...args) {
+    console.log('onTap args: ', args)
+    this.setState({
+      tap: true,
+    });
+  }
+
+
   updateValue(type, value) {
     this.setState({
       [type]: value,
@@ -101,10 +111,12 @@ export default class Main extends Component {
       swiped,
       swipingDirection,
       swipedDirection,
+      tap,
       flickThreshold,
       delta,
       onSwipingApplied,
       onSwipedApplied,
+      onTapApplied,
       preventDefaultTouchmoveEvent,
       stopPropagation,
       nodeName,
@@ -123,6 +135,9 @@ export default class Main extends Component {
     }
     if (onSwipedApplied) {
       swipeableDirProps.onSwiped = (...args)=>this.onSwiped(...args);
+    }
+    if (onTapApplied) {
+      swipeableDirProps.onTap = (...args)=>this.onTap(...args);
     }
 
     return (
@@ -163,6 +178,13 @@ export default class Main extends Component {
                     onChange={(e)=>this.updateValue('onSwipedApplied', e.target.checked)} />
                 </td>
                 <td>onSwiped</td><td>{swiped ? 'True' : 'False'}</td>
+              </tr>
+              <tr style={{color: onTapApplied ? '#000000' : '#cccccc'}}>
+                <td className="text-center">
+                  <input type="checkbox" checked={onTapApplied}
+                    onChange={(e)=>this.updateValue('onTapApplied', e.target.checked)} />
+                </td>
+                <td>onTap</td><td>{tap ? 'True' : 'False'}</td>
               </tr>
               <tr>
                 <td className="text-center"><a href="#appliedDirs">↓&nbsp;Below&nbsp;↓</a></td>
