@@ -14,25 +14,16 @@ module.exports = {
   resolve: {
     alias: {
       react: path.join(__dirname, 'node_modules', 'react'),
-    },
-    extensions: ['', '.js'],
+    }
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-  ],
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/,
-        query: {
-          cacheDirectory: true,
-          "plugins": ["transform-object-assign"],
-          presets: ['es2015', 'react']
-        },
-        include: path.resolve('..', __dirname),
+        loader: 'babel-loader',
+        resource: {
+          test: /\.js$/,
+          exclude: /node_modules/,
+        }
       }
     ]
   }

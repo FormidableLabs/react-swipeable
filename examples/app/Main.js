@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Swipeable from '../../lib/Swipeable';
+import Swipeable from '../../src/Swipeable.js';
 
 const DIRECTIONS = ['Left', 'Right', 'Up', 'Down'];
 

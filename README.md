@@ -93,13 +93,17 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 Initial set up, run `npm install`.
 
-Make changes/updates to the `src/Swipeable.js` file. Then run `npm run build:lib` to build the final output.
+Make changes/updates to the `src/Swipeable.js` file.
+
+Before creating a PR please run `npm test` to make sure the tests and lint pass. Add tests if PR adds functionality please.
 
 #### Test changes/updates with the examples
 
-cd into `examples` directory, run `npm install` within that directory, and then run `npm start`.
+cd into `examples` directory, then `npm install` within that directory, and finally `npm start`.
 
 After the server starts you can then view the examples page with your changes at `http://localhost:3000`.
+
+You can now make updates/changes to `src/Swipeable.js` and webpack will rebuild, then reload the page so you can test your changes!
 
 ## License
 
