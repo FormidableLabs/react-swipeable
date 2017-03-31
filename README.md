@@ -52,7 +52,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`onTap`** is called with the onTouchEnd event when the element has been tapped. `this.props.onTap(e)`
 
-#####Configuration Props
+#### Configuration Props
 
 **`flickThreshold`** is a number (float) which determines the max velocity of a swipe before it's considered a flick. The default value is `0.6`.
 
