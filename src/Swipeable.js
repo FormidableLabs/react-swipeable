@@ -1,4 +1,5 @@
 const React = require('react');
+const PropTypes = require('prop-types');
 
 function getInitialState() {
   return {
@@ -9,41 +10,17 @@ function getInitialState() {
   };
 }
 
-const Swipeable = React.createClass({
-  propTypes: {
-    onSwiped: React.PropTypes.func,
-    onSwiping: React.PropTypes.func,
-    onSwipingUp: React.PropTypes.func,
-    onSwipingRight: React.PropTypes.func,
-    onSwipingDown: React.PropTypes.func,
-    onSwipingLeft: React.PropTypes.func,
-    onSwipedUp: React.PropTypes.func,
-    onSwipedRight: React.PropTypes.func,
-    onSwipedDown: React.PropTypes.func,
-    onSwipedLeft: React.PropTypes.func,
-    onTap: React.PropTypes.func,
-    flickThreshold: React.PropTypes.number,
-    delta: React.PropTypes.number,
-    preventDefaultTouchmoveEvent: React.PropTypes.bool,
-    stopPropagation: React.PropTypes.bool,
-    nodeName: React.PropTypes.string,
-    trackMouse: React.PropTypes.bool,
-    children: React.PropTypes.node,
-  },
-
-  getDefaultProps() {
-    return {
-      flickThreshold: 0.6,
-      delta: 10,
-      preventDefaultTouchmoveEvent: true,
-      stopPropagation: false,
-      nodeName: 'div',
-    };
-  },
+class Swipeable extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.eventStart = this.eventStart.bind(this);
+    this.eventMove = this.eventMove.bind(this);
+    this.eventEnd = this.eventEnd.bind(this);
+  }
 
   componentWillMount() {
     this.swipeable = getInitialState();
-  },
+  }
 
   calculatePos(e) {
     let x;
@@ -73,7 +50,7 @@ const Swipeable = React.createClass({
       absY: ayd,
       velocity,
     };
-  },
+  }
 
   eventStart(e) {
     if (typeof this.props.onMouseDown === 'function') { // eslint-disable-line react/prop-types
@@ -100,7 +77,7 @@ const Swipeable = React.createClass({
       y: touches[0].clientY,
       swiping: false,
     };
-  },
+  }
 
   eventMove(e) {
     if (typeof this.props.onMouseMove === 'function') { // eslint-disable-line react/prop-types
@@ -153,7 +130,7 @@ const Swipeable = React.createClass({
     if (cancelPageSwipe && this.props.preventDefaultTouchmoveEvent) {
       e.preventDefault();
     }
-  },
+  }
 
   eventEnd(e) {
     if (typeof this.props.onMouseUp === 'function') { // eslint-disable-line react/prop-types
@@ -195,7 +172,7 @@ const Swipeable = React.createClass({
     }
 
     this.swipeable = getInitialState();
-  },
+  }
 
   render() {
     const newProps = {
@@ -232,7 +209,36 @@ const Swipeable = React.createClass({
       newProps,
       this.props.children,
     );
-  },
-});
+  }
+}
+
+Swipeable.propTypes = {
+  onSwiped: PropTypes.func,
+  onSwiping: PropTypes.func,
+  onSwipingUp: PropTypes.func,
+  onSwipingRight: PropTypes.func,
+  onSwipingDown: PropTypes.func,
+  onSwipingLeft: PropTypes.func,
+  onSwipedUp: PropTypes.func,
+  onSwipedRight: PropTypes.func,
+  onSwipedDown: PropTypes.func,
+  onSwipedLeft: PropTypes.func,
+  onTap: PropTypes.func,
+  flickThreshold: PropTypes.number,
+  delta: PropTypes.number,
+  preventDefaultTouchmoveEvent: PropTypes.bool,
+  stopPropagation: PropTypes.bool,
+  nodeName: PropTypes.string,
+  trackMouse: PropTypes.bool,
+  children: PropTypes.node,
+};
+
+Swipeable.defaultProps = {
+  flickThreshold: 0.6,
+  delta: 10,
+  preventDefaultTouchmoveEvent: true,
+  stopPropagation: false,
+  nodeName: 'div',
+};
 
 module.exports = Swipeable;
