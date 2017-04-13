@@ -1,5 +1,5 @@
-const Props = require('prop-types');
 const React = require('react');
+const PropTypes = require('prop-types');
 
 function getInitialState() {
   return {
@@ -213,24 +213,24 @@ class Swipeable extends React.Component {
 }
 
 Swipeable.propTypes = {
-  onSwiped: Props.func,
-  onSwiping: Props.func,
-  onSwipingUp: Props.func,
-  onSwipingRight: Props.func,
-  onSwipingDown: Props.func,
-  onSwipingLeft: Props.func,
-  onSwipedUp: Props.func,
-  onSwipedRight: Props.func,
-  onSwipedDown: Props.func,
-  onSwipedLeft: Props.func,
-  onTap: Props.func,
-  flickThreshold: Props.number,
-  delta: Props.number,
-  preventDefaultTouchmoveEvent: Props.bool,
-  stopPropagation: Props.bool,
-  nodeName: Props.string,
-  trackMouse: Props.bool,
-  children: Props.node,
+  onSwiped: PropTypes.func,
+  onSwiping: PropTypes.func,
+  onSwipingUp: PropTypes.func,
+  onSwipingRight: PropTypes.func,
+  onSwipingDown: PropTypes.func,
+  onSwipingLeft: PropTypes.func,
+  onSwipedUp: PropTypes.func,
+  onSwipedRight: PropTypes.func,
+  onSwipedDown: PropTypes.func,
+  onSwipedLeft: PropTypes.func,
+  onTap: PropTypes.func,
+  flickThreshold: PropTypes.number,
+  delta: PropTypes.number,
+  preventDefaultTouchmoveEvent: PropTypes.bool,
+  stopPropagation: PropTypes.bool,
+  nodeName: PropTypes.string,
+  trackMouse: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 Swipeable.defaultProps = {
