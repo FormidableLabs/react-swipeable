@@ -4,39 +4,37 @@ React swipe component - Swipe bindings for react
 [Demo](http://dogfessional.github.io/react-swipeable/)
 
 ### Install
-Using npm:
 ```console
 $ npm install --save react-swipeable
 ```
 
 ### Use
 
-react-swipeable generates a React component (defaults to `<div>`) and binds touch events to it.
-
 ```js
-var Swipeable = require('react-swipeable')
+import Swipeable from 'react-swipeable'
 
-var SampleComponent = React.createClass({
-  render: function () {
+class SwipeComponent extends React.Component {
+
+  swiping(e, deltaX, deltaY, absX, absY, velocity) {
+    console.log('Swiping...', e, deltaX, deltaY, absX, absY, velocity)
+  }
+
+  swiped(e, deltaX, deltaY, isFlick, velocity) {
+    console.log('Swiped...', e, deltaX, deltaY, isFlick, velocity)
+  }
+
+  render() {
     return (
       <Swipeable
         onSwiping={this.swiping}
-        onSwipingUp={this.swipingUp}
-        onSwipingRight={this.swipingRight}
-        onSwipingDown={this.swipingDown}
-        onSwipingLeft={this.swipingLeft}
-        onSwiped={this.swiped}
-        onSwipedUp={this.swipedUp}
-        onSwipedRight={this.swipedRight}
-        onSwipedDown={this.swipedDown}
-        onSwipedLeft={this.swipedLeft}
-        onTap={this.tapped} >
+        onSwiped={this.swiped} >
           You can swipe here!
       </Swipeable>
     )
   }
-})
+}
 ```
+react-swipeable generates a React element(`<div>` by default) under the hood and binds touch events to it which in turn are used to fire the `swiped` and `swiping` props.
 
 ## Event Props
 

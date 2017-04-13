@@ -12,7 +12,6 @@ module.exports = {
         "import"
     ],
     "rules": {
-        "react/prefer-es6-class": "off",
         "react/jsx-filename-extension": "off",
         "react/jsx-boolean-value": "off",
         "no-mixed-operators": "off",
