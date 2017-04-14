@@ -1,3 +1,4 @@
+/* global document */
 import React from 'react';
 import { mount } from 'enzyme';
 import Swipeable from '../Swipeable';
@@ -65,29 +66,36 @@ describe('Swipeable', () => {
 
   it('handles mouse events with trackMouse prop and fires correct props', () => {
     const swipeFuncs = getMockedSwipeFunctions();
-    const onMouseUp = jest.fn();
     const onMouseDown = jest.fn();
-    const onMouseMove = jest.fn();
     const onTap = jest.fn();
     const wrapper = mount((
-      <Swipeable
-        trackMouse={true}
-        onMouseUp={onMouseUp}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onTap={onTap}
-        {...swipeFuncs}
-      >
-        <span>Touch Here</span>
-      </Swipeable>
+      <div>
+        <Swipeable
+          trackMouse={true}
+          onMouseDown={onMouseDown}
+          onTap={onTap}
+          {...swipeFuncs}
+        >
+          <span>Touch Here</span>
+        </Swipeable>
+        <div id="outsideElement" />
+      </div>
     ));
+
+    // track eventListener adds to trigger leter
+    // idea from - https://github.com/airbnb/enzyme/issues/426#issuecomment-228601631
+    const map = {};
+    document.addEventListener = jest.fn((event, cb) => {
+      map[event] = cb;
+    });
 
     const touchHere = wrapper.find('span');
     touchHere.simulate('mouseDown', createMouseEventObject({ x: 100, y: 100 }));
-    touchHere.simulate('mouseMove', createMouseEventObject({ x: 125, y: 100 }));
-    touchHere.simulate('mouseMove', createMouseEventObject({ x: 150, y: 100 }));
-    touchHere.simulate('mouseMove', createMouseEventObject({ x: 175, y: 100 }));
-    touchHere.simulate('mouseUp', createMouseEventObject({ x: 200, y: 100 }));
+
+    map.mousemove(createMouseEventObject({ x: 125, y: 100 }));
+    map.mousemove(createMouseEventObject({ x: 150, y: 100 }));
+    map.mousemove(createMouseEventObject({ x: 175, y: 100 }));
+    map.mouseup(createMouseEventObject({ x: 200, y: 100 }));
 
     expect(swipeFuncs.onSwipedRight).toHaveBeenCalled();
     expect(swipeFuncs.onSwipingRight).toHaveBeenCalledTimes(3);
@@ -101,10 +109,8 @@ describe('Swipeable', () => {
     expect(swipeFuncs.onSwiped).toHaveBeenCalled();
     expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(3);
 
-    // still calls passed through mouse event props
-    expect(onMouseUp).toHaveBeenCalled();
+    // still calls passed through mouse event prop
     expect(onMouseDown).toHaveBeenCalled();
-    expect(onMouseMove).toHaveBeenCalledTimes(3);
   });
 
   it('calls onTap', () => {
@@ -121,7 +127,7 @@ describe('Swipeable', () => {
 
     const touchHere = wrapper.find('span');
     // simulate what is probably a light tap,
-    //  meaning the user "swiped" just a little, but less than the delta
+    // meaning the user "swiped" just a little, but less than the delta
     touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
     touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 103, y: 100 }));
     touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 107, y: 100 }));

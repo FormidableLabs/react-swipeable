@@ -1,4 +1,3 @@
-
 function createClientXYObject(x, y) {
   return { clientX: x, clientY: y };
 }
@@ -20,5 +19,6 @@ export function createMoveTouchEventObject({ x = 0, y = 0, includeTouches = true
 export function createMouseEventObject({ x = 0, y = 0 }) {
   return {
     ...createClientXYObject(x, y),
+    preventDefault: jest.fn(),
   };
 }
