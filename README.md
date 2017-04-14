@@ -56,7 +56,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`delta`** is the amount of px before we start firing events. Also affects how far `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, and `onSwipedLeft` need to be before they fire events. The default value is `10`.
 
-**`preventDefaultTouchmoveEvent`** is whether to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.  Sometimes you would like the target to scroll natively.  The default value is `true`.
+**`preventDefaultTouchmoveEvent`** is whether to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.  Sometimes you would like the target to scroll natively.  The default value is `true`. [Chrome 56 and later, warning with preventDefault](#chrome-56-and-later-warning-with-preventDefault)
 
 **`stopPropagation`** automatically calls stopPropagation on all 'swipe' events. The default value is `false`.
 
@@ -86,6 +86,18 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   nodeName: React.PropTypes.string
   trackMouse: React.PropTypes.bool,
 ```
+
+### Chrome 56 and later, warning with preventDefault
+When you try to call `e.preventDefault()` in Chrome 56 and later it will currently warn:
+`Unable to preventDefault inside passive event listener due to target being treated as passive.`
+
+If you'd like to prevent all scrolling/zooming within a `<Swipeable />` component you can pass a `touchAction` style property equal to `'none'`, [reference](https://developers.google.com/web/updates/2017/01/scrolling-intervention).
+
+```
+<Swipeable style={{touchAction: 'none'}} />
+```
+
+Related react issue: [facebook/react#8968](https://github.com/facebook/react/issues/8968)
 
 ## Development
 
