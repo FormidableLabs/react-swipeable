@@ -21,6 +21,7 @@ const initialStateSwipeable = {
   flickThreshold: '0.6',
   delta: '10',
   preventDefaultTouchmoveEvent: true,
+  touchAction: false,
   stopPropagation: false,
   nodeName: 'div',
   trackMouse: false,
@@ -127,6 +128,7 @@ export default class Main extends Component {
       onTapApplied,
       persistEvent,
       preventDefaultTouchmoveEvent,
+      touchAction,
       stopPropagation,
       nodeName,
       trackMouse,
@@ -136,6 +138,10 @@ export default class Main extends Component {
     const isDeltaNumber = !(isNaN(delta) || delta === '');
     const flickThresholdNum = isFlickThresholdNumber ? +flickThreshold : 0.6;
     const deltaNum = isDeltaNumber ? +delta : 10;
+
+    const swipeableStyle = touchAction
+      ? {fontSize: "0.75rem", touchAction: 'none'}
+      : {fontSize: "0.75rem"};
 
     const boundSwipes = getBoundSwipes(this);
     let swipeableDirProps = {};
@@ -162,7 +168,7 @@ export default class Main extends Component {
             nodeName={nodeName}
             trackMouse={trackMouse}
             className="callout"
-            style={{fontSize: "0.75rem"}}>
+            style={swipeableStyle}>
               <div onTouchStart={()=>this.resetState()}>
                 <h5>Swipe inside here to test...</h5>
                 <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output</p>
@@ -229,6 +235,15 @@ export default class Main extends Component {
                 </td>
               </tr>
               <tr>
+                <td colSpan="2" className="text-center">{`style={{touchAction: 'none'}}`}:</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={touchAction}
+                    onChange={(e)=>this.updateValue('touchAction', e.target.checked)}/>
+                </td>
+              </tr>
+              <tr>
                 <td colSpan="2" className="text-center">stopPropagation:</td>
                 <td>
                   <input
@@ -247,7 +262,7 @@ export default class Main extends Component {
                 </td>
               </tr>
               <tr>
-                <td colSpan="2" className="text-center">Persist React Events:</td>
+                <td colSpan="2" className="text-center">Persist React Events for logging:</td>
                 <td>
                   <input
                     type="checkbox"
