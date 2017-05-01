@@ -88,16 +88,18 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 ```
 
 ### Chrome 56 and later, warning with preventDefault
-When you try to call `e.preventDefault()` in Chrome 56 and later it will currently warn:
+When this library tries to call `e.preventDefault()` in Chrome 56+ a warning is logged:
 `Unable to preventDefault inside passive event listener due to target being treated as passive.`
 
-If you'd like to prevent all scrolling/zooming within a `<Swipeable />` component you can pass a `touchAction` style property equal to `'none'`, [reference](https://developers.google.com/web/updates/2017/01/scrolling-intervention).
+This warning is because this [change](https://developers.google.com/web/updates/2017/01/scrolling-intervention) to Chrome 56+ and the way the synthetic events are setup in reactjs.
+
+If you'd like to prevent all scrolling/zooming within a `<Swipeable />` component you can pass a `touchAction` style property equal to `'none'`, [example](https://github.com/dogfessional/react-swipeable/blob/master/examples/app/Main.js#L143). Chrome's recommendation for  [reference](https://developers.google.com/web/updates/2017/01/scrolling-intervention).
 
 ```
 <Swipeable style={{touchAction: 'none'}} />
 ```
 
-Related react issue: [facebook/react#8968](https://github.com/facebook/react/issues/8968)
+Follow reacts handling of this issue here: [facebook/react#8968](https://github.com/facebook/react/issues/8968)
 
 ## Development
 
