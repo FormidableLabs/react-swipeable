@@ -57,6 +57,9 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 **`delta`** is the amount of px before we start firing events. Also affects how far `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, and `onSwipedLeft` need to be before they fire events. The default value is `10`.
 
 **`preventDefaultTouchmoveEvent`** is whether to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.  Sometimes you would like the target to scroll natively.  The default value is `true`. [Chrome 56 and later, warning with preventDefault](#chrome-56-and-later-warning-with-preventdefault)
+ * **Notes** `e.preventDefault()` is only called when `preventDefaultTouchmoveEvent` is `true` **and** the user is swiping in a direction that has an associated directional `onSwiping` or `onSwiped` prop.
+   * Example: user is swiping right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if user was swiping left `e.preventDefault()` would **not** be called.
+   * Please experiment with [example](http://dogfessional.github.io/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
 
 **`stopPropagation`** automatically calls stopPropagation on all 'swipe' events. The default value is `false`.
 
