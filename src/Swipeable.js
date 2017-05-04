@@ -125,30 +125,30 @@ class Swipeable extends React.Component {
       onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity);
     }
 
-    let cancelPageSwipe = false;
+    let cancelablePageSwipe = false;
     if (pos.absX > pos.absY) {
       if (pos.deltaX > 0) {
         if (onSwipingLeft || onSwipedLeft) {
           onSwipingLeft && onSwipingLeft(e, pos.absX);
-          cancelPageSwipe = true;
+          cancelablePageSwipe = true;
         }
       } else if (onSwipingRight || onSwipedRight) {
         onSwipingRight && onSwipingRight(e, pos.absX);
-        cancelPageSwipe = true;
+        cancelablePageSwipe = true;
       }
     } else if (pos.deltaY > 0) {
       if (onSwipingUp || onSwipedUp) {
         onSwipingUp && onSwipingUp(e, pos.absY);
-        cancelPageSwipe = true;
+        cancelablePageSwipe = true;
       }
     } else if (onSwipingDown || onSwipedDown) {
       onSwipingDown && onSwipingDown(e, pos.absY);
-      cancelPageSwipe = true;
+      cancelablePageSwipe = true;
     }
 
     this.swipeable.swiping = true;
 
-    if (cancelPageSwipe && preventDefaultTouchmoveEvent) e.preventDefault();
+    if (cancelablePageSwipe && preventDefaultTouchmoveEvent) e.preventDefault();
   }
 
   eventEnd(e) {
