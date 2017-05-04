@@ -4,7 +4,8 @@
   "description": "Swipe bindings for react",
   "main": "lib/Swipeable.js",
   "scripts": {
-    "test": "jest && npm run lint",
+    "test": "npm run test:unit && npm run lint",
+    "test:unit": "jest",
     "lint": "eslint .",
     "build:lib": "babel src --out-dir lib --ignore __tests__ --no-comments",
     "build:publish:examples": "./scripts/build_gh_pages.sh",
