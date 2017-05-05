@@ -252,7 +252,7 @@ Swipeable.propTypes = {
 Swipeable.defaultProps = {
   flickThreshold: 0.6,
   delta: 10,
-  preventDefaultTouchmoveEvent: true,
+  preventDefaultTouchmoveEvent: false,
   stopPropagation: false,
   nodeName: 'div',
 };
