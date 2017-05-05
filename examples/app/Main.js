@@ -20,7 +20,7 @@ const initialState = {
 const initialStateSwipeable = {
   flickThreshold: '0.6',
   delta: '10',
-  preventDefaultTouchmoveEvent: true,
+  preventDefaultTouchmoveEvent: false,
   touchAction: false,
   stopPropagation: false,
   nodeName: 'div',

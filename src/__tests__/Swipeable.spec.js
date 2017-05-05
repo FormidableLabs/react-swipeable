@@ -162,6 +162,7 @@ describe('Swipeable', () => {
     const wrapper = mount((
       <Swipeable
         onSwipedDown={onSwipedDown}
+        preventDefaultTouchmoveEvent={true}
       >
         <span>Touch Here</span>
       </Swipeable>
@@ -185,7 +186,6 @@ describe('Swipeable', () => {
     const wrapper = mount((
       <Swipeable
         onSwipedUp={onSwipedUp}
-        preventDefaultTouchmoveEvent={false}
       >
         <span>Touch Here</span>
       </Swipeable>
