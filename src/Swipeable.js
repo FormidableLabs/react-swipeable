@@ -1,3 +1,4 @@
+/* global document */
 const React = require('react');
 const PropTypes = require('prop-types');
 
@@ -10,167 +11,183 @@ function getInitialState() {
   };
 }
 
+function getMovingPosition(e) {
+  // If not a touch, determine point from mouse coordinates
+  return 'changedTouches' in e
+    ? { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY }
+    : { x: e.clientX, y: e.clientY };
+}
+function getPosition(e) {
+  // If not a touch, determine point from mouse coordinates
+  return 'touches' in e
+    ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    : { x: e.clientX, y: e.clientY };
+}
+
+function calculatePos(e, state) {
+  const { x, y } = getMovingPosition(e);
+
+  const deltaX = state.x - x;
+  const deltaY = state.y - y;
+
+  const absX = Math.abs(deltaX);
+  const absY = Math.abs(deltaY);
+
+  const time = Date.now() - state.start;
+  const velocity = Math.sqrt(absX * absX + absY * absY) / time;
+
+  return { deltaX, deltaY, absX, absY, velocity };
+}
+
 class Swipeable extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.eventStart = this.eventStart.bind(this);
     this.eventMove = this.eventMove.bind(this);
     this.eventEnd = this.eventEnd.bind(this);
+    this.mouseDown = this.mouseDown.bind(this);
+    this.mouseMove = this.mouseMove.bind(this);
+    this.mouseUp = this.mouseUp.bind(this);
   }
 
   componentWillMount() {
+    // setup internal swipeable state
     this.swipeable = getInitialState();
   }
-
-  calculatePos(e) {
-    let x;
-    let y;
-    // If not a touch, determine point from mouse coordinates
-    if (e.changedTouches) {
-      x = e.changedTouches[0].clientX;
-      y = e.changedTouches[0].clientY;
-    } else {
-      x = e.clientX;
-      y = e.clientY;
+  componentWillUnmount() {
+    if (this.props.trackMouse) {
+      // just to be safe attempt removal
+      document.removeEventListener('mousemove', this.mouseMove);
+      document.removeEventListener('mouseup', this.mouseUp);
     }
+  }
 
-    const xd = this.swipeable.x - x;
-    const yd = this.swipeable.y - y;
+  mouseDown(e) {
+    if (!this.props.trackMouse || e.type !== 'mousedown') {
+      return;
+    }
+    // allow 'orig' onMouseDown's to fire also
+    // eslint-disable-next-line react/prop-types
+    if (typeof this.props.onMouseDown === 'function') this.props.onMouseDown(e);
 
-    const axd = Math.abs(xd);
-    const ayd = Math.abs(yd);
+    this.eventStart(e);
 
-    const time = Date.now() - this.swipeable.start;
-    const velocity = Math.sqrt(axd * axd + ayd * ayd) / time;
+    // setup document listeners to track mouse movement outside <Swipeable>'s area
+    document.addEventListener('mousemove', this.mouseMove);
+    document.addEventListener('mouseup', this.mouseUp);
+  }
 
-    return {
-      deltaX: xd,
-      deltaY: yd,
-      absX: axd,
-      absY: ayd,
-      velocity,
-    };
+  mouseMove(e) {
+    this.eventMove(e);
+  }
+
+  mouseUp(e) {
+    document.removeEventListener('mousemove', this.mouseMove);
+    document.removeEventListener('mouseup', this.mouseUp);
+
+    this.eventEnd(e);
   }
 
   eventStart(e) {
-    if (typeof this.props.onMouseDown === 'function') { // eslint-disable-line react/prop-types
-      this.props.onMouseDown(e); // eslint-disable-line react/prop-types
-    }
+    // if more than a single touch don't track, for now...
+    if (e.touches && e.touches.length > 1) return;
 
-    if (e.type === 'mousedown' && !this.props.trackMouse) {
-      return;
-    }
+    const { x, y } = getPosition(e);
 
-    if (e.touches && e.touches.length > 1) {
-      return;
-    }
-    // If not a touch, determine point from mouse coordinates
-    let touches = e.touches;
-    if (!touches) {
-      touches = [{ clientX: e.clientX, clientY: e.clientY }];
-    }
     if (this.props.stopPropagation) e.stopPropagation();
 
-    this.swipeable = {
-      start: Date.now(),
-      x: touches[0].clientX,
-      y: touches[0].clientY,
-      swiping: false,
-    };
+    this.swipeable = { start: Date.now(), x, y, swiping: false };
   }
 
   eventMove(e) {
-    if (typeof this.props.onMouseMove === 'function') { // eslint-disable-line react/prop-types
-      this.props.onMouseMove(e); // eslint-disable-line react/prop-types
-    }
-
-    if (e.type === 'mousemove' && !this.props.trackMouse) {
-      return;
-    }
+    const {
+      stopPropagation,
+      delta,
+      onSwiping,
+      onSwipingLeft, onSwipedLeft,
+      onSwipingRight, onSwipedRight,
+      onSwipingUp, onSwipedUp,
+      onSwipingDown, onSwipedDown,
+      preventDefaultTouchmoveEvent,
+    } = this.props;
 
     if (!this.swipeable.x || !this.swipeable.y || e.touches && e.touches.length > 1) {
       return;
     }
 
-    let cancelPageSwipe = false;
-    const pos = this.calculatePos(e);
+    const pos = calculatePos(e, this.swipeable);
 
-    if (pos.absX < this.props.delta && pos.absY < this.props.delta) {
-      return;
+    if (pos.absX < delta && pos.absY < delta) return;
+
+    if (stopPropagation) e.stopPropagation();
+
+    if (onSwiping) {
+      onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity);
     }
 
-    if (this.props.stopPropagation) e.stopPropagation();
-
-    if (this.props.onSwiping) {
-      this.props.onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity);
-    }
-
+    let cancelablePageSwipe = false;
     if (pos.absX > pos.absY) {
       if (pos.deltaX > 0) {
-        if (this.props.onSwipingLeft || this.props.onSwipedLeft) {
-          this.props.onSwipingLeft && this.props.onSwipingLeft(e, pos.absX);
-          cancelPageSwipe = true;
+        if (onSwipingLeft || onSwipedLeft) {
+          onSwipingLeft && onSwipingLeft(e, pos.absX);
+          cancelablePageSwipe = true;
         }
-      } else if (this.props.onSwipingRight || this.props.onSwipedRight) {
-        this.props.onSwipingRight && this.props.onSwipingRight(e, pos.absX);
-        cancelPageSwipe = true;
+      } else if (onSwipingRight || onSwipedRight) {
+        onSwipingRight && onSwipingRight(e, pos.absX);
+        cancelablePageSwipe = true;
       }
     } else if (pos.deltaY > 0) {
-      if (this.props.onSwipingUp || this.props.onSwipedUp) {
-        this.props.onSwipingUp && this.props.onSwipingUp(e, pos.absY);
-        cancelPageSwipe = true;
+      if (onSwipingUp || onSwipedUp) {
+        onSwipingUp && onSwipingUp(e, pos.absY);
+        cancelablePageSwipe = true;
       }
-    } else if (this.props.onSwipingDown || this.props.onSwipedDown) {
-      this.props.onSwipingDown && this.props.onSwipingDown(e, pos.absY);
-      cancelPageSwipe = true;
+    } else if (onSwipingDown || onSwipedDown) {
+      onSwipingDown && onSwipingDown(e, pos.absY);
+      cancelablePageSwipe = true;
     }
 
     this.swipeable.swiping = true;
 
-    if (cancelPageSwipe && this.props.preventDefaultTouchmoveEvent) {
-      e.preventDefault();
-    }
+    if (cancelablePageSwipe && preventDefaultTouchmoveEvent) e.preventDefault();
   }
 
   eventEnd(e) {
-    if (typeof this.props.onMouseUp === 'function') { // eslint-disable-line react/prop-types
-      this.props.onMouseUp(e); // eslint-disable-line react/prop-types
-    }
-
-    if (e.type === 'mouseup' && !this.props.trackMouse) {
-      return;
-    }
+    const {
+      stopPropagation,
+      flickThreshold,
+      onSwiped,
+      onSwipedLeft,
+      onSwipedRight,
+      onSwipedUp,
+      onSwipedDown,
+      onTap,
+    } = this.props;
 
     if (this.swipeable.swiping) {
-      const pos = this.calculatePos(e);
+      const pos = calculatePos(e, this.swipeable);
 
-      if (this.props.stopPropagation) e.stopPropagation();
+      if (stopPropagation) e.stopPropagation();
 
-      const isFlick = pos.velocity > this.props.flickThreshold;
+      const isFlick = pos.velocity > flickThreshold;
 
-      this.props.onSwiped && this.props.onSwiped(
-        e,
-        pos.deltaX,
-        pos.deltaY,
-        isFlick,
-        pos.velocity,
-      );
+      onSwiped && onSwiped(e, pos.deltaX, pos.deltaY, isFlick, pos.velocity);
 
       if (pos.absX > pos.absY) {
         if (pos.deltaX > 0) {
-          this.props.onSwipedLeft && this.props.onSwipedLeft(e, pos.deltaX, isFlick);
+          onSwipedLeft && onSwipedLeft(e, pos.deltaX, isFlick);
         } else {
-          this.props.onSwipedRight && this.props.onSwipedRight(e, pos.deltaX, isFlick);
+          onSwipedRight && onSwipedRight(e, pos.deltaX, isFlick);
         }
       } else if (pos.deltaY > 0) {
-        this.props.onSwipedUp && this.props.onSwipedUp(e, pos.deltaY, isFlick);
+        onSwipedUp && onSwipedUp(e, pos.deltaY, isFlick);
       } else {
-        this.props.onSwipedDown && this.props.onSwipedDown(e, pos.deltaY, isFlick);
+        onSwipedDown && onSwipedDown(e, pos.deltaY, isFlick);
       }
     } else {
-      this.props.onTap && this.props.onTap(e);
+      onTap && onTap(e);
     }
 
+    // finished swipe tracking, reset swipeable state
     this.swipeable = getInitialState();
   }
 
@@ -180,11 +197,10 @@ class Swipeable extends React.Component {
       onTouchStart: this.eventStart,
       onTouchMove: this.eventMove,
       onTouchEnd: this.eventEnd,
-      onMouseDown: this.eventStart,
-      onMouseMove: this.eventMove,
-      onMouseUp: this.eventEnd,
+      onMouseDown: this.mouseDown,
     };
 
+    // clean up swipeable's props to avoid react warning
     delete newProps.onSwiped;
     delete newProps.onSwiping;
     delete newProps.onSwipingUp;

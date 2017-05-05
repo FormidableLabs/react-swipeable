@@ -5,7 +5,7 @@ const DIRECTIONS = ['Left', 'Right', 'Up', 'Down'];
 
 const persistSyntheticEvent = (func, persist) => {
   return (e, ...rest) => {
-    if (persist) e.persist();
+    if (persist && e.persist) e.persist();
     return func(e, ...rest);
   }
 }

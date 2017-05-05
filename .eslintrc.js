@@ -3,7 +3,10 @@ module.exports = {
         "jest": false,
         "describe": false,
         "it": false,
-        "expect": false
+        "expect": false,
+        "beforeAll": false,
+        "beforeEach": false,
+        "afterAll": false
     },
     "extends": "airbnb",
     "plugins": [
