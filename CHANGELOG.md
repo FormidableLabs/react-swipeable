@@ -3,8 +3,9 @@
 * **Major Change** `preventDefaultTouchmoveEvent` defaults to `false` now [#69](https://github.com/dogfessional/react-swipeable/issue/69)
   * This change is in part due to a [Chrome56+ change](https://github.com/dogfessional/react-swipeable#chrome-56-and-later-warning-with-preventdefault)
 * **Major Change** drop support for React 12 & 13, `peerDependencies` updated [#64](https://github.com/dogfessional/react-swipeable/pull/64)
-* **Major Change** `trackMouse` now 'tracks' the swipe outside of the swipeable component, thanks for example [@TanaseHagi](https://github.com/TanaseHagi) [#67](https://github.com/dogfessional/react-swipeable/pull/67)
-* `prop-types` added as `dependencies` [#64](https://github.com/dogfessional/react-swipeable/pull/64)
+  * `prop-types` added to `dependencies` [#64](https://github.com/dogfessional/react-swipeable/pull/64)
+* **Major Change** `trackMouse` now 'tracks' the swipe outside of the swipeable component, [#67](https://github.com/dogfessional/react-swipeable/pull/67).
+  * Thanks for example [@TanaseHagi](https://github.com/TanaseHagi)
 * react 16 added to `peerDependencies`
 
 # 3.9.0
