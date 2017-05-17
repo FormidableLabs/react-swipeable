@@ -36,7 +36,9 @@ class SwipeComponent extends React.Component {
 ```
 react-swipeable generates a React element(`<div>` by default) under the hood and binds touch events to it which in turn are used to fire the `swiped` and `swiping` props.
 
-## Event Props
+## Props / Config Options
+
+### Event Props
 
 **`onSwiping`**, **`onSwipingUp`**, **`onSwipingRight`**, **`onSwipingDown`**, **`onSwipingLeft`**, are called with the event
 as well as the absolute delta of where the swipe started and where it's currently at. These constantly fire throughout touch events.
@@ -50,7 +52,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`onTap`** is called with the onTouchEnd event when the element has been tapped. `this.props.onTap(e)`
 
-#### Configuration Props
+### Configuration Props
 
 **`flickThreshold`** is a number (float) which determines the max velocity of a swipe before it's considered a flick. The default value is `0.6`.
 
@@ -68,10 +70,10 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 **`trackMouse`** will allow mouse 'swipes' to be tracked(click, hold, move, let go). See [#51](https://github.com/dogfessional/react-swipeable/issues/51) for more details. The default value is `false`.
 
 **None of the props are required.**
-### PropTypes
+### PropType Definitions
 
+#### Event Props:
 ```
-  Event Props:
   onSwiped: PropTypes.func,
   onSwiping: PropTypes.func,
   onSwipingUp: PropTypes.func,
@@ -83,8 +85,9 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   onSwipedDown: PropTypes.func,
   onSwipedLeft: PropTypes.func,
   onTap: PropTypes.func,
-
-  Config Props:
+```
+#### Config Props:
+```
   flickThreshold: PropTypes.number, // default: 0.6
   delta: PropTypes.number, // default: 10
   preventDefaultTouchmoveEvent: PropTypes.bool, // default: false
