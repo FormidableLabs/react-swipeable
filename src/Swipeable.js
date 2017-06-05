@@ -117,7 +117,7 @@ class Swipeable extends React.Component {
 
     const pos = calculatePos(e, this.swipeable);
 
-    if (pos.absX < delta && pos.absY < delta) return;
+    if (pos.absX < delta && pos.absY < delta && !this.swipeable.swiping) return;
 
     if (stopPropagation) e.stopPropagation();
 

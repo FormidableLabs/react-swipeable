@@ -202,4 +202,24 @@ describe('Swipeable', () => {
 
     expect(preventDefault).not.toHaveBeenCalled();
   });
+
+  it('does not check delta when swiping in progress', () => {
+    const onSwiping = jest.fn();
+    const wrapper = mount((
+      <Swipeable
+        onSwiping={onSwiping}
+        delta={40}
+      >
+        <span>Touch Here</span>
+      </Swipeable>
+    ));
+
+    const touchHere = wrapper.find('span');
+    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
+    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 145, y: 100 }));
+    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 80, y: 100 }));
+    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 80, y: 100 }));
+
+    expect(onSwiping).toHaveBeenCalledTimes(2);
+  });
 });
