@@ -1,3 +1,6 @@
+# 4.0.1
+* fixed bug where delta was causing a swipe to not be tracked correctly, #74 , thanks @mctep 
+
 # 4.0.0
 
 * **Major Change** `preventDefaultTouchmoveEvent` defaults to `false` now [#69](https://github.com/dogfessional/react-swipeable/issue/69)
