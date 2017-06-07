@@ -205,9 +205,13 @@ describe('Swipeable', () => {
 
   it('does not check delta when swiping in progress', () => {
     const onSwiping = jest.fn();
+    const onSwipedRight = jest.fn();
+    const onSwipedLeft = jest.fn();
     const wrapper = mount((
       <Swipeable
         onSwiping={onSwiping}
+        onSwipedRight={onSwipedRight}
+        onSwipedLeft={onSwipedLeft}
         delta={40}
       >
         <span>Touch Here</span>
@@ -221,5 +225,7 @@ describe('Swipeable', () => {
     touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 80, y: 100 }));
 
     expect(onSwiping).toHaveBeenCalledTimes(2);
+    expect(onSwipedLeft).toHaveBeenCalledTimes(1);
+    expect(onSwipedRight).not.toHaveBeenCalled();
   });
 });

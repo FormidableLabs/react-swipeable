@@ -117,6 +117,7 @@ class Swipeable extends React.Component {
 
     const pos = calculatePos(e, this.swipeable);
 
+    // if swipe is under delta and we have not already started to track a swipe: return
     if (pos.absX < delta && pos.absY < delta && !this.swipeable.swiping) return;
 
     if (stopPropagation) e.stopPropagation();
