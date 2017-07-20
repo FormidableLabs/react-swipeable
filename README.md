@@ -69,6 +69,8 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`trackMouse`** will allow mouse 'swipes' to be tracked(click, hold, move, let go). See [#51](https://github.com/dogfessional/react-swipeable/issues/51) for more details. The default value is `false`.
 
+**`innerRef`** will allow access to the Swipeable's inner dom node element react ref. See [#81](https://github.com/dogfessional/react-swipeable/issues/81) for more details. Example usage `<Swipeable innerRef={(el) => this.swipeableEl = el} >`. Then you'll have access to the dom element that Swipeable uses internally.
+
 **None of the props are required.**
 ### PropType Definitions
 
@@ -94,6 +96,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   stopPropagation: PropTypes.bool, // default: false
   nodeName: PropTypes.string // default: div
   trackMouse: PropTypes.bool, // default: false
+  innerRef: PropTypes.func,
 ```
 
 ### Chrome 56 and later, warning with preventDefault

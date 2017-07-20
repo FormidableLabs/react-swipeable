@@ -228,4 +228,15 @@ describe('Swipeable', () => {
     expect(onSwipedLeft).toHaveBeenCalledTimes(1);
     expect(onSwipedRight).not.toHaveBeenCalled();
   });
+
+  it('should pass ref to the component via innerRef prop', () => {
+    const WrapperComp = class extends React.Component {
+      render() {
+        return <Swipeable innerRef={el => this.testRef = el} /> // eslint-disable-line
+      }
+    };
+    const wrapper = mount((<WrapperComp />));
+    const swipeableDiv = wrapper.find('div').getNode();
+    expect(wrapper.node.testRef).toBe(swipeableDiv);
+  });
 });
