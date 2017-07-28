@@ -1,5 +1,9 @@
+# 4.1.0
+* add `disabled` prop. [#83](https://github.com/dogfessional/react-swipeable/pull/83)
+* add `innerRef` prop that allows user to access to `<Swipeable>`'s inner dom node react ref. [#82](https://github.com/dogfessional/react-swipeable/pull/82)
+
 # 4.0.1
-* fixed bug where delta was causing a swipe to not be tracked correctly, #74 , thanks @mctep 
+* fixed bug where delta was causing a swipe to not be tracked correctly, #74 , thanks @mctep
 
 # 4.0.0
 
