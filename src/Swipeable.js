@@ -48,33 +48,51 @@ class Swipeable extends React.Component {
     this.mouseDown = this.mouseDown.bind(this);
     this.mouseMove = this.mouseMove.bind(this);
     this.mouseUp = this.mouseUp.bind(this);
+    this.cleanupMouseListeners = this.cleanupMouseListeners.bind(this);
+    this.setupMouseListeners = this.setupMouseListeners.bind(this);
   }
 
   componentWillMount() {
     // setup internal swipeable state
     this.swipeable = getInitialState();
   }
-  componentWillUnmount() {
-    if (this.props.trackMouse) {
-      // just to be safe attempt removal
-      document.removeEventListener('mousemove', this.mouseMove);
-      document.removeEventListener('mouseup', this.mouseUp);
+
+  componentDidUpdate(prevProps) {
+    // swipeable toggled either on/off, so stop tracking swipes and clean up
+    if (prevProps.disabled !== this.props.disabled) {
+      this.cleanupMouseListeners();
+      // reset internal swipeable state
+      this.swipeable = getInitialState();
     }
+  }
+
+  componentWillUnmount() {
+    this.cleanupMouseListeners();
+  }
+
+  setupMouseListeners() {
+    document.addEventListener('mousemove', this.mouseMove);
+    document.addEventListener('mouseup', this.mouseUp);
+  }
+
+  cleanupMouseListeners() {
+    // safe to call, if no match is found has no effect
+    document.removeEventListener('mousemove', this.mouseMove);
+    document.removeEventListener('mouseup', this.mouseUp);
   }
 
   mouseDown(e) {
     if (!this.props.trackMouse || e.type !== 'mousedown') {
       return;
     }
-    // allow 'orig' onMouseDown's to fire also
+    // allow 'orig' props.onMouseDown to fire also
     // eslint-disable-next-line react/prop-types
     if (typeof this.props.onMouseDown === 'function') this.props.onMouseDown(e);
 
-    this.eventStart(e);
-
     // setup document listeners to track mouse movement outside <Swipeable>'s area
-    document.addEventListener('mousemove', this.mouseMove);
-    document.addEventListener('mouseup', this.mouseUp);
+    this.setupMouseListeners();
+
+    this.eventStart(e);
   }
 
   mouseMove(e) {
@@ -82,9 +100,7 @@ class Swipeable extends React.Component {
   }
 
   mouseUp(e) {
-    document.removeEventListener('mousemove', this.mouseMove);
-    document.removeEventListener('mouseup', this.mouseUp);
-
+    this.cleanupMouseListeners();
     this.eventEnd(e);
   }
 
@@ -193,15 +209,16 @@ class Swipeable extends React.Component {
   }
 
   render() {
-    const newProps = {
-      ...this.props,
-      onTouchStart: this.eventStart,
-      onTouchMove: this.eventMove,
-      onTouchEnd: this.eventEnd,
-      onMouseDown: this.mouseDown,
-    };
-    if (this.props.innerRef) {
-      newProps.ref = this.props.innerRef;
+    const { disabled, innerRef } = this.props;
+    const newProps = { ...this.props };
+    if (!disabled) {
+      newProps.onTouchStart = this.eventStart;
+      newProps.onTouchMove = this.eventMove;
+      newProps.onTouchEnd = this.eventEnd;
+      newProps.onMouseDown = this.mouseDown;
+    }
+    if (innerRef) {
+      newProps.ref = innerRef;
     }
 
     // clean up swipeable's props to avoid react warning
@@ -223,6 +240,7 @@ class Swipeable extends React.Component {
     delete newProps.nodeName;
     delete newProps.children;
     delete newProps.trackMouse;
+    delete newProps.disabled;
     delete newProps.innerRef;
 
     return React.createElement(
@@ -251,6 +269,7 @@ Swipeable.propTypes = {
   stopPropagation: PropTypes.bool,
   nodeName: PropTypes.string,
   trackMouse: PropTypes.bool,
+  disabled: PropTypes.bool,
   innerRef: PropTypes.func,
   children: PropTypes.node,
 };
@@ -261,6 +280,7 @@ Swipeable.defaultProps = {
   preventDefaultTouchmoveEvent: false,
   stopPropagation: false,
   nodeName: 'div',
+  disabled: false,
 };
 
 module.exports = Swipeable;

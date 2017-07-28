@@ -23,9 +23,11 @@ function getMockedSwipeFunctions() {
 
 describe('Swipeable', () => {
   let origEventListener;
+  let origRemoveEventListener;
   let eventListenerMap;
   beforeAll(() => {
     origEventListener = document.eventListener;
+    origRemoveEventListener = document.removeEventListener;
   });
   beforeEach(() => {
     // track eventListener adds to trigger later
@@ -34,9 +36,13 @@ describe('Swipeable', () => {
     document.addEventListener = jest.fn((event, cb) => {
       eventListenerMap[event] = cb;
     });
+    document.removeEventListener = jest.fn((event, cb) => {
+      if (eventListenerMap[event] === cb) delete eventListenerMap[event];
+    });
   });
   afterAll(() => {
     document.eventListener = origEventListener;
+    document.removeEventListener = origRemoveEventListener;
   });
 
   it('renders children', () => {
@@ -201,6 +207,76 @@ describe('Swipeable', () => {
     expect(onSwipedUp).toHaveBeenCalled();
 
     expect(preventDefault).not.toHaveBeenCalled();
+  });
+
+  it('disables swipeable with disabled prop using touch swipe', () => {
+    const onSwiping = jest.fn();
+    const onSwipedRight = jest.fn();
+    const onSwipedLeft = jest.fn();
+    const wrapper = mount((
+      <Swipeable
+        onSwiping={onSwiping}
+        onSwipedRight={onSwipedRight}
+        onSwipedLeft={onSwipedLeft}
+      >
+        <span>Touch Here</span>
+      </Swipeable>
+    ));
+
+    const touchHere = wrapper.find('span');
+    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
+    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 125, y: 100 }));
+
+    // DISABLE swipeable "mid swipe action"
+    wrapper.setProps({ disabled: true });
+
+    // no longer tracking a 'swipe'
+    const swipeableInstance = wrapper.instance();
+    // check internal saved state
+    expect(swipeableInstance.swipeable.swiping).toBe(false);
+
+    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 150, y: 100 }));
+    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 175, y: 100 }));
+
+    expect(onSwiping).toHaveBeenCalledTimes(1);
+    expect(onSwipedLeft).not.toHaveBeenCalled();
+    expect(onSwipedRight).not.toHaveBeenCalled();
+  });
+
+  it('disables swipeable with disabled prop using "mouse swipe"', () => {
+    const onSwiping = jest.fn();
+    const onSwipedRight = jest.fn();
+    const onSwipedLeft = jest.fn();
+    const wrapper = mount((
+      <Swipeable
+        onSwiping={onSwiping}
+        onSwipedRight={onSwipedRight}
+        onSwipedLeft={onSwipedLeft}
+        trackMouse={true}
+      >
+        <span>Touch Here</span>
+      </Swipeable>
+    ));
+
+    const touchHere = wrapper.find('span');
+    touchHere.simulate('mouseDown', createMouseEventObject({ x: 100, y: 100 }));
+
+    eventListenerMap.mousemove(createMouseEventObject({ x: 125, y: 100 }));
+
+    // DISABLE swipeable "mid swipe action"
+    wrapper.setProps({ disabled: true });
+
+    // no longer tracking a 'swipe'
+    const swipeableInstance = wrapper.instance();
+    // check internal saved state
+    expect(swipeableInstance.swipeable.swiping).toBe(false);
+
+    expect(eventListenerMap.mousemove).toBe(undefined);
+    expect(eventListenerMap.mouseup).toBe(undefined);
+
+    expect(onSwiping).toHaveBeenCalledTimes(1);
+    expect(onSwipedLeft).not.toHaveBeenCalled();
+    expect(onSwipedRight).not.toHaveBeenCalled();
   });
 
   it('does not check delta when swiping in progress', () => {

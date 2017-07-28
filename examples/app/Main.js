@@ -25,6 +25,7 @@ const initialStateSwipeable = {
   stopPropagation: false,
   nodeName: 'div',
   trackMouse: false,
+  disabled: false,
 };
 const initialStateApplied = {
   onSwipingApplied: true,
@@ -101,12 +102,12 @@ export default class Main extends Component {
     return (
       <tr key={`appliedDirRow${dir}`}>
         <td className="text-center">
-          <input type="checkbox" checked={this.state[`onSwiping${dir}Applied`]}
+          <input type="checkbox" style={{margin: "0"}} checked={this.state[`onSwiping${dir}Applied`]}
             onChange={(e)=>this.updateValue(`onSwiping${dir}Applied`, e.target.checked)} />
         </td>
         <td style={{color: this.state[`onSwiping${dir}Applied`] ? '#000000' : '#cccccc', borderRight: "1px solid #cccccc"}}>{dir}</td>
         <td className="text-center">
-          <input type="checkbox" checked={this.state[`onSwiped${dir}Applied`]}
+          <input type="checkbox" style={{margin: "0"}} checked={this.state[`onSwiped${dir}Applied`]}
             onChange={(e)=>this.updateValue(`onSwiped${dir}Applied`, e.target.checked)} />
         </td>
         <td style={{color: this.state[`onSwiped${dir}Applied`] ? '#000000' : '#cccccc'}}>{dir}</td>
@@ -132,6 +133,7 @@ export default class Main extends Component {
       stopPropagation,
       nodeName,
       trackMouse,
+      disabled,
     } = this.state;
 
     const isFlickThresholdNumber = !(isNaN(flickThreshold) || flickThreshold === '');
@@ -167,6 +169,7 @@ export default class Main extends Component {
             stopPropagation={stopPropagation}
             nodeName={nodeName}
             trackMouse={trackMouse}
+            disabled={disabled}
             className="callout"
             style={swipeableStyle}>
               <div onTouchStart={()=>this.resetState()}>
@@ -182,21 +185,21 @@ export default class Main extends Component {
             <tbody>
               <tr style={{color: onSwipingApplied ? '#000000' : '#cccccc'}}>
                 <td className="text-center">
-                  <input type="checkbox" checked={onSwipingApplied}
+                  <input type="checkbox" checked={onSwipingApplied} style={{margin: "0"}}
                     onChange={(e)=>this.updateValue('onSwipingApplied', e.target.checked)} />
                 </td>
                 <td>onSwiping</td><td>{swiping ? 'True' : 'False'}</td>
               </tr>
               <tr style={{color: onSwipedApplied ? '#000000' : '#cccccc'}}>
                 <td className="text-center">
-                  <input type="checkbox" checked={onSwipedApplied}
+                  <input type="checkbox" checked={onSwipedApplied} style={{margin: "0"}}
                     onChange={(e)=>this.updateValue('onSwipedApplied', e.target.checked)} />
                 </td>
                 <td>onSwiped</td><td>{swiped ? 'True' : 'False'}</td>
               </tr>
               <tr style={{color: onTapApplied ? '#000000' : '#cccccc'}}>
                 <td className="text-center">
-                  <input type="checkbox" checked={onTapApplied}
+                  <input type="checkbox" checked={onTapApplied} style={{margin: "0"}}
                     onChange={(e)=>this.updateValue('onTapApplied', e.target.checked)} />
                 </td>
                 <td>onTap</td><td>{tap ? 'True' : 'False'}</td>
@@ -227,8 +230,8 @@ export default class Main extends Component {
               </tr>
               <tr>
                 <td colSpan="2" className="text-center">preventDefaultTouchmoveEvent:</td>
-                <td>
-                  <input
+                <td style={{textAlign: "center"}}>
+                  <input style={{margin: "0"}}
                     type="checkbox"
                     checked={preventDefaultTouchmoveEvent}
                     onChange={(e)=>this.updateValue('preventDefaultTouchmoveEvent', e.target.checked)}/>
@@ -236,8 +239,8 @@ export default class Main extends Component {
               </tr>
               <tr>
                 <td colSpan="2" className="text-center">{`style={{touchAction: 'none'}}`}:</td>
-                <td>
-                  <input
+                <td style={{textAlign: "center"}}>
+                  <input style={{margin: "0"}}
                     type="checkbox"
                     checked={touchAction}
                     onChange={(e)=>this.updateValue('touchAction', e.target.checked)}/>
@@ -245,8 +248,8 @@ export default class Main extends Component {
               </tr>
               <tr>
                 <td colSpan="2" className="text-center">stopPropagation:</td>
-                <td>
-                  <input
+                <td style={{textAlign: "center"}}>
+                  <input style={{margin: "0"}}
                     type="checkbox"
                     checked={stopPropagation}
                     onChange={(e)=>this.updateValue('stopPropagation', e.target.checked)}/>
@@ -254,20 +257,20 @@ export default class Main extends Component {
               </tr>
               <tr>
                 <td colSpan="2" className="text-center">trackMouse:</td>
-                <td>
-                  <input
+                <td style={{textAlign: "center"}}>
+                  <input style={{margin: "0"}}
                     type="checkbox"
                     checked={trackMouse}
                     onChange={(e)=>this.updateValue('trackMouse', e.target.checked)}/>
                 </td>
               </tr>
               <tr>
-                <td colSpan="2" className="text-center">Persist React Events for logging:</td>
-                <td>
-                  <input
+                <td colSpan="2" className="text-center">disabled:</td>
+                <td style={{textAlign: "center"}}>
+                  <input style={{margin: "0"}}
                     type="checkbox"
-                    checked={persistEvent}
-                    onChange={(e)=>this.updateValue('persistEvent', e.target.checked)}/>
+                    checked={disabled}
+                    onChange={(e)=>this.updateValue('disabled', e.target.checked)}/>
                 </td>
               </tr>
               <tr>
@@ -293,6 +296,19 @@ export default class Main extends Component {
             </thead>
             <tbody>
               {DIRECTIONS.map(this._renderAppliedDirRow.bind(this))}
+            </tbody>
+          </table>
+          <table style={{width: "100%"}}>
+            <tbody>
+              <tr>
+                <td colSpan="2" className="text-center">Persist React Events for logging:</td>
+                <td>
+                  <input style={{margin: "0"}}
+                    type="checkbox"
+                    checked={persistEvent}
+                    onChange={(e)=>this.updateValue('persistEvent', e.target.checked)}/>
+                </td>
+              </tr>
             </tbody>
           </table>
           <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset All Options</button>
