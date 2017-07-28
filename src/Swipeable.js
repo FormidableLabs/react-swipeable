@@ -209,13 +209,16 @@ class Swipeable extends React.Component {
   }
 
   render() {
-    const { disabled } = this.props;
+    const { disabled, innerRef } = this.props;
     const newProps = { ...this.props };
     if (!disabled) {
       newProps.onTouchStart = this.eventStart;
       newProps.onTouchMove = this.eventMove;
       newProps.onTouchEnd = this.eventEnd;
       newProps.onMouseDown = this.mouseDown;
+    }
+    if (innerRef) {
+      newProps.ref = innerRef;
     }
 
     // clean up swipeable's props to avoid react warning
@@ -238,6 +241,7 @@ class Swipeable extends React.Component {
     delete newProps.children;
     delete newProps.trackMouse;
     delete newProps.disabled;
+    delete newProps.innerRef;
 
     return React.createElement(
       this.props.nodeName,
@@ -266,6 +270,7 @@ Swipeable.propTypes = {
   nodeName: PropTypes.string,
   trackMouse: PropTypes.bool,
   disabled: PropTypes.bool,
+  innerRef: PropTypes.func,
   children: PropTypes.node,
 };
 

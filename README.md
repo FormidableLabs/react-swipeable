@@ -81,6 +81,8 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`disabled`** will disable `<Swipeable>`: swipes will not be tracked and this stops current active swipes from triggering anymore prop callbacks. The default value is `false`.
 
+**`innerRef`** will allow access to the Swipeable's inner dom node element react ref. See [#81](https://github.com/dogfessional/react-swipeable/issues/81) for more details. Example usage `<Swipeable innerRef={(el) => this.swipeableEl = el} >`. Then you'll have access to the dom element that Swipeable uses internally.
+
 **None of the props are required.**
 ### PropType Definitions
 
@@ -107,6 +109,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   nodeName: PropTypes.string // default: div
   trackMouse: PropTypes.bool, // default: false
   disabled: PropTypes.bool, // default: false
+  innerRef: PropTypes.func,
 ```
 
 ### Chrome 56 and later, warning with preventDefault
