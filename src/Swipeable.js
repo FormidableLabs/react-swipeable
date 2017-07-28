@@ -200,6 +200,9 @@ class Swipeable extends React.Component {
       onTouchEnd: this.eventEnd,
       onMouseDown: this.mouseDown,
     };
+    if (this.props.innerRef) {
+      newProps.ref = this.props.innerRef;
+    }
 
     // clean up swipeable's props to avoid react warning
     delete newProps.onSwiped;
@@ -220,6 +223,7 @@ class Swipeable extends React.Component {
     delete newProps.nodeName;
     delete newProps.children;
     delete newProps.trackMouse;
+    delete newProps.innerRef;
 
     return React.createElement(
       this.props.nodeName,
@@ -247,6 +251,7 @@ Swipeable.propTypes = {
   stopPropagation: PropTypes.bool,
   nodeName: PropTypes.string,
   trackMouse: PropTypes.bool,
+  innerRef: PropTypes.func,
   children: PropTypes.node,
 };
 
