@@ -16,25 +16,35 @@ import Swipeable from 'react-swipeable'
 class SwipeComponent extends React.Component {
 
   swiping(e, deltaX, deltaY, absX, absY, velocity) {
-    console.log('Swiping...', e, deltaX, deltaY, absX, absY, velocity)
+    console.log("You're Swiping...", e, deltaX, deltaY, absX, absY, velocity)
+  }
+
+  swipingLeft(e, absX) {
+    console.log("You're Swiping to the Left...", e, absX)
   }
 
   swiped(e, deltaX, deltaY, isFlick, velocity) {
-    console.log('Swiped...', e, deltaX, deltaY, isFlick, velocity)
+    console.log("You Swiped...", e, deltaX, deltaY, isFlick, velocity)
+  }
+
+  swipedUp(e, deltaY, isFlick) {
+    console.log("You Swiped Up...", e, deltaY, isFlick)
   }
 
   render() {
     return (
       <Swipeable
         onSwiping={this.swiping}
-        onSwiped={this.swiped} >
+        onSwipingLeft={this.swipingLeft}
+        onSwiped={this.swiped}
+        onSwipedUp={this.swipedRight} >
           You can swipe here!
       </Swipeable>
     )
   }
 }
 ```
-react-swipeable generates a React element(`<div>` by default) under the hood and binds touch events to it which in turn are used to fire the `swiped` and `swiping` props.
+react-swipeable(`<Swipeable>`) generates a new React element(`<div>` by default) under the hood and binds touch events to it that are used to fire the `swiping` and `swiped` props.
 
 ## Props / Config Options
 
@@ -50,7 +60,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`onSwiped`** is called with the event, the X and Y delta, whether or not the event was a flick, and the current velocity of the swipe. `this.props.onSwiped(e, x, y, isFlick, velocity)`
 
-**`onTap`** is called with the onTouchEnd event when the element has been tapped. `this.props.onTap(e)`
+**`onTap`** is triggered when a tap happens, specifically when a swipe/touch moves less than the `delta`. Is called with the onTouchEnd event `this.props.onTap(e)`
 
 ### Configuration Props
 
@@ -67,7 +77,9 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`nodeName`** is a string which determines the html element/node that this react component binds its touch events to then returns. The default value is `'div'`.
 
-**`trackMouse`** will allow mouse 'swipes' to be tracked(click, hold, move, let go). See [#51](https://github.com/dogfessional/react-swipeable/issues/51) for more details. The default value is `false`.
+**`trackMouse`** will allow mouse 'swipes' to ***additonally*** be tracked(click, hold, move, let go). See [#51](https://github.com/dogfessional/react-swipeable/issues/51) for more details. The default value is `false`.
+
+**`disabled`** will disable `<Swipeable>`: swipes will not be tracked and this stops current active swipes from triggering anymore prop callbacks. The default value is `false`.
 
 **None of the props are required.**
 ### PropType Definitions
@@ -94,6 +106,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   stopPropagation: PropTypes.bool, // default: false
   nodeName: PropTypes.string // default: div
   trackMouse: PropTypes.bool, // default: false
+  disabled: PropTypes.bool, // default: false
 ```
 
 ### Chrome 56 and later, warning with preventDefault
