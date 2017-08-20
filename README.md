@@ -136,7 +136,7 @@ Before creating a PR please run `npm test` to make sure the tests and lint pass.
 
 #### Test changes/updates with the examples
 
-cd into `examples` directory, then `npm install` within that directory, and finally `npm start`.
+run `npm run start:examples`.
 
 After the server starts you can then view the examples page with your changes at `http://localhost:3000`.
 

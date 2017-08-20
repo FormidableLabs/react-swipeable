@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Swipeable from '../../src/Swipeable.js';
+import { RowSimpleCheckbox } from './TableComponents.js';
 
 const DIRECTIONS = ['Left', 'Right', 'Up', 'Down'];
 
@@ -46,6 +47,7 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = Object.assign({}, initialState, initialStateSwipeable, initialStateApplied);
+    this.updateValue = this.updateValue.bind(this);
   }
 
   resetState(resetAll) {
@@ -158,9 +160,9 @@ export default class Main extends Component {
     }
 
     return (
-      <div className="row">
-        <div className="medium-6 column">
-          <h1>react-swipeable&nbsp;<a href="https://github.com/dogfessional/react-swipeable" style={{fontSize: "0.75rem"}}>View on GitHub</a></h1>
+      <div className="row" id="FeatureTestConsole">
+        <div className="small-12 column">
+          <h5><strong>Test react-swipeable features.</strong></h5>
           <Swipeable {...boundSwipes}
             {...swipeableDirProps}
             flickThreshold={flickThresholdNum}
@@ -174,7 +176,7 @@ export default class Main extends Component {
             style={swipeableStyle}>
               <div onTouchStart={()=>this.resetState()}>
                 <h5>Swipe inside here to test...</h5>
-                <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output</p>
+                <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output(open dev tools)</p>
                 <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
               </div>
           </Swipeable>
@@ -228,51 +230,32 @@ export default class Main extends Component {
                     onChange={(e)=>this.updateValue('flickThreshold', getVal(e))} value={flickThreshold}/>
                 </td>
               </tr>
-              <tr>
-                <td colSpan="2" className="text-center">preventDefaultTouchmoveEvent:</td>
-                <td style={{textAlign: "center"}}>
-                  <input style={{margin: "0"}}
-                    type="checkbox"
-                    checked={preventDefaultTouchmoveEvent}
-                    onChange={(e)=>this.updateValue('preventDefaultTouchmoveEvent', e.target.checked)}/>
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="2" className="text-center">{`style={{touchAction: 'none'}}`}:</td>
-                <td style={{textAlign: "center"}}>
-                  <input style={{margin: "0"}}
-                    type="checkbox"
-                    checked={touchAction}
-                    onChange={(e)=>this.updateValue('touchAction', e.target.checked)}/>
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="2" className="text-center">stopPropagation:</td>
-                <td style={{textAlign: "center"}}>
-                  <input style={{margin: "0"}}
-                    type="checkbox"
-                    checked={stopPropagation}
-                    onChange={(e)=>this.updateValue('stopPropagation', e.target.checked)}/>
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="2" className="text-center">trackMouse:</td>
-                <td style={{textAlign: "center"}}>
-                  <input style={{margin: "0"}}
-                    type="checkbox"
-                    checked={trackMouse}
-                    onChange={(e)=>this.updateValue('trackMouse', e.target.checked)}/>
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="2" className="text-center">disabled:</td>
-                <td style={{textAlign: "center"}}>
-                  <input style={{margin: "0"}}
-                    type="checkbox"
-                    checked={disabled}
-                    onChange={(e)=>this.updateValue('disabled', e.target.checked)}/>
-                </td>
-              </tr>
+              <RowSimpleCheckbox
+                value={preventDefaultTouchmoveEvent}
+                name="preventDefaultTouchmoveEvent"
+                onChange={this.updateValue}
+              />
+              <RowSimpleCheckbox
+                value={touchAction}
+                name="touchAction"
+                displayText="style={{ touchAction: 'none' }}"
+                onChange={this.updateValue}
+              />
+              <RowSimpleCheckbox
+                value={stopPropagation}
+                name="stopPropagation"
+                onChange={this.updateValue}
+              />
+              <RowSimpleCheckbox
+                value={trackMouse}
+                name="trackMouse"
+                onChange={this.updateValue}
+              />
+              <RowSimpleCheckbox
+                value={disabled}
+                name="disabled"
+                onChange={this.updateValue}
+              />
               <tr>
                 <td className="text-center">nodeName:</td>
                 <td colSpan="2" className="text-center">
@@ -312,10 +295,6 @@ export default class Main extends Component {
             </tbody>
           </table>
           <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset All Options</button>
-          <p style={{"marginBottom": "5rem"}}>
-            Thanks for checking out the example app! Let us know if you find any bugs, and&nbsp;
-            <a href="https://github.com/dogfessional/react-swipeable/pulls">submit a PR!</a>
-          </p>
         </div>
       </div>
     )

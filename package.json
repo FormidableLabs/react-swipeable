@@ -9,6 +9,8 @@
     "lint": "eslint .",
     "build:lib": "babel src --out-dir lib --ignore __tests__ --no-comments",
     "build:publish:examples": "./scripts/build_gh_pages.sh",
+    "build:examples": "cd ./examples && npm install && npm run build",
+    "start:examples": "cd ./examples && npm install && npm run start",
     "prepublish": "npm run build:lib"
   },
   "jest": {
