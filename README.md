@@ -132,11 +132,13 @@ Initial set up, run `npm install`.
 
 Make changes/updates to the `src/Swipeable.js` file.
 
-Before creating a PR please run `npm test` to make sure the tests and lint pass. Add tests if PR adds functionality please.
+Before creating a PR please run `npm test` to make sure the tests and lint pass.
+- Please add tests if PR adds/changes functionality.
 
 #### Test changes/updates with the examples
 
-run `npm run start:examples`.
+Build, run, and test examples locally:
+`npm run start:examples`
 
 After the server starts you can then view the examples page with your changes at `http://localhost:3000`.
 
