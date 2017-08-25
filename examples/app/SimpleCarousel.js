@@ -63,11 +63,11 @@ export default class SimpleCarousel extends Component {
             >
               <div style={imageStyles} >
                 <button
-                  onClick={()=>this.onSwiped(LEFT)}
+                  onClick={()=>this.onSwiped(RIGHT)}
                   className="hollow float-left"
                   style={buttonStyles}>⇦</button>
                 <button
-                  onClick={()=>this.onSwiped(RIGHT)}
+                  onClick={()=>this.onSwiped(LEFT)}
                   className="hollow float-right"
                   style={buttonStyles}>⇨</button>
               </div>
