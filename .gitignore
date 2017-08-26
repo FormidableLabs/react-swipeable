@@ -3,3 +3,4 @@ TODO
 npm-debug.log
 .DS_Store
 lib
+examples/static
