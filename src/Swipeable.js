@@ -1,6 +1,7 @@
 /* global document */
 const React = require('react');
 const PropTypes = require('prop-types');
+const DetectPassiveEvents = require('detect-passive-events').default;
 
 function getInitialState() {
   return {
@@ -63,6 +64,11 @@ class Swipeable extends React.Component {
       this.cleanupMouseListeners();
       // reset internal swipeable state
       this.swipeable = getInitialState();
+    }
+    if (prevProps.preventDefaultTouchmoveEvent && !this.props.preventDefaultTouchmoveEvent) {
+      if (DetectPassiveEvents.hasSupport) {
+        this.element.removeEventListener('touchmove', this.eventMove, { passive: false });
+      }
     }
   }
 
@@ -211,15 +217,30 @@ class Swipeable extends React.Component {
   render() {
     const { disabled, innerRef } = this.props;
     const newProps = { ...this.props };
+    const nativeTouchMoveListener = newProps.preventDefaultTouchmoveEvent &&
+      DetectPassiveEvents.hasSupport;
     if (!disabled) {
       newProps.onTouchStart = this.eventStart;
-      newProps.onTouchMove = this.eventMove;
+      if (!nativeTouchMoveListener) {
+        newProps.onTouchMove = this.eventMove;
+      }
       newProps.onTouchEnd = this.eventEnd;
       newProps.onMouseDown = this.mouseDown;
     }
-    if (innerRef) {
-      newProps.ref = innerRef;
-    }
+
+    newProps.ref = (element) => {
+      if (!element && nativeTouchMoveListener) {
+        this.element.removeEventListener('touchmove', this.eventMove, { passive: false });
+      }
+
+      this.element = element;
+
+      if (element && nativeTouchMoveListener) {
+        this.element.addEventListener('touchmove', this.eventMove, { passive: false });
+      }
+
+      if (innerRef) innerRef(element);
+    };
 
     // clean up swipeable's props to avoid react warning
     delete newProps.onSwiped;

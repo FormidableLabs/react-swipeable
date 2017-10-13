@@ -68,7 +68,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`delta`** is the amount of px before we start firing events. Also affects how far `onSwipedUp`, `onSwipedRight`, `onSwipedDown`, and `onSwipedLeft` need to be before they fire events. The default value is `10`.
 
-**`preventDefaultTouchmoveEvent`** is whether to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.  Sometimes you would like the target to scroll natively.  The default value is `false`. [Chrome 56 and later, warning with preventDefault](#chrome-56-and-later-warning-with-preventdefault)
+**`preventDefaultTouchmoveEvent`** is whether to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.  Sometimes you would like the target to scroll natively.  The default value is `false`.
  * **Notes** `e.preventDefault()` is only called when `preventDefaultTouchmoveEvent` is `true` **and** the user is swiping in a direction that has an associated directional `onSwiping` or `onSwiped` prop.
    * Example: user is swiping right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if user was swiping left `e.preventDefault()` would **not** be called.
    * Please experiment with [example](http://dogfessional.github.io/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
@@ -111,20 +111,6 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   disabled: PropTypes.bool, // default: false
   innerRef: PropTypes.func,
 ```
-
-### Chrome 56 and later, warning with preventDefault
-When this library tries to call `e.preventDefault()` in Chrome 56+ a warning is logged:
-`Unable to preventDefault inside passive event listener due to target being treated as passive.`
-
-This warning is because this [change](https://developers.google.com/web/updates/2017/01/scrolling-intervention) to Chrome 56+ and the way the synthetic events are setup in reactjs.
-
-If you'd like to prevent all scrolling/zooming within a `<Swipeable />` component you can pass a `touchAction` style property equal to `'none'`, [example](https://github.com/dogfessional/react-swipeable/blob/master/examples/app/Main.js#L143). Chrome's recommendation for  [reference](https://developers.google.com/web/updates/2017/01/scrolling-intervention).
-
-```
-<Swipeable style={{touchAction: 'none'}} />
-```
-
-Follow reacts handling of this issue here: [facebook/react#8968](https://github.com/facebook/react/issues/8968)
 
 ## Development
 
