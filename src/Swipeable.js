@@ -51,6 +51,7 @@ class Swipeable extends React.Component {
     this.mouseUp = this.mouseUp.bind(this);
     this.cleanupMouseListeners = this.cleanupMouseListeners.bind(this);
     this.setupMouseListeners = this.setupMouseListeners.bind(this);
+    this.elementRef = this.elementRef.bind(this);
   }
 
   componentWillMount() {
@@ -214,33 +215,34 @@ class Swipeable extends React.Component {
     this.swipeable = getInitialState();
   }
 
+  elementRef(element) {
+    if (!element && DetectPassiveEvents.hasSupport) {
+      this.element.removeEventListener('touchmove', this.eventMove, { passive: false });
+    }
+
+    this.element = element;
+
+    if (element && this.props.preventDefaultTouchmoveEvent && DetectPassiveEvents.hasSupport) {
+      this.element.addEventListener('touchmove', this.eventMove, { passive: false });
+    }
+
+    if (this.props.innerRef) {
+      this.props.innerRef(element);
+    }
+  }
+
   render() {
-    const { disabled, innerRef } = this.props;
     const newProps = { ...this.props };
-    const nativeTouchMoveListener = newProps.preventDefaultTouchmoveEvent &&
-      DetectPassiveEvents.hasSupport;
-    if (!disabled) {
+    if (!this.props.disabled) {
       newProps.onTouchStart = this.eventStart;
-      if (!nativeTouchMoveListener) {
+      if (!newProps.preventDefaultTouchmoveEvent || !DetectPassiveEvents.hasSupport) {
         newProps.onTouchMove = this.eventMove;
       }
       newProps.onTouchEnd = this.eventEnd;
       newProps.onMouseDown = this.mouseDown;
     }
 
-    newProps.ref = (element) => {
-      if (!element && nativeTouchMoveListener) {
-        this.element.removeEventListener('touchmove', this.eventMove, { passive: false });
-      }
-
-      this.element = element;
-
-      if (element && nativeTouchMoveListener) {
-        this.element.addEventListener('touchmove', this.eventMove, { passive: false });
-      }
-
-      if (innerRef) innerRef(element);
-    };
+    newProps.ref = this.elementRef;
 
     // clean up swipeable's props to avoid react warning
     delete newProps.onSwiped;
