@@ -2,6 +2,8 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+// import to later mock
+import DetectPassiveEvents from 'detect-passive-events';
 import Swipeable from '../Swipeable';
 import {
   createStartTouchEventObject,
@@ -26,6 +28,19 @@ function getMockedSwipeFunctions() {
   });
 }
 
+function mockListenerSetup(el) {
+  // track eventListener adds to trigger later
+  // idea from - https://github.com/airbnb/enzyme/issues/426#issuecomment-228601631
+  const eventListenerMap = {};
+  el.addEventListener = jest.fn((event, cb) => { // eslint-disable-line no-param-reassign
+    eventListenerMap[event] = cb;
+  });
+  el.removeEventListener = jest.fn((event, cb) => { // eslint-disable-line no-param-reassign
+    if (eventListenerMap[event] === cb) delete eventListenerMap[event];
+  });
+  return eventListenerMap;
+}
+
 describe('Swipeable', () => {
   let origEventListener;
   let origRemoveEventListener;
@@ -37,13 +52,7 @@ describe('Swipeable', () => {
   beforeEach(() => {
     // track eventListener adds to trigger later
     // idea from - https://github.com/airbnb/enzyme/issues/426#issuecomment-228601631
-    eventListenerMap = {};
-    document.addEventListener = jest.fn((event, cb) => {
-      eventListenerMap[event] = cb;
-    });
-    document.removeEventListener = jest.fn((event, cb) => {
-      if (eventListenerMap[event] === cb) delete eventListenerMap[event];
-    });
+    eventListenerMap = mockListenerSetup(document);
   });
   afterAll(() => {
     document.eventListener = origEventListener;
@@ -329,5 +338,45 @@ describe('Swipeable', () => {
     const swipeableDiv = wrapper.find('div').instance();
     expect(wrapper.instance().testRef).toBe(swipeableDiv);
     wrapper.unmount();
+  });
+
+  describe('preventDefaultTouchmoveEvent and passive support eventListener option', () => {
+    beforeAll(() => {
+      DetectPassiveEvents.hasSupport = true;
+    });
+    afterAll(() => {
+      DetectPassiveEvents.hasSupport = false;
+    });
+    it('should setup touchmove event listener correctly', () => {
+      // set hasSupport to true for this test
+      const wrapper = mount((
+        <Swipeable preventDefaultTouchmoveEvent={true} >
+          <span>Touch Here</span>
+        </Swipeable>
+      ));
+      const instance = wrapper.instance();
+      const element = instance.element;
+      // mock eventListeners
+      const elementListenerMap = mockListenerSetup(element);
+
+      // re-call did mount again after we've mocked the listeners
+      instance.componentDidMount();
+      expect(element.addEventListener).toHaveBeenCalledTimes(1);
+      expect(elementListenerMap.touchmove).toBe(instance.eventMove);
+
+      // the swipeable div should not be tracking 'touchmove' events
+      let swipeableDiv = wrapper.find('div');
+      expect(swipeableDiv.prop('onTouchMove')).toBe(undefined);
+
+      // toggle preventDefaultTouchmoveEvent off
+      wrapper.setProps({ preventDefaultTouchmoveEvent: false });
+
+      expect(element.removeEventListener).toHaveBeenCalledTimes(1);
+      expect(elementListenerMap.touchmove).toBe(undefined);
+
+      // verify that onTouchMove prop was re-assigned to inner div
+      swipeableDiv = wrapper.find('div');
+      expect(swipeableDiv.prop('onTouchMove')).toBe(instance.eventMove);
+    });
   });
 });
