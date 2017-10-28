@@ -114,7 +114,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 ## Development
 
-Initial set up, run `npm install`.
+Initial set up, with `node 6+`, run `npm install`.
 
 Make changes/updates to the `src/Swipeable.js` file.
 
