@@ -22,7 +22,6 @@ const initialStateSwipeable = {
   flickThreshold: '0.6',
   delta: '10',
   preventDefaultTouchmoveEvent: false,
-  touchAction: false,
   stopPropagation: false,
   nodeName: 'div',
   trackMouse: false,
@@ -131,7 +130,6 @@ export default class Main extends Component {
       onTapApplied,
       persistEvent,
       preventDefaultTouchmoveEvent,
-      touchAction,
       stopPropagation,
       nodeName,
       trackMouse,
@@ -143,9 +141,7 @@ export default class Main extends Component {
     const flickThresholdNum = isFlickThresholdNumber ? +flickThreshold : 0.6;
     const deltaNum = isDeltaNumber ? +delta : 10;
 
-    const swipeableStyle = touchAction
-      ? {fontSize: "0.75rem", touchAction: 'none'}
-      : {fontSize: "0.75rem"};
+    const swipeableStyle = {fontSize: "0.75rem"};
 
     const boundSwipes = getBoundSwipes(this);
     let swipeableDirProps = {};
@@ -233,12 +229,6 @@ export default class Main extends Component {
               <RowSimpleCheckbox
                 value={preventDefaultTouchmoveEvent}
                 name="preventDefaultTouchmoveEvent"
-                onChange={this.updateValue}
-              />
-              <RowSimpleCheckbox
-                value={touchAction}
-                name="touchAction"
-                displayText="style={{ touchAction: 'none' }}"
                 onChange={this.updateValue}
               />
               <RowSimpleCheckbox
