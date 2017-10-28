@@ -1,12 +1,17 @@
 /* global document */
 import React from 'react';
-import { mount } from 'enzyme';
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import Swipeable from '../Swipeable';
 import {
   createStartTouchEventObject,
   createMoveTouchEventObject,
   createMouseEventObject,
 } from './helpers/events';
+
+const { mount } = Enzyme;
+
+Enzyme.configure({ adapter: new Adapter() });
 
 const DIRECTIONS = ['Left', 'Right', 'Up', 'Down'];
 
@@ -53,6 +58,7 @@ describe('Swipeable', () => {
       </Swipeable>
     ));
     expect(wrapper.find({ 'data-testref': 'child' })).toHaveLength(2);
+    wrapper.unmount();
   });
 
   it('handles touch events and fires correct props', () => {
@@ -85,6 +91,7 @@ describe('Swipeable', () => {
     expect(onTap).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwiped).toHaveBeenCalled();
     expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(3);
+    wrapper.unmount();
   });
 
   it('handles mouse events with trackMouse prop and fires correct props', () => {
@@ -127,6 +134,7 @@ describe('Swipeable', () => {
 
     // still calls passed through mouse event prop
     expect(onMouseDown).toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('calls onTap', () => {
@@ -160,6 +168,7 @@ describe('Swipeable', () => {
     expect(swipeFuncs.onSwiping).not.toHaveBeenCalled();
 
     expect(onTap).toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('calls preventDefault correctly when swiping in direction that has a callback', () => {
@@ -184,6 +193,7 @@ describe('Swipeable', () => {
     expect(onSwipedDown).toHaveBeenCalled();
 
     expect(preventDefault).toHaveBeenCalledTimes(3);
+    wrapper.unmount();
   });
 
   it('does not call preventDefault when false', () => {
@@ -207,6 +217,7 @@ describe('Swipeable', () => {
     expect(onSwipedUp).toHaveBeenCalled();
 
     expect(preventDefault).not.toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('disables swipeable with disabled prop using touch swipe', () => {
@@ -241,6 +252,7 @@ describe('Swipeable', () => {
     expect(onSwiping).toHaveBeenCalledTimes(1);
     expect(onSwipedLeft).not.toHaveBeenCalled();
     expect(onSwipedRight).not.toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('disables swipeable with disabled prop using "mouse swipe"', () => {
@@ -277,6 +289,7 @@ describe('Swipeable', () => {
     expect(onSwiping).toHaveBeenCalledTimes(1);
     expect(onSwipedLeft).not.toHaveBeenCalled();
     expect(onSwipedRight).not.toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('does not check delta when swiping in progress', () => {
@@ -303,6 +316,7 @@ describe('Swipeable', () => {
     expect(onSwiping).toHaveBeenCalledTimes(2);
     expect(onSwipedLeft).toHaveBeenCalledTimes(1);
     expect(onSwipedRight).not.toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('should pass ref to the component via innerRef prop', () => {
@@ -312,7 +326,8 @@ describe('Swipeable', () => {
       }
     };
     const wrapper = mount((<WrapperComp />));
-    const swipeableDiv = wrapper.find('div').getNode();
-    expect(wrapper.node.testRef).toBe(swipeableDiv);
+    const swipeableDiv = wrapper.find('div').instance();
+    expect(wrapper.instance().testRef).toBe(swipeableDiv);
+    wrapper.unmount();
   });
 });
