@@ -1,6 +1,7 @@
 /* global document */
 const React = require('react');
 const PropTypes = require('prop-types');
+const DetectPassiveEvents = require('detect-passive-events').default;
 
 function getInitialState() {
   return {
@@ -50,11 +51,25 @@ class Swipeable extends React.Component {
     this.mouseUp = this.mouseUp.bind(this);
     this.cleanupMouseListeners = this.cleanupMouseListeners.bind(this);
     this.setupMouseListeners = this.setupMouseListeners.bind(this);
+    this.elementRef = this.elementRef.bind(this);
+    this.setupTouchmoveEvent = this.setupTouchmoveEvent.bind(this);
+    this.cleanupTouchmoveEvent = this.cleanupTouchmoveEvent.bind(this);
+    this.hasPassiveSupport = DetectPassiveEvents.hasSupport;
   }
 
   componentWillMount() {
     // setup internal swipeable state
     this.swipeable = getInitialState();
+  }
+
+  componentDidMount() {
+    // if we care about calling preventDefault and we have support for passive events
+    // we need to setup a custom event listener, sigh...
+    // there are a few jump ropes within the code for this case,
+    // but it is the best we can do to allow preventDefault for chrome 56+
+    if (this.props.preventDefaultTouchmoveEvent) {
+      this.setupTouchmoveEvent();
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -64,15 +79,36 @@ class Swipeable extends React.Component {
       // reset internal swipeable state
       this.swipeable = getInitialState();
     }
+
+    // preventDefaultTouchmoveEvent toggled off - clean up touch move if needed
+    if (prevProps.preventDefaultTouchmoveEvent && !this.props.preventDefaultTouchmoveEvent) {
+      this.cleanupTouchmoveEvent();
+
+    // preventDefaultTouchmoveEvent toggled on - add touch move if needed
+    } else if (!prevProps.preventDefaultTouchmoveEvent && this.props.preventDefaultTouchmoveEvent) {
+      this.setupTouchmoveEvent();
+    }
   }
 
   componentWillUnmount() {
     this.cleanupMouseListeners();
   }
 
+  setupTouchmoveEvent() {
+    if (this.element && this.hasPassiveSupport) {
+      this.element.addEventListener('touchmove', this.eventMove, { passive: false });
+    }
+  }
+
   setupMouseListeners() {
     document.addEventListener('mousemove', this.mouseMove);
     document.addEventListener('mouseup', this.mouseUp);
+  }
+
+  cleanupTouchmoveEvent() {
+    if (this.element && this.hasPassiveSupport) {
+      this.element.removeEventListener('touchmove', this.eventMove, { passive: false });
+    }
   }
 
   cleanupMouseListeners() {
@@ -208,18 +244,28 @@ class Swipeable extends React.Component {
     this.swipeable = getInitialState();
   }
 
+  elementRef(element) {
+    this.element = element;
+    this.props.innerRef && this.props.innerRef(element);
+  }
+
   render() {
-    const { disabled, innerRef } = this.props;
     const newProps = { ...this.props };
-    if (!disabled) {
+    if (!this.props.disabled) {
       newProps.onTouchStart = this.eventStart;
-      newProps.onTouchMove = this.eventMove;
+
+      // if we do not care about calling preventDefault then assign onTouchMove prop
+      // else we need to also check for passive support
+      // and set a custom eventListener for touchmove on mount/update
+      if (!this.props.preventDefaultTouchmoveEvent || !this.hasPassiveSupport) {
+        newProps.onTouchMove = this.eventMove;
+      }
+
       newProps.onTouchEnd = this.eventEnd;
       newProps.onMouseDown = this.mouseDown;
     }
-    if (innerRef) {
-      newProps.ref = innerRef;
-    }
+
+    newProps.ref = this.elementRef;
 
     // clean up swipeable's props to avoid react warning
     delete newProps.onSwiped;
