@@ -72,6 +72,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
  * **Notes** `e.preventDefault()` is only called when `preventDefaultTouchmoveEvent` is `true` **and** the user is swiping in a direction that has an associated directional `onSwiping` or `onSwiped` prop.
    * Example: user is swiping right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if user was swiping left `e.preventDefault()` would **not** be called.
    * Please experiment with [example](http://dogfessional.github.io/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
+   * `swipeable` versions < `4.2.0` - [Chrome 56 and later, warning with preventDefault](#chrome-56-and-later-warning-with-preventdefault)
 
 **`stopPropagation`** automatically calls stopPropagation on all 'swipe' events. The default value is `false`.
 
@@ -129,6 +130,18 @@ Build, run, and test examples locally:
 After the server starts you can then view the examples page with your changes at `http://localhost:3000`.
 
 You can now make updates/changes to `src/Swipeable.js` and webpack will rebuild, then reload the page so you can test your changes!
+
+## Notes
+### Chrome 56 and later, warning with preventDefault
+`swipeable` version `>=4.2.0` should fix this issue. [PR here](https://github.com/dogfessional/react-swipeable/pull/88).
+ 
+The issue still exists in versions `<4.2.0`:
+- When this library tries to call `e.preventDefault()` in Chrome 56+ a warning is logged:
+- `Unable to preventDefault inside passive event listener due to target being treated as passive.`
+ 
+This warning is because this [change](https://developers.google.com/web/updates/2017/01/scrolling-intervention) to Chrome 56+ and the way the synthetic events are setup in reactjs.
+
+Follow reacts handling of this issue here: [facebook/react#8968](https://github.com/facebook/react/issues/8968)
 
 ## License
 
