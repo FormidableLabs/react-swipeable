@@ -58,7 +58,7 @@ as well as the absolute delta of where the swipe started and where it's currentl
 **`onSwipedUp`**, **`onSwipedRight`**, **`onSwipedDown`**, **`onSwipedLeft`** are called with the event
 as well as the x distance, + or -, from where the swipe started to where it ended. These only fire at the end of a touch event.
 
-**`onSwiped`** is called with the event, the X and Y delta, whether or not the event was a flick, and the current velocity of the swipe. `this.props.onSwiped(e, x, y, isFlick, velocity)`
+**`onSwiped`** is called with the event, the X and Y delta, whether or not the event was a flick, and the current velocity of the swipe. `this.props.onSwiped(e, deltaX, deltaY, isFlick, velocity)`
 
 **`onTap`** is triggered when a tap happens, specifically when a swipe/touch moves less than the `delta`. Is called with the onTouchEnd event `this.props.onTap(e)`
 
