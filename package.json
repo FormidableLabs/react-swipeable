@@ -35,7 +35,10 @@
     "type": "git",
     "url": "http://github.com/dogfessional/react-swipeable.git"
   },
-  "homepage": "http://dogfessional.github.io/react-swipeable/",
+  "bugs": {
+    "url": "https://github.com/dogfessional/react-swipeable/issues"
+  },
+  "homepage": "https://github.com/dogfessional/react-swipeable",
   "files": [
     "lib",
     "src"
