@@ -176,11 +176,12 @@ class Swipeable extends React.Component {
 
     if (stopPropagation) e.stopPropagation();
 
+    let cancelablePageSwipe = false;
     if (onSwiping) {
       onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity);
+      cancelablePageSwipe = true;
     }
 
-    let cancelablePageSwipe = false;
     if (pos.absX > pos.absY) {
       if (pos.deltaX > 0) {
         if (onSwipingLeft || onSwipedLeft) {
