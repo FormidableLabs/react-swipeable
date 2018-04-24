@@ -43,6 +43,11 @@ function calculatePos(e, state) {
 class Swipeable extends React.Component {
   constructor(props, context) {
     super(props, context);
+
+    // setup internal swipeable state
+    this.swipeable = getInitialState();
+
+    // bind this context for internal methods
     this.eventStart = this.eventStart.bind(this);
     this.eventMove = this.eventMove.bind(this);
     this.eventEnd = this.eventEnd.bind(this);
@@ -54,12 +59,9 @@ class Swipeable extends React.Component {
     this.elementRef = this.elementRef.bind(this);
     this.setupTouchmoveEvent = this.setupTouchmoveEvent.bind(this);
     this.cleanupTouchmoveEvent = this.cleanupTouchmoveEvent.bind(this);
-    this.hasPassiveSupport = DetectPassiveEvents.hasSupport;
-  }
 
-  componentWillMount() {
-    // setup internal swipeable state
-    this.swipeable = getInitialState();
+    // check for passive event support
+    this.hasPassiveSupport = DetectPassiveEvents.hasSupport;
   }
 
   componentDidMount() {
