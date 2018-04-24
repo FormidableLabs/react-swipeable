@@ -157,7 +157,7 @@ class Swipeable extends React.Component {
     const {
       stopPropagation,
       delta,
-      onSwiping,
+      onSwiping, onSwiped,
       onSwipingLeft, onSwipedLeft,
       onSwipingRight, onSwipedRight,
       onSwipingUp, onSwipedUp,
@@ -176,9 +176,14 @@ class Swipeable extends React.Component {
 
     if (stopPropagation) e.stopPropagation();
 
-    let cancelablePageSwipe = false;
     if (onSwiping) {
       onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity);
+    }
+
+    // track if a swipe is cancelable
+    // so we can call prevenDefault if needed
+    let cancelablePageSwipe = false;
+    if (onSwiping || onSwiped) {
       cancelablePageSwipe = true;
     }
 
