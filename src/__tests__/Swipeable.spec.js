@@ -229,6 +229,52 @@ describe('Swipeable', () => {
     wrapper.unmount();
   });
 
+  it('calls preventDefault when onSwiping is present', () => {
+    const onSwiping = jest.fn();
+    const preventDefault = jest.fn();
+    const wrapper = mount((
+      <Swipeable
+        onSwiping={onSwiping}
+        preventDefaultTouchmoveEvent={true}
+      >
+        <span>Touch Here</span>
+      </Swipeable>
+    ));
+
+    const touchHere = wrapper.find('span');
+    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100, preventDefault }));
+    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 50, preventDefault }));
+    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 100, y: 5, preventDefault }));
+
+    expect(onSwiping).toHaveBeenCalled();
+
+    expect(preventDefault).toHaveBeenCalled();
+    wrapper.unmount();
+  });
+
+  it('calls preventDefault when onSwiped is present', () => {
+    const onSwiped = jest.fn();
+    const preventDefault = jest.fn();
+    const wrapper = mount((
+      <Swipeable
+        onSwiped={onSwiped}
+        preventDefaultTouchmoveEvent={true}
+      >
+        <span>Touch Here</span>
+      </Swipeable>
+    ));
+
+    const touchHere = wrapper.find('span');
+    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100, preventDefault }));
+    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 50, preventDefault }));
+    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 100, y: 5, preventDefault }));
+
+    expect(onSwiped).toHaveBeenCalled();
+
+    expect(preventDefault).toHaveBeenCalled();
+    wrapper.unmount();
+  });
+
   it('disables swipeable with disabled prop using touch swipe', () => {
     const onSwiping = jest.fn();
     const onSwipedRight = jest.fn();
