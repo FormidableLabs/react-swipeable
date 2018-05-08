@@ -10,7 +10,8 @@
     "build:lib": "babel src --out-dir lib --ignore __tests__ --no-comments",
     "build:publish:examples": "npm run build:examples && rimraf examples/node_modules && gh-pages -d examples",
     "build:examples": "cd ./examples && npm install && npm run build",
-    "start:examples": "cd ./examples && npm install && npm run start"
+    "start:examples": "cd ./examples && npm install && npm run start",
+    "prepublish": "npm run build:lib"
   },
   "jest": {
     "testPathIgnorePatterns": [
