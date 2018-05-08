@@ -89,6 +89,8 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`innerRef`** will allow access to the Swipeable's inner dom node element react ref. See [#81](https://github.com/dogfessional/react-swipeable/issues/81) for more details. Example usage `<Swipeable innerRef={(el) => this.swipeableEl = el} >`. Then you'll have access to the dom element that Swipeable uses internally.
 
+**`rotationAngle`** Allows to set an angle in degrees. Needed for a rotated view point of specific elements. For instance, usage on a tablet from two different sides. The default value is `0`.
+
 **None of the props are required.**
 ### PropType Definitions
 
@@ -116,6 +118,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   trackMouse: PropTypes.bool, // default: false
   disabled: PropTypes.bool, // default: false
   innerRef: PropTypes.func,
+  rotationAngle: PropTypes.number // default: 0
 ```
 
 ## Development
@@ -139,11 +142,11 @@ You can now make updates/changes to `src/Swipeable.js` and webpack will rebuild,
 ## Notes
 ### Chrome 56 and later, warning with preventDefault
 `swipeable` version `>=4.2.0` should fix this issue. [PR here](https://github.com/dogfessional/react-swipeable/pull/88).
- 
+
 The issue still exists in versions `<4.2.0`:
 - When this library tries to call `e.preventDefault()` in Chrome 56+ a warning is logged:
 - `Unable to preventDefault inside passive event listener due to target being treated as passive.`
- 
+
 This warning is because this [change](https://developers.google.com/web/updates/2017/01/scrolling-intervention) to Chrome 56+ and the way the synthetic events are setup in reactjs.
 
 Follow reacts handling of this issue here: [facebook/react#8968](https://github.com/facebook/react/issues/8968)
