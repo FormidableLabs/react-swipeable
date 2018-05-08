@@ -12,7 +12,8 @@
     "build:examples": "cd ./examples && npm install && npm run build",
     "start:examples": "cd ./examples && npm install && npm run start",
     "prepublish": "npm run build:lib",
-    "prepare": "npm run build:lib"
+    "prepare": "npm run build:lib",
+    "preinstall": "npm run prepare"
   },
   "jest": {
     "testPathIgnorePatterns": [
