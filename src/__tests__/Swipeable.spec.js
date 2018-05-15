@@ -553,7 +553,7 @@ describe('Swipeable', () => {
       <Swipeable
         {...swipeFuncs}
         onTap={onTap}
-        rotationAngle={360 + 270}  // or -90 degrees
+        rotationAngle={360 + 270}
       >
         <span>Touch Here</span>
       </Swipeable>
