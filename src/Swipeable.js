@@ -25,7 +25,13 @@ function getPosition(e) {
     : { x: e.clientX, y: e.clientY };
 }
 
-function rotateByAngle({ x, y }, angle) {
+function rotateByAngle(pos, angle) {
+  if (angle === 0) {
+    return pos;
+  }
+
+  const { x, y } = pos;
+
   const angleInRadians = (Math.PI / 180) * angle;
   const rotatedX = x * Math.cos(angleInRadians) + y * Math.sin(angleInRadians);
   const rotatedY = y * Math.cos(angleInRadians) - x * Math.sin(angleInRadians);
