@@ -1,3 +1,8 @@
+# 4.3.0
+* Add `rotationAngle` prop. [#103](https://github.com/dogfessional/react-swipeable/pull/103)
+  * will allow to set a rotation angle, e.g. for a four-player game on a tablet, where each player has a 90° turned view.
+  * Thank you [@Narquadah](https://github.com/Narquadah) and [@LarsKumbier](https://github.com/LarsKumbier)!
+
 # 4.2.2
 * fixed bug that happened when if either `onSwiping` or `onSwiped` were set we were not calling `e.preventDefault()` appropriately
 
