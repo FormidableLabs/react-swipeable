@@ -1,6 +1,6 @@
 {
   "name": "react-swipeable",
-  "version": "4.2.2",
+  "version": "4.3.0",
   "description": "Swipe bindings for react",
   "main": "lib/Swipeable.js",
   "scripts": {
