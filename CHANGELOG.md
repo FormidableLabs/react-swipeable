@@ -1,3 +1,6 @@
+# 4.2.2
+* fixed bug that happened when if either `onSwiping` or `onSwiped` were set we were not calling `e.preventDefault()` appropriately
+
 # 4.2.0
 * Add support for calling `preventDefault` on Chrome 56+ via passive event support checking and manual event listener setup. [#88](https://github.com/dogfessional/react-swipeable/pull/88)
   * Thank you [@kl0tl](https://github.com/kl0tl) and [@KrashStudio](https://github.com/KrashStudio)!

@@ -120,7 +120,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 ## Development
 
-Initial set up, with `node 6+`, run `npm install`.
+Initial set up, with `node 8+`, run `npm install`.
 
 Make changes/updates to the `src/Swipeable.js` file.
 
@@ -139,11 +139,11 @@ You can now make updates/changes to `src/Swipeable.js` and webpack will rebuild,
 ## Notes
 ### Chrome 56 and later, warning with preventDefault
 `swipeable` version `>=4.2.0` should fix this issue. [PR here](https://github.com/dogfessional/react-swipeable/pull/88).
- 
+
 The issue still exists in versions `<4.2.0`:
 - When this library tries to call `e.preventDefault()` in Chrome 56+ a warning is logged:
 - `Unable to preventDefault inside passive event listener due to target being treated as passive.`
- 
+
 This warning is because this [change](https://developers.google.com/web/updates/2017/01/scrolling-intervention) to Chrome 56+ and the way the synthetic events are setup in reactjs.
 
 Follow reacts handling of this issue here: [facebook/react#8968](https://github.com/facebook/react/issues/8968)
