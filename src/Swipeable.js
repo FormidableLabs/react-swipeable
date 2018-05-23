@@ -25,8 +25,21 @@ function getPosition(e) {
     : { x: e.clientX, y: e.clientY };
 }
 
+function rotateByAngle(pos, angle) {
+  if (angle === 0) {
+    return pos;
+  }
+
+  const { x, y } = pos;
+
+  const angleInRadians = (Math.PI / 180) * angle;
+  const rotatedX = x * Math.cos(angleInRadians) + y * Math.sin(angleInRadians);
+  const rotatedY = y * Math.cos(angleInRadians) - x * Math.sin(angleInRadians);
+  return { x: rotatedX, y: rotatedY };
+}
+
 function calculatePos(e, state) {
-  const { x, y } = getMovingPosition(e);
+  const { x, y } = rotateByAngle(getMovingPosition(e), state.rotationAngle);
 
   const deltaX = state.x - x;
   const deltaY = state.y - y;
@@ -146,11 +159,12 @@ class Swipeable extends React.Component {
     // if more than a single touch don't track, for now...
     if (e.touches && e.touches.length > 1) return;
 
-    const { x, y } = getPosition(e);
+    const { rotationAngle } = this.props;
+    const { x, y } = rotateByAngle(getPosition(e), rotationAngle);
 
     if (this.props.stopPropagation) e.stopPropagation();
 
-    this.swipeable = { start: Date.now(), x, y, swiping: false };
+    this.swipeable = { start: Date.now(), x, y, swiping: false, rotationAngle };
   }
 
   eventMove(e) {
@@ -296,6 +310,7 @@ class Swipeable extends React.Component {
     delete newProps.trackMouse;
     delete newProps.disabled;
     delete newProps.innerRef;
+    delete newProps.rotationAngle;
 
     return React.createElement(
       this.props.nodeName,
@@ -326,6 +341,7 @@ Swipeable.propTypes = {
   disabled: PropTypes.bool,
   innerRef: PropTypes.func,
   children: PropTypes.node,
+  rotationAngle: PropTypes.number,
 };
 
 Swipeable.defaultProps = {
@@ -335,6 +351,7 @@ Swipeable.defaultProps = {
   stopPropagation: false,
   nodeName: 'div',
   disabled: false,
+  rotationAngle: 0,
 };
 
 module.exports = Swipeable;

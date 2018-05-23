@@ -89,6 +89,8 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`innerRef`** will allow access to the Swipeable's inner dom node element react ref. See [#81](https://github.com/dogfessional/react-swipeable/issues/81) for more details. Example usage `<Swipeable innerRef={(el) => this.swipeableEl = el} >`. Then you'll have access to the dom element that Swipeable uses internally.
 
+**`rotationAngle`** will allow to set a rotation angle, e.g. for a four-player game on a tablet, where each player has a 90° turned view. The default value is `0`.
+
 **None of the props are required.**
 ### PropType Definitions
 
@@ -116,6 +118,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
   trackMouse: PropTypes.bool, // default: false
   disabled: PropTypes.bool, // default: false
   innerRef: PropTypes.func,
+  rotationAngle: PropTypes.number // default: 0
 ```
 
 ## Development

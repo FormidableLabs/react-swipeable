@@ -6,7 +6,8 @@ module.exports = {
         "expect": false,
         "beforeAll": false,
         "beforeEach": false,
-        "afterAll": false
+        "afterAll": false,
+        "afterEach": false
     },
     "extends": "airbnb",
     "plugins": [
