@@ -17,7 +17,9 @@
     "url": "https://github.com/dogfessional/react-swipeable/issues"
   },
   "homepage": "https://github.com/dogfessional/react-swipeable#readme",
-  "engines" : { "node" : ">=4.7.0" },
+  "engines": {
+    "node": ">=4.7.0"
+  },
   "devDependencies": {
     "babel-core": "^6.3.26",
     "babel-loader": "^6.2.0",
