@@ -26,6 +26,7 @@ const initialStateSwipeable = {
   nodeName: 'div',
   trackMouse: false,
   disabled: false,
+  rotationAngle: 0,
 };
 const initialStateApplied = {
   onSwipingApplied: true,
@@ -134,12 +135,15 @@ export default class Main extends Component {
       nodeName,
       trackMouse,
       disabled,
+      rotationAngle,
     } = this.state;
 
     const isFlickThresholdNumber = !(isNaN(flickThreshold) || flickThreshold === '');
     const isDeltaNumber = !(isNaN(delta) || delta === '');
+    const isRotationAngleNumber = !(isNaN(rotationAngle) || rotationAngle === '');
     const flickThresholdNum = isFlickThresholdNumber ? +flickThreshold : 0.6;
     const deltaNum = isDeltaNumber ? +delta : 10;
+    const rotationAngleNum = isRotationAngleNumber ? +rotationAngle : 0;
 
     const swipeableStyle = {fontSize: "0.75rem"};
 
@@ -168,6 +172,7 @@ export default class Main extends Component {
             nodeName={nodeName}
             trackMouse={trackMouse}
             disabled={disabled}
+            rotationAngle={rotationAngleNum}
             className="callout"
             style={swipeableStyle}>
               <div onTouchStart={()=>this.resetState()}>
@@ -224,6 +229,14 @@ export default class Main extends Component {
                   <input type="text"
                     style={{margin: '0px', border: !isFlickThresholdNumber ? '2px solid red' : ''}}
                     onChange={(e)=>this.updateValue('flickThreshold', getVal(e))} value={flickThreshold}/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2" className="text-center">rotationAngle:</td>
+                <td>
+                  <input type="text"
+                    style={{margin: '0px', border: !isRotationAngleNumber ? '2px solid red' : ''}}
+                    onChange={(e)=>this.updateValue('rotationAngle', getVal(e))} value={rotationAngle}/>
                 </td>
               </tr>
               <RowSimpleCheckbox

@@ -16,6 +16,12 @@ module.exports = {
       react: path.join(__dirname, 'node_modules', 'react'),
     }
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      // retrive react-swipable version to display on demo page
+      SWIPEABLE_VERSION: JSON.stringify(require("../package.json").version)
+    })
+  ],
   module: {
     rules: [
       {

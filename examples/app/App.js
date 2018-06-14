@@ -2,11 +2,11 @@ import React from 'react';
 import FeatureTestConsole from './FeatureTestConsole.js';
 import SimpleCarousel from './SimpleCarousel.js';
 
-export default function App() {
+export default function App({version}) {
   return (
     <div className="row">
       <div className="medium-6 column" style={{width: "95%"}}>
-        <h1>react-swipeable&nbsp;<a href="https://github.com/dogfessional/react-swipeable" style={{fontSize: "0.75rem"}}>View on GitHub</a></h1>
+        <h1>react-swipeable&nbsp;<a href="https://github.com/dogfessional/react-swipeable" style={{fontSize: "0.75rem"}}>v{version}</a></h1>
         <dl>
           <dt>Examples:</dt>
           <dd><a href="#FeatureTestConsole">Feature testing with console log output ⇨</a></dd>
