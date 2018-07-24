@@ -3,7 +3,7 @@ React Swipeable
 
 React swipe component - Swipe bindings for react
 
-[![build status](https://img.shields.io/travis/dogfessional/react-swipeable/master.svg?style=flat-square)](https://travis-ci.org/dogfessional/react-swipeable) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable)
+[![build status](https://img.shields.io/travis/dogfessional/react-swipeable/master.svg?style=flat-square)](https://travis-ci.org/dogfessional/react-swipeable) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![gzip size](http://img.badgesize.io/https://unpkg.com/react-swipeable/lib/Swipeable.js?compression=gzip&label=gzip%20size&style=flat-square)](https://unpkg.com/react-swipeable/lib/Swipeable.js)
 
 [![Edit qq7759m3lq](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/qq7759m3lq?module=%2Fsrc%2FCarousel.js)
 
