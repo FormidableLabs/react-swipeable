@@ -1,7 +1,7 @@
 {
   "name": "react-swipeable",
   "version": "4.3.0",
-  "description": "Swipe bindings for react",
+  "description": "Swipe and touch handlers for react",
   "main": "lib/Swipeable.js",
   "scripts": {
     "test": "npm run test:unit && npm run lint",
@@ -21,14 +21,16 @@
     ]
   },
   "keywords": [
+    "react swipe",
+    "react touch",
+    "react-swipe",
+    "react-touch",
+    "touch",
     "swipe",
     "flick",
+    "mobile",
     "swipeable",
     "react",
-    "web",
-    "mobile",
-    "ios",
-    "android",
     "react-component"
   ],
   "author": "Josh Perez <josh@goatslacker.com>",
