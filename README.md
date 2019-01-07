@@ -1,9 +1,9 @@
 React Swipeable
 =========================
 
-React swipe and touch event hanlder component
+React swipe and touch event handler component
 
-[![build status](https://img.shields.io/travis/dogfessional/react-swipeable/master.svg?style=flat-square)](https://travis-ci.org/dogfessional/react-swipeable) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![gzip size](http://img.badgesize.io/https://unpkg.com/react-swipeable/lib/Swipeable.js?compression=gzip&label=gzip%20size&style=flat-square)](https://unpkg.com/react-swipeable/lib/Swipeable.js)
+[![build status](https://img.shields.io/travis/dogfessional/react-swipeable/master.svg?style=flat-square)](https://travis-ci.org/dogfessional/react-swipeable) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![gzip size](https://flat.badgen.net/bundlephobia/minzip/react-swipeable)](https://bundlephobia.com/result?p=react-swipeable)
 
 [![Edit qq7759m3lq](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/qq7759m3lq?module=%2Fsrc%2FCarousel.js)
 
