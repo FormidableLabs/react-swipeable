@@ -22,12 +22,11 @@
   },
   "devDependencies": {
     "babel-core": "^6.3.26",
-    "babel-loader": "^6.2.0",
+    "babel-loader": "^7.1.5",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
-    "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
-    "webpack": "^2.2.0",
-    "webpack-dev-server": "^2.3.0"
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.2"
   },
   "dependencies": {
     "react": "^16.0.0",

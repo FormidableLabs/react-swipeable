@@ -25,10 +25,14 @@ module.exports = {
   module: {
     rules: [
       {
-        loader: 'babel-loader',
-        resource: {
-          test: /\.js$/,
-          exclude: /node_modules/,
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ["react"],
+            plugins: ["transform-object-rest-spread"]
+          }
         }
       }
     ]
