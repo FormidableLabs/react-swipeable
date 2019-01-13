@@ -53,10 +53,21 @@ function calculatePos(e, state) {
 
 export default class Controller {
   constructor(props) {
-
-    this.props = props;
+    this.props = {
+      flickThreshold: 0.6,
+      delta: 10,
+      // preventDefaultTouchmoveEvent: false,
+      stopPropagation: false,
+      // nodeName: 'div',
+      disabled: false,
+      rotationAngle: 0,
+      ...props,
+    };
     // setup internal swipeable state
     this.swipeable = getInitialState();
+    this.eventStart = this.eventStart.bind(this);
+    this.eventEnd = this.eventEnd.bind(this);
+    this.eventMove = this.eventMove.bind(this);
   }
 
   // componentDidMount() {

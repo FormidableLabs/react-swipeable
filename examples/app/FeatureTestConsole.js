@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Swipeable from '../../src/Swipeable.js';
 import { RowSimpleCheckbox } from './TableComponents.js';
+import SwipeableHook from './SwipeableHook.js';
 
 const DIRECTIONS = ['Left', 'Right', 'Up', 'Down'];
 
@@ -181,6 +182,15 @@ export default class Main extends Component {
                 <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
               </div>
           </Swipeable>
+          <SwipeableHook
+            className="callout"
+            {...swipeableDirProps}>
+              <div onTouchStart={()=>this.resetState()}>
+                <h5>Swipe hook inside here to test...</h5>
+                <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output(open dev tools)</p>
+                <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
+              </div>
+          </SwipeableHook>
           <table>
             <thead>
               <tr><th>Applied?</th><th>Action</th><th>Output</th></tr>
