@@ -4,13 +4,13 @@ import {
   // useImperativeMethods,
   // useEffect,
   // useCallback,
-} from 'react'
+} from 'react';
 import Ctrl from './Controller';
 
 export default function useSwipeable(props) {
   const [ctrl] = useState(() => {
     const ctrlInst = new Ctrl(props);
-    console.log('ctrl-', ctrlInst);
+    // console.log('ctrl-', ctrlInst);
     return ctrlInst;
   });
   return {
