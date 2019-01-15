@@ -6,8 +6,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import DetectPassiveEvents from 'detect-passive-events';
 import Swipeable from '../Swipeable';
 import {
-  createStartTouchEventObject,
-  createMoveTouchEventObject,
+  createTouchEventObject,
   createMouseEventObject,
 } from './helpers/events';
 
@@ -83,11 +82,11 @@ describe('Swipeable', () => {
     ));
 
     const touchHere = wrapper.find('span');
-    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 125 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 150 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 175 }));
-    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 100, y: 200 }));
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 125 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 150 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 175 }));
+    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 200 }));
 
     expect(swipeFuncs.onSwipedDown).toHaveBeenCalled();
     expect(swipeFuncs.onSwipingDown).toHaveBeenCalledTimes(3);
@@ -161,9 +160,9 @@ describe('Swipeable', () => {
     const touchHere = wrapper.find('span');
     // simulate what is probably a light tap,
     // meaning the user "swiped" just a little, but less than the delta
-    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 103, y: 100 }));
-    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 107, y: 100 }));
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 103, y: 100 }));
+    touchHere.simulate('touchEnd', createTouchEventObject({ x: 107, y: 100 }));
 
     expect(swipeFuncs.onSwipedRight).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipingRight).not.toHaveBeenCalled();
@@ -193,11 +192,11 @@ describe('Swipeable', () => {
     ));
 
     const touchHere = wrapper.find('span');
-    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100, preventDefault }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 125, preventDefault }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 150, preventDefault }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 175, preventDefault }));
-    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 100, y: 200, preventDefault }));
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100, preventDefault }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 125, preventDefault }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 150, preventDefault }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 175, preventDefault }));
+    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 200, preventDefault }));
 
     expect(onSwipedDown).toHaveBeenCalled();
 
@@ -217,11 +216,11 @@ describe('Swipeable', () => {
     ));
 
     const touchHere = wrapper.find('span');
-    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100, preventDefault }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 75, preventDefault }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 50, preventDefault }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 25, preventDefault }));
-    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 100, y: 5, preventDefault }));
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100, preventDefault }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 75, preventDefault }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 50, preventDefault }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 25, preventDefault }));
+    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 5, preventDefault }));
 
     expect(onSwipedUp).toHaveBeenCalled();
 
@@ -242,9 +241,9 @@ describe('Swipeable', () => {
     ));
 
     const touchHere = wrapper.find('span');
-    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100, preventDefault }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 50, preventDefault }));
-    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 100, y: 5, preventDefault }));
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100, preventDefault }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 50, preventDefault }));
+    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 5, preventDefault }));
 
     expect(onSwiping).toHaveBeenCalled();
 
@@ -265,9 +264,9 @@ describe('Swipeable', () => {
     ));
 
     const touchHere = wrapper.find('span');
-    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100, preventDefault }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 50, preventDefault }));
-    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 100, y: 5, preventDefault }));
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100, preventDefault }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 50, preventDefault }));
+    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 5, preventDefault }));
 
     expect(onSwiped).toHaveBeenCalled();
 
@@ -290,8 +289,8 @@ describe('Swipeable', () => {
     ));
 
     const touchHere = wrapper.find('span');
-    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 125, y: 100 }));
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 125, y: 100 }));
 
     // DISABLE swipeable "mid swipe action"
     wrapper.setProps({ disabled: true });
@@ -301,8 +300,8 @@ describe('Swipeable', () => {
     // check internal saved state
     expect(swipeableInstance.swipeable.swiping).toBe(false);
 
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 150, y: 100 }));
-    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 175, y: 100 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 150, y: 100 }));
+    touchHere.simulate('touchEnd', createTouchEventObject({ x: 175, y: 100 }));
 
     expect(onSwiping).toHaveBeenCalledTimes(1);
     expect(onSwipedLeft).not.toHaveBeenCalled();
@@ -363,10 +362,10 @@ describe('Swipeable', () => {
     ));
 
     const touchHere = wrapper.find('span');
-    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 145, y: 100 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 80, y: 100 }));
-    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 80, y: 100 }));
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 145, y: 100 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 80, y: 100 }));
+    touchHere.simulate('touchEnd', createTouchEventObject({ x: 80, y: 100 }));
 
     expect(onSwiping).toHaveBeenCalledTimes(2);
     expect(onSwipedLeft).toHaveBeenCalledTimes(1);
@@ -456,11 +455,11 @@ describe('Swipeable', () => {
     });
 
     it('handles swipe direction to the right', () => {
-      touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 125 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 150 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 175 }));
-      touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 100, y: 200 }));
+      touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 125 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 150 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 175 }));
+      touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 200 }));
 
       expect(swipeFuncs.onSwipedDown).not.toHaveBeenCalled();
       expect(swipeFuncs.onSwipingDown).not.toHaveBeenCalled();
@@ -479,11 +478,11 @@ describe('Swipeable', () => {
     });
 
     it('handles swipe direction to the left', () => {
-      touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 75 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 50 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 25 }));
-      touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 100, y: 0 }));
+      touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 75 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 50 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 25 }));
+      touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 0 }));
 
       expect(swipeFuncs.onSwipedDown).not.toHaveBeenCalled();
       expect(swipeFuncs.onSwipingDown).not.toHaveBeenCalled();
@@ -502,11 +501,11 @@ describe('Swipeable', () => {
     });
 
     it('handles swipe direction upwards', () => {
-      touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 125, y: 100 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 150, y: 100 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 175, y: 100 }));
-      touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 200, y: 100 }));
+      touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 125, y: 100 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 150, y: 100 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 175, y: 100 }));
+      touchHere.simulate('touchEnd', createTouchEventObject({ x: 200, y: 100 }));
 
       expect(swipeFuncs.onSwipedDown).not.toHaveBeenCalled();
       expect(swipeFuncs.onSwipingDown).not.toHaveBeenCalled();
@@ -525,11 +524,11 @@ describe('Swipeable', () => {
     });
 
     it('handles swipe direction downwards', () => {
-      touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 75, y: 100 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 50, y: 100 }));
-      touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 25, y: 100 }));
-      touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 0, y: 100 }));
+      touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 75, y: 100 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 50, y: 100 }));
+      touchHere.simulate('touchMove', createTouchEventObject({ x: 25, y: 100 }));
+      touchHere.simulate('touchEnd', createTouchEventObject({ x: 0, y: 100 }));
 
       expect(swipeFuncs.onSwipedDown).toHaveBeenCalled();
       expect(swipeFuncs.onSwipingDown).toHaveBeenCalledTimes(3);
@@ -565,11 +564,11 @@ describe('Swipeable', () => {
 
     const touchHere = wrapper.find('span');
 
-    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 125 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 150 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 175 }));
-    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 100, y: 200 }));
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 125 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 150 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 175 }));
+    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 200 }));
 
     expect(swipeFuncs.onSwipedDown).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipingDown).not.toHaveBeenCalled();
@@ -607,11 +606,11 @@ describe('Swipeable', () => {
 
     const touchHere = wrapper.find('span');
 
-    touchHere.simulate('touchStart', createStartTouchEventObject({ x: 100, y: 100 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 125 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 150 }));
-    touchHere.simulate('touchMove', createMoveTouchEventObject({ x: 100, y: 175 }));
-    touchHere.simulate('touchEnd', createMoveTouchEventObject({ x: 100, y: 200 }));
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 125 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 150 }));
+    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 175 }));
+    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 200 }));
 
     expect(swipeFuncs.onSwipedDown).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipingDown).not.toHaveBeenCalled();

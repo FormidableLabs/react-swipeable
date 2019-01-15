@@ -10,12 +10,6 @@ function getInitialState() {
   };
 }
 
-function getMovingPosition(e) {
-  // If not a touch, determine point from mouse coordinates
-  return 'changedTouches' in e
-    ? { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY }
-    : { x: e.clientX, y: e.clientY };
-}
 function getPosition(e) {
   // If not a touch, determine point from mouse coordinates
   return 'touches' in e
@@ -37,7 +31,7 @@ function rotateByAngle(pos, angle) {
 }
 
 function calculatePos(e, state) {
-  const { x, y } = rotateByAngle(getMovingPosition(e), state.rotationAngle);
+  const { x, y } = rotateByAngle(getPosition(e), state.rotationAngle);
 
   const deltaX = state.x - x;
   const deltaY = state.y - y;
