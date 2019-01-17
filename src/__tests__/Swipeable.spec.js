@@ -41,6 +41,14 @@ function mockListenerSetup(el) {
   return eventListenerMap;
 }
 
+function getMountedComponent(props) {
+  return mount((
+    <Swipeable {...props}>
+      <span>Touch Here</span>
+    </Swipeable>
+  ));
+}
+
 describe('Swipeable', () => {
   let origEventListener;
   let origRemoveEventListener;
@@ -73,24 +81,19 @@ describe('Swipeable', () => {
   it('handles touch events and fires correct props', () => {
     const swipeFuncs = getMockedSwipeFunctions();
     const onTap = jest.fn();
-    const wrapper = mount((
-      <Swipeable
-        {...swipeFuncs}
-        onTap={onTap}
-      >
-        <span>Touch Here</span>
-      </Swipeable>
-    ));
+    const wrapper = getMountedComponent({ ...swipeFuncs, onTap });
 
     const touchHere = wrapper.find('span');
     touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 125 }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 150 }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 175 }));
-    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 200 }));
+
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 175 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 200 }));
+    eventListenerMap.touchend(createTouchEventObject({}));
 
     expect(swipeFuncs.onSwipedDown).toHaveBeenCalled();
-    expect(swipeFuncs.onSwipingDown).toHaveBeenCalledTimes(3);
+    expect(swipeFuncs.onSwipingDown).toHaveBeenCalledTimes(4);
     expect(swipeFuncs.onSwipedUp).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipingUp).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled();
@@ -99,27 +102,15 @@ describe('Swipeable', () => {
     expect(swipeFuncs.onSwipingRight).not.toHaveBeenCalled();
     expect(onTap).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwiped).toHaveBeenCalled();
-    expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(3);
+    expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(4);
     wrapper.unmount();
   });
 
-  it.only('handles mouse events with trackMouse prop and fires correct props', () => {
+  it('handles mouse events with trackMouse prop and fires correct props', () => {
     const swipeFuncs = getMockedSwipeFunctions();
     const onMouseDown = jest.fn();
     const onTap = jest.fn();
-    const wrapper = mount((
-      <div>
-        <Swipeable
-          trackMouse={true}
-          onMouseDown={onMouseDown}
-          onTap={onTap}
-          {...swipeFuncs}
-        >
-          <span>Touch Here</span>
-        </Swipeable>
-        <div id="outsideElement" />
-      </div>
-    ));
+    const wrapper = getMountedComponent({ ...swipeFuncs, onMouseDown, trackMouse: true, onTap });
 
     const touchHere = wrapper.find('span');
     touchHere.simulate('mouseDown', createMouseEventObject({ x: 100, y: 100 }));
@@ -151,21 +142,16 @@ describe('Swipeable', () => {
   it('calls onTap', () => {
     const swipeFuncs = getMockedSwipeFunctions();
     const onTap = jest.fn();
-    const wrapper = mount((
-      <Swipeable
-        {...swipeFuncs}
-        onTap={onTap}
-      >
-        <span>Touch Here</span>
-      </Swipeable>
-    ));
+    const wrapper = getMountedComponent({ ...swipeFuncs, onTap });
 
     const touchHere = wrapper.find('span');
     // simulate what is probably a light tap,
     // meaning the user "swiped" just a little, but less than the delta
     touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 103, y: 100 }));
-    touchHere.simulate('touchEnd', createTouchEventObject({ x: 107, y: 100 }));
+
+    eventListenerMap.touchmove(createTouchEventObject({ x: 103, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 107, y: 100 }));
+    eventListenerMap.touchend({});
 
     expect(swipeFuncs.onSwipedRight).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipingRight).not.toHaveBeenCalled();
@@ -196,34 +182,32 @@ describe('Swipeable', () => {
 
     const touchHere = wrapper.find('span');
     touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100, preventDefault }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 125, preventDefault }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 150, preventDefault }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 175, preventDefault }));
-    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 200, preventDefault }));
+
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125, preventDefault }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150, preventDefault }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 175, preventDefault }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 200, preventDefault }));
+    eventListenerMap.touchend({ preventDefault });
 
     expect(onSwipedDown).toHaveBeenCalled();
 
-    expect(preventDefault).toHaveBeenCalledTimes(3);
+    expect(preventDefault).toHaveBeenCalledTimes(4);
     wrapper.unmount();
   });
 
   it('does not call preventDefault when false', () => {
     const onSwipedUp = jest.fn();
     const preventDefault = jest.fn();
-    const wrapper = mount((
-      <Swipeable
-        onSwipedUp={onSwipedUp}
-      >
-        <span>Touch Here</span>
-      </Swipeable>
-    ));
+    const wrapper = getMountedComponent({ onSwipedUp, preventDefaultTouchmoveEvent: false });
 
     const touchHere = wrapper.find('span');
-    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100, preventDefault }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 75, preventDefault }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 50, preventDefault }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 25, preventDefault }));
-    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 5, preventDefault }));
+    touchHere.simulate('touchstart', createTouchEventObject({ x: 100, y: 100, preventDefault }));
+
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 75, preventDefault }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 50, preventDefault }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 25, preventDefault }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 5, preventDefault }));
+    eventListenerMap.touchend({ preventDefault });
 
     expect(onSwipedUp).toHaveBeenCalled();
 
@@ -234,19 +218,14 @@ describe('Swipeable', () => {
   it('calls preventDefault when onSwiping is present', () => {
     const onSwiping = jest.fn();
     const preventDefault = jest.fn();
-    const wrapper = mount((
-      <Swipeable
-        onSwiping={onSwiping}
-        preventDefaultTouchmoveEvent={true}
-      >
-        <span>Touch Here</span>
-      </Swipeable>
-    ));
+    const wrapper = getMountedComponent({ onSwiping });
 
     const touchHere = wrapper.find('span');
     touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100, preventDefault }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 50, preventDefault }));
-    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 5, preventDefault }));
+
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 50, preventDefault }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 5, preventDefault }));
+    eventListenerMap.touchend({ preventDefault });
 
     expect(onSwiping).toHaveBeenCalled();
 
@@ -257,19 +236,14 @@ describe('Swipeable', () => {
   it('calls preventDefault when onSwiped is present', () => {
     const onSwiped = jest.fn();
     const preventDefault = jest.fn();
-    const wrapper = mount((
-      <Swipeable
-        onSwiped={onSwiped}
-        preventDefaultTouchmoveEvent={true}
-      >
-        <span>Touch Here</span>
-      </Swipeable>
-    ));
+    const wrapper = getMountedComponent({ onSwiped });
 
     const touchHere = wrapper.find('span');
     touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100, preventDefault }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 100, y: 50, preventDefault }));
-    touchHere.simulate('touchEnd', createTouchEventObject({ x: 100, y: 5, preventDefault }));
+
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 50, preventDefault }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 5, preventDefault }));
+    eventListenerMap.touchend({ preventDefault });
 
     expect(onSwiped).toHaveBeenCalled();
 
@@ -281,15 +255,7 @@ describe('Swipeable', () => {
     const onSwiping = jest.fn();
     const onSwipedRight = jest.fn();
     const onSwipedLeft = jest.fn();
-    const wrapper = mount((
-      <Swipeable
-        onSwiping={onSwiping}
-        onSwipedRight={onSwipedRight}
-        onSwipedLeft={onSwipedLeft}
-      >
-        <span>Touch Here</span>
-      </Swipeable>
-    ));
+    const wrapper = getMountedComponent({ onSwipedRight, onSwipedLeft, onSwiping });
 
     const touchHere = wrapper.find('span');
     touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));

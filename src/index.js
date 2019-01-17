@@ -63,9 +63,7 @@ function getHandlers(set, props) {
   };
 
   const onMove = (event) => {
-    console.log('moved1----');
     set((state) => {
-      console.log('moved1a----', state);
       if (!state.xy[0] || !state.xy[1] || event.touches && event.touches.length > 1) {
         return state;
       }
@@ -78,14 +76,12 @@ function getHandlers(set, props) {
       const time = Date.now() - state.start;
       const velocity = Math.sqrt(absX * absX + absY * absY) / time;
 
-      // if swipe is under delta and we have not already started to track a swipe: skip update
+      // if swipe is under delta and we have not started to track a swipe: skip update
       if (absX < props.delta && absY < props.delta && !state.swiping) return state;
 
       if (props.stopPropagation) event.stopPropagation();
 
       const newState = { event, deltaX, deltaY, absX, absY, velocity };
-
-      console.log('moved2----', newState);
 
       props.onSwiping && props.onSwiping(newState);
 
