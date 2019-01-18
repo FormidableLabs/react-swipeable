@@ -15,6 +15,7 @@ const defaultProps = {
 const initialState = {
   xy: [0, 0],
   swiping: false,
+  lastEventData: undefined,
   start: undefined,
 };
 const LEFT = 'Left';
@@ -41,8 +42,8 @@ function getDirection({ absX, absY, deltaX, deltaY }) {
 function rotateXYByAngle(pos, angle) {
   if (angle === 0) return pos;
   const angleInRadians = (Math.PI / 180) * angle;
-  const x = pos.x * Math.cos(angleInRadians) + pos.y * Math.sin(angleInRadians);
-  const y = pos.y * Math.cos(angleInRadians) - pos.x * Math.sin(angleInRadians);
+  const x = pos[0] * Math.cos(angleInRadians) + pos[1] * Math.sin(angleInRadians);
+  const y = pos[1] * Math.cos(angleInRadians) - pos[0] * Math.sin(angleInRadians);
   return [x, y];
 }
 
@@ -81,9 +82,9 @@ function getHandlers(set, props) {
 
       if (props.stopPropagation) event.stopPropagation();
 
-      const newState = { event, deltaX, deltaY, absX, absY, velocity };
+      const eventData = { event, deltaX, deltaY, absX, absY, velocity };
 
-      props.onSwiping && props.onSwiping(newState);
+      props.onSwiping && props.onSwiping(eventData);
 
       // track if a swipe is cancelable
       // so we can call prevenDefault if needed
@@ -92,16 +93,16 @@ function getHandlers(set, props) {
         cancelablePageSwipe = true;
       }
 
-      const dir = getDirection(newState);
+      const dir = getDirection(eventData);
 
       if (props[`onSwiping${dir}`] || props[`onSwiped${dir}`]) {
-        props[`onSwiping${dir}`] && props[`onSwiping${dir}`](newState);
+        props[`onSwiping${dir}`] && props[`onSwiping${dir}`](eventData);
         cancelablePageSwipe = true;
       }
 
       if (cancelablePageSwipe && props.preventDefaultTouchmoveEvent) event.preventDefault();
 
-      return { ...state, ...newState, swiping: true };
+      return { ...state, lastEventData: eventData, swiping: true };
     });
   };
 
@@ -112,13 +113,13 @@ function getHandlers(set, props) {
 
         const isFlick = state.velocity > props.flickThreshold;
 
-        const newState = { ...state, event, isFlick };
+        const eventData = { ...state.lastEventData, event, isFlick };
 
-        props.onSwiped && props.onSwiped(newState);
+        props.onSwiped && props.onSwiped(eventData);
 
-        const dir = getDirection(newState);
+        const dir = getDirection(eventData);
 
-        props[`onSwiped${dir}`] && props[`onSwiped${dir}`](newState);
+        props[`onSwiped${dir}`] && props[`onSwiped${dir}`](eventData);
       } else {
         props.onTap && props.onTap({ ...state, event });
       }
@@ -128,7 +129,6 @@ function getHandlers(set, props) {
 
   const onDown = (e) => {
     if (props.trackMouse) {
-      console.log('onDown---');
       document.addEventListener(mouseMove, onMove);
       document.addEventListener(mouseUp, onUp);
     }
