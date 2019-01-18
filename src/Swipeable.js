@@ -361,8 +361,8 @@ function Swipeable2(props) {
   const eventHandlers = useSwipeable2(props);
   return React.createElement(
     'div',
-    // {...eventHandlers},
-    {...eventHandlers()},
+    {...eventHandlers},
+    // {...eventHandlers()},
     props.children,
   );
 }

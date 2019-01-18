@@ -249,7 +249,7 @@ describe('Swipeable', () => {
     wrapper.unmount();
   });
 
-  it('disables swipeable with disabled prop using touch swipe', () => {
+  it.skip('disables swipeable with disabled prop using touch swipe', () => {
     const onSwiping = jest.fn();
     const onSwipedRight = jest.fn();
     const onSwipedLeft = jest.fn();
@@ -276,7 +276,7 @@ describe('Swipeable', () => {
     wrapper.unmount();
   });
 
-  it('disables swipeable with disabled prop using "mouse swipe"', () => {
+  it.skip('disables swipeable with disabled prop using "mouse swipe"', () => {
     const onSwiping = jest.fn();
     const onSwipedRight = jest.fn();
     const onSwipedLeft = jest.fn();
@@ -340,7 +340,7 @@ describe('Swipeable', () => {
     wrapper.unmount();
   });
 
-  it('should pass ref to the component via innerRef prop', () => {
+  it.skip('should pass ref to Swipeable\'s div', () => {
     const WrapperComp = class extends React.Component {
       render() {
         return <Swipeable innerRef={el => this.testRef = el} /> // eslint-disable-line
@@ -352,7 +352,7 @@ describe('Swipeable', () => {
     wrapper.unmount();
   });
 
-  it.only('Handle Rotation by 90 degree', () => {
+  it('Handle Rotation by 90 degree', () => {
     const swipeFuncsRight = getMockedSwipeFunctions();
 
     const wrapper = getMountedComponent({ ...swipeFuncsRight, rotationAngle: 90 });
@@ -373,86 +373,40 @@ describe('Swipeable', () => {
     eventListenerMap.touchend({});
     expectDir(swipeFuncsRight, 'Right');
 
-    // // check left
-    // const swipeFuncsLeft = getMockedSwipeFunctions();
-    // wrapper.setProps({ ...swipeFuncsLeft, rotationAngle: 90 });
-    // touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 75 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 50 }));
-    // eventListenerMap.touchend({});
-    // expectDir(swipeFuncsLeft, 'Left');
-
-    // // check up
-    // const swipeFuncsUp = getMockedSwipeFunctions();
-    // wrapper.setProps({ ...swipeFuncsUp, rotationAngle: 90 });
-    // touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 125, y: 100 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 150, y: 100 }));
-    // eventListenerMap.touchend({});
-    // expectDir(swipeFuncsUp, 'Up');
-
-    // // check down
-    // const swipeFuncsDown = getMockedSwipeFunctions();
-    // wrapper.setProps({ ...swipeFuncsDown, rotationAngle: 90 });
-    // touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 75, y: 100 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 50, y: 100 }));
-    // eventListenerMap.touchend({});
-    // expectDir(swipeFuncsDown, 'Down');
-
-    wrapper.unmount();
-  });
-
-  it('Handle Rotation by negative 90 degree', () => {
-    const swipeFuncs = getMockedSwipeFunctions();
-
-    const wrapper = getMountedComponent({ ...swipeFuncs, rotationAngle: -90 });
-    const touchHere = wrapper.find('span');
-
-    const expectDir = dir => Object.keys(swipeFuncs).forEach((s) => {
-      if (s.endsWith(dir) || s === 'onSwiped' || s === 'onSwiping') {
-        expect(swipeFuncs[s]).toHaveBeenCalled();
-      }
-      expect(swipeFuncs[s]).not.toHaveBeenCalled();
-    });
-
     // check left
+    const swipeFuncsLeft = getMockedSwipeFunctions();
+    wrapper.setProps({ ...swipeFuncsLeft, rotationAngle: 90 });
     touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
-    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125 }));
-    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 75 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 50 }));
     eventListenerMap.touchend({});
-    expectDir('Left');
+    expectDir(swipeFuncsLeft, 'Left');
+
+    // check up
+    const swipeFuncsUp = getMockedSwipeFunctions();
+    wrapper.setProps({ ...swipeFuncsUp, rotationAngle: 90 });
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 125, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 150, y: 100 }));
+    eventListenerMap.touchend({});
+    expectDir(swipeFuncsUp, 'Up');
+
+    // check down
+    const swipeFuncsDown = getMockedSwipeFunctions();
+    wrapper.setProps({ ...swipeFuncsDown, rotationAngle: 90 });
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 75, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 50, y: 100 }));
+    eventListenerMap.touchend({});
+    expectDir(swipeFuncsDown, 'Down');
 
     wrapper.unmount();
   });
 
-  it('Handle Rotation by more than 360 degree', () => {
-    const swipeFuncs = getMockedSwipeFunctions();
+  it('Handle "odd" rotations', () => {
+    const swipeFuncsNegativeRotation = getMockedSwipeFunctions();
 
-    const wrapper = getMountedComponent({ ...swipeFuncs, rotationAngle: 360 + 270 });
-    const touchHere = wrapper.find('span');
-
-    const expectDir = dir => Object.keys(swipeFuncs).forEach((s) => {
-      if (s.endsWith(dir) || s === 'onSwiped' || s === 'onSwiping') {
-        expect(swipeFuncs[s]).toHaveBeenCalled();
-      }
-      expect(swipeFuncs[s]).not.toHaveBeenCalled();
-    });
-
-    // check left
-    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
-    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125 }));
-    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150 }));
-    eventListenerMap.touchend({});
-    expectDir('Left');
-
-    wrapper.unmount();
-  });
-
-  it('Handle Rotation that changes so keep the direction the same', () => {
-    const swipeFuncsRight = getMockedSwipeFunctions();
-
-    const wrapper = getMountedComponent({ ...swipeFuncsRight });
+    const wrapper = getMountedComponent({ ...swipeFuncsNegativeRotation, rotationAngle: -90 });
     const touchHere = wrapper.find('span');
 
     const expectDir = (sf, dir) => Object.keys(sf).forEach((s) => {
@@ -463,37 +417,72 @@ describe('Swipeable', () => {
       }
     });
 
-    // check 0
+    // check -90
     touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
     eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125 }));
     eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150 }));
     eventListenerMap.touchend({});
-    expectDir(swipeFuncsRight, 'Right');
+    expectDir(swipeFuncsNegativeRotation, 'Left');
 
-    // // check 90
-    // wrapper.setProps({ rotationAngle: 90 });
-    // touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 75 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 50 }));
-    // eventListenerMap.touchend({});
-    // expectDir(swipeFuncsRight, 'Right');
+    // check 360 + 270
+    const swipeFuncsLargeRotation = getMockedSwipeFunctions();
+    wrapper.setProps({ ...swipeFuncsLargeRotation, rotationAngle: 360 + 270 });
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150 }));
+    eventListenerMap.touchend({});
+    expectDir(swipeFuncsLargeRotation, 'Left');
 
-    // // check 180
-    // const swipeFuncsUp = getMockedSwipeFunctions();
-    // wrapper.setProps({ rotationAngle: 180 });
-    // touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 125, y: 100 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 150, y: 100 }));
-    // eventListenerMap.touchend({});
-    // expectDir(swipeFuncsRight, 'Right');
+    wrapper.unmount();
+  });
 
-    // // check 270
-    // wrapper.setProps({ rotationAngle: 270 });
-    // touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 75, y: 100 }));
-    // eventListenerMap.touchmove(createTouchEventObject({ x: 50, y: 100 }));
-    // eventListenerMap.touchend({});
-    // expectDir(swipeFuncsRight, 'Right');
+  it('Handle Rotation that changes so keep the direction the same', () => {
+    const swipeFuncs = getMockedSwipeFunctions();
+
+    const wrapper = getMountedComponent({ ...swipeFuncs });
+    const touchHere = wrapper.find('span');
+
+    // check 0
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 125, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 150, y: 100 }));
+    eventListenerMap.touchend({});
+    expect(swipeFuncs.onSwiped).toHaveBeenCalledTimes(1);
+    expect(swipeFuncs.onSwipedRight).toHaveBeenCalledTimes(1);
+
+    // check 90
+    wrapper.setProps({ rotationAngle: 90 });
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150 }));
+    eventListenerMap.touchend({});
+    expect(swipeFuncs.onSwiped).toHaveBeenCalledTimes(2);
+    expect(swipeFuncs.onSwipedRight).toHaveBeenCalledTimes(2);
+
+    // check 180
+    wrapper.setProps({ rotationAngle: 180 });
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 75, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 50, y: 100 }));
+    eventListenerMap.touchend({});
+    expect(swipeFuncs.onSwiped).toHaveBeenCalledTimes(3);
+    expect(swipeFuncs.onSwipedRight).toHaveBeenCalledTimes(3);
+
+    // check 270
+    wrapper.setProps({ rotationAngle: 270 });
+    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 75 }));
+    eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 50 }));
+    eventListenerMap.touchend({});
+    expect(swipeFuncs.onSwiped).toHaveBeenCalledTimes(4);
+    expect(swipeFuncs.onSwipedRight).toHaveBeenCalledTimes(4);
+
+    expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(8);
+
+    ['Left', 'Up', 'Down'].forEach((dir) => {
+      expect(swipeFuncs[`onSwiped${dir}`]).not.toHaveBeenCalled();
+      expect(swipeFuncs[`onSwiping${dir}`]).not.toHaveBeenCalled();
+    });
 
     wrapper.unmount();
   });

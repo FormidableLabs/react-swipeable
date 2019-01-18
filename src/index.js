@@ -168,8 +168,10 @@ function getHandlers(set, props) {
 
 export default function useSwipeable(props) {
   const transientState = React.useRef(initialState);
-  const [spread] = React.useState(() => () =>
-    getHandlers(cb => (transientState.current = cb(transientState.current)), { ...defaultProps, ...props }),
+  const [spread] = React.useState(() => currentProps =>
+    getHandlers(cb => (transientState.current = cb(transientState.current)),
+      { ...defaultProps, ...currentProps },
+    ),
   );
-  return spread;
+  return spread(props);
 }
