@@ -3,6 +3,7 @@ const React = require('react');
 const PropTypes = require('prop-types');
 const DetectPassiveEvents = require('detect-passive-events').default;
 const useSwipeable = require('./hook').default;
+const useSwipeable2 = require('./index').default;
 
 function getInitialState() {
   return {
@@ -356,10 +357,12 @@ Swipeable.defaultProps = {
 };
 
 function Swipeable2(props) {
-  const eventHandlers = useSwipeable(props);
+  // const eventHandlers = useSwipeable(props);
+  const eventHandlers = useSwipeable2(props);
   return React.createElement(
     'div',
     {...eventHandlers},
+    // {...eventHandlers()},
     props.children,
   );
 }
