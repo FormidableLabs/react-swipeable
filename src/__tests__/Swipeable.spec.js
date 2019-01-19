@@ -2,7 +2,7 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Swipeable from '../Swipeable';
+import { Swipeable } from '../index';
 import {
   createTouchEventObject,
   createMouseEventObject,
@@ -249,66 +249,6 @@ describe('Swipeable', () => {
     wrapper.unmount();
   });
 
-  it.skip('disables swipeable with disabled prop using touch swipe', () => {
-    const onSwiping = jest.fn();
-    const onSwipedRight = jest.fn();
-    const onSwipedLeft = jest.fn();
-    const wrapper = getMountedComponent({ onSwipedRight, onSwipedLeft, onSwiping });
-
-    const touchHere = wrapper.find('span');
-    touchHere.simulate('touchStart', createTouchEventObject({ x: 100, y: 100 }));
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 125, y: 100 }));
-
-    // DISABLE swipeable "mid swipe action"
-    wrapper.setProps({ disabled: true });
-
-    // no longer tracking a 'swipe'
-    const swipeableInstance = wrapper.instance();
-    // check internal saved state
-    expect(swipeableInstance.swipeable.swiping).toBe(false);
-
-    touchHere.simulate('touchMove', createTouchEventObject({ x: 150, y: 100 }));
-    touchHere.simulate('touchEnd', createTouchEventObject({ x: 175, y: 100 }));
-
-    expect(onSwiping).toHaveBeenCalledTimes(1);
-    expect(onSwipedLeft).not.toHaveBeenCalled();
-    expect(onSwipedRight).not.toHaveBeenCalled();
-    wrapper.unmount();
-  });
-
-  it.skip('disables swipeable with disabled prop using "mouse swipe"', () => {
-    const onSwiping = jest.fn();
-    const onSwipedRight = jest.fn();
-    const onSwipedLeft = jest.fn();
-    const wrapper = getMountedComponent({
-      onSwiping,
-      onSwipedRight,
-      onSwipedLeft,
-      trackMouse: true,
-    });
-
-    const touchHere = wrapper.find('span');
-    touchHere.simulate('mouseDown', createMouseEventObject({ x: 100, y: 100 }));
-
-    eventListenerMap.mousemove(createMouseEventObject({ x: 125, y: 100 }));
-
-    // DISABLE swipeable "mid swipe action"
-    wrapper.setProps({ disabled: true });
-
-    // no longer tracking a 'swipe'
-    const swipeableInstance = wrapper.instance();
-    // check internal saved state
-    expect(swipeableInstance.swipeable.swiping).toBe(false);
-
-    expect(eventListenerMap.mousemove).toBe(undefined);
-    expect(eventListenerMap.mouseup).toBe(undefined);
-
-    expect(onSwiping).toHaveBeenCalledTimes(1);
-    expect(onSwipedLeft).not.toHaveBeenCalled();
-    expect(onSwipedRight).not.toHaveBeenCalled();
-    wrapper.unmount();
-  });
-
   it('does not re-check delta when swiping already in progress', () => {
     const onSwiping = jest.fn();
     const onSwipedRight = jest.fn();
@@ -340,15 +280,19 @@ describe('Swipeable', () => {
     wrapper.unmount();
   });
 
-  it.skip('should pass ref to Swipeable\'s div', () => {
+  it('should pass ref to Swipeable\'s div', () => {
     const WrapperComp = class extends React.Component {
+      constructor(props) {
+        super(props);
+        this.testRef = React.createRef();
+      }
       render() {
-        return <Swipeable innerRef={el => this.testRef = el} /> // eslint-disable-line
+        return <Swipeable innerRef={this.testRef} /> // eslint-disable-line
       }
     };
     const wrapper = mount((<WrapperComp />));
     const swipeableDiv = wrapper.find('div').instance();
-    expect(wrapper.instance().testRef).toBe(swipeableDiv);
+    expect(wrapper.instance().testRef.current).toBe(swipeableDiv);
     wrapper.unmount();
   });
 

@@ -1,13 +1,13 @@
 /* global document */
 import React from 'react';
 
+const passive = { passive: false };
 const defaultProps = {
-  eventListenerOptions: { passive: false },
+  eventListenerOptions: passive,
   preventDefaultTouchmoveEvent: true,
+  stopPropagation: false,
   flickThreshold: 0.6,
   delta: 10,
-  stopPropagation: false,
-  disabled: false,
   rotationAngle: 0,
   trackMouse: false,
   trackTouch: true,
@@ -166,7 +166,7 @@ function getHandlers(set, props) {
   return output;
 }
 
-export default function useSwipeable(props) {
+export function useSwipeable(props) {
   const transientState = React.useRef(initialState);
   const [spread] = React.useState(() => currentProps =>
     getHandlers(cb => (transientState.current = cb(transientState.current)),
@@ -175,3 +175,25 @@ export default function useSwipeable(props) {
   );
   return spread(props);
 }
+
+export class Swipeable extends React.Component {
+  // static propTypes = {}
+  // static defaultProps = defaultProps
+
+  constructor(props) {
+    super(props);
+    this._state = initialState;
+    this._set = cb => (this._state = cb(this._state));
+  }
+
+  render() {
+    const handlers = getHandlers(this._set, this.props);
+    const { className, style, nodeName = 'div', innerRef } = this.props;
+    return React.createElement(
+      nodeName,
+      { ...handlers, className, style, ref: innerRef },
+      this.props.children,
+    );
+  }
+}
+Swipeable.defaultProps = defaultProps;
