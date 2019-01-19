@@ -4,7 +4,7 @@
   "description": "Swipe and touch handlers for react",
   "main": "lib/Swipeable.js",
   "scripts": {
-    "test": "npm run test:unit && npm run lint",
+    "test": "npm run test:unit",
     "test:unit": "jest",
     "lint": "eslint .",
     "build:lib": "babel src --out-dir lib --ignore __tests__,__mocks__ --no-comments",
