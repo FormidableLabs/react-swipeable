@@ -2,17 +2,19 @@
   "name": "react-swipeable",
   "version": "4.3.1",
   "description": "Swipe and touch handlers for react",
-  "main": "lib/Swipeable.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "npm run test:unit",
-    "test:unit": "jest",
-    "lint": "eslint .",
+    "build:examples": "cd ./examples && npm install && npm run build",
     "build:lib": "babel src --out-dir lib --ignore __tests__,__mocks__ --no-comments",
     "build:publish:examples": "npm run build:examples && rimraf examples/node_modules && gh-pages -d examples",
-    "build:examples": "cd ./examples && npm install && npm run build",
-    "start:examples": "cd ./examples && npm install && npm run start",
     "clean": "rimraf lib",
-    "prepare": "npm run clean && npm run build:lib"
+    "format": "prettier --write '{src,__{tests,mocks}__}/**/*.js'",
+    "lint": "eslint .",
+    "prepare": "npm run clean && npm run build:lib",
+    "pretest": "npm run lint",
+    "start:examples": "cd ./examples && npm install && npm run start",
+    "test": "npm run test:unit",
+    "test:unit": "jest"
   },
   "jest": {
     "testPathIgnorePatterns": [
@@ -49,27 +51,28 @@
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.3.17",
+    "babel-eslint": "^10.0.1",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
     "babel-preset-es2015-loose": "^6.1.4",
     "babel-preset-react": "^6.3.13",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
-    "eslint": "^3.12.2",
-    "eslint-config-airbnb": "^13.0.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.8.0",
+    "eslint": "^5.9.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-react": "^7.11.1",
     "gh-pages": "^1.0.0",
     "jest": "^23.6.0",
+    "prettier": "1.15.3",
     "react": "16.8.0-alpha.0",
     "react-dom": "^16.8.0-alpha.0",
     "rimraf": "^2.6.1"
   },
   "dependencies": {
-    "detect-passive-events": "^1.0.4",
     "prop-types": "^15.5.8"
   },
   "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0-0 || ^16.0.0-0"
+    "react": "^16.0.0-0"
   }
 }
