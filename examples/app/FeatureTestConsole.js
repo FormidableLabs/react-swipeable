@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Swipeable from '../../src/Swipeable.js';
+import { Swipeable } from '../../src/index.js';
 import { RowSimpleCheckbox } from './TableComponents.js';
 import SwipeableHook from './SwipeableHook.js';
 
@@ -184,6 +184,7 @@ export default class Main extends Component {
           </Swipeable>
           <SwipeableHook
             className="callout"
+            trackMouse={trackMouse}
             {...swipeableDirProps}>
               <div onTouchStart={()=>this.resetState()}>
                 <h5>Swipe hook inside here to test...</h5>
