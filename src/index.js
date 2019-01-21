@@ -1,5 +1,6 @@
 /* global document */
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const passive = { passive: false }
 const defaultProps = {
@@ -192,7 +193,32 @@ export function useSwipeable(props) {
 }
 
 export class Swipeable extends React.Component {
-  // static propTypes = {}
+  static propTypes = {
+    onSwiped: PropTypes.func,
+    onSwiping: PropTypes.func,
+    onSwipingUp: PropTypes.func,
+    onSwipingRight: PropTypes.func,
+    onSwipingDown: PropTypes.func,
+    onSwipingLeft: PropTypes.func,
+    onSwipedUp: PropTypes.func,
+    onSwipedRight: PropTypes.func,
+    onSwipedDown: PropTypes.func,
+    onSwipedLeft: PropTypes.func,
+    onTap: PropTypes.func,
+    flickThreshold: PropTypes.number,
+    delta: PropTypes.number,
+    preventDefaultTouchmoveEvent: PropTypes.bool,
+    stopPropagation: PropTypes.bool,
+    nodeName: PropTypes.string,
+    trackMouse: PropTypes.bool,
+    trackTouch: PropTypes.bool,
+    innerRef: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.shape({ current: PropTypes.any })
+    ]),
+    rotationAngle: PropTypes.number
+  }
+
   static defaultProps = defaultProps
 
   constructor(props) {
