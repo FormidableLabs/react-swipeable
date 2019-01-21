@@ -30,8 +30,11 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ["react"],
-            plugins: ["transform-object-rest-spread"]
+            presets: ["@babel/preset-env", "@babel/react"],
+            plugins: [
+              "@babel/plugin-proposal-class-properties",
+              "@babel/plugin-proposal-object-rest-spread"
+            ]
           }
         }
       }

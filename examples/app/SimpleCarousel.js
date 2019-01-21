@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Swipeable from '../../src/Swipeable.js';
+import { Swipeable } from '../../src/index.js';
 
 const IMG_1 = `https://unsplash.it/342/249`;
 const IMG_2 = `https://unsplash.it/342/250`;

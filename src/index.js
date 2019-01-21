@@ -193,7 +193,7 @@ export function useSwipeable(props) {
 
 export class Swipeable extends React.Component {
   // static propTypes = {}
-  // static defaultProps = defaultProps
+  static defaultProps = defaultProps
 
   constructor(props) {
     super(props)
@@ -211,4 +211,3 @@ export class Swipeable extends React.Component {
     )
   }
 }
-Swipeable.defaultProps = defaultProps
