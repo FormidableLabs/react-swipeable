@@ -1,25 +1,19 @@
 function createClientXYObject(x, y) {
   return { clientX: x, clientY: y }
 }
-
-export function createTouchEventObject({
-  x = 0,
-  y = 0,
-  preventDefault = () => {}
-}) {
+const preventDefault = () => {}
+export function createTouchEventObject({ x, y, ...rest }) {
   return {
     touches: [createClientXYObject(x, y)],
-    preventDefault
+    preventDefault,
+    ...rest
   }
 }
 
-export function createMouseEventObject({
-  x = 0,
-  y = 0,
-  preventDefault = () => {}
-}) {
+export function createMouseEventObject({ x, y, ...rest }) {
   return {
     ...createClientXYObject(x, y),
-    preventDefault
+    preventDefault,
+    ...rest
   }
 }
