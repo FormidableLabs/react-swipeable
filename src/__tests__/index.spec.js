@@ -534,7 +534,8 @@ describe('Swipeable Specific', () => {
   })
 
   it("should pass ref to Swipeable's div", () => {
-    const WrapperComp = class extends React.Component { // eslint-disable-line
+    const WrapperComp = class extends React.Component {
+      static displayName = 'WrapperComp'
       constructor(props) {
         super(props)
         this.testRef = React.createRef()

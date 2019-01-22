@@ -25,7 +25,7 @@
     "react/jsx-no-undef": 2,
     "react/jsx-wrap-multilines": 2,
     "react/no-string-refs": 0,
-    "react/prop-types": 1
+    "react/prop-types": [1, {"ignore": ["className", "children", "style"]}]
   },
   "plugins": [
     "import",
