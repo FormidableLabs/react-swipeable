@@ -4,8 +4,8 @@ import Enzyme from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import { Swipeable, useSwipeable, LEFT, RIGHT, UP, DOWN } from '../index'
 import {
-  createTouchEventObject,
-  createMouseEventObject
+  createTouchEventObject as cte,
+  createMouseEventObject as cme
 } from './helpers/events'
 
 const { mount } = Enzyme
@@ -103,22 +103,34 @@ function setupGetMountedComponent(type) {
       const touchHere = wrapper.find('span')
       touchHere.simulate(
         'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
+        cte({ x: 100, y: 100, timeStamp: 8077.299999946263 })
       )
 
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 175 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 200 }))
-      eventListenerMap.touchend(createTouchEventObject({}))
+      eventListenerMap.touchmove(
+        cte({ x: 100, y: 125, timeStamp: 8100.999999966007 })
+      )
+      eventListenerMap.touchmove(
+        cte({ x: 100, y: 150, timeStamp: 8116.899999964517 })
+      )
+      eventListenerMap.touchmove(
+        cte({ x: 100, y: 175, timeStamp: 8122.799999953713 })
+      )
+      eventListenerMap.touchmove(
+        cte({ x: 100, y: 200, timeStamp: 8130.199999955433 })
+      )
+      eventListenerMap.touchend(cte({}))
 
       expect(swipeFuncs.onSwipedDown).toHaveBeenCalled()
       expect(swipeFuncs.onSwipedUp).not.toHaveBeenCalled()
       expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled()
       expect(swipeFuncs.onSwipedRight).not.toHaveBeenCalled()
-      expect(swipeFuncs.onSwiped).toHaveBeenCalled()
-      expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(4)
-      expectSwipingDir(swipeFuncs.onSwiping, DOWN)
+      expect(swipeFuncs.onSwiped.mock.calls).toMatchSnapshot(
+        `${type} onSwiped trackTouch`
+      )
+      expect(swipeFuncs.onSwiping.mock.calls).toMatchSnapshot(
+        `${type} onSwiping trackTouch`
+      )
+
       wrapper.unmount()
     })
 
@@ -132,22 +144,33 @@ function setupGetMountedComponent(type) {
       const touchHere = wrapper.find('span')
       touchHere.simulate(
         'mouseDown',
-        createMouseEventObject({ x: 100, y: 100 })
+        cme({ x: 100, y: 100, timeStamp: 1374809.499999974 })
       )
 
-      eventListenerMap.mousemove(createMouseEventObject({ x: 125, y: 100 }))
-      eventListenerMap.mousemove(createMouseEventObject({ x: 150, y: 100 }))
-      eventListenerMap.mousemove(createMouseEventObject({ x: 175, y: 100 }))
-      eventListenerMap.mousemove(createMouseEventObject({ x: 200, y: 100 }))
+      eventListenerMap.mousemove(
+        cme({ x: 125, y: 100, timeStamp: 1374825.199999963 })
+      )
+      eventListenerMap.mousemove(
+        cme({ x: 150, y: 100, timeStamp: 1374841.3999999757 })
+      )
+      eventListenerMap.mousemove(
+        cme({ x: 175, y: 100, timeStamp: 1374857.399999979 })
+      )
+      eventListenerMap.mousemove(
+        cme({ x: 200, y: 100, timeStamp: 1374873.499999987 })
+      )
       eventListenerMap.mouseup({})
 
       expect(swipeFuncs.onSwipedRight).toHaveBeenCalled()
       expect(swipeFuncs.onSwipedUp).not.toHaveBeenCalled()
       expect(swipeFuncs.onSwipedDown).not.toHaveBeenCalled()
       expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled()
-      expect(swipeFuncs.onSwiped).toHaveBeenCalled()
-      expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(4)
-      expectSwipingDir(swipeFuncs.onSwiping, RIGHT)
+      expect(swipeFuncs.onSwiped.mock.calls).toMatchSnapshot(
+        `${type} onSwiped trackMouse`
+      )
+      expect(swipeFuncs.onSwiping.mock.calls).toMatchSnapshot(
+        `${type} onSwiping trackMouse`
+      )
 
       wrapper.unmount()
     })
@@ -163,23 +186,12 @@ function setupGetMountedComponent(type) {
       })
 
       const touchHere = wrapper.find('span')
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100, ...e })
-      )
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100, ...e }))
 
-      eventListenerMap.touchmove(
-        createTouchEventObject({ x: 100, y: 125, ...e })
-      )
-      eventListenerMap.touchmove(
-        createTouchEventObject({ x: 100, y: 150, ...e })
-      )
-      eventListenerMap.touchmove(
-        createTouchEventObject({ x: 100, y: 175, ...e })
-      )
-      eventListenerMap.touchmove(
-        createTouchEventObject({ x: 100, y: 200, ...e })
-      )
+      eventListenerMap.touchmove(cte({ x: 100, y: 125, ...e }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 150, ...e }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 175, ...e }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 200, ...e }))
       eventListenerMap.touchend({ ...e })
 
       expect(onSwipedDown).toHaveBeenCalled()
@@ -200,21 +212,12 @@ function setupGetMountedComponent(type) {
       })
 
       const touchHere = wrapper.find('span')
-      touchHere.simulate(
-        'touchstart',
-        createTouchEventObject({ x: 100, y: 100, ...e })
-      )
+      touchHere.simulate('touchstart', cte({ x: 100, y: 100, ...e }))
 
-      eventListenerMap.touchmove(
-        createTouchEventObject({ x: 100, y: 75, ...e })
-      )
-      eventListenerMap.touchmove(
-        createTouchEventObject({ x: 100, y: 50, ...e })
-      )
-      eventListenerMap.touchmove(
-        createTouchEventObject({ x: 100, y: 25, ...e })
-      )
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 5, ...e }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 75, ...e }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 50, ...e }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 25, ...e }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 5, ...e }))
       eventListenerMap.touchend({ ...e })
 
       expect(onSwipedUp).toHaveBeenCalled()
@@ -230,17 +233,10 @@ function setupGetMountedComponent(type) {
       const wrapper = getMountedComponent({ onSwiping })
 
       const touchHere = wrapper.find('span')
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100, preventDefault })
-      )
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100, preventDefault }))
 
-      eventListenerMap.touchmove(
-        createTouchEventObject({ x: 100, y: 50, preventDefault })
-      )
-      eventListenerMap.touchmove(
-        createTouchEventObject({ x: 100, y: 5, preventDefault })
-      )
+      eventListenerMap.touchmove(cte({ x: 100, y: 50, preventDefault }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 5, preventDefault }))
       eventListenerMap.touchend({ preventDefault })
 
       expect(onSwiping).toHaveBeenCalled()
@@ -255,17 +251,10 @@ function setupGetMountedComponent(type) {
       const wrapper = getMountedComponent({ onSwiped })
 
       const touchHere = wrapper.find('span')
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100, preventDefault })
-      )
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100, preventDefault }))
 
-      eventListenerMap.touchmove(
-        createTouchEventObject({ x: 100, y: 50, preventDefault })
-      )
-      eventListenerMap.touchmove(
-        createTouchEventObject({ x: 100, y: 5, preventDefault })
-      )
+      eventListenerMap.touchmove(cte({ x: 100, y: 50, preventDefault }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 5, preventDefault }))
       eventListenerMap.touchend({ preventDefault })
 
       expect(onSwiped).toHaveBeenCalled()
@@ -287,13 +276,10 @@ function setupGetMountedComponent(type) {
       })
 
       const touchHere = wrapper.find('span')
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
-      )
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
 
-      eventListenerMap.touchmove(createTouchEventObject({ x: 145, y: 100 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 80, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 145, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 80, y: 100 }))
       eventListenerMap.touchend({})
 
       expect(onSwiping).toHaveBeenCalledTimes(2)
@@ -314,48 +300,36 @@ function setupGetMountedComponent(type) {
       const touchHere = wrapper.find('span')
 
       // check right
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
-      )
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150 }))
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 125 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 150 }))
       eventListenerMap.touchend({})
       expectSwipeFuncsDir(swipeFuncsRight, RIGHT)
 
       // check left
       const swipeFuncsLeft = getMockedSwipeFunctions()
       wrapper.setProps({ ...swipeFuncsLeft, rotationAngle: 90 })
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
-      )
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 75 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 50 }))
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 75 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 50 }))
       eventListenerMap.touchend({})
       expectSwipeFuncsDir(swipeFuncsLeft, LEFT)
 
       // check up
       const swipeFuncsUp = getMockedSwipeFunctions()
       wrapper.setProps({ ...swipeFuncsUp, rotationAngle: 90 })
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
-      )
-      eventListenerMap.touchmove(createTouchEventObject({ x: 125, y: 100 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 150, y: 100 }))
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 125, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 150, y: 100 }))
       eventListenerMap.touchend({})
       expectSwipeFuncsDir(swipeFuncsUp, UP)
 
       // check down
       const swipeFuncsDown = getMockedSwipeFunctions()
       wrapper.setProps({ ...swipeFuncsDown, rotationAngle: 90 })
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
-      )
-      eventListenerMap.touchmove(createTouchEventObject({ x: 75, y: 100 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 50, y: 100 }))
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 75, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 50, y: 100 }))
       eventListenerMap.touchend({})
       expectSwipeFuncsDir(swipeFuncsDown, DOWN)
 
@@ -372,24 +346,18 @@ function setupGetMountedComponent(type) {
       const touchHere = wrapper.find('span')
 
       // check -90
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
-      )
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150 }))
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 125 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 150 }))
       eventListenerMap.touchend({})
       expectSwipeFuncsDir(swipeFuncsNegativeRotation, 'Left')
 
       // check 360 + 270
       const swipeFuncsLargeRotation = getMockedSwipeFunctions()
       wrapper.setProps({ ...swipeFuncsLargeRotation, rotationAngle: 360 + 270 })
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
-      )
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150 }))
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 125 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 150 }))
       eventListenerMap.touchend({})
       expectSwipeFuncsDir(swipeFuncsLargeRotation, 'Left')
 
@@ -403,54 +371,42 @@ function setupGetMountedComponent(type) {
       const touchHere = wrapper.find('span')
 
       // check 0
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
-      )
-      eventListenerMap.touchmove(createTouchEventObject({ x: 125, y: 100 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 150, y: 100 }))
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 125, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 150, y: 100 }))
       eventListenerMap.touchend({})
       expect(swipeFuncs.onSwiped).toHaveBeenCalledTimes(1)
       expect(swipeFuncs.onSwipedRight).toHaveBeenCalledTimes(1)
 
       // check 90
       wrapper.setProps({ rotationAngle: 90 })
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
-      )
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 125 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 150 }))
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 125 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 150 }))
       eventListenerMap.touchend({})
       expect(swipeFuncs.onSwiped).toHaveBeenCalledTimes(2)
       expect(swipeFuncs.onSwipedRight).toHaveBeenCalledTimes(2)
 
       // check 180
       wrapper.setProps({ rotationAngle: 180 })
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
-      )
-      eventListenerMap.touchmove(createTouchEventObject({ x: 75, y: 100 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 50, y: 100 }))
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 75, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 50, y: 100 }))
       eventListenerMap.touchend({})
       expect(swipeFuncs.onSwiped).toHaveBeenCalledTimes(3)
       expect(swipeFuncs.onSwipedRight).toHaveBeenCalledTimes(3)
 
       // check 270
       wrapper.setProps({ rotationAngle: 270 })
-      touchHere.simulate(
-        'touchStart',
-        createTouchEventObject({ x: 100, y: 100 })
-      )
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 75 }))
-      eventListenerMap.touchmove(createTouchEventObject({ x: 100, y: 50 }))
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 75 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 50 }))
       eventListenerMap.touchend({})
       expect(swipeFuncs.onSwiped).toHaveBeenCalledTimes(4)
       expect(swipeFuncs.onSwipedRight).toHaveBeenCalledTimes(4)
 
       expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(8)
-      ;['Left', 'Up', 'Down'].forEach(dir => {
+      ;[LEFT, UP, DOWN].forEach(dir => {
         expect(swipeFuncs[`onSwiped${dir}`]).not.toHaveBeenCalled()
       })
 

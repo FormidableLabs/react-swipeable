@@ -57,7 +57,7 @@ function getHandlers(set, props) {
     set(() => {
       const { clientX, clientY } = event.touches ? event.touches[0] : event
       const xy = rotateXYByAngle([clientX, clientY], props.rotationAngle)
-      return { ...initialState, xy, start: Date.now() }
+      return { ...initialState, xy, start: event.timeStamp || 0 }
     })
   }
 
@@ -76,22 +76,20 @@ function getHandlers(set, props) {
       const deltaY = state.xy[1] - y
       const absX = Math.abs(deltaX)
       const absY = Math.abs(deltaY)
-      const time = Date.now() - state.start
-      const velocity = Math.sqrt(absX * absX + absY * absY) / time
+      const time = (event.timeStamp || 0) - state.start
+      const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1)
 
       // if swipe is under delta and we have not started to track a swipe: skip update
       if (absX < props.delta && absY < props.delta && !state.swiping)
         return state
-
-      if (props.stopPropagation) event.stopPropagation()
 
       const dir = getDirection(absX, absY, deltaX, deltaY)
       const eventData = { event, absX, absY, deltaX, deltaY, velocity, dir }
 
       props.onSwiping && props.onSwiping(eventData)
 
-      // track if a swipe is cancelable
-      // so we can call prevenDefault if needed
+      // track if a swipe is cancelable(handler for swiping or swiped(dir) exists)
+      // so we can call preventDefault if needed
       let cancelablePageSwipe = false
       if (props.onSwiping || props.onSwiped || props[`onSwiped${dir}`]) {
         cancelablePageSwipe = true
@@ -99,6 +97,7 @@ function getHandlers(set, props) {
 
       if (cancelablePageSwipe && props.preventDefaultTouchmoveEvent)
         event.preventDefault()
+      if (props.stopPropagation) event.stopPropagation()
 
       return { ...state, lastEventData: eventData, swiping: true }
     })
