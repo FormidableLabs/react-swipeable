@@ -7,7 +7,6 @@ const defaultProps = {
   eventListenerOptions: passive,
   preventDefaultTouchmoveEvent: true,
   stopPropagation: false,
-  flickThreshold: 0.6,
   delta: 10,
   rotationAngle: 0,
   trackMouse: false,
@@ -19,16 +18,16 @@ const initialState = {
   lastEventData: undefined,
   start: undefined
 }
-const LEFT = 'Left'
-const RIGHT = 'Right'
-const UP = 'Up'
-const DOWN = 'Down'
+export const LEFT = 'Left'
+export const RIGHT = 'Right'
+export const UP = 'Up'
+export const DOWN = 'Down'
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
 const mouseMove = 'mousemove'
 const mouseUp = 'mouseup'
 
-function getDirection({ absX, absY, deltaX, deltaY }) {
+function getDirection(absX, absY, deltaX, deltaY) {
   if (absX > absY) {
     if (deltaX > 0) {
       return LEFT
@@ -56,15 +55,9 @@ function getHandlers(set, props) {
     if (event.touches && event.touches.length > 1) return
 
     set(() => {
-      const { clientX: x, clientY: y } = event.touches
-        ? event.touches[0]
-        : event
-      const xy = rotateXYByAngle([x, y], props.rotationAngle)
-      return {
-        ...initialState,
-        xy,
-        start: Date.now()
-      }
+      const { clientX, clientY } = event.touches ? event.touches[0] : event
+      const xy = rotateXYByAngle([clientX, clientY], props.rotationAngle)
+      return { ...initialState, xy, start: event.timeStamp || 0 }
     })
   }
 
@@ -83,35 +76,28 @@ function getHandlers(set, props) {
       const deltaY = state.xy[1] - y
       const absX = Math.abs(deltaX)
       const absY = Math.abs(deltaY)
-      const time = Date.now() - state.start
-      const velocity = Math.sqrt(absX * absX + absY * absY) / time
+      const time = (event.timeStamp || 0) - state.start
+      const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1)
 
       // if swipe is under delta and we have not started to track a swipe: skip update
       if (absX < props.delta && absY < props.delta && !state.swiping)
         return state
 
-      if (props.stopPropagation) event.stopPropagation()
-
-      const eventData = { event, deltaX, deltaY, absX, absY, velocity }
+      const dir = getDirection(absX, absY, deltaX, deltaY)
+      const eventData = { event, absX, absY, deltaX, deltaY, velocity, dir }
 
       props.onSwiping && props.onSwiping(eventData)
 
-      // track if a swipe is cancelable
-      // so we can call prevenDefault if needed
+      // track if a swipe is cancelable(handler for swiping or swiped(dir) exists)
+      // so we can call preventDefault if needed
       let cancelablePageSwipe = false
-      if (props.onSwiping || props.onSwiped) {
-        cancelablePageSwipe = true
-      }
-
-      const dir = getDirection(eventData)
-
-      if (props[`onSwiping${dir}`] || props[`onSwiped${dir}`]) {
-        props[`onSwiping${dir}`] && props[`onSwiping${dir}`](eventData)
+      if (props.onSwiping || props.onSwiped || props[`onSwiped${dir}`]) {
         cancelablePageSwipe = true
       }
 
       if (cancelablePageSwipe && props.preventDefaultTouchmoveEvent)
         event.preventDefault()
+      if (props.stopPropagation) event.stopPropagation()
 
       return { ...state, lastEventData: eventData, swiping: true }
     })
@@ -122,17 +108,12 @@ function getHandlers(set, props) {
       if (state.swiping) {
         if (props.stopPropagation) event.stopPropagation()
 
-        const isFlick = state.velocity > props.flickThreshold
-
-        const eventData = { ...state.lastEventData, event, isFlick }
+        const eventData = { ...state.lastEventData, event }
 
         props.onSwiped && props.onSwiped(eventData)
 
-        const dir = getDirection(eventData)
-
-        props[`onSwiped${dir}`] && props[`onSwiped${dir}`](eventData)
-      } else {
-        props.onTap && props.onTap({ ...state, event })
+        props[`onSwiped${eventData.dir}`] &&
+          props[`onSwiped${eventData.dir}`](eventData)
       }
       return { ...initialState }
     })
@@ -196,16 +177,10 @@ export class Swipeable extends React.Component {
   static propTypes = {
     onSwiped: PropTypes.func,
     onSwiping: PropTypes.func,
-    onSwipingUp: PropTypes.func,
-    onSwipingRight: PropTypes.func,
-    onSwipingDown: PropTypes.func,
-    onSwipingLeft: PropTypes.func,
     onSwipedUp: PropTypes.func,
     onSwipedRight: PropTypes.func,
     onSwipedDown: PropTypes.func,
     onSwipedLeft: PropTypes.func,
-    onTap: PropTypes.func,
-    flickThreshold: PropTypes.number,
     delta: PropTypes.number,
     preventDefaultTouchmoveEvent: PropTypes.bool,
     stopPropagation: PropTypes.bool,
@@ -228,8 +203,8 @@ export class Swipeable extends React.Component {
   }
 
   render() {
-    const handlers = getHandlers(this._set, this.props)
-    const { className, style, nodeName = 'div', innerRef } = this.props
+    const { className, style, nodeName = 'div', innerRef, ...rest } = this.props
+    const handlers = getHandlers(this._set, rest)
     return React.createElement(
       nodeName,
       { ...handlers, className, style, ref: innerRef },
