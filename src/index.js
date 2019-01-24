@@ -203,12 +203,19 @@ export class Swipeable extends React.Component {
   }
 
   render() {
-    const { className, style, nodeName = 'div', innerRef, ...rest } = this.props
+    const {
+      className,
+      style,
+      nodeName = 'div',
+      innerRef,
+      children,
+      ...rest
+    } = this.props
     const handlers = getHandlers(this._set, rest)
     return React.createElement(
       nodeName,
       { ...handlers, className, style, ref: innerRef },
-      this.props.children
+      children
     )
   }
 }

@@ -8,7 +8,7 @@
     "build": "rollup -c",
     "build:examples": "cd ./examples && npm install && npm run build",
     "build:publish:examples": "npm run build:examples && rimraf examples/node_modules && gh-pages -d examples",
-    "clean": "rimraf lib",
+    "clean": "rimraf lib es",
     "format": "prettier --write '{src,__{tests,mocks}__}/**/*.js'",
     "lint": "eslint .",
     "prebuild": "npm run clean",
@@ -48,6 +48,7 @@
   "homepage": "https://github.com/dogfessional/react-swipeable",
   "files": [
     "lib",
+    "es",
     "src"
   ],
   "license": "MIT",
