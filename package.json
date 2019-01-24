@@ -1,6 +1,6 @@
 {
   "name": "react-swipeable",
-  "version": "4.3.1",
+  "version": "5.0.0-alpha.0",
   "description": "Swipe and touch handlers for react",
   "main": "./lib/index.js",
   "module": "es/index.js",
