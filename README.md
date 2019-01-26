@@ -19,7 +19,7 @@ $ npm install --save react-swipeable
 import { useSwipeable, Swipeable } from 'react-swipeable'
 ```
 Use React-hooks or a Component and set your swipe(d) handlers.
-```
+```jsx
 // hook with event handler
 const hanlders = useSwipeable({ onSwiped: (eventData) => eventHandler, ...config })
 return (<div {...handlers}> You can swipe here </div>)
@@ -95,12 +95,12 @@ All Event Handlers are called with the below event data.
 * `e.preventDefault()` is only called when:
   * `preventDefaultTouchmoveEvent: true`
   * `trackTouch: true`
-  * user swipes in a direction that has an associated `onSwiping` or `onSwiped` handler/prop
-* if `preventDefaultTouchmoveEvent: true` then `touchHandlerOption` defaults to `{passive: false}`
-* if `preventDefaultTouchmoveEvent: false` then `touchHandlerOption` defaults to `{passive: true}`
+  * the currently tracked swipe has an associated `onSwiping` or `onSwiped` handler/prop
+* if `preventDefaultTouchmoveEvent: true` then `touchHandlerOption` defaults to `{ passive: false }`
+* if `preventDefaultTouchmoveEvent: false` then `touchHandlerOption` defaults to `{ passive: true }`
 
 Example:
-   * A user is swipes right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if user was swipes left then `e.preventDefault()` would **not** be called.
+   * If a user is swiping right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if the user was swiping left then `e.preventDefault()` would **not** be called.
 
 Please experiment with the [example](http://dogfessional.github.io/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
 

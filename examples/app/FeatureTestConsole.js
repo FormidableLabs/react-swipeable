@@ -20,27 +20,19 @@ const initialState = {
   swipedDirection: '',
 };
 const initialStateSwipeable = {
-  flickThreshold: '0.6',
   delta: '10',
   preventDefaultTouchmoveEvent: false,
-  stopPropagation: false,
-  nodeName: 'div',
   trackMouse: false,
-  disabled: false,
+  trackTouch: true,
   rotationAngle: 0,
 };
 const initialStateApplied = {
   onSwipingApplied: true,
   onSwipedApplied: true,
-  onSwipingLeftApplied: true,
-  onSwipingRightApplied: true,
-  onSwipingUpApplied: true,
-  onSwipingDownApplied: true,
   onSwipedLeftApplied: true,
   onSwipedRightApplied: true,
   onSwipedUpApplied: true,
   onSwipedDownApplied: true,
-  onTapApplied: true,
   persistEvent: true,
 };
 
@@ -59,7 +51,7 @@ export default class Main extends Component {
     }
   }
 
-  onSwiped(...args) {
+  onSwiped(args) {
     console.log('swiped args: ', args)
     this.setState({
       swiped: true,
@@ -67,11 +59,13 @@ export default class Main extends Component {
     });
   }
 
-  onSwiping(...args) {
+  onSwiping(args) {
     console.log('swiping args: ', args)
+
     this.setState({
       swiping: true,
       swiped: false,
+      swipingDirection: args.dir,
     });
   }
 
@@ -80,20 +74,6 @@ export default class Main extends Component {
       swipedDirection: direction,
     });
   }
-
-  onSwipingDirection(direction) {
-    this.setState({
-      swipingDirection: direction,
-    });
-  }
-
-  onTap(...args) {
-    console.log('onTap args: ', args)
-    this.setState({
-      tap: true,
-    });
-  }
-
 
   updateValue(type, value) {
     this.setState({
@@ -104,11 +84,6 @@ export default class Main extends Component {
   _renderAppliedDirRow(dir) {
     return (
       <tr key={`appliedDirRow${dir}`}>
-        <td className="text-center">
-          <input type="checkbox" style={{margin: "0"}} checked={this.state[`onSwiping${dir}Applied`]}
-            onChange={(e)=>this.updateValue(`onSwiping${dir}Applied`, e.target.checked)} />
-        </td>
-        <td style={{color: this.state[`onSwiping${dir}Applied`] ? '#000000' : '#cccccc', borderRight: "1px solid #cccccc"}}>{dir}</td>
         <td className="text-center">
           <input type="checkbox" style={{margin: "0"}} checked={this.state[`onSwiped${dir}Applied`]}
             onChange={(e)=>this.updateValue(`onSwiped${dir}Applied`, e.target.checked)} />
@@ -124,25 +99,18 @@ export default class Main extends Component {
       swiped,
       swipingDirection,
       swipedDirection,
-      tap,
-      flickThreshold,
       delta,
       onSwipingApplied,
       onSwipedApplied,
-      onTapApplied,
       persistEvent,
       preventDefaultTouchmoveEvent,
-      stopPropagation,
-      nodeName,
+      trackTouch,
       trackMouse,
-      disabled,
       rotationAngle,
     } = this.state;
 
-    const isFlickThresholdNumber = !(isNaN(flickThreshold) || flickThreshold === '');
     const isDeltaNumber = !(isNaN(delta) || delta === '');
     const isRotationAngleNumber = !(isNaN(rotationAngle) || rotationAngle === '');
-    const flickThresholdNum = isFlickThresholdNumber ? +flickThreshold : 0.6;
     const deltaNum = isDeltaNumber ? +delta : 10;
     const rotationAngleNum = isRotationAngleNumber ? +rotationAngle : 0;
 
@@ -156,38 +124,39 @@ export default class Main extends Component {
     if (onSwipedApplied) {
       swipeableDirProps.onSwiped = persistSyntheticEvent((...args)=>this.onSwiped(...args), persistEvent);
     }
-    if (onTapApplied) {
-      swipeableDirProps.onTap = persistSyntheticEvent((...args)=>this.onTap(...args), persistEvent);
-    }
 
     return (
       <div className="row" id="FeatureTestConsole">
         <div className="small-12 column">
           <h5><strong>Test react-swipeable features.</strong></h5>
-          <Swipeable {...boundSwipes}
+          <Swipeable
+            {...boundSwipes}
             {...swipeableDirProps}
-            flickThreshold={flickThresholdNum}
             delta={deltaNum}
             preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
-            stopPropagation={stopPropagation}
-            nodeName={nodeName}
+            trackTouch={trackTouch}
             trackMouse={trackMouse}
-            disabled={disabled}
             rotationAngle={rotationAngleNum}
             className="callout"
             style={swipeableStyle}>
               <div onTouchStart={()=>this.resetState()}>
-                <h5>Swipe inside here to test...</h5>
+                <h5>Component - Swipe inside here to test</h5>
                 <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output(open dev tools)</p>
                 <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
               </div>
           </Swipeable>
           <SwipeableHook
-            className="callout"
+            {...boundSwipes}
+            {...swipeableDirProps}
+            delta={deltaNum}
+            preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
+            trackTouch={trackTouch}
             trackMouse={trackMouse}
-            {...swipeableDirProps}>
+            rotationAngle={rotationAngleNum}
+            className="callout"
+            style={swipeableStyle}>
               <div onTouchStart={()=>this.resetState()}>
-                <h5>Swipe hook inside here to test...</h5>
+                <h5>Hook - Swipe inside here to test</h5>
                 <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output(open dev tools)</p>
                 <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
               </div>
@@ -211,20 +180,13 @@ export default class Main extends Component {
                 </td>
                 <td>onSwiped</td><td>{swiped ? 'True' : 'False'}</td>
               </tr>
-              <tr style={{color: onTapApplied ? '#000000' : '#cccccc'}}>
-                <td className="text-center">
-                  <input type="checkbox" checked={onTapApplied} style={{margin: "0"}}
-                    onChange={(e)=>this.updateValue('onTapApplied', e.target.checked)} />
-                </td>
-                <td>onTap</td><td>{tap ? 'True' : 'False'}</td>
+              <tr>
+                <td className="text-center"></td>
+                <td>onSwiping Direction</td><td>{swipingDirection}</td>
               </tr>
               <tr>
                 <td className="text-center"><a href="#appliedDirs">↓&nbsp;Below&nbsp;↓</a></td>
-                <td>onSwiping[Direction]</td><td>{swipingDirection}</td>
-              </tr>
-              <tr>
-                <td className="text-center"><a href="#appliedDirs">↓&nbsp;Below&nbsp;↓</a></td>
-                <td>onSwiped[Direction]</td><td>{swipedDirection}</td>
+                <td>onSwiped Direction</td><td>{swipedDirection}</td>
               </tr>
               <tr>
                 <td colSpan="2" className="text-center">delta:</td>
@@ -232,14 +194,6 @@ export default class Main extends Component {
                   <input type="text"
                     style={{margin: '0px', border: !isDeltaNumber ? '2px solid red' : ''}}
                     onChange={(e)=>this.updateValue('delta', getVal(e))} value={delta}/>
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="2" className="text-center">flickThreshold:</td>
-                <td>
-                  <input type="text"
-                    style={{margin: '0px', border: !isFlickThresholdNumber ? '2px solid red' : ''}}
-                    onChange={(e)=>this.updateValue('flickThreshold', getVal(e))} value={flickThreshold}/>
                 </td>
               </tr>
               <tr>
@@ -256,8 +210,8 @@ export default class Main extends Component {
                 onChange={this.updateValue}
               />
               <RowSimpleCheckbox
-                value={stopPropagation}
-                name="stopPropagation"
+                value={trackTouch}
+                name="trackTouch"
                 onChange={this.updateValue}
               />
               <RowSimpleCheckbox
@@ -265,31 +219,21 @@ export default class Main extends Component {
                 name="trackMouse"
                 onChange={this.updateValue}
               />
-              <RowSimpleCheckbox
-                value={disabled}
-                name="disabled"
-                onChange={this.updateValue}
-              />
               <tr>
-                <td className="text-center">nodeName:</td>
-                <td colSpan="2" className="text-center">
-                    <button type="button" className={`button${nodeName!=='div'?' secondary':''}`}
-                      style={{margin: '.5rem'}}
-                      onClick={()=>this.updateValue('nodeName', 'div')}>{`'div'`}</button>
-                    <button type="button" className={`button${nodeName!=='span'?' secondary':''}`}
-                      style={{margin: '.5rem'}}
-                      onClick={()=>this.updateValue('nodeName', 'span')}>{`'span'`}</button>
-                    <button type="button" className={`button${nodeName!=='li'?' secondary':''}`}
-                      style={{margin: '.5rem'}}
-                      onClick={()=>this.updateValue('nodeName', 'li')}>{`'li'`}</button>
+                <td colSpan="2" className="text-center">Persist React Events for logging:</td>
+                <td style={{textAlign: "center"}}>
+                  <input style={{margin: "0px"}}
+                    type="checkbox"
+                    checked={persistEvent}
+                    onChange={(e)=>this.updateValue('persistEvent', e.target.checked)}/>
                 </td>
               </tr>
             </tbody>
           </table>
           <table id="appliedDirs">
             <thead>
-              <tr><th colSpan="2" className="text-center" style={{borderRight: "1px solid #cccccc"}}>onSwiping</th><th colSpan="2" className="text-center">onSwiped</th></tr>
-              <tr><th>Applied?</th><th style={{borderRight: "1px solid #cccccc"}}>Direction</th><th>Applied?</th><th>Direction</th></tr>
+              <tr><th colSpan="2" className="text-center">onSwiped</th></tr>
+              <tr><th>Applied?</th><th>Direction</th></tr>
             </thead>
             <tbody>
               {DIRECTIONS.map(this._renderAppliedDirRow.bind(this))}
@@ -297,15 +241,7 @@ export default class Main extends Component {
           </table>
           <table style={{width: "100%"}}>
             <tbody>
-              <tr>
-                <td colSpan="2" className="text-center">Persist React Events for logging:</td>
-                <td>
-                  <input style={{margin: "0"}}
-                    type="checkbox"
-                    checked={persistEvent}
-                    onChange={(e)=>this.updateValue('persistEvent', e.target.checked)}/>
-                </td>
-              </tr>
+
             </tbody>
           </table>
           <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset All Options</button>
@@ -321,9 +257,6 @@ function getBoundSwipes(component) {
   DIRECTIONS.forEach((dir)=>{
     if (component.state[`onSwiped${dir}Applied`]) {
       boundSwipes[`onSwiped${dir}`] = persistSyntheticEvent(component.onSwipedDirection.bind(component, dir), persistEvent);
-    }
-    if (component.state[`onSwiping${dir}Applied`]) {
-      boundSwipes[`onSwiping${dir}`] = persistSyntheticEvent(component.onSwipingDirection.bind(component, dir), persistEvent);
     }
   });
   return boundSwipes;
