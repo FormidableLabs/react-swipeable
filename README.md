@@ -21,73 +21,89 @@ import { useSwipeable, Swipeable } from 'react-swipeable'
 Use React-hooks or a Component and set your swipe(d) handlers.
 ```
 // hook with event handler
-const hanlders = useSwipeable({
-  onSwiped: (data) => console.log('Swiped', data)
-})
+const hanlders = useSwipeable({ onSwiped: (eventData) => eventHandler, ...config })
 return (<div {...handlers}> You can swipe here </div>)
 
+
 // Component
-<Swipeable onSwiped={this.swiped} >
+<Swipeable onSwiped={(eventData) => eventHandler} {...config} >
   You can swipe here!
 </Swipeable>
 ```
 
-The Component `<Swipeable>`) generates an element(`<div>` by default) under the hood and attaches event hanlders to it that are used to fire the `swiped` props.
+The Component `<Swipeable>` uses an element (`<div>` by default) under the hood and attaches event hanlders to it that are used to fire the `swipe(d)` handlers.
 
 ## Props / Config Options
 
-### Event Props
+### Event Handler Props
 
-**`onSwipedUp`**, **`onSwipedRight`**, **`onSwipedDown`**, **`onSwipedLeft`** - Fired at the end of a swipe for the direction specified.
+```
+{
+  onSwiped,          // Fired after any swipe
+  onSwipedLeft,      // Fired after LEFT swipe
+  onSwipedRight,     // Fired after RIGHT swipe
+  onSwipedUp,        // Fired after UP swipe
+  onSwipedDown,      // Fired after DOWN swipe
+  onSwiping,         // Fired during any swipe
+}
+```
 
-**`onSwiped`** - Fired at the end of a swipe no matter the direction.
-
-**`onSwiping`** - Constantly fired throughout during a swipe.
+### Event data
+All Event Handlers are called with the below event data.
+```
+{
+  event,          // source event
+  deltaX,         // x offset (current.x - initial.x)
+  deltaY,         // y offset (current.y - initial.y)
+  absX,           // absolute deltaX
+  absY,           // absolute deltaY
+  velocity,       // √(absX^2 + absY^2) / time
+  dir,            // direction of swipe (Left|Right|Up|Down)
+}
+```
 
 ### Configuration Props
 
-**`delta`** is the amount of px before we start tracking a swipe. The default value is `10`.
+```
+{
+  delta: 10,                               // minimum distance(px) before a swipe starts
+  preventDefaultTouchmoveEvent: false,     // preventDefault on touchmove, *See Details*
+  trackTouch: true,                        // track touch input
+  trackMouse: false,                       // track mouse input
+  rotationAngle: 0,                        // set a rotation angle
 
-**`preventDefaultTouchmoveEvent`** is whether to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.  Sometimes you would like the target to scroll natively.  The default value is `false`.
- * **Notes** `e.preventDefault()` is only called when `preventDefaultTouchmoveEvent` is `true` **and** the user is swiping in a direction that has an associated directional `onSwiping` or `onSwiped` prop.
-   * Example: user is swiping right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if user was swiping left `e.preventDefault()` would **not** be called.
-   * Please experiment with [example](http://dogfessional.github.io/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
-   * `swipeable` versions < `4.2.0` - [Chrome 56 and later, warning with preventDefault](#chrome-56-and-later-warning-with-preventdefault)
+  touchHandlerOption: {         // overwrite touch handler 3rd argument
+    passive: true|false         // defaults opposite of preventDefaultTouchmoveEvent *See Details*
+  },
+}
+```
 
-**`stopPropagation`** automatically calls stopPropagation on all 'swipe' events. The default value is `false`.
+### Component Specific Props
 
-**`nodeName`** is a string which determines the html element/node that the component binds its touch events to then returns. The default value is `'div'`.
-
-**`trackMouse`** will allow mouse 'swipes' to be tracked(click, hold, move, let go). The default value is `false`.
-
-**`rotationAngle`** will allow to set a rotation angle, e.g. for a four-player game on a tablet, where each player has a 90° turned view. The default value is `0`.
-
-**`innerRef`** will allow access to the components inner dom node element. Example usage `<Swipeable innerRef={(el) => this.swipeableEl = el} >`.
+```
+{
+  nodeName: 'div',      // dom node the component attaches handlers to
+  innerRef              // access the components dom node
+}
+```
 
 **None of the props are required.**
-### PropType Definitions
 
-#### Event Props:
-```
-  onSwiped: PropTypes.func,
-  onSwiping: PropTypes.func,
-  onSwipedUp: PropTypes.func,
-  onSwipedRight: PropTypes.func,
-  onSwipedDown: PropTypes.func,
-  onSwipedLeft: PropTypes.func,
-  onTap: PropTypes.func,
-```
-#### Config Props:
-```
-  delta: PropTypes.number, // default: 10
-  preventDefaultTouchmoveEvent: PropTypes.bool, // default: false
-  stopPropagation: PropTypes.bool, // default: false
-  nodeName: PropTypes.string // default: div
-  trackMouse: PropTypes.bool, // default: false
-  rotationAngle: PropTypes.number // default: 0
-  innerRef: PropTypes.func,
-  eventListenerOptions
-```
+### preventDefaultTouchmoveEvent Details
+
+**`preventDefaultTouchmoveEvent`** prevents the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event. Can use this to stop the browser from scrolling while a user swipe is being tracked.
+* `e.preventDefault()` is only called when:
+  * `preventDefaultTouchmoveEvent: true`
+  * `trackTouch: true`
+  * user swipes in a direction that has an associated `onSwiping` or `onSwiped` handler/prop
+* if `preventDefaultTouchmoveEvent: true` then `touchHandlerOption` defaults to `{passive: false}`
+* if `preventDefaultTouchmoveEvent: false` then `touchHandlerOption` defaults to `{passive: true}`
+
+Example:
+   * A user is swipes right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if user was swipes left then `e.preventDefault()` would **not** be called.
+
+Please experiment with the [example](http://dogfessional.github.io/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
+
 
 ## Development
 
@@ -97,7 +113,7 @@ Make changes/updates to the `src/index.js` file.
 
 ***Please add tests if PR adds/changes functionality.***
 
-#### Test changes/updates with the examples
+#### Verify updates with the examples
 
 Build, run, and test examples locally:
 `npm run start:examples`
@@ -105,18 +121,6 @@ Build, run, and test examples locally:
 After the server starts you can then view the examples page with your changes at `http://localhost:3000`.
 
 You can now make updates/changes to `src/index.js` and webpack will rebuild, then reload the page so you can test your changes!
-
-## Notes
-### Chrome 56 and later, warning with preventDefault
-`swipeable` version `>=4.2.0` should fix this issue. [PR here](https://github.com/dogfessional/react-swipeable/pull/88).
-
-The issue still exists in versions `<4.2.0`:
-- When this library tries to call `e.preventDefault()` in Chrome 56+ a warning is logged:
-- `Unable to preventDefault inside passive event listener due to target being treated as passive.`
-
-This warning is because this [change](https://developers.google.com/web/updates/2017/01/scrolling-intervention) to Chrome 56+ and the way the synthetic events are setup in reactjs.
-
-Follow reacts handling of this issue here: [facebook/react#8968](https://github.com/facebook/react/issues/8968)
 
 ## License
 

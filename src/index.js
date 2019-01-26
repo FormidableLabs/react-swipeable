@@ -2,11 +2,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const passive = { passive: false }
 const defaultProps = {
-  eventListenerOptions: passive,
-  preventDefaultTouchmoveEvent: true,
-  stopPropagation: false,
+  preventDefaultTouchmoveEvent: false,
   delta: 10,
   rotationAngle: 0,
   trackMouse: false,
@@ -47,6 +44,13 @@ function rotateXYByAngle(pos, angle) {
   const y =
     pos[1] * Math.cos(angleInRadians) - pos[0] * Math.sin(angleInRadians)
   return [x, y]
+}
+
+const getTouchHandlerOption = props => {
+  if (props.touchHandlerOption) return props.touchHandlerOption
+  return props.preventDefaultTouchmoveEvent
+    ? { passive: false }
+    : { passive: true }
 }
 
 function getHandlers(set, props) {
@@ -95,9 +99,12 @@ function getHandlers(set, props) {
         cancelablePageSwipe = true
       }
 
-      if (cancelablePageSwipe && props.preventDefaultTouchmoveEvent)
+      if (
+        cancelablePageSwipe &&
+        props.preventDefaultTouchmoveEvent &&
+        props.trackTouch
+      )
         event.preventDefault()
-      if (props.stopPropagation) event.stopPropagation()
 
       return { ...state, lastEventData: eventData, swiping: true }
     })
@@ -106,8 +113,6 @@ function getHandlers(set, props) {
   const onEnd = event => {
     set(state => {
       if (state.swiping) {
-        if (props.stopPropagation) event.stopPropagation()
-
         const eventData = { ...state.lastEventData, event }
 
         props.onSwiped && props.onSwiped(eventData)
@@ -125,8 +130,9 @@ function getHandlers(set, props) {
       document.addEventListener(mouseUp, onUp)
     }
     if (props.trackTouch) {
-      document.addEventListener(touchMove, onMove, props.eventListenerOptions)
-      document.addEventListener(touchEnd, onUp, props.eventListenerOptions)
+      const touchHandlerOption = getTouchHandlerOption(props)
+      document.addEventListener(touchMove, onMove, touchHandlerOption)
+      document.addEventListener(touchEnd, onUp, touchHandlerOption)
     }
     onStart(e)
   }
@@ -137,12 +143,9 @@ function getHandlers(set, props) {
       document.removeEventListener(mouseUp, onUp)
     }
     if (props.trackTouch) {
-      document.removeEventListener(
-        touchMove,
-        onMove,
-        props.eventListenerOptions
-      )
-      document.removeEventListener(touchEnd, onUp, props.eventListenerOptions)
+      const touchHandlerOption = getTouchHandlerOption(props)
+      document.removeEventListener(touchMove, onMove, touchHandlerOption)
+      document.removeEventListener(touchEnd, onUp, touchHandlerOption)
     }
   }
 
@@ -183,7 +186,6 @@ export class Swipeable extends React.Component {
     onSwipedLeft: PropTypes.func,
     delta: PropTypes.number,
     preventDefaultTouchmoveEvent: PropTypes.bool,
-    stopPropagation: PropTypes.bool,
     nodeName: PropTypes.string,
     trackMouse: PropTypes.bool,
     trackTouch: PropTypes.bool,
