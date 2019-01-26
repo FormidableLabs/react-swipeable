@@ -78,12 +78,12 @@ function setupGetMountedComponent(type) {
 
 ;['useSwipeable', 'Swipeable'].forEach(type => {
   describe(`${type}`, () => {
-    let origEventListener
+    let origAddEventListener
     let origRemoveEventListener
     let eventListenerMap
     const getMountedComponent = setupGetMountedComponent(type)
     beforeAll(() => {
-      origEventListener = document.eventListener
+      origAddEventListener = document.addEventListener
       origRemoveEventListener = document.removeEventListener
     })
     beforeEach(() => {
@@ -92,7 +92,7 @@ function setupGetMountedComponent(type) {
       eventListenerMap = mockListenerSetup(document)
     })
     afterAll(() => {
-      document.eventListener = origEventListener
+      document.eventListener = origAddEventListener
       document.removeEventListener = origRemoveEventListener
     })
 
@@ -136,9 +136,13 @@ function setupGetMountedComponent(type) {
 
     it('handles mouse events with trackMouse prop and fires correct props', () => {
       const swipeFuncs = getMockedSwipeFunctions()
+      const preventDefault = jest.fn()
+      const e = { preventDefault }
       const wrapper = getMountedComponent({
         ...swipeFuncs,
-        trackMouse: true
+        trackMouse: true,
+        trackTouch: false,
+        preventDefaultTouchmoveEvent: true
       })
 
       const touchHere = wrapper.find('span')
@@ -148,19 +152,20 @@ function setupGetMountedComponent(type) {
       )
 
       eventListenerMap.mousemove(
-        cme({ x: 125, y: 100, timeStamp: 1374825.199999963 })
+        cme({ x: 125, y: 100, timeStamp: 1374825.199999963, ...e })
       )
       eventListenerMap.mousemove(
-        cme({ x: 150, y: 100, timeStamp: 1374841.3999999757 })
+        cme({ x: 150, y: 100, timeStamp: 1374841.3999999757, ...e })
       )
       eventListenerMap.mousemove(
-        cme({ x: 175, y: 100, timeStamp: 1374857.399999979 })
+        cme({ x: 175, y: 100, timeStamp: 1374857.399999979, ...e })
       )
       eventListenerMap.mousemove(
-        cme({ x: 200, y: 100, timeStamp: 1374873.499999987 })
+        cme({ x: 200, y: 100, timeStamp: 1374873.499999987, ...e })
       )
       eventListenerMap.mouseup({})
 
+      expect(preventDefault).not.toHaveBeenCalled()
       expect(swipeFuncs.onSwipedRight).toHaveBeenCalled()
       expect(swipeFuncs.onSwipedUp).not.toHaveBeenCalled()
       expect(swipeFuncs.onSwipedDown).not.toHaveBeenCalled()
@@ -175,14 +180,13 @@ function setupGetMountedComponent(type) {
       wrapper.unmount()
     })
 
-    it('calls preventDefault + stopPropagation when swiping in direction that has a callback', () => {
+    it('calls preventDefault when swiping in direction that has a callback', () => {
       const onSwipedDown = jest.fn()
       const preventDefault = jest.fn()
-      const stopPropagation = jest.fn()
-      const e = { preventDefault, stopPropagation }
+      const e = { preventDefault }
       const wrapper = getMountedComponent({
         onSwipedDown,
-        stopPropagation: true
+        preventDefaultTouchmoveEvent: true
       })
 
       const touchHere = wrapper.find('span')
@@ -197,19 +201,19 @@ function setupGetMountedComponent(type) {
       expect(onSwipedDown).toHaveBeenCalled()
 
       expect(preventDefault).toHaveBeenCalledTimes(4)
-      expect(stopPropagation).toHaveBeenCalledTimes(5)
+
+      expect(document.addEventListener.mock.calls).toMatchSnapshot(
+        'verify touchHandlerOption passive is false'
+      )
+
       wrapper.unmount()
     })
 
     it('does not call preventDefault when false', () => {
       const onSwipedUp = jest.fn()
       const preventDefault = jest.fn()
-      const stopPropagation = jest.fn()
-      const e = { preventDefault, stopPropagation }
-      const wrapper = getMountedComponent({
-        onSwipedUp,
-        preventDefaultTouchmoveEvent: false
-      })
+      const e = { preventDefault }
+      const wrapper = getMountedComponent({ onSwipedUp })
 
       const touchHere = wrapper.find('span')
       touchHere.simulate('touchstart', cte({ x: 100, y: 100, ...e }))
@@ -223,14 +227,35 @@ function setupGetMountedComponent(type) {
       expect(onSwipedUp).toHaveBeenCalled()
 
       expect(preventDefault).not.toHaveBeenCalled()
-      expect(stopPropagation).not.toHaveBeenCalled()
+      expect(document.addEventListener.mock.calls).toMatchSnapshot(
+        'verify touchHandlerOption passive is true'
+      )
+      wrapper.unmount()
+    })
+
+    it('allows touchHandlerOption overwrite', () => {
+      const touchHandlerOption = { capture: true }
+      const wrapper = getMountedComponent({ touchHandlerOption })
+
+      const touchHere = wrapper.find('span')
+      touchHere.simulate('touchstart', cte({ x: 100, y: 100 }))
+
+      eventListenerMap.touchmove(cte({ x: 100, y: 75 }))
+      eventListenerMap.touchend({})
+
+      expect(document.addEventListener.mock.calls).toMatchSnapshot(
+        'verify touchHandlerOption overwrite'
+      )
       wrapper.unmount()
     })
 
     it('calls preventDefault when onSwiping is present', () => {
       const onSwiping = jest.fn()
       const preventDefault = jest.fn()
-      const wrapper = getMountedComponent({ onSwiping })
+      const wrapper = getMountedComponent({
+        onSwiping,
+        preventDefaultTouchmoveEvent: true
+      })
 
       const touchHere = wrapper.find('span')
       touchHere.simulate('touchStart', cte({ x: 100, y: 100, preventDefault }))
@@ -248,7 +273,10 @@ function setupGetMountedComponent(type) {
     it('calls preventDefault when onSwiped is present', () => {
       const onSwiped = jest.fn()
       const preventDefault = jest.fn()
-      const wrapper = getMountedComponent({ onSwiped })
+      const wrapper = getMountedComponent({
+        onSwiped,
+        preventDefaultTouchmoveEvent: true
+      })
 
       const touchHere = wrapper.find('span')
       touchHere.simulate('touchStart', cte({ x: 100, y: 100, preventDefault }))
