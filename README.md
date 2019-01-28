@@ -9,6 +9,13 @@ React swipe and touch event handler component & hook
 
 [Github Pages Demo](https://dogfessional.github.io/react-swipeable/)
 
+### Version 5 released!
+[React hooks](https://reactjs.org/docs/hooks-reference.html) have been released 🎉
+
+v5 now includes the `useSwipeable` hook that has the same great functionality as `<Swipeable>`.
+
+The component is still included and migration to v5 is straightforward. Please see the [migration doc]((./migration.md)) for more details including more info on the simplified api.
+
 ### Installation
 ```
 $ npm install --save react-swipeable
