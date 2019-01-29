@@ -2,7 +2,7 @@ Migrate Swipeable v4 to v5
 =========================
 
 ### Simple Component usage:
-The component usage for swiped events is the same
+The component usage for swiped events is the same.
 ```diff
 - import Swipeable from 'react-swipeable';
 + import { Swipeable } from 'react-swipeable;
@@ -13,7 +13,7 @@ The component usage for swiped events is the same
 ```
 
 ### Swiping direction usage:
-The props for swiping directions have been removed. Use the `dir` property from `onSwiping` to determine direction.
+The props for swiping directions have been removed. Please use the newly provided `dir` property in the `eventData` from `onSwiping` to determine direction. We also provided directional constants you can import.
 ```diff
 - import Swipeable from 'react-swipeable';
 + import {
@@ -24,7 +24,7 @@ The props for swiping directions have been removed. Use the `dir` property from 
 +   DOWN,
 + } from 'react-swipeable;
 
-+ const onSwiping = (dir) => {
++ const onSwiping = ({ dir }) => {
 +   if (dir === LEFT)  console.log('Swiping - LEFT');
 +   if (dir === RIGHT) console.log('Swiping - RIGHT');
 +   if (dir === UP)    console.log('Swiping - UP');
@@ -36,6 +36,48 @@ The props for swiping directions have been removed. Use the `dir` property from 
 -   onSwipingRight={swipingRight}
 -   onSwipingUp={swipingUp}
 -   onSwipingDown={swipingDown}
-+   onSwiping={({dir}) => onSwiping(dir) }
++   onSwiping={(eventData) => onSwiping(eventData) }
   />
 ```
+
+### Deprecated props
+With the v5 core rewrite we dropped a few props that seemed superfluous.
+
+```diff
+<Swipeable
+-   flickThreshold
+-   stopPropagation
+-   disabled
+-   onSwipingLeft={swipingLeft}
+-   onSwipingRight={swipingRight}
+-   onSwipingUp={swipingUp}
+-   onSwipingDown={swipingDown}
+  />
+```
+#### flickThreshold
+`flickThreshold` and the associated `isFlick` functionality can be still be obtained using any of the `onSwiped[direction]` handlers.
+```js
+// The old default
+const flickThreshold = 0.6;
+onSwipedLeft = (eventData) => {
+  if (eveData.velocity > flickThreshold) {
+    console.log('swipe was a flick');
+  }
+}
+```
+
+#### stopPropagation
+Since `Swipeable` provides the `event` for all handlers you can just call `event.stopPropagation()` whenever you need.
+
+#### disabled
+You can just stop tracking any hanlder or turn off the component or hook yourself when you want it disabled.
+
+#### onSwiping[direction]
+Please see above [example migration](./migration#swiping-direction-usage).
+
+### Comments suggestions
+Please do not hesitate to [create an issue](https://github.com/dogfessional/react-swipeable/issues/new) using the provided templates to discuss bugs, ideas and/or any feedback.
+
+If you feel that we removed a prop or functionality you truly depended on lets have a [conversation](https://github.com/dogfessional/react-swipeable/issues/new) about adding it back.
+
+Cheers!
