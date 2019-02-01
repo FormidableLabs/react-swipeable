@@ -176,7 +176,7 @@ export function useSwipeable(props) {
   return spread(props)
 }
 
-export class Swipeable extends React.Component {
+export class Swipeable extends React.PureComponent {
   static propTypes = {
     onSwiped: PropTypes.func,
     onSwiping: PropTypes.func,
