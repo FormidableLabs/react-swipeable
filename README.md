@@ -89,7 +89,7 @@ as well as the x distance, + or -, from where the swipe started to where it ende
 
 **`disabled`** will disable `<Swipeable>`: swipes will not be tracked and this stops current active swipes from triggering anymore prop callbacks. The default value is `false`.
 
-**`innerRef`** will allow access to the Swipeable's inner dom node element react ref. See [#81](https://github.com/dogfessional/react-swipeable/issues/81) for more details. Example usage `<Swipeable innerRef={(el) => this.swipeableEl = el} >`. Then you'll have access to the dom element that Swipeable uses internally.
+**`innerRef`** will allow access to the Swipeable's inner dom node element react ref. See [#81](https://github.com/dogfessional/react-swipeable/issues/81) for more details. Example usage `<Swipeable innerRef={(el) => { this.swipeableEl = el; }} >`. Then you'll have access to the dom element that Swipeable uses internally.
 
 **`rotationAngle`** will allow to set a rotation angle, e.g. for a four-player game on a tablet, where each player has a 90° turned view. The default value is `0`.
 

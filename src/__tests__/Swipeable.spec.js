@@ -377,7 +377,7 @@ describe('Swipeable', () => {
   it('should pass ref to the component via innerRef prop', () => {
     const WrapperComp = class extends React.Component {
       render() {
-        return <Swipeable innerRef={el => this.testRef = el} /> // eslint-disable-line
+        return <Swipeable innerRef={(el) => { this.testRef = el; }} />;
       }
     };
     const wrapper = mount((<WrapperComp />));
