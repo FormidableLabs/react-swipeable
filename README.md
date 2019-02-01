@@ -22,23 +22,26 @@ $ npm install react-swipeable
 ```
 
 ### Api
+Use React-hooks or a Component and set your swipe(d) handlers.
 ```js
 import { useSwipeable, Swipeable } from 'react-swipeable'
 ```
-Use React-hooks or a Component and set your swipe(d) handlers.
+
+#### Hook
 ```jsx
-// hook with event handler
 const handlers = useSwipeable({ onSwiped: (eventData) => eventHandler, ...config })
 return (<div {...handlers}> You can swipe here </div>)
+```
+Hook use requires **react >= 16.8.0**.
 
-
-// Component
+#### Component
+```jsx
 <Swipeable onSwiped={(eventData) => eventHandler} {...config} >
   You can swipe here!
 </Swipeable>
 ```
 
-The Component `<Swipeable>` uses an element (`<div>` by default) under the hood and attaches event handlers to it that are used to fire the `swipe(d)` handlers.
+The Component `<Swipeable>` uses a `<div>` by default under the hood to attach event handlers to.
 
 ## Props / Config Options
 
@@ -94,7 +97,7 @@ All Event Handlers are called with the below event data.
 }
 ```
 
-**None of the props are required.**
+**None of the props/config options are required.**
 
 ### preventDefaultTouchmoveEvent Details
 
