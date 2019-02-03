@@ -14,10 +14,17 @@
     "prebuild": "npm run clean",
     "prepare": "npm run build",
     "pretest": "npm run lint",
+    "size": "size-limit",
     "start:examples": "cd ./examples && npm install && npm run start:dev",
-    "test": "npm run test:unit",
+    "test": "npm run test:unit && npm run build && npm run size",
     "test:unit": "jest"
   },
+  "size-limit": [
+    {
+      "limit": "1.8 KB",
+      "path": "es/index.js"
+    }
+  ],
   "jest": {
     "testPathIgnorePatterns": [
       "/node_modules/",
@@ -79,7 +86,8 @@
     "react-dom": "^16.8.0-alpha.0",
     "rimraf": "^2.6.1",
     "rollup": "^1.1.2",
-    "rollup-plugin-babel": "^4.3.2"
+    "rollup-plugin-babel": "^4.3.2",
+    "size-limit": "^0.21.1"
   },
   "dependencies": {
     "prop-types": "^15.6.2"
