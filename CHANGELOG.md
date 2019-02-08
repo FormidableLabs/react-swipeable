@@ -1,3 +1,21 @@
+# 5.0.0
+* Introduce react hook, `useSwipeable`
+* Core rewrite to simplify api and trim down bundled size
+* Add `size-limit` to help keep bundled size down
+* Add `es` export via `"module": "es/index.js"` to `package.json`
+* Add `prettier` code formating
+* **[BREAKING]** simplify handler event data to allow destructuring
+  * `onSwiped = ({ event, direction, absX, absY, velocity}) => console.log('swiped')`
+* **[BREAKING]** deprecated `onSwiping{Left|Right|Up|Down}` handler props
+  * can be replaced with direction/`dir` event data
+  * `` onSwiping = ({ dir }) => console.log(`swiping - ${dir}`) ``
+* **[BREAKING]** deprecated props
+  * `flickThreshold`
+  * `stopPropagation`
+  * `disabled`
+
+
+
 # 4.3.0
 * Add `rotationAngle` prop. [#103](https://github.com/dogfessional/react-swipeable/pull/103)
   * will allow to set a rotation angle, e.g. for a four-player game on a tablet, where each player has a 90° turned view.
