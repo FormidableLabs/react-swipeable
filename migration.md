@@ -2,14 +2,26 @@ Migrate Swipeable v4 to v5
 =========================
 
 ### Simple Component usage:
-The component usage for swiped events is the same.
+The component usage for swiped events is the same except `eventData` can now be destructured and `isFlick` is deprecated, [see below](#flickThreshold).
 ```diff
 - import Swipeable from 'react-swipeable';
 + import { Swipeable } from 'react-swipeable;
 
+
+- swiped = (event, deltaX, deltaY, isFlick, velocity) => {
++ swiped = ({ event, deltaX, deltaY, velocity }) => {
+
+- swipedUp = (event, deltaY, isFlick) => {
++ swipedUp = ({ event, deltaY }) => {
+
+- swipedRight = (event, deltaX, isFlick) => {
++ swipedRight = ({ event, deltaX }) => {
+
 <Swipeable
-  onSwipedLeft={this.swipedLeft}
-  onSwipedRight={this.swipedRight} />
+  onSwiped={this.swiped}
+  onSwipedUp={this.swipedUp}
+  onSwipedRight={this.swipedRight}
+/>
 ```
 
 ### Swiping direction usage:
