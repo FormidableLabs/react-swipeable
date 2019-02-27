@@ -14,7 +14,7 @@ React swipe and touch event handler component & hook
 
 v5 of `react-swipeable` includes a hook, `useSwipeable`, that provides the same great functionality as `<Swipeable>`. See the `useSwipeable` hook in action with this [codesandbox](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js).
 
-The component is still included and migration to v5 is straightforward. Please see the [migration doc]((./migration.md)) for more details including more info on the simplified api.
+The component is still included and migration to v5 is straightforward. Please see the [migration doc](./migration.md) for more details including more info on the simplified api.
 
 ### Installation
 ```
