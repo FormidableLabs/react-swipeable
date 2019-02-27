@@ -85,7 +85,7 @@ Since `Swipeable` provides the `event` for all handlers you can just call `event
 You can just stop tracking any hanlder or turn off the component or hook yourself when you want it disabled.
 
 #### onSwiping[direction]
-Please see above [example migration](./migration#swiping-direction-usage).
+Please see above [example migration](#swiping-direction-usage).
 
 ### Comments suggestions
 Please do not hesitate to [create an issue](https://github.com/dogfessional/react-swipeable/issues/new) using the provided templates to discuss bugs, ideas and/or any feedback.
