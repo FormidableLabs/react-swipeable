@@ -1,5 +1,4 @@
-React Swipeable
-=========================
+# React Swipeable
 
 React swipe and touch event handler component & hook
 
@@ -10,6 +9,7 @@ React swipe and touch event handler component & hook
 [Github Pages Demo](https://dogfessional.github.io/react-swipeable/)
 
 ### Version 5 released!
+
 [React hooks](https://reactjs.org/docs/hooks-reference.html) have been released with [16.8.0](https://reactjs.org/blog/2019/02/06/react-v16.8.0.html) 🎉
 
 v5 of `react-swipeable` includes a hook, `useSwipeable`, that provides the same great functionality as `<Swipeable>`. See the `useSwipeable` hook in action with this [codesandbox](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js).
@@ -17,26 +17,35 @@ v5 of `react-swipeable` includes a hook, `useSwipeable`, that provides the same 
 The component is still included and migration to v5 is straightforward. Please see the [migration doc](./migration.md) for more details including more info on the simplified api.
 
 ### Installation
+
 ```
 $ npm install react-swipeable
 ```
 
 ### Api
+
 Use React-hooks or a Component and set your swipe(d) handlers.
+
 ```js
 import { useSwipeable, Swipeable } from 'react-swipeable'
 ```
 
 #### Hook
+
 ```jsx
-const handlers = useSwipeable({ onSwiped: (eventData) => eventHandler, ...config })
-return (<div {...handlers}> You can swipe here </div>)
+const handlers = useSwipeable({
+  onSwiped: eventData => eventHandler,
+  ...config
+})
+return <div {...handlers}> You can swipe here </div>
 ```
+
 Hook use requires **react >= 16.8.0**.
 
 #### Component
+
 ```jsx
-<Swipeable onSwiped={(eventData) => eventHandler} {...config} >
+<Swipeable onSwiped={eventData => eventHandler} {...config}>
   You can swipe here!
 </Swipeable>
 ```
@@ -59,7 +68,9 @@ The Component `<Swipeable>` uses a `<div>` by default under the hood to attach e
 ```
 
 ### Event data
+
 All Event Handlers are called with the below event data.
+
 ```
 {
   event,          // source event
@@ -76,11 +87,12 @@ All Event Handlers are called with the below event data.
 
 ```
 {
-  delta: 10,                             // min distance(px) before a swipe starts
-  preventDefaultTouchmoveEvent: false,   // preventDefault on touchmove, *See Details*
-  trackTouch: true,                      // track touch input
-  trackMouse: false,                     // track mouse input
-  rotationAngle: 0,                      // set a rotation angle
+  delta: 10,                               // min distance(px) before a swipe starts
+  preventDefaultTouchmoveEvent: false,     // preventDefault on touchmove, *See Details*
+  preventScrollOnHorizontalSwipe: false,   // prevents scrolling on horizontal swipe  *See Details*
+  trackTouch: true,                        // track touch input
+  trackMouse: false,                       // track mouse input
+  rotationAngle: 0,                        // set a rotation angle
 
   touchHandlerOption: {         // overwrite touch handler 3rd argument
     passive: true|false         // defaults opposite of preventDefaultTouchmoveEvent *See Details*
@@ -102,21 +114,28 @@ All Event Handlers are called with the below event data.
 ### preventDefaultTouchmoveEvent Details
 
 **`preventDefaultTouchmoveEvent`** prevents the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event. Use this to stop the browser from scrolling while a user swipes.
-* `e.preventDefault()` is only called when:
-  * `preventDefaultTouchmoveEvent: true`
-  * `trackTouch: true`
-  * the users current swipe has an associated `onSwiping` or `onSwiped` handler/prop
-* if `preventDefaultTouchmoveEvent: true` then `touchHandlerOption` defaults to `{ passive: false }`
-* if `preventDefaultTouchmoveEvent: false` then `touchHandlerOption` defaults to `{ passive: true }`
+
+- `e.preventDefault()` is only called when:
+  - `preventDefaultTouchmoveEvent: true`
+  - `trackTouch: true`
+  - the users current swipe has an associated `onSwiping` or `onSwiped` handler/prop
+- if `preventDefaultTouchmoveEvent: true` then `touchHandlerOption` defaults to `{ passive: false }`
+- if `preventDefaultTouchmoveEvent: false` then `touchHandlerOption` defaults to `{ passive: true }`
 
 Example:
-   * If a user is swiping right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if the user was swiping left then `e.preventDefault()` would **not** be called.
+
+- If a user is swiping right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if the user was swiping left then `e.preventDefault()` would **not** be called.
 
 Please experiment with the [example](http://dogfessional.github.io/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
 
 #### Older browser support
+
 If you need to support older browsers that do not have support for `{passive: false}` `addEventListener` 3rd argument, we recommend using [detect-passive-events](https://www.npmjs.com/package/detect-passive-events) package to determine the `touchHandlerOption` prop value.
 
+### preventScrollOnHorizontalSwipe Details
+
+**`preventScrollOnHorizontalSwipe`** only allows the `onSwiping` function to be called when the initial swipe direction is either _left_ or _right_. It prevents the vertical scrolling.
+If the initial scroll direction is _up_ or _down_, the `onSwiping` function will not be called.
 
 ## Development
 
@@ -124,7 +143,7 @@ Initial set up, with `node 10+`, run `npm install`.
 
 Make changes/updates to the `src/index.js` file.
 
-***Please add tests if PR adds/changes functionality.***
+**_Please add tests if PR adds/changes functionality._**
 
 #### Verify updates with the examples
 
