@@ -291,6 +291,63 @@ function setupGetMountedComponent(type) {
       wrapper.unmount()
     })
 
+    it('should not call onSwiping when initial scroll direction is up or down and preventScrollOnHorizontalSwipe is set', () => {
+      const onSwiping = jest.fn()
+      const wrapper = getMountedComponent({
+        onSwiping,
+        preventScrollOnHorizontalSwipe: true
+      })
+
+      const touchHere = wrapper.find('span')
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+
+      eventListenerMap.touchmove(cte({ x: 100, y: 50 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 150 }))
+      eventListenerMap.touchend({})
+
+      expect(onSwiping).not.toHaveBeenCalled()
+
+      wrapper.unmount()
+    })
+
+    it('should call onSwiping when initial scroll direction is left or right and preventScrollOnHorizontalSwipe is set', () => {
+      const onSwiping = jest.fn()
+      const wrapper = getMountedComponent({
+        onSwiping,
+        preventScrollOnHorizontalSwipe: true
+      })
+
+      const touchHere = wrapper.find('span')
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+
+      eventListenerMap.touchmove(cte({ x: 50, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 150, y: 100 }))
+      eventListenerMap.touchend({})
+
+      expect(onSwiping).toHaveBeenCalled()
+
+      wrapper.unmount()
+    })
+
+    it('should call onSwiping when initial scroll direction is up or down and preventScrollOnHorizontalSwipe is not set', () => {
+      const onSwiping = jest.fn()
+      const wrapper = getMountedComponent({
+        onSwiping,
+        preventScrollOnHorizontalSwipe: false
+      })
+
+      const touchHere = wrapper.find('span')
+      touchHere.simulate('touchStart', cte({ x: 100, y: 100 }))
+
+      eventListenerMap.touchmove(cte({ x: 100, y: 50 }))
+      eventListenerMap.touchmove(cte({ x: 100, y: 150 }))
+      eventListenerMap.touchend({})
+
+      expect(onSwiping).toHaveBeenCalled()
+
+      wrapper.unmount()
+    })
+
     it('does not re-check delta when swiping already in progress', () => {
       const onSwiping = jest.fn()
       const onSwipedRight = jest.fn()
