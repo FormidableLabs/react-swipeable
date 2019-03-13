@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 const defaultProps = {
   preventDefaultTouchmoveEvent: false,
+  preventScrollOnHorizontalSwipe: false,
   delta: 10,
   rotationAngle: 0,
   trackMouse: false,
