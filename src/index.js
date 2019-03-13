@@ -15,6 +15,7 @@ const initialState = {
   lastEventData: undefined,
   start: undefined
 }
+let initialSwipeDirection = ''
 export const LEFT = 'Left'
 export const RIGHT = 'Right'
 export const UP = 'Up'
@@ -83,14 +84,45 @@ function getHandlers(set, props) {
       const time = (event.timeStamp || 0) - state.start
       const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1)
 
+      if (!initialSwipeDirection) {
+        initialSwipeDirection = getDirection(absX, absY, deltaX, deltaY)
+
+        if (
+          props.preventScrollOnHorizontalSwipe &&
+          (initialSwipeDirection === LEFT || initialSwipeDirection === RIGHT)
+        ) {
+          // disable scrolling
+          document.ontouchmove = e => {
+            e.preventDefault()
+          }
+        }
+      }
+
       // if swipe is under delta and we have not started to track a swipe: skip update
       if (absX < props.delta && absY < props.delta && !state.swiping)
         return state
 
       const dir = getDirection(absX, absY, deltaX, deltaY)
-      const eventData = { event, absX, absY, deltaX, deltaY, velocity, dir }
+      const eventData = {
+        event,
+        absX,
+        absY,
+        deltaX,
+        deltaY,
+        velocity,
+        dir
+      }
 
-      props.onSwiping && props.onSwiping(eventData)
+      // if case: update onSwiping props if preventScrollOnHorizontalSwipe is set and if the initial swipe direction is left or right
+      // else if case: update onSwiping props if preventScrollOnHorizontalSwipe is not set
+      if (
+        props.preventScrollOnHorizontalSwipe &&
+        (initialSwipeDirection === LEFT || initialSwipeDirection === RIGHT)
+      ) {
+        props.onSwiping && props.onSwiping(eventData)
+      } else if (!props.preventScrollOnHorizontalSwipe) {
+        props.onSwiping && props.onSwiping(eventData)
+      }
 
       // track if a swipe is cancelable(handler for swiping or swiped(dir) exists)
       // so we can call preventDefault if needed
@@ -150,6 +182,13 @@ function getHandlers(set, props) {
   }
 
   const onUp = e => {
+    initialSwipeDirection = ''
+
+    // enable scrolling again
+    document.ontouchmove = () => {
+      return true
+    }
+
     stop()
     onEnd(e)
   }
@@ -186,6 +225,7 @@ export class Swipeable extends React.PureComponent {
     onSwipedLeft: PropTypes.func,
     delta: PropTypes.number,
     preventDefaultTouchmoveEvent: PropTypes.bool,
+    preventScrollOnHorizontalSwipe: PropTypes.bool,
     nodeName: PropTypes.string,
     trackMouse: PropTypes.bool,
     trackTouch: PropTypes.bool,
