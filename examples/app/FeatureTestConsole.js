@@ -22,6 +22,7 @@ const initialState = {
 const initialStateSwipeable = {
   delta: '10',
   preventDefaultTouchmoveEvent: false,
+  preventScrollOnHorizontalSwipe: false,
   trackMouse: false,
   trackTouch: true,
   rotationAngle: 0,
@@ -104,6 +105,7 @@ export default class Main extends Component {
       onSwipedApplied,
       persistEvent,
       preventDefaultTouchmoveEvent,
+      preventScrollOnHorizontalSwipe,
       trackTouch,
       trackMouse,
       rotationAngle,
@@ -134,6 +136,7 @@ export default class Main extends Component {
             {...swipeableDirProps}
             delta={deltaNum}
             preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
+            preventScrollOnHorizontalSwipe={preventScrollOnHorizontalSwipe}
             trackTouch={trackTouch}
             trackMouse={trackMouse}
             rotationAngle={rotationAngleNum}
@@ -207,6 +210,11 @@ export default class Main extends Component {
               <RowSimpleCheckbox
                 value={preventDefaultTouchmoveEvent}
                 name="preventDefaultTouchmoveEvent"
+                onChange={this.updateValue}
+              />
+              <RowSimpleCheckbox
+                value={preventScrollOnHorizontalSwipe}
+                name="preventScrollOnHorizontalSwipe"
                 onChange={this.updateValue}
               />
               <RowSimpleCheckbox
