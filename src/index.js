@@ -114,8 +114,8 @@ function getHandlers(set, props) {
         dir
       }
 
-      // if case: update onSwiping props if preventScrollOnHorizontalSwipe is set and if the initial swipe direction is left or right
-      // else if case: update onSwiping props if preventScrollOnHorizontalSwipe is not set
+      // if case: call onSwiping if preventScrollOnHorizontalSwipe is set and if the initial swipe direction is left or right
+      // else if case: call onSwiping if preventScrollOnHorizontalSwipe is not set
       if (
         props.preventScrollOnHorizontalSwipe &&
         (initialSwipeDirection === LEFT || initialSwipeDirection === RIGHT)
