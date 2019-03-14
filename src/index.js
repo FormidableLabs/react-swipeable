@@ -47,10 +47,50 @@ function rotateXYByAngle(pos, angle) {
 }
 
 const getTouchHandlerOption = props => {
-  if (props.touchHandlerOption) return props.touchHandlerOption
+  if (typeof props.touchHandlerOption !== 'undefined')
+    return props.touchHandlerOption
   return props.preventDefaultTouchmoveEvent
     ? { passive: false }
     : { passive: true }
+}
+
+const noop = () => {}
+let touchMoveListenerSetup = false
+let handlerToCall = noop
+let touchMoveHandlerOption = {}
+const touchMoveHandler = e => {
+  handlerToCall(e)
+}
+const setupTouchMoveListener = (newHandler, touchHandlerOption) => {
+  // cleanup and reset if preventDefaultTouchMoveEvent changed
+  if (typeof touchHandlerOption === 'object' && touchMoveListenerSetup) {
+    if (touchHandlerOption.passive !== touchMoveHandlerOption.passive) {
+      cleanUp()
+    }
+  }
+  // setup a single eventListener for 'touchmove'
+  if (!touchMoveListenerSetup) {
+    touchMoveHandlerOption = touchHandlerOption
+    document.addEventListener(
+      touchMove,
+      touchMoveHandler,
+      touchMoveHandlerOption
+    )
+    touchMoveListenerSetup = true
+  }
+  // assign single handler to call
+  handlerToCall = newHandler
+}
+
+// clean up the single 'touchmove' eventListener
+const cleanUp = () => {
+  document.removeEventListener(
+    touchMove,
+    touchMoveHandler,
+    touchMoveHandlerOption
+  )
+  touchMoveListenerSetup = false
+  handlerToCall = noop
 }
 
 function getHandlers(set, props) {
@@ -131,7 +171,6 @@ function getHandlers(set, props) {
     }
     if (props.trackTouch) {
       const touchHandlerOption = getTouchHandlerOption(props)
-      document.addEventListener(touchMove, onMove, touchHandlerOption)
       document.addEventListener(touchEnd, onUp, touchHandlerOption)
     }
     onStart(e)
@@ -144,7 +183,6 @@ function getHandlers(set, props) {
     }
     if (props.trackTouch) {
       const touchHandlerOption = getTouchHandlerOption(props)
-      document.removeEventListener(touchMove, onMove, touchHandlerOption)
       document.removeEventListener(touchEnd, onUp, touchHandlerOption)
     }
   }
@@ -152,6 +190,11 @@ function getHandlers(set, props) {
   const onUp = e => {
     stop()
     onEnd(e)
+  }
+
+  if (props.trackTouch) {
+    const touchHandlerOption = getTouchHandlerOption(props)
+    setupTouchMoveListener(onMove, touchHandlerOption)
   }
 
   const output = {}
@@ -202,6 +245,10 @@ export class Swipeable extends React.PureComponent {
     super(props)
     this._state = initialState
     this._set = cb => (this._state = cb(this._state))
+  }
+
+  componentWillUnmount() {
+    cleanUp()
   }
 
   render() {
