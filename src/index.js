@@ -58,10 +58,11 @@ const noop = () => {}
 let touchMoveListenerSetup = false
 let handlerToCall = noop
 let touchMoveHandlerOption = {}
+const setTouchMoveHandler = newH => (handlerToCall = newH)
 const touchMoveHandler = e => {
   handlerToCall(e)
 }
-const setupTouchMoveListener = (newHandler, touchHandlerOption) => {
+const setupTouchMoveListener = touchHandlerOption => {
   // cleanup and reset if preventDefaultTouchMoveEvent changed
   if (typeof touchHandlerOption === 'object' && touchMoveListenerSetup) {
     if (touchHandlerOption.passive !== touchMoveHandlerOption.passive) {
@@ -78,8 +79,6 @@ const setupTouchMoveListener = (newHandler, touchHandlerOption) => {
     )
     touchMoveListenerSetup = true
   }
-  // assign single handler to call
-  handlerToCall = newHandler
 }
 
 // clean up the single 'touchmove' eventListener
@@ -172,6 +171,7 @@ function getHandlers(set, props) {
     if (props.trackTouch) {
       const touchHandlerOption = getTouchHandlerOption(props)
       document.addEventListener(touchEnd, onUp, touchHandlerOption)
+      setTouchMoveHandler(onMove)
     }
     onStart(e)
   }
@@ -194,7 +194,7 @@ function getHandlers(set, props) {
 
   if (props.trackTouch) {
     const touchHandlerOption = getTouchHandlerOption(props)
-    setupTouchMoveListener(onMove, touchHandlerOption)
+    setupTouchMoveListener(touchHandlerOption)
   }
 
   const output = {}
@@ -216,6 +216,9 @@ export function useSwipeable(props) {
       ...currentProps
     })
   )
+  React.useEffect(() => {
+    return () => cleanUp()
+  }, [])
   return spread(props)
 }
 
