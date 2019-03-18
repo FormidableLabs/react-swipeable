@@ -19,6 +19,7 @@ export const LEFT = 'Left'
 export const RIGHT = 'Right'
 export const UP = 'Up'
 export const DOWN = 'Down'
+const touchStart = 'touchstart'
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
 const mouseMove = 'mousemove'
@@ -46,22 +47,19 @@ function rotateXYByAngle(pos, angle) {
   return [x, y]
 }
 
-const getTouchHandlerOption = props => {
-  if (props.touchHandlerOption) return props.touchHandlerOption
-  return props.preventDefaultTouchmoveEvent
-    ? { passive: false }
-    : { passive: true }
-}
-
 function getHandlers(set, props) {
   const onStart = event => {
     // if more than a single touch don't track, for now...
     if (event.touches && event.touches.length > 1) return
 
-    set(() => {
+    set(state => {
+      if (state.props.trackMouse) {
+        document.addEventListener(mouseMove, onMove)
+        document.addEventListener(mouseUp, onUp)
+      }
       const { clientX, clientY } = event.touches ? event.touches[0] : event
-      const xy = rotateXYByAngle([clientX, clientY], props.rotationAngle)
-      return { ...initialState, xy, start: event.timeStamp || 0 }
+      const xy = rotateXYByAngle([clientX, clientY], state.props.rotationAngle)
+      return { ...state, ...initialState, xy, start: event.timeStamp || 0 }
     })
   }
 
@@ -75,7 +73,10 @@ function getHandlers(set, props) {
         return state
       }
       const { clientX, clientY } = event.touches ? event.touches[0] : event
-      const [x, y] = rotateXYByAngle([clientX, clientY], props.rotationAngle)
+      const [x, y] = rotateXYByAngle(
+        [clientX, clientY],
+        state.props.rotationAngle
+      )
       const deltaX = state.xy[0] - x
       const deltaY = state.xy[1] - y
       const absX = Math.abs(deltaX)
@@ -90,19 +91,23 @@ function getHandlers(set, props) {
       const dir = getDirection(absX, absY, deltaX, deltaY)
       const eventData = { event, absX, absY, deltaX, deltaY, velocity, dir }
 
-      props.onSwiping && props.onSwiping(eventData)
+      state.props.onSwiping && state.props.onSwiping(eventData)
 
       // track if a swipe is cancelable(handler for swiping or swiped(dir) exists)
       // so we can call preventDefault if needed
       let cancelablePageSwipe = false
-      if (props.onSwiping || props.onSwiped || props[`onSwiped${dir}`]) {
+      if (
+        state.props.onSwiping ||
+        state.props.onSwiped ||
+        state.props[`onSwiped${dir}`]
+      ) {
         cancelablePageSwipe = true
       }
 
       if (
         cancelablePageSwipe &&
-        props.preventDefaultTouchmoveEvent &&
-        props.trackTouch
+        state.props.preventDefaultTouchmoveEvent &&
+        state.props.trackTouch
       )
         event.preventDefault()
 
@@ -115,38 +120,23 @@ function getHandlers(set, props) {
       if (state.swiping) {
         const eventData = { ...state.lastEventData, event }
 
-        props.onSwiped && props.onSwiped(eventData)
+        state.props.onSwiped && state.props.onSwiped(eventData)
 
-        props[`onSwiped${eventData.dir}`] &&
-          props[`onSwiped${eventData.dir}`](eventData)
+        state.props[`onSwiped${eventData.dir}`] &&
+          state.props[`onSwiped${eventData.dir}`](eventData)
       }
-      return { ...initialState }
+      return { ...state, ...initialState }
     })
   }
 
-  const onDown = e => {
-    if (props.trackMouse) {
-      document.addEventListener(mouseMove, onMove)
-      document.addEventListener(mouseUp, onUp)
-    }
-    if (props.trackTouch) {
-      const touchHandlerOption = getTouchHandlerOption(props)
-      document.addEventListener(touchMove, onMove, touchHandlerOption)
-      document.addEventListener(touchEnd, onUp, touchHandlerOption)
-    }
-    onStart(e)
-  }
-
   const stop = () => {
-    if (props.trackMouse) {
-      document.removeEventListener(mouseMove, onMove)
-      document.removeEventListener(mouseUp, onUp)
-    }
-    if (props.trackTouch) {
-      const touchHandlerOption = getTouchHandlerOption(props)
-      document.removeEventListener(touchMove, onMove, touchHandlerOption)
-      document.removeEventListener(touchEnd, onUp, touchHandlerOption)
-    }
+    set(state => {
+      if (state.props.trackMouse) {
+        document.removeEventListener(mouseMove, onMove)
+        document.removeEventListener(mouseUp, onUp)
+      }
+      return state
+    })
   }
 
   const onUp = e => {
@@ -154,19 +144,45 @@ function getHandlers(set, props) {
     onEnd(e)
   }
 
-  const output = {}
+  const cleanUp = el => {
+    if (el && el.removeEventListener) {
+      el.removeEventListener(touchStart, onStart)
+      el.removeEventListener(touchMove, onMove)
+      el.removeEventListener(touchEnd, onUp)
+    }
+  }
+
+  const onRef = el => {
+    if (el === null) return
+    set(state => {
+      if (state.el === el) return state
+      if (state.el && state.el !== el) cleanUp(state.el)
+      if (state.props.trackTouch) {
+        if (el && el.addEventListener) {
+          el.addEventListener(touchStart, onStart)
+          el.addEventListener(touchMove, onMove)
+          el.addEventListener(touchEnd, onUp)
+          return { ...state, el }
+        }
+      }
+      return state
+    })
+  }
+
+  // set ref callback to attach touch event listeners
+  const output = { ref: onRef }
   if (props.trackMouse) {
-    output.onMouseDown = onDown
+    output.onMouseDown = onStart
   }
-  if (props.trackTouch) {
-    output.onTouchStart = onDown
-  }
+
+  // update props
+  set(state => ({ ...state, props }))
 
   return output
 }
 
 export function useSwipeable(props) {
-  const transientState = React.useRef(initialState)
+  const transientState = React.useRef({ ...initialState, type: 'hook' })
   const [spread] = React.useState(() => currentProps =>
     getHandlers(cb => (transientState.current = cb(transientState.current)), {
       ...defaultProps,
@@ -200,7 +216,7 @@ export class Swipeable extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    this._state = initialState
+    this._state = { ...initialState, type: 'class' }
     this._set = cb => (this._state = cb(this._state))
   }
 
@@ -214,9 +230,10 @@ export class Swipeable extends React.PureComponent {
       ...rest
     } = this.props
     const handlers = getHandlers(this._set, rest)
+    const ref = innerRef ? el => (innerRef(el), handlers.ref(el)) : handlers.ref
     return React.createElement(
       nodeName,
-      { ...handlers, className, style, ref: innerRef },
+      { ...handlers, className, style, ref },
       children
     )
   }
