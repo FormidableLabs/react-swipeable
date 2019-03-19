@@ -40,10 +40,8 @@ function getDirection(absX, absY, deltaX, deltaY) {
 function rotateXYByAngle(pos, angle) {
   if (angle === 0) return pos
   const angleInRadians = (Math.PI / 180) * angle
-  const x =
-    pos[0] * Math.cos(angleInRadians) + pos[1] * Math.sin(angleInRadians)
-  const y =
-    pos[1] * Math.cos(angleInRadians) - pos[0] * Math.sin(angleInRadians)
+  const x = pos[0] * Math.cos(angleInRadians) + pos[1] * Math.sin(angleInRadians)
+  const y = pos[1] * Math.cos(angleInRadians) - pos[0] * Math.sin(angleInRadians)
   return [x, y]
 }
 
@@ -65,18 +63,11 @@ function getHandlers(set, props) {
 
   const onMove = event => {
     set(state => {
-      if (
-        !state.xy[0] ||
-        !state.xy[1] ||
-        (event.touches && event.touches.length > 1)
-      ) {
+      if (!state.xy[0] || !state.xy[1] || (event.touches && event.touches.length > 1)) {
         return state
       }
       const { clientX, clientY } = event.touches ? event.touches[0] : event
-      const [x, y] = rotateXYByAngle(
-        [clientX, clientY],
-        state.props.rotationAngle
-      )
+      const [x, y] = rotateXYByAngle([clientX, clientY], state.props.rotationAngle)
       const deltaX = state.xy[0] - x
       const deltaY = state.xy[1] - y
       const absX = Math.abs(deltaX)
@@ -85,8 +76,7 @@ function getHandlers(set, props) {
       const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1)
 
       // if swipe is under delta and we have not started to track a swipe: skip update
-      if (absX < props.delta && absY < props.delta && !state.swiping)
-        return state
+      if (absX < props.delta && absY < props.delta && !state.swiping) return state
 
       const dir = getDirection(absX, absY, deltaX, deltaY)
       const eventData = { event, absX, absY, deltaX, deltaY, velocity, dir }
@@ -96,19 +86,11 @@ function getHandlers(set, props) {
       // track if a swipe is cancelable(handler for swiping or swiped(dir) exists)
       // so we can call preventDefault if needed
       let cancelablePageSwipe = false
-      if (
-        state.props.onSwiping ||
-        state.props.onSwiped ||
-        state.props[`onSwiped${dir}`]
-      ) {
+      if (state.props.onSwiping || state.props.onSwiped || state.props[`onSwiped${dir}`]) {
         cancelablePageSwipe = true
       }
 
-      if (
-        cancelablePageSwipe &&
-        state.props.preventDefaultTouchmoveEvent &&
-        state.props.trackTouch
-      )
+      if (cancelablePageSwipe && state.props.preventDefaultTouchmoveEvent && state.props.trackTouch)
         event.preventDefault()
 
       return { ...state, lastEventData: eventData, swiping: true }
@@ -205,10 +187,7 @@ export class Swipeable extends React.PureComponent {
     nodeName: PropTypes.string,
     trackMouse: PropTypes.bool,
     trackTouch: PropTypes.bool,
-    innerRef: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.shape({ current: PropTypes.any })
-    ]),
+    innerRef: PropTypes.func,
     rotationAngle: PropTypes.number
   }
 
@@ -221,20 +200,9 @@ export class Swipeable extends React.PureComponent {
   }
 
   render() {
-    const {
-      className,
-      style,
-      nodeName = 'div',
-      innerRef,
-      children,
-      ...rest
-    } = this.props
+    const { className, style, nodeName = 'div', innerRef, children, ...rest } = this.props
     const handlers = getHandlers(this._set, rest)
     const ref = innerRef ? el => (innerRef(el), handlers.ref(el)) : handlers.ref
-    return React.createElement(
-      nodeName,
-      { ...handlers, className, style, ref },
-      children
-    )
+    return React.createElement(nodeName, { ...handlers, className, style, ref }, children)
   }
 }

@@ -20,6 +20,14 @@
     "node": true
   },
   "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "semi": false,
+        "printWidth": 100
+      }
+    ],
     "valid-jsdoc": 2,
     "react/jsx-uses-react": 1,
     "react/jsx-no-undef": 2,
