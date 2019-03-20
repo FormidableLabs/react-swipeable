@@ -51,6 +51,7 @@ function getHandlers(set, props) {
     if (event.touches && event.touches.length > 1) return
 
     set(state => {
+      // setup mouse listeners on document to track swipe since swipe can leave container
       if (state.props.trackMouse) {
         document.addEventListener(mouseMove, onMove)
         document.addEventListener(mouseUp, onUp)
@@ -112,13 +113,9 @@ function getHandlers(set, props) {
   }
 
   const stop = () => {
-    set(state => {
-      if (state.props.trackMouse) {
-        document.removeEventListener(mouseMove, onMove)
-        document.removeEventListener(mouseUp, onUp)
-      }
-      return state
-    })
+    // safe to just call removeEventListener
+    document.removeEventListener(mouseMove, onMove)
+    document.removeEventListener(mouseUp, onUp)
   }
 
   const onUp = e => {
@@ -135,15 +132,21 @@ function getHandlers(set, props) {
   }
 
   const onRef = el => {
+    // "inline" ref functions are called twice on render, once with null then again with DOM element
+    // ignore null here
     if (el === null) return
     set(state => {
+      // if the same DOM el as previous just return state
       if (state.el === el) return state
+      // if new DOM el clean up old DOM
       if (state.el && state.el !== el) cleanUp(state.el)
+      // only attach if we want to track touch
       if (state.props.trackTouch) {
         if (el && el.addEventListener) {
           el.addEventListener(touchStart, onStart)
           el.addEventListener(touchMove, onMove)
           el.addEventListener(touchEnd, onUp)
+          // store event attached DOM el for comparison
           return { ...state, el }
         }
       }
@@ -153,6 +156,8 @@ function getHandlers(set, props) {
 
   // set ref callback to attach touch event listeners
   const output = { ref: onRef }
+
+  // if track mouse attach mouse down listener
   if (props.trackMouse) {
     output.onMouseDown = onStart
   }
