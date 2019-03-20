@@ -1,3 +1,14 @@
+# 5.1.0
+* Fix for `preventDefaultTouchmoveEvent` in safari [issue #127](https://github.com/dogfessional/react-swipeable/issues/127) and [PR #131](https://github.com/dogfessional/react-swipeable/pull/131)
+  * Thank you [@JiiB](https://github.com/JiiB) and [@bhj](https://github.com/bhj)!
+  * use `ref` callback for both `<Swipeable>` and `useSwipeable` to attach all touch event handlers
+    * `useSwipeable`'s returned `handlers` now contains a ref callback
+    * Please see disscusion and comments in both [#127](https://github.com/dogfessional/react-swipeable/issues/127) and [#131](https://github.com/dogfessional/react-swipeable/issues/127) for more details and info.
+      * fix avoids the `passive: true` issue from chrome document event listeners
+      * fix avoids bug on safari where the `touchmove` event listener needs to be attached before a `touchstart` in order to be able to call `e.preventDefault`
+* removed `touchHandlerOption` prop
+  * fix above deprecates this prop
+
 # 5.0.0
 * Introduce react hook, `useSwipeable`
 * Core rewrite to simplify api and trim down bundled size
