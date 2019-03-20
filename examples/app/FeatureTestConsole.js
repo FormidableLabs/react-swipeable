@@ -27,6 +27,9 @@ const initialStateSwipeable = {
   rotationAngle: 0,
 };
 const initialStateApplied = {
+  showHook: true,
+  showComponent: true,
+  showOnSwipeds: false,
   onSwipingApplied: true,
   onSwipedApplied: true,
   onSwipedLeftApplied: true,
@@ -100,6 +103,9 @@ export default class Main extends Component {
       swipingDirection,
       swipedDirection,
       delta,
+      showHook,
+      showComponent,
+      showOnSwipeds,
       onSwipingApplied,
       onSwipedApplied,
       persistEvent,
@@ -129,7 +135,7 @@ export default class Main extends Component {
       <div className="row" id="FeatureTestConsole">
         <div className="small-12 column">
           <h5><strong>Test react-swipeable features.</strong></h5>
-          <Swipeable
+          {showComponent && <Swipeable
             {...boundSwipes}
             {...swipeableDirProps}
             delta={deltaNum}
@@ -137,15 +143,15 @@ export default class Main extends Component {
             trackTouch={trackTouch}
             trackMouse={trackMouse}
             rotationAngle={rotationAngleNum}
-            className="callout"
+            className="callout classComponent"
             style={swipeableStyle}>
               <div onTouchStart={()=>this.resetState()}>
                 <h5>Component - Swipe inside here to test</h5>
                 <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output(open dev tools)</p>
                 <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
               </div>
-          </Swipeable>
-          <SwipeableHook
+          </Swipeable>}
+          {showHook && <SwipeableHook
             {...boundSwipes}
             {...swipeableDirProps}
             delta={deltaNum}
@@ -153,14 +159,14 @@ export default class Main extends Component {
             trackTouch={trackTouch}
             trackMouse={trackMouse}
             rotationAngle={rotationAngleNum}
-            className="callout"
+            className="callout hookComponent"
             style={swipeableStyle}>
               <div onTouchStart={()=>this.resetState()}>
                 <h5>Hook - Swipe inside here to test</h5>
                 <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output(open dev tools)</p>
                 <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
               </div>
-          </SwipeableHook>
+          </SwipeableHook>}
           <table>
             <thead>
               <tr><th>Applied?</th><th>Action</th><th>Output</th></tr>
@@ -185,9 +191,26 @@ export default class Main extends Component {
                 <td>onSwiping Direction</td><td>{swipingDirection}</td>
               </tr>
               <tr>
-                <td className="text-center"><a href="#appliedDirs">↓&nbsp;Below&nbsp;↓</a></td>
+                <td className="text-center">
+                  <a href="#" onClick={(e)=>(e.preventDefault(),this.updateValue('showOnSwipeds', !showOnSwipeds))}>
+                    {showOnSwipeds ? '↑ Hide ↑' : '↓ Show ↓'}
+                  </a>
+                </td>
                 <td>onSwiped Direction</td><td>{swipedDirection}</td>
               </tr>
+              {showOnSwipeds && <tr>
+                <td className="text-center" colSpan="3">
+                  <table id="appliedDirs">
+                    <thead>
+                      <tr><th colSpan="2" className="text-center">onSwiped</th></tr>
+                      <tr><th>Applied?</th><th>Direction</th></tr>
+                    </thead>
+                    <tbody>
+                      {DIRECTIONS.map(this._renderAppliedDirRow.bind(this))}
+                    </tbody>
+                  </table>
+                </td>
+              </tr>}
               <tr>
                 <td colSpan="2" className="text-center">delta:</td>
                 <td>
@@ -228,15 +251,24 @@ export default class Main extends Component {
                     onChange={(e)=>this.updateValue('persistEvent', e.target.checked)}/>
                 </td>
               </tr>
-            </tbody>
-          </table>
-          <table id="appliedDirs">
-            <thead>
-              <tr><th colSpan="2" className="text-center">onSwiped</th></tr>
-              <tr><th>Applied?</th><th>Direction</th></tr>
-            </thead>
-            <tbody>
-              {DIRECTIONS.map(this._renderAppliedDirRow.bind(this))}
+              <tr>
+                <td colSpan="2" className="text-center">Show Hook Example:</td>
+                <td style={{textAlign: "center"}}>
+                  <input style={{margin: "0px"}}
+                    type="checkbox"
+                    checked={showHook}
+                    onChange={(e)=>this.updateValue('showHook', e.target.checked)}/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2" className="text-center">Show Component Example:</td>
+                <td style={{textAlign: "center"}}>
+                  <input style={{margin: "0px"}}
+                    type="checkbox"
+                    checked={showComponent}
+                    onChange={(e)=>this.updateValue('showComponent', e.target.checked)}/>
+                </td>
+              </tr>
             </tbody>
           </table>
           <table style={{width: "100%"}}>

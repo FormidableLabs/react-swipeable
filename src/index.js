@@ -19,6 +19,7 @@ export const LEFT = 'Left'
 export const RIGHT = 'Right'
 export const UP = 'Up'
 export const DOWN = 'Down'
+const touchStart = 'touchstart'
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
 const mouseMove = 'mousemove'
@@ -39,18 +40,9 @@ function getDirection(absX, absY, deltaX, deltaY) {
 function rotateXYByAngle(pos, angle) {
   if (angle === 0) return pos
   const angleInRadians = (Math.PI / 180) * angle
-  const x =
-    pos[0] * Math.cos(angleInRadians) + pos[1] * Math.sin(angleInRadians)
-  const y =
-    pos[1] * Math.cos(angleInRadians) - pos[0] * Math.sin(angleInRadians)
+  const x = pos[0] * Math.cos(angleInRadians) + pos[1] * Math.sin(angleInRadians)
+  const y = pos[1] * Math.cos(angleInRadians) - pos[0] * Math.sin(angleInRadians)
   return [x, y]
-}
-
-const getTouchHandlerOption = props => {
-  if (props.touchHandlerOption) return props.touchHandlerOption
-  return props.preventDefaultTouchmoveEvent
-    ? { passive: false }
-    : { passive: true }
 }
 
 function getHandlers(set, props) {
@@ -58,24 +50,25 @@ function getHandlers(set, props) {
     // if more than a single touch don't track, for now...
     if (event.touches && event.touches.length > 1) return
 
-    set(() => {
+    set(state => {
+      // setup mouse listeners on document to track swipe since swipe can leave container
+      if (state.props.trackMouse) {
+        document.addEventListener(mouseMove, onMove)
+        document.addEventListener(mouseUp, onUp)
+      }
       const { clientX, clientY } = event.touches ? event.touches[0] : event
-      const xy = rotateXYByAngle([clientX, clientY], props.rotationAngle)
-      return { ...initialState, xy, start: event.timeStamp || 0 }
+      const xy = rotateXYByAngle([clientX, clientY], state.props.rotationAngle)
+      return { ...state, ...initialState, xy, start: event.timeStamp || 0 }
     })
   }
 
   const onMove = event => {
     set(state => {
-      if (
-        !state.xy[0] ||
-        !state.xy[1] ||
-        (event.touches && event.touches.length > 1)
-      ) {
+      if (!state.xy[0] || !state.xy[1] || (event.touches && event.touches.length > 1)) {
         return state
       }
       const { clientX, clientY } = event.touches ? event.touches[0] : event
-      const [x, y] = rotateXYByAngle([clientX, clientY], props.rotationAngle)
+      const [x, y] = rotateXYByAngle([clientX, clientY], state.props.rotationAngle)
       const deltaX = state.xy[0] - x
       const deltaY = state.xy[1] - y
       const absX = Math.abs(deltaX)
@@ -84,26 +77,21 @@ function getHandlers(set, props) {
       const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1)
 
       // if swipe is under delta and we have not started to track a swipe: skip update
-      if (absX < props.delta && absY < props.delta && !state.swiping)
-        return state
+      if (absX < props.delta && absY < props.delta && !state.swiping) return state
 
       const dir = getDirection(absX, absY, deltaX, deltaY)
       const eventData = { event, absX, absY, deltaX, deltaY, velocity, dir }
 
-      props.onSwiping && props.onSwiping(eventData)
+      state.props.onSwiping && state.props.onSwiping(eventData)
 
       // track if a swipe is cancelable(handler for swiping or swiped(dir) exists)
       // so we can call preventDefault if needed
       let cancelablePageSwipe = false
-      if (props.onSwiping || props.onSwiped || props[`onSwiped${dir}`]) {
+      if (state.props.onSwiping || state.props.onSwiped || state.props[`onSwiped${dir}`]) {
         cancelablePageSwipe = true
       }
 
-      if (
-        cancelablePageSwipe &&
-        props.preventDefaultTouchmoveEvent &&
-        props.trackTouch
-      )
+      if (cancelablePageSwipe && state.props.preventDefaultTouchmoveEvent && state.props.trackTouch)
         event.preventDefault()
 
       return { ...state, lastEventData: eventData, swiping: true }
@@ -115,38 +103,19 @@ function getHandlers(set, props) {
       if (state.swiping) {
         const eventData = { ...state.lastEventData, event }
 
-        props.onSwiped && props.onSwiped(eventData)
+        state.props.onSwiped && state.props.onSwiped(eventData)
 
-        props[`onSwiped${eventData.dir}`] &&
-          props[`onSwiped${eventData.dir}`](eventData)
+        state.props[`onSwiped${eventData.dir}`] &&
+          state.props[`onSwiped${eventData.dir}`](eventData)
       }
-      return { ...initialState }
+      return { ...state, ...initialState }
     })
   }
 
-  const onDown = e => {
-    if (props.trackMouse) {
-      document.addEventListener(mouseMove, onMove)
-      document.addEventListener(mouseUp, onUp)
-    }
-    if (props.trackTouch) {
-      const touchHandlerOption = getTouchHandlerOption(props)
-      document.addEventListener(touchMove, onMove, touchHandlerOption)
-      document.addEventListener(touchEnd, onUp, touchHandlerOption)
-    }
-    onStart(e)
-  }
-
   const stop = () => {
-    if (props.trackMouse) {
-      document.removeEventListener(mouseMove, onMove)
-      document.removeEventListener(mouseUp, onUp)
-    }
-    if (props.trackTouch) {
-      const touchHandlerOption = getTouchHandlerOption(props)
-      document.removeEventListener(touchMove, onMove, touchHandlerOption)
-      document.removeEventListener(touchEnd, onUp, touchHandlerOption)
-    }
+    // safe to just call removeEventListener
+    document.removeEventListener(mouseMove, onMove)
+    document.removeEventListener(mouseUp, onUp)
   }
 
   const onUp = e => {
@@ -154,19 +123,53 @@ function getHandlers(set, props) {
     onEnd(e)
   }
 
-  const output = {}
+  const cleanUp = el => {
+    if (el && el.removeEventListener) {
+      el.removeEventListener(touchStart, onStart)
+      el.removeEventListener(touchMove, onMove)
+      el.removeEventListener(touchEnd, onUp)
+    }
+  }
+
+  const onRef = el => {
+    // "inline" ref functions are called twice on render, once with null then again with DOM element
+    // ignore null here
+    if (el === null) return
+    set(state => {
+      // if the same DOM el as previous just return state
+      if (state.el === el) return state
+      // if new DOM el clean up old DOM
+      if (state.el && state.el !== el) cleanUp(state.el)
+      // only attach if we want to track touch
+      if (state.props.trackTouch) {
+        if (el && el.addEventListener) {
+          el.addEventListener(touchStart, onStart)
+          el.addEventListener(touchMove, onMove)
+          el.addEventListener(touchEnd, onUp)
+          // store event attached DOM el for comparison
+          return { ...state, el }
+        }
+      }
+      return state
+    })
+  }
+
+  // set ref callback to attach touch event listeners
+  const output = { ref: onRef }
+
+  // if track mouse attach mouse down listener
   if (props.trackMouse) {
-    output.onMouseDown = onDown
+    output.onMouseDown = onStart
   }
-  if (props.trackTouch) {
-    output.onTouchStart = onDown
-  }
+
+  // update props
+  set(state => ({ ...state, props }))
 
   return output
 }
 
 export function useSwipeable(props) {
-  const transientState = React.useRef(initialState)
+  const transientState = React.useRef({ ...initialState, type: 'hook' })
   const [spread] = React.useState(() => currentProps =>
     getHandlers(cb => (transientState.current = cb(transientState.current)), {
       ...defaultProps,
@@ -189,10 +192,7 @@ export class Swipeable extends React.PureComponent {
     nodeName: PropTypes.string,
     trackMouse: PropTypes.bool,
     trackTouch: PropTypes.bool,
-    innerRef: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.shape({ current: PropTypes.any })
-    ]),
+    innerRef: PropTypes.func,
     rotationAngle: PropTypes.number
   }
 
@@ -200,24 +200,14 @@ export class Swipeable extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    this._state = initialState
+    this._state = { ...initialState, type: 'class' }
     this._set = cb => (this._state = cb(this._state))
   }
 
   render() {
-    const {
-      className,
-      style,
-      nodeName = 'div',
-      innerRef,
-      children,
-      ...rest
-    } = this.props
+    const { className, style, nodeName = 'div', innerRef, children, ...rest } = this.props
     const handlers = getHandlers(this._set, rest)
-    return React.createElement(
-      nodeName,
-      { ...handlers, className, style, ref: innerRef },
-      children
-    )
+    const ref = innerRef ? el => (innerRef(el), handlers.ref(el)) : handlers.ref
+    return React.createElement(nodeName, { ...handlers, className, style, ref }, children)
   }
 }

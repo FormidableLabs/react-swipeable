@@ -1,62 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Swipeable allows touchHandlerOption overwrite: verify touchHandlerOption overwrite 1`] = `
-Array [
-  Array [
-    "touchmove",
-    [Function],
-    Object {
-      "capture": true,
-    },
-  ],
-  Array [
-    "touchend",
-    [Function],
-    Object {
-      "capture": true,
-    },
-  ],
-]
-`;
-
-exports[`Swipeable calls preventDefault when swiping in direction that has a callback: verify touchHandlerOption passive is false 1`] = `
-Array [
-  Array [
-    "touchmove",
-    [Function],
-    Object {
-      "passive": false,
-    },
-  ],
-  Array [
-    "touchend",
-    [Function],
-    Object {
-      "passive": false,
-    },
-  ],
-]
-`;
-
-exports[`Swipeable does not call preventDefault when false: verify touchHandlerOption passive is true 1`] = `
-Array [
-  Array [
-    "touchmove",
-    [Function],
-    Object {
-      "passive": true,
-    },
-  ],
-  Array [
-    "touchend",
-    [Function],
-    Object {
-      "passive": true,
-    },
-  ],
-]
-`;
-
 exports[`Swipeable handles mouse events with trackMouse prop and fires correct props: Swipeable onSwiped trackMouse 1`] = `
 Array [
   Array [
@@ -246,63 +189,6 @@ Array [
         ],
       },
       "velocity": 1.8903591679142773,
-    },
-  ],
-]
-`;
-
-exports[`useSwipeable allows touchHandlerOption overwrite: verify touchHandlerOption overwrite 1`] = `
-Array [
-  Array [
-    "touchmove",
-    [Function],
-    Object {
-      "capture": true,
-    },
-  ],
-  Array [
-    "touchend",
-    [Function],
-    Object {
-      "capture": true,
-    },
-  ],
-]
-`;
-
-exports[`useSwipeable calls preventDefault when swiping in direction that has a callback: verify touchHandlerOption passive is false 1`] = `
-Array [
-  Array [
-    "touchmove",
-    [Function],
-    Object {
-      "passive": false,
-    },
-  ],
-  Array [
-    "touchend",
-    [Function],
-    Object {
-      "passive": false,
-    },
-  ],
-]
-`;
-
-exports[`useSwipeable does not call preventDefault when false: verify touchHandlerOption passive is true 1`] = `
-Array [
-  Array [
-    "touchmove",
-    [Function],
-    Object {
-      "passive": true,
-    },
-  ],
-  Array [
-    "touchend",
-    [Function],
-    Object {
-      "passive": true,
     },
   ],
 ]
