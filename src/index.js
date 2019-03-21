@@ -22,6 +22,7 @@ export const DOWN = 'Down'
 const touchStart = 'touchstart'
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
+const touchEvents = [touchStart, touchMove, touchEnd]
 const mouseMove = 'mousemove'
 const mouseUp = 'mouseup'
 
@@ -112,22 +113,28 @@ function getHandlers(set, props) {
     })
   }
 
-  const stop = () => {
+  const cleanUpMouse = () => {
     // safe to just call removeEventListener
     document.removeEventListener(mouseMove, onMove)
     document.removeEventListener(mouseUp, onUp)
   }
 
   const onUp = e => {
-    stop()
+    cleanUpMouse()
     onEnd(e)
   }
 
-  const cleanUp = el => {
+  const attachTouch = el => {
+    if (el && el.addEventListener) {
+      const attach = { [touchStart]: onStart, [touchMove]: onMove, [touchEnd]: onUp }
+      touchEvents.forEach(e => el.addEventListener(e, attach[e]))
+      return getCleanUpTouch(el, attach)
+    }
+  }
+
+  const getCleanUpTouch = (el, attached) => () => {
     if (el && el.removeEventListener) {
-      el.removeEventListener(touchStart, onStart)
-      el.removeEventListener(touchMove, onMove)
-      el.removeEventListener(touchEnd, onUp)
+      touchEvents.forEach(e => el.removeEventListener(e, attached[e]))
     }
   }
 
@@ -138,19 +145,19 @@ function getHandlers(set, props) {
     set(state => {
       // if the same DOM el as previous just return state
       if (state.el === el) return state
-      // if new DOM el clean up old DOM
-      if (state.el && state.el !== el) cleanUp(state.el)
-      // only attach if we want to track touch
-      if (state.props.trackTouch) {
-        if (el && el.addEventListener) {
-          el.addEventListener(touchStart, onStart)
-          el.addEventListener(touchMove, onMove)
-          el.addEventListener(touchEnd, onUp)
-          // store event attached DOM el for comparison
-          return { ...state, el }
-        }
+
+      // store event attached DOM el for comparison, clean up, and re-attachment
+      const newState = { ...state, el }
+
+      // if new DOM el clean up old DOM and reset cleanUpTouch
+      if (state.el && state.el !== el && state.cleanUpTouch) {
+        newState.cleanUpTouch = state.cleanUpTouch()
       }
-      return state
+      // only attach if we want to track touch
+      if (state.props.trackTouch && newState.el) {
+        newState.cleanUpTouch = attachTouch(newState.el)
+      }
+      return newState
     })
   }
 
@@ -162,8 +169,20 @@ function getHandlers(set, props) {
     output.onMouseDown = onStart
   }
 
-  // update props
-  set(state => ({ ...state, props }))
+  // update state, props, and handlers
+  set(state => {
+    const newState = { ...state, props }
+    // clean up touch handlers if no longer tracking touches
+    if (!props.trackTouch && state.cleanUpTouch) {
+      newState.cleanUpTouch = state.cleanUpTouch()
+    } else if (props.trackTouch && !state.cleanUpTouch) {
+      // attach/re-attach touch handlers
+      if (newState.el) {
+        newState.cleanUpTouch = attachTouch(newState.el)
+      }
+    }
+    return newState
+  })
 
   return output
 }
