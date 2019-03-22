@@ -1,6 +1,6 @@
 {
   "name": "react-swipeable",
-  "version": "5.1.0-alpha.1",
+  "version": "5.1.0-alpha.2",
   "description": "Swipe and touch handlers for react",
   "main": "./lib/index.js",
   "module": "es/index.js",
@@ -21,7 +21,7 @@
   },
   "size-limit": [
     {
-      "limit": "1.8 KB",
+      "limit": "1.875 KB",
       "path": "es/index.js"
     }
   ],
