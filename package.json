@@ -60,6 +60,7 @@
     "src"
   ],
   "license": "MIT",
+  "typings": "./index.d.ts",
   "devDependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.0",
