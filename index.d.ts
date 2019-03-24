@@ -15,20 +15,19 @@ interface EventData<T> {
 }
 
 declare namespace ReactSwipeable {
-  type OnSwipingCallback<T extends Element = HTMLElement> = ({}: EventData<T>) => void
-  type OnSwipedCallback<T extends Element = HTMLElement> = ({}: EventData<T>) => void
-  type OnSwipedDirectionCallback<T extends Element = HTMLElement> = ({}: EventData<T>) => void
+  type Calback<T extends Element = HTMLElement> = ({}: EventData<T>) => void
+  type DirectionCallback<T extends Element = HTMLElement> = ({}: EventData<T>) => void
 
   interface SwipeableProps<T extends Element = HTMLElement>
     extends React.ClassAttributes<ReactSwipeable<T>>,
       React.HTMLAttributes<T> {
     // Event data
-    onSwiped?: OnSwipedCallback<T>
-    onSwipedLeft?: OnSwipedDirectionCallback<T>
-    onSwipedRight?: OnSwipedDirectionCallback<T>
-    onSwipedUp?: OnSwipedDirectionCallback<T>
-    onSwipedDown?: OnSwipedDirectionCallback<T>
-    onSwiping?: OnSwipingCallback<T>
+    onSwiped?: Callback<T>
+    onSwipedLeft?: DirectionCallback<T>
+    onSwipedRight?: DirectionCallback<T>
+    onSwipedUp?: DirectionCallback<T>
+    onSwipedDown?: DirectionCallback<T>
+    onSwiping?: Callback<T>
 
     // Configuration Props
     delta?: number
