@@ -15,7 +15,7 @@ interface EventData<T> {
 }
 
 declare namespace ReactSwipeable {
-  type Calback<T extends Element = HTMLElement> = ({}: EventData<T>) => void
+  type Callback<T extends Element = HTMLElement> = ({}: EventData<T>) => void
   type DirectionCallback<T extends Element = HTMLElement> = ({}: EventData<T>) => void
 
   interface SwipeableProps<T extends Element = HTMLElement>
