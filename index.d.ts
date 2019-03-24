@@ -11,7 +11,7 @@ interface EventData<T> {
   absX: number;
   absY: number;
   velocity: number;
-  dir: string;
+  dir: 'Left' | 'Right' | 'Up' | 'Down';
 }
 
 declare namespace ReactSwipeable {
