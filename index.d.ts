@@ -33,7 +33,7 @@ declare module 'react-swipeable' {
       // Component Specific Props
       nodeName?: string
       innerRef?: React.Ref<T>
-      children?: React.ReactNode
+      children?: React.ReactNode | React.ReactNode[]
     }
   }
 
