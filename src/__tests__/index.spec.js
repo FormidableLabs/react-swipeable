@@ -35,7 +35,7 @@ const expectSwipeFuncsDir = (sf, dir) =>
     }
   })
 
-function mockListenerSetup(el) {
+function mockListenersSetup(el) {
   // track eventListener adds to trigger later
   // idea from - https://github.com/airbnb/enzyme/issues/426#issuecomment-228601631
   const eventListenerMap = {}
@@ -62,13 +62,13 @@ function SwipeableUsingHook(props) {
   )
 }
 
-function setupGetMountedComponent(type) {
+function setupGetMountedComponent(type, mockListeners = mockListenersSetup) {
   return props => {
     let wrapper
     let eventListenerMap
     const innerRef = el => {
       // don't re-assign eventlistener map
-      if (!eventListenerMap) eventListenerMap = mockListenerSetup(el)
+      if (!eventListenerMap) eventListenerMap = mockListeners(el)
     }
     if (type === 'Swipeable') {
       wrapper = mount(
@@ -100,7 +100,7 @@ function setupGetMountedComponent(type) {
     beforeEach(() => {
       // track eventListener adds to trigger later
       // idea from - https://github.com/airbnb/enzyme/issues/426#issuecomment-228601631
-      eventListenerMapDocument = mockListenerSetup(document)
+      eventListenerMapDocument = mockListenersSetup(document)
     })
     afterAll(() => {
       document.eventListener = origAddEventListener
@@ -380,6 +380,33 @@ function setupGetMountedComponent(type) {
       ;[LEFT, UP, DOWN].forEach(dir => {
         expect(swipeFuncs[`onSwiped${dir}`]).not.toHaveBeenCalled()
       })
+    })
+
+    it('Cleans up and re-attachs touch event listeners', () => {
+      let spies
+      const mockListeners = el => {
+        // already spying
+        if (spies) return
+        spies = {}
+        spies.addEventListener = jest.spyOn(el, 'addEventListener')
+        spies.removeEventListener = jest.spyOn(el, 'removeEventListener')
+      }
+      const { wrapper } = setupGetMountedComponent(type, mockListeners)({})
+      expect(spies.addEventListener).toHaveBeenCalledTimes(3)
+      expect(spies.removeEventListener).not.toHaveBeenCalled()
+      wrapper.setProps({ trackTouch: false })
+      expect(spies.addEventListener).toHaveBeenCalledTimes(3)
+      expect(spies.removeEventListener).toHaveBeenCalledTimes(3)
+      // VERIFY REMOVED HANDLERS ARE THE SAME ONES THAT WERE ADDED!
+      expect(spies.addEventListener.mock.calls.length).toBe(3)
+      spies.addEventListener.mock.calls.forEach((call, idx) => {
+        expect(spies.removeEventListener.mock.calls[idx][0]).toBe(call[0])
+        expect(spies.removeEventListener.mock.calls[idx][1]).toBe(call[1])
+      })
+
+      wrapper.setProps({ trackTouch: true })
+      expect(spies.addEventListener).toHaveBeenCalledTimes(6)
+      expect(spies.removeEventListener).toHaveBeenCalledTimes(3)
     })
   })
 })
