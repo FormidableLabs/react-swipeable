@@ -57,7 +57,8 @@
   "files": [
     "lib",
     "es",
-    "src"
+    "src",
+    "index.d.ts"
   ],
   "license": "MIT",
   "typings": "./index.d.ts",
