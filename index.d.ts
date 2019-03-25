@@ -13,15 +13,14 @@ declare module 'react-swipeable' {
     }
 
     type Callback<T extends Element = HTMLElement> = ({}: Event<T>) => void
-    type DirectionCallback<T extends Element = HTMLElement> = ({}: Event<T>) => void
 
     interface SwipeableProps<T extends Element = HTMLElement> extends React.ClassAttributes<Swipeable<T>>, React.HTMLAttributes<T> {
       // Event data
       onSwiped?: Callback<T>
-      onSwipedLeft?: DirectionCallback<T>
-      onSwipedRight?: DirectionCallback<T>
-      onSwipedUp?: DirectionCallback<T>
-      onSwipedDown?: DirectionCallback<T>
+      onSwipedLeft?: Callback<T>
+      onSwipedRight?: Callback<T>
+      onSwipedUp?: Callback<T>
+      onSwipedDown?: Callback<T>
       onSwiping?: Callback<T>
 
       // Configuration Props
