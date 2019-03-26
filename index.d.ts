@@ -2,8 +2,8 @@ declare module 'react-swipeable' {
   import * as React from 'react'
 
   namespace ReactSwipeable {
-    interface Event<T> {
-      event: React.TouchEvent<T>
+    interface Event {
+      event: React.TouchEvent
       deltaX: number
       deltaY: number
       absX: number
@@ -12,16 +12,16 @@ declare module 'react-swipeable' {
       dir: 'Left' | 'Right' | 'Up' | 'Down'
     }
 
-    type Callback<T extends Element = HTMLElement> = ({}: Event<T>) => void
+    type Callback = ({}: Event) => void
 
-    interface SwipeableProps<T extends Element = HTMLElement> extends React.ClassAttributes<Swipeable<T>>, React.HTMLAttributes<T> {
+    interface SwipeableProps<T extends Element = HTMLElement> extends React.ClassAttributes<Swipeable>, React.HTMLAttributes<T> {
       // Event data
-      onSwiped?: Callback<T>
-      onSwipedLeft?: Callback<T>
-      onSwipedRight?: Callback<T>
-      onSwipedUp?: Callback<T>
-      onSwipedDown?: Callback<T>
-      onSwiping?: Callback<T>
+      onSwiped?: Callback
+      onSwipedLeft?: Callback
+      onSwipedRight?: Callback
+      onSwipedUp?: Callback
+      onSwipedDown?: Callback
+      onSwiping?: Callback
 
       // Configuration Props
       delta?: number
@@ -39,5 +39,5 @@ declare module 'react-swipeable' {
     }
   }
 
-  export class Swipeable<T extends Element = HTMLElement> extends React.Component<ReactSwipeable.SwipeableProps<T>> {}
+  export class Swipeable extends React.Component<ReactSwipeable.SwipeableProps> {}
 }
