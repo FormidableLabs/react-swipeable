@@ -2,7 +2,7 @@ declare module 'react-swipeable' {
   import * as React from 'react'
 
   namespace ReactSwipeable {
-    interface Event {
+    interface SwipedEvent {
       event: React.TouchEvent
       deltaX: number
       deltaY: number
@@ -12,16 +12,16 @@ declare module 'react-swipeable' {
       dir: 'Left' | 'Right' | 'Up' | 'Down'
     }
 
-    type Callback = ({}: Event) => void
+    type SwipedCallback = ({}: SwipedEvent) => void
 
-    interface SwipeableProps<T extends Element = HTMLElement> extends React.ClassAttributes<Swipeable>, React.HTMLAttributes<T> {
+    interface SwipeableProps extends React.ClassAttributes<Swipeable> {
       // Event data
-      onSwiped?: Callback
-      onSwipedLeft?: Callback
-      onSwipedRight?: Callback
-      onSwipedUp?: Callback
-      onSwipedDown?: Callback
-      onSwiping?: Callback
+      onSwiped?: SwipedCallback
+      onSwipedLeft?: SwipedCallback
+      onSwipedRight?: SwipedCallback
+      onSwipedUp?: SwipedCallback
+      onSwipedDown?: SwipedCallback
+      onSwiping?: SwipedCallback
 
       // Configuration Props
       delta?: number
@@ -32,7 +32,7 @@ declare module 'react-swipeable' {
 
       // Component Specific Props
       nodeName?: string
-      innerRef?: React.Ref<T>
+      innerRef?: React.Ref<React.ClassAttributes<Swipeable>>
       children?: React.ReactNode
       style?: any
       className?: string
