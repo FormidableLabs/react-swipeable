@@ -10,7 +10,7 @@
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "react-swipeable": ["../src"]
+      "react-swipeable": ["."]
     }
   }
 }
