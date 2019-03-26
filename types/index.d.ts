@@ -34,7 +34,7 @@ declare module 'react-swipeable' {
       nodeName?: string
       innerRef?: React.Ref<React.ClassAttributes<Swipeable>>
       children?: React.ReactNode
-      style?: any
+      style?: React.CSSProperties
       className?: string
     }
   }
