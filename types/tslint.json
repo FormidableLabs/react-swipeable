@@ -1,7 +1,6 @@
 {
   "extends": "dtslint/dtslint.json",
-  // "rules": {
-  //   "semicolon": false,
-  //   // "indent": [true, "spaces"]
-  // }
+  "rules": {
+    "semicolon": false
+  }
 }
