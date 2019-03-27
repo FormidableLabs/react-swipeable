@@ -10,16 +10,16 @@ export interface EventData {
   dir: 'Left' | 'Right' | 'Up' | 'Down'
 }
 
-export type SwipedCallback = ({}: EventData) => void
+export type SwipeCallback = ({}: EventData) => void
 
 export interface SwipeableOptions {
   // Event handler/callbacks
-  onSwiped?: SwipedCallback
-  onSwipedLeft?: SwipedCallback
-  onSwipedRight?: SwipedCallback
-  onSwipedUp?: SwipedCallback
-  onSwipedDown?: SwipedCallback
-  onSwiping?: SwipedCallback
+  onSwiped?: SwipeCallback
+  onSwipedLeft?: SwipeCallback
+  onSwipedRight?: SwipeCallback
+  onSwipedUp?: SwipeCallback
+  onSwipedDown?: SwipeCallback
+  onSwiping?: SwipeCallback
 
   // Configuration Props
   delta?: number

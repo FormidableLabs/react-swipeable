@@ -1,13 +1,13 @@
 import * as React from 'react'
-import { Swipeable, SwipeableProps, SwipedCallback } from 'react-swipeable'
+import { Swipeable, SwipeableProps, SwipeCallback } from 'react-swipeable'
 
 class SampleComponent extends React.PureComponent<SwipeableProps> {
-  private readonly handleSwiped: SwipedCallback = () => {}
-  private readonly handleSwipedLeft: SwipedCallback = () => {}
-  private readonly handleSwipedRight: SwipedCallback = () => {}
-  private readonly handleSwipedUp: SwipedCallback = () => {}
-  private readonly handleSwipedDown: SwipedCallback = () => {}
-  private readonly handleSwiping: SwipedCallback = () => {}
+  private readonly handleSwiped: SwipeCallback = () => {}
+  private readonly handleSwipedLeft: SwipeCallback = () => {}
+  private readonly handleSwipedRight: SwipeCallback = () => {}
+  private readonly handleSwipedUp: SwipeCallback = () => {}
+  private readonly handleSwipedDown: SwipeCallback = () => {}
+  private readonly handleSwiping: SwipeCallback = () => {}
 
   render() {
     return (
@@ -42,7 +42,7 @@ class SampleComponent extends React.PureComponent<SwipeableProps> {
 class SwipeableDiv extends Swipeable {}
 
 const TestComponent: React.StatelessComponent = _ => {
-  const handleSwiped: SwipedCallback = () => {}
+  const handleSwiped: SwipeCallback = () => {}
 
   return (
     <SwipeableDiv nodeName="div" onSwiped={handleSwiped}>
