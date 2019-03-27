@@ -1,32 +1,32 @@
 import * as React from 'react'
-import { ReactSwipeable, Swipeable } from 'react-swipeable'
+import { Swipeable, SwipeableProps, SwipedCallback } from 'react-swipeable'
 
-class SampleComponent extends React.PureComponent<ReactSwipeable.SwipeableProps> {
-  private readonly handleSwiped: ReactSwipeable.SwipedCallback = () => {}
-  private readonly handleSwipedLeft: ReactSwipeable.SwipedCallback = () => {}
-  private readonly handleSwipedRight: ReactSwipeable.SwipedCallback = () => {}
-  private readonly handleSwipedUp: ReactSwipeable.SwipedCallback = () => {}
-  private readonly handleSwipedDown: ReactSwipeable.SwipedCallback = () => {}
-  private readonly handleSwiping: ReactSwipeable.SwipedCallback = () => {}
-
-  private readonly swipeRef = React.createRef<HTMLElement>()
+class SampleComponent extends React.PureComponent<SwipeableProps> {
+  private readonly handleSwiped: SwipedCallback = () => {}
+  private readonly handleSwipedLeft: SwipedCallback = () => {}
+  private readonly handleSwipedRight: SwipedCallback = () => {}
+  private readonly handleSwipedUp: SwipedCallback = () => {}
+  private readonly handleSwipedDown: SwipedCallback = () => {}
+  private readonly handleSwiping: SwipedCallback = () => {}
 
   render() {
     return (
       <Swipeable
-        // Event data
+        // Event handler/callbacks
         onSwiped={this.handleSwiped}
         onSwipedLeft={this.handleSwipedLeft}
         onSwipedRight={this.handleSwipedRight}
         onSwipedUp={this.handleSwipedUp}
         onSwipedDown={this.handleSwipedDown}
         onSwiping={this.handleSwiping}
+
         // Configuration Props
         delta={10}
         preventDefaultTouchmoveEvent={true}
         trackTouch={true}
         trackMouse={true}
         rotationAngle={10}
+
         // Component Specific Props
         nodeName="div"
         innerRef={() => {}}
@@ -40,8 +40,10 @@ class SampleComponent extends React.PureComponent<ReactSwipeable.SwipeableProps>
 }
 
 class SwipeableDiv extends Swipeable {}
+
 const TestComponent: React.StatelessComponent = _ => {
-  const handleSwiped: ReactSwipeable.SwipedCallback = () => {}
+  const handleSwiped: SwipedCallback = () => {}
+
   return (
     <SwipeableDiv nodeName="div" onSwiped={handleSwiped}>
       <div>this is sample code.</div>
