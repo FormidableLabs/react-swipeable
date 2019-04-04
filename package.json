@@ -16,7 +16,7 @@
     "pretest": "npm run lint",
     "size": "size-limit",
     "start:examples": "cd ./examples && npm install && npm run start:dev",
-    "test": "npm run test:unit && npm run build && npm run size",
+    "test": "npm run test:unit && npm run dtslint && npm run build && npm run size",
     "test:unit": "jest",
     "dtslint": "dtslint types"
   },
