@@ -1,4 +1,4 @@
-// TypeScript Version: 3.4
+// TypeScript Version: 3.0
 
 import * as React from 'react'
 
