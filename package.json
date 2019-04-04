@@ -17,7 +17,8 @@
     "size": "size-limit",
     "start:examples": "cd ./examples && npm install && npm run start:dev",
     "test": "npm run test:unit && npm run build && npm run size",
-    "test:unit": "jest"
+    "test:unit": "jest",
+    "dtslint": "dtslint types"
   },
   "size-limit": [
     {
@@ -76,6 +77,7 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.19",
+    "dtslint": "^0.6.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^5.9.0",
