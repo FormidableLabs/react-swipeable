@@ -10,6 +10,8 @@
  *   4. Run: 'npm run dtslint'
  */
 
+// // TypeScript Version: 3.4
+
 // import * as React from 'react'
 // import { Swipeable, SwipeableProps, SwipeCallback } from 'react-swipeable'
 

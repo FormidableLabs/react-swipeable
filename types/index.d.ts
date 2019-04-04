@@ -1,3 +1,5 @@
+// TypeScript Version: 3.4
+
 import * as React from 'react'
 
 export interface EventData {
