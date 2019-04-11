@@ -16,8 +16,9 @@
     "pretest": "npm run lint",
     "size": "size-limit",
     "start:examples": "cd ./examples && npm install && npm run start:dev",
-    "test": "npm run test:unit && npm run build && npm run size",
-    "test:unit": "jest"
+    "test": "npm run test:unit && npm run dtslint && npm run build && npm run size",
+    "test:unit": "jest",
+    "dtslint": "dtslint types"
   },
   "size-limit": [
     {
@@ -57,9 +58,11 @@
   "files": [
     "lib",
     "es",
-    "src"
+    "src",
+    "types/index.d.ts"
   ],
   "license": "MIT",
+  "types": "types",
   "devDependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.0",
@@ -69,10 +72,12 @@
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.1.2",
+    "@types/react": "^16.8.12",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.19",
+    "dtslint": "^0.6.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^5.9.0",
