@@ -217,12 +217,14 @@ export class Swipeable extends React.PureComponent {
   constructor(props) {
     super(props)
     this._state = { ...initialState, type: 'class' }
+    this._handlerProps = {}
     this._set = cb => (this._state = cb(this._state))
   }
 
   render() {
     const { className, style, nodeName = 'div', innerRef, children, ...rest } = this.props
-    const handlers = getHandlers(this._set, rest)
+    Object.assign(this._handlerProps, rest)
+    const handlers = getHandlers(this._set, this._handlerProps)
     const ref = innerRef ? el => (innerRef(el), handlers.ref(el)) : handlers.ref
     return React.createElement(nodeName, { ...handlers, className, style, ref }, children)
   }
