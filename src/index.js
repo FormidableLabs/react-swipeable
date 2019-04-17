@@ -45,30 +45,30 @@ function rotateXYByAngle(pos, angle) {
   return [x, y]
 }
 
-function getHandlers(set, props) {
+function getHandlers(set, trackMouse) {
   const onStart = event => {
     // if more than a single touch don't track, for now...
     if (event.touches && event.touches.length > 1) return
 
-    set(state => {
+    set.current((state, props) => {
       // setup mouse listeners on document to track swipe since swipe can leave container
-      if (state.props.trackMouse) {
+      if (props.trackMouse) {
         document.addEventListener(mouseMove, onMove)
         document.addEventListener(mouseUp, onUp)
       }
       const { clientX, clientY } = event.touches ? event.touches[0] : event
-      const xy = rotateXYByAngle([clientX, clientY], state.props.rotationAngle)
+      const xy = rotateXYByAngle([clientX, clientY], props.rotationAngle)
       return { ...state, ...initialState, xy, start: event.timeStamp || 0 }
     })
   }
 
   const onMove = event => {
-    set(state => {
+    set.current((state, props) => {
       if (!state.xy[0] || !state.xy[1] || (event.touches && event.touches.length > 1)) {
         return state
       }
       const { clientX, clientY } = event.touches ? event.touches[0] : event
-      const [x, y] = rotateXYByAngle([clientX, clientY], state.props.rotationAngle)
+      const [x, y] = rotateXYByAngle([clientX, clientY], props.rotationAngle)
       const deltaX = state.xy[0] - x
       const deltaY = state.xy[1] - y
       const absX = Math.abs(deltaX)
@@ -82,16 +82,16 @@ function getHandlers(set, props) {
       const dir = getDirection(absX, absY, deltaX, deltaY)
       const eventData = { event, absX, absY, deltaX, deltaY, velocity, dir }
 
-      state.props.onSwiping && state.props.onSwiping(eventData)
+      props.onSwiping && props.onSwiping(eventData)
 
       // track if a swipe is cancelable(handler for swiping or swiped(dir) exists)
       // so we can call preventDefault if needed
       let cancelablePageSwipe = false
-      if (state.props.onSwiping || state.props.onSwiped || state.props[`onSwiped${dir}`]) {
+      if (props.onSwiping || props.onSwiped || props[`onSwiped${dir}`]) {
         cancelablePageSwipe = true
       }
 
-      if (cancelablePageSwipe && state.props.preventDefaultTouchmoveEvent && state.props.trackTouch)
+      if (cancelablePageSwipe && props.preventDefaultTouchmoveEvent && props.trackTouch)
         event.preventDefault()
 
       return { ...state, lastEventData: eventData, swiping: true }
@@ -99,14 +99,13 @@ function getHandlers(set, props) {
   }
 
   const onEnd = event => {
-    set(state => {
+    set.current((state, props) => {
       if (state.swiping) {
         const eventData = { ...state.lastEventData, event }
 
-        state.props.onSwiped && state.props.onSwiped(eventData)
+        props.onSwiped && props.onSwiped(eventData)
 
-        state.props[`onSwiped${eventData.dir}`] &&
-          state.props[`onSwiped${eventData.dir}`](eventData)
+        props[`onSwiped${eventData.dir}`] && props[`onSwiped${eventData.dir}`](eventData)
       }
       return { ...state, ...initialState }
     })
@@ -137,7 +136,7 @@ function getHandlers(set, props) {
     // "inline" ref functions are called twice on render, once with null then again with DOM element
     // ignore null here
     if (el === null) return
-    set(state => {
+    set.current((state, props) => {
       // if the same DOM el as previous just return state
       if (state.el === el) return state
 
@@ -148,7 +147,7 @@ function getHandlers(set, props) {
         addState.cleanUpTouch = null
       }
       // only attach if we want to track touch
-      if (state.props.trackTouch && el) {
+      if (props.trackTouch && el) {
         addState.cleanUpTouch = attachTouch(el)
       }
 
@@ -157,8 +156,8 @@ function getHandlers(set, props) {
     })
   }
 
-  // update state, props, and handlers
-  set(state => {
+  // update state, and handlers
+  set.current((state, props) => {
     let addState = {}
     // clean up touch handlers if no longer tracking touches
     if (!props.trackTouch && state.cleanUpTouch) {
@@ -170,14 +169,14 @@ function getHandlers(set, props) {
         addState.cleanUpTouch = attachTouch(state.el)
       }
     }
-    return { ...state, props, ...addState }
+    return { ...state, ...addState }
   })
 
   // set ref callback to attach touch event listeners
   const output = { ref: onRef }
 
   // if track mouse attach mouse down listener
-  if (props.trackMouse) {
+  if (trackMouse) {
     output.onMouseDown = onStart
   }
 
@@ -186,13 +185,11 @@ function getHandlers(set, props) {
 
 export function useSwipeable(props) {
   const transientState = React.useRef({ ...initialState, type: 'hook' })
-  const [spread] = React.useState(() => currentProps =>
-    getHandlers(cb => (transientState.current = cb(transientState.current)), {
-      ...defaultProps,
-      ...currentProps
-    })
-  )
-  return spread(props)
+  // const set = React.useRef(cb => (transientState.current = cb(transientState.current)))
+  const set = React.useRef()
+  set.current = cb =>
+    (transientState.current = cb(transientState.current, { ...defaultProps, ...props }))
+  return getHandlers(set, props.trackMouse)
 }
 
 export class Swipeable extends React.PureComponent {
@@ -217,12 +214,16 @@ export class Swipeable extends React.PureComponent {
   constructor(props) {
     super(props)
     this._state = { ...initialState, type: 'class' }
-    this._set = cb => (this._state = cb(this._state))
+    this._set = { current: this._current }
+  }
+
+  _current = cb => {
+    this._state = cb(this._state, this.props)
   }
 
   render() {
-    const { className, style, nodeName = 'div', innerRef, children, ...rest } = this.props
-    const handlers = getHandlers(this._set, rest)
+    const { className, style, nodeName = 'div', innerRef, children, trackMouse } = this.props
+    const handlers = getHandlers(this._set, trackMouse)
     const ref = innerRef ? el => (innerRef(el), handlers.ref(el)) : handlers.ref
     return React.createElement(nodeName, { ...handlers, className, style, ref }, children)
   }

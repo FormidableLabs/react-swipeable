@@ -283,7 +283,7 @@ function setupGetMountedComponent(type, mockListeners = mockListenersSetup) {
       eventListenerMap.touchend({})
       expectSwipeFuncsDir(swipeFuncsRight, RIGHT)
 
-      // check left
+      // // check left
       const swipeFuncsLeft = getMockedSwipeFunctions()
       wrapper.setProps({ ...swipeFuncsLeft, rotationAngle: 90 })
       eventListenerMap.touchstart(cte({ x: 100, y: 100 }))
