@@ -40,4 +40,11 @@ export interface SwipeableProps {
   className?: string
 }
 
+export interface SwipeableHandlers {
+  ref: ({}: HTMLElement) => void
+  onMouseDown?: React.MouseEventHandler
+}
+
+export function useSwipeable(options: SwipeableOptions): SwipeableHandlers
+
 export class Swipeable extends React.PureComponent<SwipeableProps & SwipeableOptions> {}
