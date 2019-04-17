@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Swipeable, SwipeableProps, SwipeCallback } from 'react-swipeable'
+import { Swipeable, SwipeableProps, SwipeCallback, useSwipeable } from 'react-swipeable'
 
 class SampleComponent extends React.PureComponent<SwipeableProps> {
   private readonly handleSwiped: SwipeCallback = () => {}
@@ -49,4 +49,10 @@ const TestComponent: React.StatelessComponent = _ => {
       <div>this is sample code.</div>
     </SwipeableDiv>
   )
+}
+
+const TestHook = () => {
+  const [swipeDir, setDir] = React.useState('');
+  const handlers = useSwipeable({ onSwiped: ({ dir }) => setDir(dir) })
+  return <div {...handlers} >{swipeDir}</div>
 }
