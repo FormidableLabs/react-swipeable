@@ -185,7 +185,6 @@ function getHandlers(set, trackMouse) {
 
 export function useSwipeable(props) {
   const transientState = React.useRef({ ...initialState, type: 'hook' })
-  // const set = React.useRef(cb => (transientState.current = cb(transientState.current)))
   const set = React.useRef()
   set.current = cb =>
     (transientState.current = cb(transientState.current, { ...defaultProps, ...props }))
