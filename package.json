@@ -1,6 +1,6 @@
 {
   "name": "react-swipeable",
-  "version": "5.1.0",
+  "version": "5.2.0-alpha.0",
   "description": "Swipe and touch handlers for react",
   "main": "./lib/index.js",
   "module": "es/index.js",
@@ -46,7 +46,10 @@
     "hook",
     "react-component"
   ],
-  "author": "Josh Perez <josh@goatslacker.com>",
+  "authors": [
+    "Josh Perez <josh@goatslacker.com> (https://github.com/goatslacker)",
+    "Brian Emil Hartz <brianhartz@gmail.com> (https://github.com/hartzis)"
+  ],
   "repository": {
     "type": "git",
     "url": "http://github.com/dogfessional/react-swipeable.git"
