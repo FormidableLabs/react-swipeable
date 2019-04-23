@@ -10,6 +10,8 @@ const { mount } = Enzyme
 Enzyme.configure({ adapter: new Adapter() })
 
 const DIRECTIONS = [LEFT, RIGHT, UP, DOWN]
+const USESWIPEABLE = 'useSwipeable'
+const SWIPEABLE = 'Swipeable'
 
 function getMockedSwipeFunctions() {
   return DIRECTIONS.reduce((acc, dir) => ({ ...acc, [`onSwiped${dir}`]: jest.fn() }), {
@@ -62,7 +64,7 @@ function SwipeableUsingHook(props) {
   )
 }
 
-function setupGetMountedComponent(type, mockListeners = mockListenersSetup) {
+function setupGetMountedComponent(TYPE, mockListeners = mockListenersSetup) {
   return props => {
     let wrapper
     let eventListenerMap
@@ -70,13 +72,13 @@ function setupGetMountedComponent(type, mockListeners = mockListenersSetup) {
       // don't re-assign eventlistener map
       if (!eventListenerMap) eventListenerMap = mockListeners(el)
     }
-    if (type === 'Swipeable') {
+    if (TYPE === SWIPEABLE) {
       wrapper = mount(
         <Swipeable {...props} innerRef={innerRef}>
           <span>Touch Here</span>
         </Swipeable>
       )
-    } else if (type === 'useSwipeable') {
+    } else if (TYPE === USESWIPEABLE) {
       wrapper = mount(
         <SwipeableUsingHook {...props} innerRef={innerRef}>
           <span>Touch Here</span>
@@ -87,12 +89,12 @@ function setupGetMountedComponent(type, mockListeners = mockListenersSetup) {
   }
 }
 
-;['useSwipeable', 'Swipeable'].forEach(type => {
-  describe(`${type}`, () => {
+;[USESWIPEABLE, SWIPEABLE].forEach(TYPE => {
+  describe(`${TYPE}`, () => {
     let origAddEventListener
     let origRemoveEventListener
     let eventListenerMapDocument
-    const getMountedComponent = setupGetMountedComponent(type)
+    const getMountedComponent = setupGetMountedComponent(TYPE)
     beforeAll(() => {
       origAddEventListener = document.addEventListener
       origRemoveEventListener = document.removeEventListener
@@ -123,8 +125,8 @@ function setupGetMountedComponent(type, mockListeners = mockListenersSetup) {
       expect(swipeFuncs.onSwipedUp).not.toHaveBeenCalled()
       expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled()
       expect(swipeFuncs.onSwipedRight).not.toHaveBeenCalled()
-      expect(swipeFuncs.onSwiped.mock.calls).toMatchSnapshot(`${type} onSwiped trackTouch`)
-      expect(swipeFuncs.onSwiping.mock.calls).toMatchSnapshot(`${type} onSwiping trackTouch`)
+      expect(swipeFuncs.onSwiped.mock.calls).toMatchSnapshot(`${TYPE} onSwiped trackTouch`)
+      expect(swipeFuncs.onSwiping.mock.calls).toMatchSnapshot(`${TYPE} onSwiping trackTouch`)
     })
 
     it('handles mouse events with trackMouse prop and fires correct props', () => {
@@ -160,8 +162,8 @@ function setupGetMountedComponent(type, mockListeners = mockListenersSetup) {
       expect(swipeFuncs.onSwipedUp).not.toHaveBeenCalled()
       expect(swipeFuncs.onSwipedDown).not.toHaveBeenCalled()
       expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled()
-      expect(swipeFuncs.onSwiped.mock.calls).toMatchSnapshot(`${type} onSwiped trackMouse`)
-      expect(swipeFuncs.onSwiping.mock.calls).toMatchSnapshot(`${type} onSwiping trackMouse`)
+      expect(swipeFuncs.onSwiped.mock.calls).toMatchSnapshot(`${TYPE} onSwiped trackMouse`)
+      expect(swipeFuncs.onSwiping.mock.calls).toMatchSnapshot(`${TYPE} onSwiping trackMouse`)
     })
 
     it('calls preventDefault when swiping in direction that has a callback', () => {
@@ -391,7 +393,7 @@ function setupGetMountedComponent(type, mockListeners = mockListenersSetup) {
         spies.addEventListener = jest.spyOn(el, 'addEventListener')
         spies.removeEventListener = jest.spyOn(el, 'removeEventListener')
       }
-      const { wrapper } = setupGetMountedComponent(type, mockListeners)({})
+      const { wrapper } = setupGetMountedComponent(TYPE, mockListeners)({})
       expect(spies.addEventListener).toHaveBeenCalledTimes(3)
       expect(spies.removeEventListener).not.toHaveBeenCalled()
       wrapper.setProps({ trackTouch: false })
@@ -407,6 +409,45 @@ function setupGetMountedComponent(type, mockListeners = mockListenersSetup) {
       wrapper.setProps({ trackTouch: true })
       expect(spies.addEventListener).toHaveBeenCalledTimes(6)
       expect(spies.removeEventListener).toHaveBeenCalledTimes(3)
+    })
+  })
+
+  it(`${TYPE} hanldes updated prop swipe callbacks`, () => {
+    let eventListenerMap
+    const innerRef = el => {
+      // don't re-assign eventlistener map
+      if (!eventListenerMap) eventListenerMap = mockListenersSetup(el)
+    }
+    const onSwipedLeft = jest.fn()
+
+    function TestComponent() {
+      const [page, setPage] = React.useState(0)
+      const next = () => (setPage(page + 1), onSwipedLeft(page + 1))
+
+      if (TYPE === USESWIPEABLE) {
+        const handlers = useSwipeable({ onSwipedLeft: next })
+        // Use innerRef to access the mounted div for testing.
+        const ref = el => (innerRef(el), handlers.ref(el))
+        return <div {...handlers} ref={ref} />
+      }
+      if (TYPE === SWIPEABLE) {
+        // Use innerRef to access the mounted div for testing.
+        const ref = el => innerRef(el)
+        return <Swipeable onSwipedLeft={next} innerRef={ref} />
+      }
+    }
+
+    mount(<TestComponent />)
+
+    const pages = [1, 2, 3]
+    // swipe left 3 times
+    pages.forEach(() => {
+      eventListenerMap.touchstart(cte({ x: 100, y: 100 }))
+      eventListenerMap.touchmove(cte({ x: 75, y: 100 }))
+      eventListenerMap.touchend({})
+    })
+    pages.forEach((page, idx) => {
+      expect(onSwipedLeft.mock.calls[idx][0]).toBe(page)
     })
   })
 })
