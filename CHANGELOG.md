@@ -1,3 +1,9 @@
+# 5.2.0
+* Fix bug where callbacks/props were not refreshed for `useSwipeable` and `<Swipeable>`,  [issue #136](https://github.com/dogfessional/react-swipeable/issues/136) and [PR #138](https://github.com/dogfessional/react-swipeable/pull/138)
+  * Thank you [@caesarsol](https://github.com/caesarsol) and [@bas-l](https://github.com/bas-l)!
+* Add typescript types for `useSwipeable` and `<Swipeable>`,  [issue #125](https://github.com/dogfessional/react-swipeable/issues/125)
+  * Thank you [@adambowles](https://github.com/adambowles)!
+
 # 5.1.0
 * Fix for `preventDefaultTouchmoveEvent` in safari [issue #127](https://github.com/dogfessional/react-swipeable/issues/127) and [PR #131](https://github.com/dogfessional/react-swipeable/pull/131)
   * Thank you [@JiiB](https://github.com/JiiB) and [@bhj](https://github.com/bhj)!
