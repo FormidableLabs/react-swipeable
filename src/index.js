@@ -50,7 +50,7 @@ function getHandlers(set, handlerProps) {
     // if more than a single touch don't track, for now...
     if (event.touches && event.touches.length > 1) return
 
-    set.current((state, props) => {
+    set((state, props) => {
       // setup mouse listeners on document to track swipe since swipe can leave container
       if (props.trackMouse) {
         document.addEventListener(mouseMove, onMove)
@@ -63,7 +63,7 @@ function getHandlers(set, handlerProps) {
   }
 
   const onMove = event => {
-    set.current((state, props) => {
+    set((state, props) => {
       if (!state.xy[0] || !state.xy[1] || (event.touches && event.touches.length > 1)) {
         return state
       }
@@ -99,7 +99,7 @@ function getHandlers(set, handlerProps) {
   }
 
   const onEnd = event => {
-    set.current((state, props) => {
+    set((state, props) => {
       if (state.swiping) {
         const eventData = { ...state.lastEventData, event }
 
@@ -136,7 +136,7 @@ function getHandlers(set, handlerProps) {
     // "inline" ref functions are called twice on render, once with null then again with DOM element
     // ignore null here
     if (el === null) return
-    set.current((state, props) => {
+    set((state, props) => {
       // if the same DOM el as previous just return state
       if (state.el === el) return state
 
@@ -157,7 +157,7 @@ function getHandlers(set, handlerProps) {
   }
 
   // update state, and handlers
-  set.current((state, props) => {
+  set((state, props) => {
     let addState = {}
     // clean up touch handlers if no longer tracking touches
     if (!props.trackTouch && state.cleanUpTouch) {
@@ -185,10 +185,12 @@ function getHandlers(set, handlerProps) {
 
 export function useSwipeable(props) {
   const transientState = React.useRef({ ...initialState, type: 'hook' })
-  const set = React.useRef()
-  set.current = cb =>
-    (transientState.current = cb(transientState.current, { ...defaultProps, ...props }))
-  return getHandlers(set, { trackMouse: props.trackMouse })
+  const transientProps = React.useRef()
+  transientProps.current = { ...defaultProps, ...props }
+  return getHandlers(
+    cb => (transientState.current = cb(transientState.current, transientProps.current)),
+    { trackMouse: props.trackMouse }
+  )
 }
 
 export class Swipeable extends React.PureComponent {
@@ -212,12 +214,11 @@ export class Swipeable extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    this._state = { ...initialState, type: 'class' }
-    this._set = { current: this._current }
+    this.transientState = { ...initialState, type: 'class' }
   }
 
-  _current = cb => {
-    this._state = cb(this._state, this.props)
+  _set = cb => {
+    this.transientState = cb(this.transientState, this.props)
   }
 
   render() {
