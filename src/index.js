@@ -45,7 +45,7 @@ function rotateXYByAngle(pos, angle) {
   return [x, y]
 }
 
-function getHandlers(set, trackMouse) {
+function getHandlers(set, handlerProps) {
   const onStart = event => {
     // if more than a single touch don't track, for now...
     if (event.touches && event.touches.length > 1) return
@@ -176,7 +176,7 @@ function getHandlers(set, trackMouse) {
   const output = { ref: onRef }
 
   // if track mouse attach mouse down listener
-  if (trackMouse) {
+  if (handlerProps.trackMouse) {
     output.onMouseDown = onStart
   }
 
@@ -188,7 +188,7 @@ export function useSwipeable(props) {
   const set = React.useRef()
   set.current = cb =>
     (transientState.current = cb(transientState.current, { ...defaultProps, ...props }))
-  return getHandlers(set, props.trackMouse)
+  return getHandlers(set, { trackMouse: props.trackMouse })
 }
 
 export class Swipeable extends React.PureComponent {
@@ -222,7 +222,7 @@ export class Swipeable extends React.PureComponent {
 
   render() {
     const { className, style, nodeName = 'div', innerRef, children, trackMouse } = this.props
-    const handlers = getHandlers(this._set, trackMouse)
+    const handlers = getHandlers(this._set, { trackMouse })
     const ref = innerRef ? el => (innerRef(el), handlers.ref(el)) : handlers.ref
     return React.createElement(nodeName, { ...handlers, className, style, ref }, children)
   }
