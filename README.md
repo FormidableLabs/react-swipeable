@@ -1,25 +1,13 @@
 React Swipeable
 =========================
 
-React swipe and touch event handler component & hook
+React swipe event handler component & hook
 
 [![build status](https://img.shields.io/travis/dogfessional/react-swipeable/master.svg?style=flat-square)](https://travis-ci.org/dogfessional/react-swipeable) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![gzip size](https://flat.badgen.net/bundlephobia/minzip/react-swipeable)](https://bundlephobia.com/result?p=react-swipeable)
 
 [![Edit react-swipeable image carousel with hook](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js)
 
 [Github Pages Demo](https://dogfessional.github.io/react-swipeable/)
-
-### Version 5 released!
-[React hooks](https://reactjs.org/docs/hooks-reference.html) have been released with [16.8.0](https://reactjs.org/blog/2019/02/06/react-v16.8.0.html) 🎉
-
-v5 of `react-swipeable` includes a hook, `useSwipeable`, that provides the same great functionality as `<Swipeable>`. See the `useSwipeable` hook in action with this [codesandbox](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js).
-
-The component is still included and migration to v5 is straightforward. Please see the [migration doc](./migration.md) for more details including more info on the simplified api.
-
-### Installation
-```
-$ npm install react-swipeable
-```
 
 ### Api
 Use React-hooks or a Component and set your swipe(d) handlers.
@@ -114,6 +102,13 @@ Example:
 
 Please experiment with the [example](http://dogfessional.github.io/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
 
+
+### Version 5 Updates
+[React hooks](https://reactjs.org/docs/hooks-reference.html) have been released with [16.8.0](https://reactjs.org/blog/2019/02/06/react-v16.8.0.html) 🎉
+
+v5 of `react-swipeable` includes a hook, `useSwipeable`, that provides the same great functionality as `<Swipeable>`. See the `useSwipeable` hook in action with this [codesandbox](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js).
+
+The component is still included and migration to v5 is straightforward. Please see the [migration doc](./migration.md) for more details including more info on the simplified api.
 
 ## Development
 

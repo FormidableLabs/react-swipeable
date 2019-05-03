@@ -1,7 +1,7 @@
 {
   "name": "react-swipeable",
   "version": "5.2.0",
-  "description": "Swipe and touch handlers for react",
+  "description": "Swipe event handler & hook for react",
   "main": "./lib/index.js",
   "module": "es/index.js",
   "scripts": {
@@ -36,11 +36,8 @@
     "react swipe",
     "react touch",
     "react hook",
-    "react-swipe",
-    "react-touch",
     "touch",
     "swipe",
-    "mobile",
     "swipeable",
     "react",
     "hook",
