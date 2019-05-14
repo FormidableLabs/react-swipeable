@@ -384,7 +384,7 @@ function setupGetMountedComponent(TYPE, mockListeners = mockListenersSetup) {
       })
     })
 
-    it('Cleans up and re-attachs touch event listeners', () => {
+    it('Cleans up and re-attaches touch event listeners', () => {
       let spies
       const mockListeners = el => {
         // already spying
@@ -412,7 +412,7 @@ function setupGetMountedComponent(TYPE, mockListeners = mockListenersSetup) {
     })
   })
 
-  it(`${TYPE} hanldes updated prop swipe callbacks`, () => {
+  it(`${TYPE} handles updated prop swipe callbacks`, () => {
     let eventListenerMap
     const innerRef = el => {
       // don't re-assign eventlistener map

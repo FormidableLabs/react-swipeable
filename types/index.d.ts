@@ -12,7 +12,7 @@ export interface EventData {
   dir: 'Left' | 'Right' | 'Up' | 'Down'
 }
 
-export type SwipeCallback = ({}: EventData) => void
+export type SwipeCallback = (eventData: EventData) => void
 
 export interface SwipeableOptions {
   // Event handler/callbacks
@@ -34,14 +34,14 @@ export interface SwipeableOptions {
 // Component Specific Props
 export interface SwipeableProps {
   nodeName?: string
-  innerRef?: ({}: HTMLElement) => void
+  innerRef?: (element: HTMLElement | null) => void
   children?: React.ReactNode
   style?: React.CSSProperties
   className?: string
 }
 
 export interface SwipeableHandlers {
-  ref: ({}: HTMLElement) => void
+  ref: (element: HTMLElement | null) => void
   onMouseDown?: React.MouseEventHandler
 }
 
