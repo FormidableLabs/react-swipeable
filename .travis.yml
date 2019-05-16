@@ -1,7 +1,12 @@
 sudo: false
 language: node_js
 node_js:
-  - "10"
-  - "8"
-script:
-  - npm run test
+  - "lts/*"
+script: echo "Running tests against $(node -v)..."
+
+jobs:
+  include:
+    - stage: Unit Lint Type Tests
+      script: npm run test
+    - stage: Produce Coverage
+      script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
