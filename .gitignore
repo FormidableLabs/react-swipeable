@@ -5,3 +5,4 @@ npm-debug.log
 lib
 es
 examples/static
+coverage
