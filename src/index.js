@@ -91,7 +91,12 @@ function getHandlers(set, handlerProps) {
         cancelablePageSwipe = true
       }
 
-      if (cancelablePageSwipe && props.preventDefaultTouchmoveEvent && props.trackTouch && event.cancelable)
+      if (
+        cancelablePageSwipe &&
+        props.preventDefaultTouchmoveEvent &&
+        props.trackTouch &&
+        event.cancelable
+      )
         event.preventDefault()
 
       return { ...state, lastEventData: eventData, swiping: true }
