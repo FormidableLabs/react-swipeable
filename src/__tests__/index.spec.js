@@ -169,7 +169,7 @@ function setupGetMountedComponent(TYPE, mockListeners = mockListenersSetup) {
     it('calls preventDefault when swiping in direction that has a callback', () => {
       const onSwipedDown = jest.fn()
       const preventDefault = jest.fn()
-      const cancelable = jest.fn()
+      const cancelable = true
       const e = { preventDefault, cancelable }
       const { eventListenerMap } = getMountedComponent({
         onSwipedDown,
@@ -211,7 +211,7 @@ function setupGetMountedComponent(TYPE, mockListeners = mockListenersSetup) {
     it('calls preventDefault when onSwiping is present', () => {
       const onSwiping = jest.fn()
       const preventDefault = jest.fn()
-      const cancelable = jest.fn()
+      const cancelable = true
       const { eventListenerMap } = getMountedComponent({
         onSwiping,
         preventDefaultTouchmoveEvent: true
@@ -231,7 +231,7 @@ function setupGetMountedComponent(TYPE, mockListeners = mockListenersSetup) {
     it('calls preventDefault when onSwiped is present', () => {
       const onSwiped = jest.fn()
       const preventDefault = jest.fn()
-      const cancelable = jest.fn()
+      const cancelable = true
       const { eventListenerMap } = getMountedComponent({
         onSwiped,
         preventDefaultTouchmoveEvent: true
