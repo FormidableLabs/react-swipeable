@@ -1,3 +1,11 @@
+# 5.2.3
+* Add check for `event.cancelable` for `touchmove` events before calling `event.preventDefault()`, [issue #128](https://github.com/dogfessional/react-swipeable/issues/128) and [PR #145](https://github.com/dogfessional/react-swipeable/pull/145)
+  * Thank you [@maurispalletti](https://github.com/maurispalletti)!
+
+# 5.2.2
+* Fix typescript types for `ref`, [issue #140](https://github.com/dogfessional/react-swipeable/issues/140) and [PR #142](https://github.com/dogfessional/react-swipeable/pull/142)
+  * Thank you [@mastermatt](https://github.com/mastermatt)!
+
 # 5.2.0
 * Fix bug where callbacks/props were not refreshed for `useSwipeable` and `<Swipeable>`,  [issue #136](https://github.com/dogfessional/react-swipeable/issues/136) and [PR #138](https://github.com/dogfessional/react-swipeable/pull/138)
   * Thank you [@caesarsol](https://github.com/caesarsol) and [@bas-l](https://github.com/bas-l)!
