@@ -56,13 +56,21 @@ function mockListenersSetup(el) {
  */
 function SwipeableUsingHook(props) {
   const eventHandlers = useSwipeable(props)
+  const Elem = props.nodeName
   // Use innerRef prop to access the mounted div for testing.
   const ref = el => (props.innerRef && props.innerRef(el), eventHandlers.ref(el)) // eslint-disable-line
   return (
-    <div {...eventHandlers} ref={ref}>
+    <Elem {...eventHandlers} ref={ref}>
       {props.children}
-    </div>
+    </Elem>
   )
+}
+SwipeableUsingHook.propTypes = {
+  nodeName: PropTypes.string
+}
+
+SwipeableUsingHook.defaultProps = {
+  nodeName: 'div'
 }
 
 function setupGetMountedComponent(TYPE, mockListeners = mockListenersSetup) {
@@ -388,7 +396,7 @@ function setupGetMountedComponent(TYPE, mockListeners = mockListenersSetup) {
       })
     })
 
-    it('Cleans up and re-attaches touch event listeners', () => {
+    it('Cleans up and re-attaches touch event listeners if trackTouch changes', () => {
       let spies
       const mockListeners = el => {
         // already spying
@@ -413,6 +421,32 @@ function setupGetMountedComponent(TYPE, mockListeners = mockListenersSetup) {
       wrapper.setProps({ trackTouch: true })
       expect(spies.addEventListener).toHaveBeenCalledTimes(6)
       expect(spies.removeEventListener).toHaveBeenCalledTimes(3)
+    })
+
+    it('Cleans up and re-attaches touch event listeners if the DOM element changes', () => {
+      let spies
+      const mockListeners = el => {
+        // already spying
+        if (spies) return
+        spies = {}
+        spies.addEventListener = jest.spyOn(el, 'addEventListener')
+        spies.removeEventListener = jest.spyOn(el, 'removeEventListener')
+      }
+      const { wrapper } = setupGetMountedComponent(TYPE, mockListeners)({})
+
+      expect(spies.addEventListener).toHaveBeenCalledTimes(3)
+      expect(spies.removeEventListener).not.toHaveBeenCalled()
+
+      wrapper.setProps({ nodeName: 'p' })
+
+      expect(spies.addEventListener).toHaveBeenCalledTimes(3)
+      expect(spies.removeEventListener).toHaveBeenCalledTimes(3)
+      // VERIFY REMOVED HANDLERS ARE THE SAME ONES THAT WERE ADDED!
+      expect(spies.addEventListener.mock.calls.length).toBe(3)
+      spies.addEventListener.mock.calls.forEach((call, idx) => {
+        expect(spies.removeEventListener.mock.calls[idx][0]).toBe(call[0])
+        expect(spies.removeEventListener.mock.calls[idx][1]).toBe(call[1])
+      })
     })
   })
 
