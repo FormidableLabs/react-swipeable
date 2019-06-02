@@ -87,6 +87,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-prettier": "^3.0.0",
     "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-react-hooks": "^1.6.0",
     "gh-pages": "^1.0.0",
     "jest": "^23.6.0",
     "prettier": "1.15.3",

@@ -1,6 +1,7 @@
 /* global document, jest, expect, beforeAll, afterAll */
 import React from 'react'
 import Enzyme from 'enzyme'
+import PropTypes from 'prop-types'
 import Adapter from 'enzyme-adapter-react-16'
 import { Swipeable, useSwipeable, LEFT, RIGHT, UP, DOWN } from '../index'
 import { createTouchEventObject as cte, createMouseEventObject as cme } from './helpers/events'
@@ -423,15 +424,22 @@ function setupGetMountedComponent(TYPE, mockListeners = mockListenersSetup) {
     }
     const onSwipedLeft = jest.fn()
 
+    function TestHookComponent({ next }) {
+      const handlers = useSwipeable({ onSwipedLeft: next })
+      // Use innerRef to access the mounted div for testing.
+      const ref = el => (innerRef(el), handlers.ref(el))
+      return <div {...handlers} ref={ref} />
+    }
+    TestHookComponent.propTypes = {
+      next: PropTypes.func.isRequired
+    }
+
     function TestComponent() {
       const [page, setPage] = React.useState(0)
       const next = () => (setPage(page + 1), onSwipedLeft(page + 1))
 
       if (TYPE === USESWIPEABLE) {
-        const handlers = useSwipeable({ onSwipedLeft: next })
-        // Use innerRef to access the mounted div for testing.
-        const ref = el => (innerRef(el), handlers.ref(el))
-        return <div {...handlers} ref={ref} />
+        return <TestHookComponent next={next} />
       }
       if (TYPE === SWIPEABLE) {
         // Use innerRef to access the mounted div for testing.
