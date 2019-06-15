@@ -33,10 +33,9 @@
     "react/jsx-no-undef": 2,
     "react/jsx-wrap-multilines": 2,
     "react/no-string-refs": 0,
-    "react/prop-types": [1, {"ignore": ["className", "children", "style"]}]
+    "react/prop-types": [1, { "ignore": ["className", "children", "style"] }],
+    "react-hooks/rules-of-hooks": 2,
+    "react-hooks/exhaustive-deps": 1
   },
-  "plugins": [
-    "import",
-    "react"
-  ]
+  "plugins": ["import", "react", "react-hooks"]
 }

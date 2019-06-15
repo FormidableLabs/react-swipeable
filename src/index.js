@@ -161,22 +161,6 @@ function getHandlers(set, handlerProps) {
     })
   }
 
-  // update state, and handlers
-  set((state, props) => {
-    let addState = {}
-    // clean up touch handlers if no longer tracking touches
-    if (!props.trackTouch && state.cleanUpTouch) {
-      state.cleanUpTouch()
-      addState.cleanUpTouch = null
-    } else if (props.trackTouch && !state.cleanUpTouch) {
-      // attach/re-attach touch handlers
-      if (state.el) {
-        addState.cleanUpTouch = attachTouch(state.el)
-      }
-    }
-    return { ...state, ...addState }
-  })
-
   // set ref callback to attach touch event listeners
   const output = { ref: onRef }
 
@@ -185,17 +169,46 @@ function getHandlers(set, handlerProps) {
     output.onMouseDown = onStart
   }
 
-  return output
+  return [output, attachTouch]
+}
+
+function updateTransientState(state, props, attachTouch) {
+  let addState = {}
+  // clean up touch handlers if no longer tracking touches
+  if (!props.trackTouch && state.cleanUpTouch) {
+    state.cleanUpTouch()
+    addState.cleanUpTouch = null
+  } else if (props.trackTouch && !state.cleanUpTouch) {
+    // attach/re-attach touch handlers
+    if (state.el) {
+      addState.cleanUpTouch = attachTouch(state.el)
+    }
+  }
+  return { ...state, ...addState }
 }
 
 export function useSwipeable(props) {
+  const { trackMouse } = props
   const transientState = React.useRef({ ...initialState, type: 'hook' })
   const transientProps = React.useRef()
   transientProps.current = { ...defaultProps, ...props }
-  return getHandlers(
-    cb => (transientState.current = cb(transientState.current, transientProps.current)),
-    { trackMouse: props.trackMouse }
+
+  const [handlers, attachTouch] = React.useMemo(
+    () =>
+      getHandlers(
+        cb => (transientState.current = cb(transientState.current, transientProps.current)),
+        { trackMouse }
+      ),
+    [trackMouse]
   )
+
+  transientState.current = updateTransientState(
+    transientState.current,
+    transientProps.current,
+    attachTouch
+  )
+
+  return handlers
 }
 
 export class Swipeable extends React.PureComponent {
@@ -228,7 +241,8 @@ export class Swipeable extends React.PureComponent {
 
   render() {
     const { className, style, nodeName = 'div', innerRef, children, trackMouse } = this.props
-    const handlers = getHandlers(this._set, { trackMouse })
+    const [handlers, attachTouch] = getHandlers(this._set, { trackMouse })
+    this.transientState = updateTransientState(this.transientState, this.props, attachTouch)
     const ref = innerRef ? el => (innerRef(el), handlers.ref(el)) : handlers.ref
     return React.createElement(nodeName, { ...handlers, className, style, ref }, children)
   }
