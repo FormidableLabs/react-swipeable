@@ -30,6 +30,7 @@
   "jest": {
     "testPathIgnorePatterns": [
       "/node_modules/",
+      "/types/",
       "/__tests__/helpers/"
     ]
   },
@@ -76,7 +77,7 @@
     "@types/react": "^16.8.12",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^24.8.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.19",
     "coveralls": "^3.0.3",
     "dtslint": "^0.6.0",
@@ -89,7 +90,7 @@
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-react-hooks": "^1.6.0",
     "gh-pages": "^1.0.0",
-    "jest": "^23.6.0",
+    "jest": "^24.8.0",
     "prettier": "1.15.3",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
