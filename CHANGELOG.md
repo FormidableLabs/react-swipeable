@@ -1,3 +1,7 @@
+# 5.3.0
+* Optimization for `useSwipeable` hook. Added `useMemo` for handler internals [issue #134](https://github.com/dogfessional/react-swipeable/issues/134) and [PR #149](https://github.com/dogfessional/react-swipeable/pull/149)
+  * Thank you [@FaberVitale](https://github.com/FaberVitale)!
+
 # 5.2.3
 * Add check for `event.cancelable` for `touchmove` events before calling `event.preventDefault()`, [issue #128](https://github.com/dogfessional/react-swipeable/issues/128) and [PR #145](https://github.com/dogfessional/react-swipeable/pull/145)
   * Thank you [@maurispalletti](https://github.com/maurispalletti)!
