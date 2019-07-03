@@ -12,7 +12,7 @@ const defaultProps = {
 const initialState = {
   xy: [0, 0],
   swiping: false,
-  lastEventData: undefined,
+  eventData: undefined,
   start: undefined
 }
 export const LEFT = 'Left'
@@ -58,7 +58,13 @@ function getHandlers(set, handlerProps) {
       }
       const { clientX, clientY } = event.touches ? event.touches[0] : event
       const xy = rotateXYByAngle([clientX, clientY], props.rotationAngle)
-      return { ...state, ...initialState, xy, start: event.timeStamp || 0 }
+      return {
+        ...state,
+        ...initialState,
+        eventData: { initial: [...xy] },
+        xy,
+        start: event.timeStamp || 0
+      }
     })
   }
 
@@ -80,7 +86,7 @@ function getHandlers(set, handlerProps) {
       if (absX < props.delta && absY < props.delta && !state.swiping) return state
 
       const dir = getDirection(absX, absY, deltaX, deltaY)
-      const eventData = { event, absX, absY, deltaX, deltaY, velocity, dir }
+      const eventData = { ...state.eventData, event, absX, absY, deltaX, deltaY, velocity, dir }
 
       props.onSwiping && props.onSwiping(eventData)
 
@@ -99,20 +105,21 @@ function getHandlers(set, handlerProps) {
       )
         event.preventDefault()
 
-      return { ...state, lastEventData: eventData, swiping: true }
+      return { ...state, eventData, swiping: true }
     })
   }
 
   const onEnd = event => {
     set((state, props) => {
+      let eventData
       if (state.swiping) {
-        const eventData = { ...state.lastEventData, event }
+        eventData = { ...state.eventData, event }
 
         props.onSwiped && props.onSwiped(eventData)
 
         props[`onSwiped${eventData.dir}`] && props[`onSwiped${eventData.dir}`](eventData)
       }
-      return { ...state, ...initialState }
+      return { ...state, ...initialState, eventData }
     })
   }
 
