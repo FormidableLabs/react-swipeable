@@ -2,12 +2,14 @@
 
 import * as React from 'react'
 
+export type Vector2 = [number, number]
 export interface EventData {
   event: MouseEvent | TouchEvent
   deltaX: number
   deltaY: number
   absX: number
   absY: number
+  initial: Vector2
   velocity: number
   dir: 'Left' | 'Right' | 'Up' | 'Down'
 }
