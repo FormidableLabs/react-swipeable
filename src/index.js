@@ -240,10 +240,18 @@ export class Swipeable extends React.PureComponent {
   }
 
   render() {
-    const { className, style, nodeName = 'div', innerRef, children, trackMouse } = this.props
+    const {
+      className,
+      style,
+      nodeName = 'div',
+      innerRef,
+      children,
+      trackMouse,
+      ...rest
+    } = this.props
     const [handlers, attachTouch] = getHandlers(this._set, { trackMouse })
     this.transientState = updateTransientState(this.transientState, this.props, attachTouch)
     const ref = innerRef ? el => (innerRef(el), handlers.ref(el)) : handlers.ref
-    return React.createElement(nodeName, { ...handlers, className, style, ref }, children)
+    return React.createElement(nodeName, { ...rest, ...handlers, className, style, ref }, children)
   }
 }

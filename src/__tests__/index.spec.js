@@ -527,4 +527,10 @@ describe('Swipeable Specific', () => {
     expect(wrapper.instance().testRef).toBe(swipeableDiv)
     wrapper.unmount()
   })
+
+  it('passes down props', () => {
+    const wrapper = mount(<Swipeable data-testid="custom-prop" />)
+    expect(wrapper.find('div').prop('data-testid')).toBe('custom-prop')
+    wrapper.unmount()
+  })
 })
