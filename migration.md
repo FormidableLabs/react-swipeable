@@ -5,7 +5,7 @@ Migrate Swipeable v4 to v5
 The component usage for swiped events is the same except `eventData` can now be destructured and `isFlick` is deprecated, [see below](#flickThreshold).
 ```diff
 - import Swipeable from 'react-swipeable';
-+ import { Swipeable } from 'react-swipeable;
++ import { Swipeable } from 'react-swipeable';
 
 
 - swiped = (event, deltaX, deltaY, isFlick, velocity) => {
