@@ -42,6 +42,9 @@
   * `flickThreshold`
   * `stopPropagation`
   * `disabled`
+* **[BREAKING]** deprecated passing "rest" of props down
+  * removed additional props besides the ones used by `<Swipeable>` from being passed down
+    * only `className` and `style` get passed to `<Swipeable>`'s dom node, default `div`
 
 
 
