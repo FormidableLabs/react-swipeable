@@ -51,8 +51,8 @@ All Event Handlers are called with the below event data.
 ```
 {
   event,          // source event
-  deltaX,         // x offset (current.x - initial.x)
-  deltaY,         // y offset (current.y - initial.y)
+  deltaX,         // x offset (initial.x - current.x)
+  deltaY,         // y offset (initial.y - current.y)
   absX,           // absolute deltaX
   absY,           // absolute deltaY
   velocity,       // √(absX^2 + absY^2) / time
