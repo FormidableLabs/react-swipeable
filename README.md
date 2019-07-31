@@ -51,7 +51,7 @@ All Event Handlers are called with the below event data.
 ```
 {
   event,          // source event
-  inital,         // initial swipe [x,y]
+  initial,        // initial swipe [x,y]
   deltaX,         // x offset (initial.x - current.x)
   deltaY,         // y offset (initial.y - current.y)
   absX,           // absolute deltaX
