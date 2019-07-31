@@ -1,3 +1,6 @@
+# 5.4.0
+* Add `initial` property to `eventData` that supplies the inital `[x, y]` swipe value coordinates [issue #150](https://github.com/dogfessional/react-swipeable/issues/150) and [PR #131](https://github.com/dogfessional/react-swipeable/pull/151)
+
 # 5.3.0
 * Optimization for `useSwipeable` hook. Added `useMemo` for handler internals [issue #134](https://github.com/dogfessional/react-swipeable/issues/134) and [PR #149](https://github.com/dogfessional/react-swipeable/pull/149)
   * Thank you [@FaberVitale](https://github.com/FaberVitale)!

@@ -1,7 +1,7 @@
 {
   "name": "react-swipeable",
   "version": "5.3.0",
-  "description": "Swipe event handler & hook for react",
+  "description": "React Swipe event handler component & hook",
   "main": "./lib/index.js",
   "module": "es/index.js",
   "scripts": {
