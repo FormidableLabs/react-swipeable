@@ -61,7 +61,7 @@ function getHandlers(set, handlerProps) {
       return {
         ...state,
         ...initialState,
-        eventData: { initial: [...xy] },
+        eventData: { initial: [...xy], first: true },
         xy,
         start: event.timeStamp || 0
       }
@@ -86,7 +86,7 @@ function getHandlers(set, handlerProps) {
       if (absX < props.delta && absY < props.delta && !state.swiping) return state
 
       const dir = getDirection(absX, absY, deltaX, deltaY)
-      const eventData = { ...state.eventData, event, absX, absY, deltaX, deltaY, velocity, dir }
+      let eventData = { ...state.eventData, event, absX, absY, deltaX, deltaY, velocity, dir }
 
       props.onSwiping && props.onSwiping(eventData)
 
@@ -105,6 +105,7 @@ function getHandlers(set, handlerProps) {
       )
         event.preventDefault()
 
+      eventData.first = false;
       return { ...state, eventData, swiping: true }
     })
   }
