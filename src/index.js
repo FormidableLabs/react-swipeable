@@ -86,7 +86,7 @@ function getHandlers(set, handlerProps) {
       if (absX < props.delta && absY < props.delta && !state.swiping) return state
 
       const dir = getDirection(absX, absY, deltaX, deltaY)
-      let eventData = { ...state.eventData, event, absX, absY, deltaX, deltaY, velocity, dir }
+      const eventData = { ...state.eventData, event, absX, absY, deltaX, deltaY, velocity, dir }
 
       props.onSwiping && props.onSwiping(eventData)
 
