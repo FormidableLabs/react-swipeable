@@ -80,7 +80,7 @@
     "babel-jest": "^24.8.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.19",
     "coveralls": "^3.0.3",
-    "dtslint": "^0.6.0",
+    "dtslint": "^2.0.2",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
     "eslint": "^5.9.0",
