@@ -1,3 +1,7 @@
+# 5.5.0
+* Add `first` property to `eventData` that is `true` for first swipe event [issue #160](https://github.com/dogfessional/react-swipeable/issues/160) and [PR #162](https://github.com/dogfessional/react-swipeable/pull/162)
+  * Thank you [@samanpwbb](https://github.com/samanpwbb)!
+
 # 5.4.0
 * Add `initial` property to `eventData` that supplies the inital `[x, y]` swipe value coordinates [issue #150](https://github.com/dogfessional/react-swipeable/issues/150) and [PR #131](https://github.com/dogfessional/react-swipeable/pull/151)
 
