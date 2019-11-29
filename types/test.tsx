@@ -1,17 +1,6 @@
 import * as React from 'react'
 import { Swipeable, SwipeableHandlers, SwipeableProps, SwipeCallback, useSwipeable } from 'react-swipeable'
 
-interface CopyOfEventData {
-  event: MouseEvent | TouchEvent
-  deltaX: number
-  deltaY: number
-  absX: number
-  absY: number
-  // initial: Vector2
-  velocity: number
-  dir: 'Left' | 'Right' | 'Up' | 'Down'
-}
-
 class SampleComponent extends React.PureComponent<SwipeableProps> {
   private readonly handleSwiped: SwipeCallback = () => {}
   private readonly handleSwipedLeft: SwipeCallback = () => {}
@@ -77,6 +66,7 @@ const handlers: SwipeableHandlers = useSwipeable({
       deltaY, // $ExpectType number
       absX, // $ExpectType number
       absY, // $ExpectType number
+      first, // $ExpectType boolean
       initial, // $ExpectType [number, number]
       velocity, // $ExpectType number
       dir, // $ExpectType "Left" | "Right" | "Up" | "Down"

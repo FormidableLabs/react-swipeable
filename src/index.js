@@ -105,8 +105,8 @@ function getHandlers(set, handlerProps) {
       )
         event.preventDefault()
 
-      eventData.first = false;
-      return { ...state, eventData, swiping: true }
+      // first is now always false
+      return { ...state, eventData: { ...eventData, first: false }, swiping: true }
     })
   }
 
