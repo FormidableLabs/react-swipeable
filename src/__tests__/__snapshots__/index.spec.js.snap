@@ -10,6 +10,7 @@ Array [
       "deltaY": 0,
       "dir": "Right",
       "event": Object {},
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -35,6 +36,7 @@ Array [
         "preventDefault": [MockFunction],
         "timeStamp": 1374825.199999963,
       },
+      "first": true,
       "initial": Array [
         100,
         100,
@@ -55,6 +57,7 @@ Array [
         "preventDefault": [MockFunction],
         "timeStamp": 1374841.3999999757,
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -75,6 +78,7 @@ Array [
         "preventDefault": [MockFunction],
         "timeStamp": 1374857.399999979,
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -95,6 +99,7 @@ Array [
         "preventDefault": [MockFunction],
         "timeStamp": 1374873.499999987,
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -123,6 +128,7 @@ Array [
           },
         ],
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -152,6 +158,7 @@ Array [
           },
         ],
       },
+      "first": true,
       "initial": Array [
         100,
         100,
@@ -176,6 +183,7 @@ Array [
           },
         ],
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -200,6 +208,7 @@ Array [
           },
         ],
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -224,6 +233,7 @@ Array [
           },
         ],
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -244,6 +254,7 @@ Array [
       "deltaY": 0,
       "dir": "Right",
       "event": Object {},
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -269,6 +280,7 @@ Array [
         "preventDefault": [MockFunction],
         "timeStamp": 1374825.199999963,
       },
+      "first": true,
       "initial": Array [
         100,
         100,
@@ -289,6 +301,7 @@ Array [
         "preventDefault": [MockFunction],
         "timeStamp": 1374841.3999999757,
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -309,6 +322,7 @@ Array [
         "preventDefault": [MockFunction],
         "timeStamp": 1374857.399999979,
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -329,6 +343,7 @@ Array [
         "preventDefault": [MockFunction],
         "timeStamp": 1374873.499999987,
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -357,6 +372,7 @@ Array [
           },
         ],
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -386,6 +402,7 @@ Array [
           },
         ],
       },
+      "first": true,
       "initial": Array [
         100,
         100,
@@ -410,6 +427,7 @@ Array [
           },
         ],
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -434,6 +452,7 @@ Array [
           },
         ],
       },
+      "first": false,
       "initial": Array [
         100,
         100,
@@ -458,6 +477,7 @@ Array [
           },
         ],
       },
+      "first": false,
       "initial": Array [
         100,
         100,

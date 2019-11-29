@@ -9,6 +9,7 @@ export interface EventData {
   deltaY: number
   absX: number
   absY: number
+  first: boolean
   initial: Vector2
   velocity: number
   dir: 'Left' | 'Right' | 'Up' | 'Down'

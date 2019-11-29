@@ -61,7 +61,7 @@ function getHandlers(set, handlerProps) {
       return {
         ...state,
         ...initialState,
-        eventData: { initial: [...xy] },
+        eventData: { initial: [...xy], first: true },
         xy,
         start: event.timeStamp || 0
       }
@@ -105,7 +105,8 @@ function getHandlers(set, handlerProps) {
       )
         event.preventDefault()
 
-      return { ...state, eventData, swiping: true }
+      // first is now always false
+      return { ...state, eventData: { ...eventData, first: false }, swiping: true }
     })
   }
 
