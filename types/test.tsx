@@ -67,7 +67,10 @@ const handlers: SwipeableHandlers = useSwipeable({
       absX, // $ExpectType number
       absY, // $ExpectType number
       first, // $ExpectType boolean
-      initial, // $ExpectType [number, number]
+      initial: [
+        initialX, // $ExpectType number
+        initialY // $ExpectType number
+      ],
       velocity, // $ExpectType number
       dir, // $ExpectType "Left" | "Right" | "Up" | "Down"
       ...rest // $ExpectType {}
