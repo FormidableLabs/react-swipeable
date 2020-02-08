@@ -13,7 +13,7 @@ export default function App({version}) {
           <span style={scrollUpArrowStyles}>▲</span>
       </ScrollUp>
       <div className="medium-6 column" style={{width: "95%"}}>
-        <h1>react-swipeable&nbsp;<a href="https://github.com/dogfessional/react-swipeable" style={{fontSize: "0.75rem"}}>v{version}</a></h1>
+        <h1>react-swipeable&nbsp;<a href="https://github.com/FormidableLabs/react-swipeable" style={{fontSize: "0.75rem"}}>v{version}</a></h1>
         <dl>
           <dt>Examples:</dt>
           <dd><a href="#FeatureTestConsole">Feature testing with console log output ⇨</a></dd>
@@ -28,7 +28,7 @@ export default function App({version}) {
         <hr />
         <p style={{"marginBottom": "2rem"}}>
           Thanks for checking out the example app! Let us know if you find any bugs, and&nbsp;
-          <a href="https://github.com/dogfessional/react-swipeable/pulls">submit a PR!</a>
+          <a href="https://github.com/FormidableLabs/react-swipeable/pulls">submit a PR!</a>
         </p>
       </div>
     </div>
