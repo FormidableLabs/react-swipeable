@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/dogfessional/react-swipeable.git"
+    "url": "git+ssh://git@github.com/formidablelabs/react-swipeable.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dogfessional/react-swipeable/issues"
+    "url": "https://github.com/formidablelabs/react-swipeable/issues"
   },
-  "homepage": "https://github.com/dogfessional/react-swipeable#readme",
+  "homepage": "https://github.com/formidablelabs/react-swipeable#readme",
   "engines": {
     "node": ">=4.7.0"
   },
