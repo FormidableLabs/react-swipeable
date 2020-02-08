@@ -3,11 +3,11 @@ React Swipeable
 
 React swipe event handler component & hook
 
-[![build status](https://img.shields.io/travis/dogfessional/react-swipeable/master.svg?style=flat-square)](https://travis-ci.org/dogfessional/react-swipeable) [![Coverage Status](https://img.shields.io/coveralls/dogfessional/react-swipeable/master.svg?style=flat-square)](https://coveralls.io/github/dogfessional/react-swipeable?branch=master) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![gzip size](https://flat.badgen.net/bundlephobia/minzip/react-swipeable)](https://bundlephobia.com/result?p=react-swipeable)
+[![build status](https://img.shields.io/travis/FormidableLabs/react-swipeable/master.svg?style=flat-square)](https://travis-ci.org/FormidableLabs/react-swipeable) [![Coverage Status](https://img.shields.io/coveralls/FormidableLabs/react-swipeable/master.svg?style=flat-square)](https://coveralls.io/github/FormidableLabs/react-swipeable?branch=master) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![gzip size](https://flat.badgen.net/bundlephobia/minzip/react-swipeable)](https://bundlephobia.com/result?p=react-swipeable)
 
 [![Edit react-swipeable image carousel with hook](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js)
 
-[Github Pages Demo](https://dogfessional.github.io/react-swipeable/)
+[Github Pages Demo](http://stack.formidable.com/react-swipeable/)
 
 ### Api
 Use React-hooks or a Component and set your swipe(d) handlers.
@@ -89,7 +89,7 @@ All Event Handlers are called with the below event data.
 - Hook use requires **react >= 16.8.0**
 - The props contained in `handlers` are currently `ref` and `onMouseDown`
   - Please spread `handlers` as the props contained in it could change as react improves event listening capabilities
-    - See [#127](https://github.com/dogfessional/react-swipeable/issues/127) for some more context
+    - See [#127](https://github.com/FormidableLabs/react-swipeable/issues/127) for some more context
 
 ### preventDefaultTouchmoveEvent Details
 
@@ -102,7 +102,7 @@ All Event Handlers are called with the below event data.
 Example:
    * If a user is swiping right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if the user was swiping left then `e.preventDefault()` would **not** be called.
 
-Please experiment with the [example](http://dogfessional.github.io/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
+Please experiment with the [example](http://stack.formidable.com/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
 
 
 ### Version 5 Updates

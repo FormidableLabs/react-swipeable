@@ -51,12 +51,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "http://github.com/dogfessional/react-swipeable.git"
+    "url": "https://github.com/FormidableLabs/react-swipeable.git"
   },
   "bugs": {
-    "url": "https://github.com/dogfessional/react-swipeable/issues"
+    "url": "https://github.com/FormidableLabs/react-swipeable/issues"
   },
-  "homepage": "https://github.com/dogfessional/react-swipeable",
+  "homepage": "https://github.com/FormidableLabs/react-swipeable",
   "files": [
     "lib",
     "es",

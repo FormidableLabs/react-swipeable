@@ -88,8 +88,8 @@ You can just stop tracking any hanlder or turn off the component or hook yoursel
 Please see above [example migration](#swiping-direction-usage).
 
 ### Comments suggestions
-Please do not hesitate to [create an issue](https://github.com/dogfessional/react-swipeable/issues/new) using the provided templates to discuss bugs, ideas and/or any feedback.
+Please do not hesitate to [create an issue](https://github.com/FormidableLabs/react-swipeable/issues/new) using the provided templates to discuss bugs, ideas and/or any feedback.
 
-If you feel that we removed a prop or functionality you truly depended on lets have a [conversation](https://github.com/dogfessional/react-swipeable/issues/new) about adding it back.
+If you feel that we removed a prop or functionality you truly depended on lets have a [conversation](https://github.com/FormidableLabs/react-swipeable/issues/new) about adding it back.
 
 Cheers!
