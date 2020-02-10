@@ -105,6 +105,16 @@ Example:
 Please experiment with the [example](http://dogfessional.github.io/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
 
 
+### passive listener issue
+
+At the moment, the lighthouse audit is deducting 7 points from the best practices
+metric for "Does not use passive listeners to improve scrolling performance".
+
+This will not affect behavior in the application, merely the score on the lighthouse
+audit.
+
+This is currently being tracked in [issue 167](https://github.com/FormidableLabs/react-swipeable/issues/167).
+
 ### Version 5 Updates
 [React hooks](https://reactjs.org/docs/hooks-reference.html) have been released with [16.8.0](https://reactjs.org/blog/2019/02/06/react-v16.8.0.html) 🎉
 
