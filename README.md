@@ -1,7 +1,7 @@
 React Swipeable
 =========================
 
-React swipe event handler component & hook
+React swipe event handler hook
 
 ## WIP - This is the v6.0.0 working branch
 
@@ -12,26 +12,12 @@ React swipe event handler component & hook
 [Github Pages Demo](http://stack.formidable.com/react-swipeable/)
 
 ### Api
-Use React-hooks or a Component and set your swipe(d) handlers.
-```js
-import { useSwipeable, Swipeable } from 'react-swipeable'
-```
-
-#### Hook
+Use the hook and set your swipe(d) handlers.
 ```jsx
 const handlers = useSwipeable({ onSwiped: (eventData) => eventHandler, ...config })
 return (<div {...handlers}> You can swipe here </div>)
 ```
 Spread `handlers` onto the element you wish to track swipes inside of. [Details below](#hook-details).
-
-#### Component
-```jsx
-<Swipeable onSwiped={(eventData) => eventHandler} {...config} >
-  You can swipe here!
-</Swipeable>
-```
-
-The Component `<Swipeable>` uses a `<div>` by default under the hood to attach event handlers to.
 
 ## Props / Config Options
 
@@ -76,15 +62,6 @@ All Event Handlers are called with the below event data.
 }
 ```
 
-### Component Specific Props
-
-```
-{
-  nodeName: 'div',    // internally rendered component dom node
-  innerRef            // callback ref for internal component dom node
-}
-```
-
 **None of the props/config options are required.**
 
 ### Hook details
@@ -117,12 +94,11 @@ audit.
 
 This is currently being tracked in [issue 167](https://github.com/FormidableLabs/react-swipeable/issues/167).
 
-### Version 5 Updates
-[React hooks](https://reactjs.org/docs/hooks-reference.html) have been released with [16.8.0](https://reactjs.org/blog/2019/02/06/react-v16.8.0.html) 🎉
+### Version 6 Updates and migration
 
-v5 of `react-swipeable` includes a hook, `useSwipeable`, that provides the same great functionality as `<Swipeable>`. See the `useSwipeable` hook in action with this [codesandbox](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js).
+v6 of `react-swipeable` only exports a hook now, `useSwipeable`. See the `useSwipeable` hook in action with this [codesandbox](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js).
 
-The component is still included and migration to v5 is straightforward. Please see the [migration doc](./migration.md) for more details including more info on the simplified api.
+If needed the old `<Swipeable>` component can be recreated from the hook and in the migration doc there are examples. Please see the [migration doc](./migration.md) for more details.
 
 ## Development
 
