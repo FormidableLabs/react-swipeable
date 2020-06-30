@@ -19,7 +19,8 @@
     "test": "npm run test:unit && npm run dtslint && npm run build && npm run size",
     "test:unit": "jest",
     "test:cover": "jest --coverage",
-    "dtslint": "dtslint types"
+    "dtslint": "dtslint types",
+    "postinstall": "npm run build"
   },
   "size-limit": [
     {
