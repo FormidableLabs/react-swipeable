@@ -62,7 +62,8 @@
     "lib",
     "es",
     "src",
-    "types/index.d.ts"
+    "types/index.d.ts",
+    "rollup.config.js"
   ],
   "license": "MIT",
   "types": "types",
