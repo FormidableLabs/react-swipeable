@@ -20,6 +20,7 @@
     "test:unit": "jest",
     "test:cover": "jest --coverage",
     "dtslint": "dtslint types",
+    "install": "npm install",
     "postinstall": "npm run build"
   },
   "size-limit": [
