@@ -20,8 +20,7 @@
     "test:unit": "jest",
     "test:cover": "jest --coverage",
     "dtslint": "dtslint types",
-    "install": "if [[ ! -f is-installed ]]; then touch is-installed && npm install; else echo 'Skipping installation hook.' && rm is-installed; fi",
-    "postinstall": "npm run build"
+    "install": "if [[ ! -f is-installed ]]; then touch is-installed && npm install && npm run build; else echo 'Skipping installation hook.' && rm is-installed; fi"
   },
   "size-limit": [
     {
