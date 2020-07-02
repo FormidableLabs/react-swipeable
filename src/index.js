@@ -126,8 +126,8 @@ function getHandlers(set, handlerProps) {
 
   const cleanUpMouse = () => {
     // safe to just call removeEventListener
-    document.removeEventListener(mouseMove, onMove, { passive: true })
-    document.removeEventListener(mouseUp, onUp, { passive: true })
+    document.removeEventListener(mouseMove, onMove)
+    document.removeEventListener(mouseUp, onUp)
   }
 
   const onUp = e => {
