@@ -20,7 +20,8 @@
     "test:unit": "jest",
     "test:cover": "jest --coverage",
     "dtslint": "dtslint types",
-    "install": "./build.sh"
+    "install": "./build.sh",
+    "postinstall": "rm -rf package-lock.json node_modules/ examples/"
   },
   "size-limit": [
     {
