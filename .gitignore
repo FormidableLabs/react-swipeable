@@ -1,6 +1,6 @@
 node_modules
 TODO
-npm-debug.log
+*.log
 .DS_Store
 dist
 examples/static
