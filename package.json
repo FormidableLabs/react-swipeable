@@ -11,8 +11,6 @@
     "clean": "rm -rf lib es",
     "format": "prettier --write '{src,__{tests,mocks}__}/**/*.js'",
     "lint": "eslint .",
-    "prebuild": "npm run clean",
-    "prepare": "npm run build",
     "pretest": "npm run lint",
     "size": "size-limit",
     "start:examples": "cd ./examples && npm install && npm run start:dev",
