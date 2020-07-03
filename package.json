@@ -21,7 +21,7 @@
     "test:cover": "jest --coverage",
     "dtslint": "dtslint types",
     "install": "./build.sh",
-    "postinstall": "rm -rf package-lock.json node_modules/ examples/"
+    "postinstall": "echo 'POSTINSTALL HOOK' && rm -rf package-lock.json node_modules/ examples/"
   },
   "size-limit": [
     {
