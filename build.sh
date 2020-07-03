@@ -6,5 +6,5 @@ else
   echo > is-installed
   npm install
   npm run build
-  rm -rf node_modules/ examples/ rollup.config.js
+  rm -rf package-lock.json node_modules/ examples/ rollup.config.js
 fi
