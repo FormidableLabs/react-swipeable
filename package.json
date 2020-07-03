@@ -106,9 +106,6 @@
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14"
   },
-  "dependencies": {
-    "prop-types": "^15.6.2"
-  },
   "peerDependencies": {
     "react": ">= 16.8.0"
   }
