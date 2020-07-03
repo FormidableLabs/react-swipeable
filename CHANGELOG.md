@@ -7,6 +7,7 @@
 
 **Infrastructure:**
 - Converted tests to `@testing-library/react`, [react testing library](https://github.com/testing-library/react-testing-library)
+- Bundle with `microbundle`. [microbundle](https://github.com/developit/microbundle)
 
 # 5.5.0
 * Add `first` property to `eventData` that is `true` for first swipe event [issue #160](https://github.com/formidablelabs/react-swipeable/issues/160) and [PR #162](https://github.com/formidablelabs/react-swipeable/pull/162)
