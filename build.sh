@@ -6,5 +6,4 @@ else
   echo > is-installed
   npm install
   npm run build
-  echo 'END INSTALL HOOK'
 fi

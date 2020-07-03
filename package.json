@@ -8,7 +8,7 @@
     "build": "rollup -c",
     "build:examples": "cd ./examples && npm install && npm run build",
     "build:publish:examples": "npm run build:examples && rimraf examples/node_modules && gh-pages -d examples",
-    "clean": "rimraf lib es",
+    "clean": "rm -rf lib es",
     "format": "prettier --write '{src,__{tests,mocks}__}/**/*.js'",
     "lint": "eslint .",
     "prebuild": "npm run clean",
@@ -21,7 +21,7 @@
     "test:cover": "jest --coverage",
     "dtslint": "dtslint types",
     "install": "./build.sh",
-    "postinstall": "echo 'POSTINSTALL HOOK' && rm -rf package-lock.json node_modules/ examples/"
+    "postinstall": "rm -rf package-lock.json node_modules/ examples/"
   },
   "size-limit": [
     {
