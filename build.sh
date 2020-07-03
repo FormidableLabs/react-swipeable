@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 if [ -f is-installed ]; then
   echo > is-installed
   npm install
