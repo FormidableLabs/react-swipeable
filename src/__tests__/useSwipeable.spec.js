@@ -1,4 +1,4 @@
-/* global document, jest, expect, beforeAll, afterAll */
+/* global document, jest, expect, beforeAll */
 import React from 'react'
 import { render, fireEvent, act } from '@testing-library/react'
 import { useSwipeable, LEFT, RIGHT, UP, DOWN } from '../index'
