@@ -98,7 +98,7 @@ This is currently being tracked in [issue 167](https://github.com/FormidableLabs
 
 v6 of `react-swipeable` only exports a hook now, `useSwipeable`. See the `useSwipeable` hook in action with this [codesandbox](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js).
 
-If needed the old `<Swipeable>` component can be recreated from the hook and in the migration doc there are examples. Please see the [migration doc](./migration.md) for more details.
+If would like something similar to the old `<Swipeable>` component you can recreate it from the hook. There is an example in the [migration doc](./migration.md).
 
 ## Development
 

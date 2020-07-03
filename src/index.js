@@ -1,6 +1,5 @@
 /* global document */
 import React from 'react'
-import PropTypes from 'prop-types'
 
 const defaultProps = {
   preventDefaultTouchmoveEvent: false,
@@ -217,41 +216,4 @@ export function useSwipeable(props) {
   )
 
   return handlers
-}
-
-export class Swipeable extends React.PureComponent {
-  static propTypes = {
-    onSwiped: PropTypes.func,
-    onSwiping: PropTypes.func,
-    onSwipedUp: PropTypes.func,
-    onSwipedRight: PropTypes.func,
-    onSwipedDown: PropTypes.func,
-    onSwipedLeft: PropTypes.func,
-    delta: PropTypes.number,
-    preventDefaultTouchmoveEvent: PropTypes.bool,
-    nodeName: PropTypes.string,
-    trackMouse: PropTypes.bool,
-    trackTouch: PropTypes.bool,
-    innerRef: PropTypes.func,
-    rotationAngle: PropTypes.number
-  }
-
-  static defaultProps = defaultProps
-
-  constructor(props) {
-    super(props)
-    this.transientState = { ...initialState, type: 'class' }
-  }
-
-  _set = cb => {
-    this.transientState = cb(this.transientState, this.props)
-  }
-
-  render() {
-    const { className, style, nodeName = 'div', innerRef, children, trackMouse } = this.props
-    const [handlers, attachTouch] = getHandlers(this._set, { trackMouse })
-    this.transientState = updateTransientState(this.transientState, this.props, attachTouch)
-    const ref = innerRef ? el => (innerRef(el), handlers.ref(el)) : handlers.ref
-    return React.createElement(nodeName, { ...handlers, className, style, ref }, children)
-  }
 }
