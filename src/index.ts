@@ -1,7 +1,7 @@
 /* global document */
 import * as React from "react";
 
-export type HandledEvents = React.MouseEvent | React.TouchEvent;
+export type HandledEvents = MouseEvent | TouchEvent;
 export type Vector2 = [number, number];
 export type EventData = {
   event: HandledEvents;
@@ -35,8 +35,8 @@ export interface SwipeableOptions {
 }
 
 export interface SwipeableHandlers {
-  ref: (element: HTMLElement | null) => void;
-  onMouseDown?: React.MouseEventHandler;
+  ref(element: HTMLElement | null): void;
+  onMouseDown?(event: HandledEvents): void;
 }
 
 type StateEventData = {
@@ -55,10 +55,10 @@ type State = {
   xy: Vector2;
   swiping: boolean;
   eventData?: StateEventData;
-  start?: number;
+  start: number;
   first?: boolean;
   cleanUpTouch?(): void;
-  el?: React.DOMElement;
+  el?: HTMLElement;
 };
 
 type Props = {
@@ -90,7 +90,7 @@ const initialState: State = {
   xy: [0, 0],
   swiping: false,
   eventData: undefined,
-  start: undefined,
+  start: 0,
 };
 export const LEFT = "Left";
 export const RIGHT = "Right";
@@ -129,7 +129,7 @@ function rotateXYByAngle(pos: Vector2, angle: number): Vector2 {
   return [x, y];
 }
 
-type Setter = (state: State, props: SwipeableOptions) => State;
+type Setter = (state: State, props: Props) => State;
 type Set = (setter: Setter) => void;
 function getHandlers(
   set: Set,
@@ -143,15 +143,15 @@ function getHandlers(
 ] {
   const onStart = (event: HandledEvents) => {
     // if more than a single touch don't track, for now...
-    if (event && event.touches && event.touches.length > 1) return;
+    if (event && ('touches' in event) && event.touches.length > 1) return;
 
-    set((state: State, props: SwipeableOptions) => {
+    set((state, props) => {
       // setup mouse listeners on document to track swipe since swipe can leave container
       if (props.trackMouse) {
         document.addEventListener(mouseMove, onMove);
         document.addEventListener(mouseUp, onUp);
       }
-      const { clientX, clientY } = event.touches ? event.touches[0] : event;
+      const { clientX, clientY } = ('touches' in event) ? event.touches[0] : event;
       const xy = rotateXYByAngle([clientX, clientY], props.rotationAngle);
       return {
         ...state,
@@ -168,11 +168,11 @@ function getHandlers(
       if (
         !state.xy[0] ||
         !state.xy[1] ||
-        (event.touches && event.touches.length > 1)
+        (('touches' in event) && event.touches.length > 1)
       ) {
         return state;
       }
-      const { clientX, clientY } = event.touches ? event.touches[0] : event;
+      const { clientX, clientY } = ('touches' in event) ? event.touches[0] : event;
       const [x, y] = rotateXYByAngle([clientX, clientY], props.rotationAngle);
       const deltaX = state.xy[0] - x;
       const deltaY = state.xy[1] - y;
@@ -186,7 +186,7 @@ function getHandlers(
         return state;
 
       const dir = getDirection(absX, absY, deltaX, deltaY);
-      const eventData = {
+      const eventData: EventData = {
         ...state.eventData,
         event,
         absX,
@@ -195,14 +195,14 @@ function getHandlers(
         deltaY,
         velocity,
         dir,
-      };
+      } as EventData;
 
       props.onSwiping && props.onSwiping(eventData);
 
       // track if a swipe is cancelable(handler for swiping or swiped(dir) exists)
       // so we can call preventDefault if needed
       let cancelablePageSwipe = false;
-      if (props.onSwiping || props.onSwiped || props[`onSwiped${dir}`]) {
+      if (props.onSwiping || props.onSwiped || (`onSwiped${dir}` in props)) {
         cancelablePageSwipe = true;
       }
 
@@ -225,14 +225,16 @@ function getHandlers(
 
   const onEnd = (event: HandledEvents) => {
     set((state, props) => {
-      let eventData;
+      let eventData: EventData | undefined;
       if (state.swiping) {
-        eventData = { ...state.eventData, event };
+        eventData = { ...state.eventData, event } as EventData;
 
         props.onSwiped && props.onSwiped(eventData);
 
-        props[`onSwiped${eventData.dir}`] &&
-          props[`onSwiped${eventData.dir}`](eventData);
+        const onSwipedDir = `onSwiped${eventData.dir}`;
+        if ((onSwipedDir in props)) {
+          (props as any)[onSwipedDir](eventData);
+        }
       }
       return { ...state, ...initialState, eventData };
     });
@@ -249,10 +251,10 @@ function getHandlers(
     onEnd(e);
   };
 
-  const attachTouch = (el: React.DOMElement) => {
+  const attachTouch = (el: HTMLElement) => {
     if (el && el.addEventListener) {
       // attach touch event listeners and handlers
-      const tls = [
+      const tls: [typeof touchStart | typeof touchMove | typeof touchEnd, (e: HandledEvents) => void][] = [
         [touchStart, onStart],
         [touchMove, onMove],
         [touchEnd, onEnd],
@@ -263,7 +265,7 @@ function getHandlers(
     }
   };
 
-  const onRef = (el: React.DOMElement) => {
+  const onRef = (el: HTMLElement | null) => {
     // "inline" ref functions are called twice on render, once with null then again with DOM element
     // ignore null here
     if (el === null) return;
@@ -271,7 +273,7 @@ function getHandlers(
       // if the same DOM el as previous just return state
       if (state.el === el) return state;
 
-      let addState = {};
+      let addState: { cleanUpTouch?: (() => void) | null } = {};
       // if new DOM el clean up old DOM and reset cleanUpTouch
       if (state.el && state.el !== el && state.cleanUpTouch) {
         state.cleanUpTouch();
@@ -283,12 +285,12 @@ function getHandlers(
       }
 
       // store event attached DOM el for comparison, clean up, and re-attachment
-      return { ...state, el, ...addState };
+      return { ...state, el, ...addState } as State;
     });
   };
 
   // set ref callback to attach touch event listeners
-  const output = { ref: onRef };
+  const output: { ref: typeof onRef, onMouseDown?: typeof onStart} = { ref: onRef };
 
   // if track mouse attach mouse down listener
   if (handlerProps.trackMouse) {
