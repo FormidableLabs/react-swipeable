@@ -1,18 +1,31 @@
-/* global document, jest, expect, beforeAll */
-import React from "react";
+import * as React from "react";
 import { render, fireEvent, act } from "@testing-library/react";
-import { useSwipeable, LEFT, RIGHT, UP, DOWN } from "../index";
+import { useSwipeable, LEFT, RIGHT, UP, DOWN } from "../src/index";
 import { expectSwipeFuncsDir } from "./helpers";
 
-const DIRECTIONS = [LEFT, RIGHT, UP, DOWN];
+const DIRECTIONS: [typeof LEFT, typeof RIGHT, typeof UP, typeof DOWN] = [
+  LEFT,
+  RIGHT,
+  UP,
+  DOWN,
+];
 
-function getMockedSwipeFunctions() {
+export type MockedSwipeFunctions = {
+  onSwiping: jest.Mock;
+  onSwiped: jest.Mock;
+  onSwipedLeft: jest.Mock;
+  onSwipedRight: jest.Mock;
+  onSwipedUp: jest.Mock;
+  onSwipedDown: jest.Mock;
+};
+function getMockedSwipeFunctions(): MockedSwipeFunctions {
+  const onSwiped = "onSwiped";
   return DIRECTIONS.reduce(
-    (acc, dir) => ({ ...acc, [`onSwiped${dir}`]: jest.fn() }),
+    (acc, dir) => ({ ...acc, [onSwiped + dir]: jest.fn() }),
     {
       onSwiping: jest.fn(),
       onSwiped: jest.fn(),
-    }
+    } as MockedSwipeFunctions
   );
 }
 
@@ -22,7 +35,7 @@ const TESTING_TEXT = "touch here";
  */
 function SwipeableUsingHook({ nodeName = "div", ...rest }) {
   const eventHandlers = useSwipeable(rest);
-  const Elem = nodeName;
+  const Elem = nodeName as React.ElementType;
   return (
     <Elem {...eventHandlers}>
       <span>{TESTING_TEXT}</span>
@@ -37,11 +50,18 @@ const TS = "touchStart";
 const TM = "touchMove";
 const TE = "touchEnd";
 
-const createClientXYObject = (x, y) => ({ clientX: x, clientY: y });
+const createClientXYObject = (x?: number, y?: number) => ({
+  clientX: x,
+  clientY: y,
+});
 // Create touch event
-const cte = ({ x, y }) => ({ touches: [createClientXYObject(x, y)] });
+const cte = ({ x, y }: { x?: number; y?: number }) => ({
+  touches: [createClientXYObject(x, y)],
+});
 // Create Mouse Event
-const cme = ({ x, y }) => ({ ...createClientXYObject(x, y) });
+const cme = ({ x, y }: { x?: number; y?: number }) => ({
+  ...createClientXYObject(x, y),
+});
 
 describe("useSwipeable", () => {
   let defaultPrevented = 0;
@@ -336,7 +356,9 @@ describe("useSwipeable", () => {
 
     expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(8);
     [LEFT, UP, DOWN].forEach((dir) => {
-      expect(swipeFuncs[`onSwiped${dir}`]).not.toHaveBeenCalled();
+      expect(
+        swipeFuncs[`onSwiped${dir}` as keyof MockedSwipeFunctions]
+      ).not.toHaveBeenCalled();
     });
   });
 
@@ -397,10 +419,10 @@ describe("useSwipeable", () => {
     expect(onSwipedDown).toHaveBeenCalledTimes(2);
   });
 
-  it(`handles new prop swipe callbacks from rerenders`, () => {
+  it(`handles new prop swipe callbacks from re-renders`, () => {
     const onSwipedSpy = jest.fn();
 
-    function TestHookComponent({ next }) {
+    function TestHookComponent({ next }: { next: () => void }) {
       const handlers = useSwipeable({ onSwiped: next });
       return <div {...handlers}>{TESTING_TEXT}</div>;
     }
