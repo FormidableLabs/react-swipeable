@@ -1,7 +1,7 @@
 {
   "name": "react-swipeable",
   "version": "5.5.1",
-  "description": "React Swipe event handler component & hook",
+  "description": "React Swipe event handler hook",
   "main": "./dist/react-swipeable.js",
   "browser": "./dist/react-swipeable.umd.js",
   "umd:main": "./dist/react-swipeable.umd.js",
@@ -63,10 +63,8 @@
   },
   "homepage": "https://github.com/FormidableLabs/react-swipeable",
   "files": [
-    "lib",
-    "es",
-    "src",
-    "types/index.d.ts"
+    "dist",
+    "src"
   ],
   "license": "MIT",
   "devDependencies": {
