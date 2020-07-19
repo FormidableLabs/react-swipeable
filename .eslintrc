@@ -1,41 +1,31 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.all.json"
+  },
   "extends": [
     "eslint:recommended",
-    "plugin:import/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
-    "plugin:prettier/recommended"
+    "prettier",
+    "prettier/@typescript-eslint"
   ],
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true,
-      "experimentalObjectRestSpread": true
+  "plugins": ["@typescript-eslint", "react-hooks"],
+  "settings": {
+    "react": {
+      "version": "detect"
     }
   },
-  "env": {
-    "browser": true,
-    "mocha": true,
-    "node": true
-  },
   "rules": {
-    "prettier/prettier": [
-      "error",
-      {
-        "singleQuote": true,
-        "semi": false,
-        "printWidth": 100
-      }
-    ],
-    "valid-jsdoc": 2,
-    "react/jsx-uses-react": 1,
-    "react/jsx-no-undef": 2,
-    "react/jsx-wrap-multilines": 2,
-    "react/no-string-refs": 0,
-    "react/prop-types": 0,
-    "react-hooks/rules-of-hooks": 2,
-    "react-hooks/exhaustive-deps": 1
-  },
-  "plugins": ["import", "react", "react-hooks"]
+    "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "_" }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "react/no-unescaped-entities": "off",
+    "react/prop-types": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  }
 }
