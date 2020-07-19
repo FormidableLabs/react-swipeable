@@ -1,10 +1,11 @@
-import React from 'react';
+import * as React from 'react';
+// @ts-ignore
 import ScrollUp from 'react-scroll-up';
-import FeatureTestConsole from './FeatureTestConsole.js';
+import FeatureTestConsole from './FeatureTestConsole';
 
 const scrollUpArrowStyles = { fontSize: '20px', border: '2px solid black', borderRadius: '50%', padding: '10px', background: 'white' };
 
-export default function App({version}) {
+export default function App({version}: {version: any}) {
   return (
     <div className="row">
       <ScrollUp showUnder={20}
