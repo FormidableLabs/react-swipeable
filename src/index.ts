@@ -25,6 +25,7 @@ export interface SwipeableOptions {
   onSwipedUp?: SwipeCallback;
   onSwipedDown?: SwipeCallback;
   onSwiping?: SwipeCallback;
+  onTap?: SwipeCallback;
 
   // Configuration Props
   delta?: number;
@@ -69,6 +70,7 @@ type Props = {
   onSwipedUp?: SwipeCallback;
   onSwipedDown?: SwipeCallback;
   onSwiping?: SwipeCallback;
+  onTap?: SwipeCallback;
 
   // Configuration Props
   delta: number;
@@ -227,9 +229,10 @@ function getHandlers(
 
   const onEnd = (event: HandledEvents) => {
     set((state, props) => {
-      let eventData: EventData | undefined;
+      //let eventData: EventData | undefined;
+      const eventData = { ...state.eventData, event } as EventData;
+
       if (state.swiping) {
-        eventData = { ...state.eventData, event } as EventData;
 
         props.onSwiped && props.onSwiped(eventData);
 
@@ -237,6 +240,8 @@ function getHandlers(
         if (onSwipedDir in props) {
           (props as any)[onSwipedDir](eventData);
         }
+      } else {
+        props.onTap && props.onTap(eventData);
       }
       return { ...state, ...initialState, eventData };
     });
