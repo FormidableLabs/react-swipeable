@@ -4,6 +4,9 @@ var webpack = require('webpack')
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: ['./index'],
+  resolve: {
+    extensions: [ '.tsx', '.ts', '.js' ],
+  },
   output: {
     path: path.join(__dirname, 'static'),
     publicPath: '/static/',
@@ -11,26 +14,17 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      // retrive react-swipable version to display on demo page
+      // retrieve react-swipeable version to display on demo page
       SWIPEABLE_VERSION: JSON.stringify(require('../package.json').version)
     })
   ],
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.tsx?$/,
+        use: 'ts-loader',
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/react'],
-            plugins: [
-              '@babel/plugin-proposal-class-properties',
-              '@babel/plugin-proposal-object-rest-spread'
-            ]
-          }
-        }
-      }
+      },
     ]
   }
 }

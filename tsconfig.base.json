@@ -12,7 +12,7 @@
     "noUnusedParameters": true,
     "outDir": "lib/",
     "pretty": true,
-    "rootDirs": ["./src", "./stories"],
+    "rootDirs": ["./src"],
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,

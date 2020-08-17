@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import { Swipeable } from '../../src/index.js';
-import { RowSimpleCheckbox } from './TableComponents.js';
-import SwipeableHook from './SwipeableHook.js';
+import { RowSimpleCheckbox } from './TableComponents';
+import SwipeableHook from './SwipeableHook';
 
 const DIRECTIONS = ['Left', 'Right', 'Up', 'Down'];
 
-const persistSyntheticEvent = (func, persist) => {
-  return (e, ...rest) => {
+const persistSyntheticEvent = (func: any, persist: any) => {
+  return (e: any, ...rest: any) => {
     if (persist && e.persist) e.persist();
     return func(e, ...rest);
   }
@@ -37,14 +36,35 @@ const initialStateApplied = {
   persistEvent: true,
 };
 
-export default class Main extends Component {
-  constructor(props) {
+interface IState {
+  swiping: boolean;
+  swiped: boolean;
+  tap: boolean;
+  swipingDirection: string;
+  swipedDirection: string;
+  delta: string;
+  preventDefaultTouchmoveEvent: boolean;
+  trackMouse: boolean;
+  trackTouch: boolean;
+  rotationAngle: number | string;
+  showOnSwipeds: boolean;
+  onSwipingApplied: boolean;
+  onSwipedApplied: boolean;
+  onSwipedLeftApplied: boolean;
+  onSwipedRightApplied: boolean;
+  onSwipedUpApplied: boolean;
+  onSwipedDownApplied: boolean;
+  persistEvent: boolean;
+}
+
+export default class Main extends Component<any, IState> {
+  constructor(props: any) {
     super(props);
     this.state = Object.assign({}, initialState, initialStateSwipeable, initialStateApplied);
     this.updateValue = this.updateValue.bind(this);
   }
 
-  resetState(resetAll) {
+  resetState(resetAll?: boolean) {
     if (resetAll) {
       this.setState(Object.assign({}, initialState, initialStateSwipeable, initialStateApplied));
     } else {
@@ -52,7 +72,7 @@ export default class Main extends Component {
     }
   }
 
-  onSwiped(args) {
+  onSwiped(args: any) {
     console.log('swiped args: ', args)
     this.setState({
       swiped: true,
@@ -60,7 +80,7 @@ export default class Main extends Component {
     });
   }
 
-  onSwiping(args) {
+  onSwiping(args: any) {
     console.log('swiping args: ', args)
 
     this.setState({
@@ -70,26 +90,29 @@ export default class Main extends Component {
     });
   }
 
-  onSwipedDirection(direction) {
+  onSwipedDirection(direction: any) {
     this.setState({
       swipedDirection: direction,
     });
   }
 
-  updateValue(type, value) {
-    this.setState({
-      [type]: value,
-    });
+  updateValue(type: string, value: any) {
+    // @ts-ignore
+    this.setState({ [type]: value, });
   }
 
-  _renderAppliedDirRow(dir) {
+  _renderAppliedDirRow(dir: string) {
+    // @ts-ignore
+    const checked = this.state[`onSwiped${dir}Applied`];
+    // @ts-ignore
+    const cssJs = {color: this.state[`onSwiped${dir}Applied`] ? '#000000' : '#cccccc'}
     return (
       <tr key={`appliedDirRow${dir}`}>
         <td className="text-center">
-          <input type="checkbox" style={{margin: "0"}} checked={this.state[`onSwiped${dir}Applied`]}
+          <input type="checkbox" style={{margin: "0"}} checked={checked}
             onChange={(e)=>this.updateValue(`onSwiped${dir}Applied`, e.target.checked)} />
         </td>
-        <td style={{color: this.state[`onSwiped${dir}Applied`] ? '#000000' : '#cccccc'}}>{dir}</td>
+        <td style={cssJs}>{dir}</td>
       </tr>
     )
   }
@@ -111,20 +134,22 @@ export default class Main extends Component {
       rotationAngle,
     } = this.state;
 
-    const isDeltaNumber = !(isNaN(delta) || delta === '');
-    const isRotationAngleNumber = !(isNaN(rotationAngle) || rotationAngle === '');
+    const isDeltaNumber = !(isNaN(delta as any) || delta === '');
+    const isRotationAngleNumber = !(isNaN(rotationAngle as any) || rotationAngle === '');
     const deltaNum = isDeltaNumber ? +delta : 10;
     const rotationAngleNum = isRotationAngleNumber ? +rotationAngle : 0;
 
     const swipeableStyle = {fontSize: "0.75rem"};
 
     const boundSwipes = getBoundSwipes(this);
-    let swipeableDirProps = {};
+    let swipeableDirProps: any = {};
     if (onSwipingApplied) {
-      swipeableDirProps.onSwiping = persistSyntheticEvent((...args)=>this.onSwiping(...args), persistEvent);
+      // @ts-ignore
+      swipeableDirProps.onSwiping = persistSyntheticEvent((...args: any)=>this.onSwiping(...args), persistEvent);
     }
     if (onSwipedApplied) {
-      swipeableDirProps.onSwiped = persistSyntheticEvent((...args)=>this.onSwiped(...args), persistEvent);
+      // @ts-ignore
+      swipeableDirProps.onSwiped = persistSyntheticEvent((...args: any)=>this.onSwiped(...args), persistEvent);
     }
 
     return (
@@ -144,7 +169,7 @@ export default class Main extends Component {
               <div onTouchStart={()=>this.resetState()}>
                 <h5>Hook - Swipe inside here to test</h5>
                 <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output(open dev tools)</p>
-                <span>You can also 'toggle' the swip(ed/ing) props being applied to this container below.</span>
+                <span>You can also 'toggle' the swiped props being applied to this container below.</span>
               </div>
           </SwipeableHook>
           <table>
@@ -179,10 +204,10 @@ export default class Main extends Component {
                 <td>onSwiped Direction</td><td>{swipedDirection}</td>
               </tr>
               {showOnSwipeds && <tr>
-                <td className="text-center" colSpan="3">
+                <td className="text-center" colSpan={3}>
                   <table id="appliedDirs">
                     <thead>
-                      <tr><th colSpan="2" className="text-center">onSwiped</th></tr>
+                      <tr><th colSpan={2} className="text-center">onSwiped</th></tr>
                       <tr><th>Applied?</th><th>Direction</th></tr>
                     </thead>
                     <tbody>
@@ -192,7 +217,7 @@ export default class Main extends Component {
                 </td>
               </tr>}
               <tr>
-                <td colSpan="2" className="text-center">delta:</td>
+                <td colSpan={2} className="text-center">delta:</td>
                 <td>
                   <input type="text"
                     style={{margin: '0px', border: !isDeltaNumber ? '2px solid red' : ''}}
@@ -200,7 +225,7 @@ export default class Main extends Component {
                 </td>
               </tr>
               <tr>
-                <td colSpan="2" className="text-center">rotationAngle:</td>
+                <td colSpan={2} className="text-center">rotationAngle:</td>
                 <td>
                   <input type="text"
                     style={{margin: '0px', border: !isRotationAngleNumber ? '2px solid red' : ''}}
@@ -223,7 +248,7 @@ export default class Main extends Component {
                 onChange={this.updateValue}
               />
               <tr>
-                <td colSpan="2" className="text-center">Persist React Events for logging:</td>
+                <td colSpan={2} className="text-center">Persist React Events for logging:</td>
                 <td style={{textAlign: "center"}}>
                   <input style={{margin: "0px"}}
                     type="checkbox"
@@ -245,17 +270,18 @@ export default class Main extends Component {
   }
 }
 
-function getBoundSwipes(component) {
+function getBoundSwipes(component: any) {
   const {persistEvent} = component.state;
   let boundSwipes = {};
   DIRECTIONS.forEach((dir)=>{
     if (component.state[`onSwiped${dir}Applied`]) {
+      // @ts-ignore
       boundSwipes[`onSwiped${dir}`] = persistSyntheticEvent(component.onSwipedDirection.bind(component, dir), persistEvent);
     }
   });
   return boundSwipes;
 }
 
-function getVal(e) {
+function getVal(e: any) {
   return e.target.value;
 }
