@@ -14,7 +14,7 @@ const persistSyntheticEvent = (func: any, persist: any) => {
 const initialState = {
   swiping: false,
   swiped: false,
-  tap: false,
+  tapped: false,
   swipingDirection: '',
   swipedDirection: '',
 };
@@ -29,6 +29,7 @@ const initialStateApplied = {
   showOnSwipeds: false,
   onSwipingApplied: true,
   onSwipedApplied: true,
+  onTapApplied: true,
   onSwipedLeftApplied: true,
   onSwipedRightApplied: true,
   onSwipedUpApplied: true,
@@ -39,7 +40,7 @@ const initialStateApplied = {
 interface IState {
   swiping: boolean;
   swiped: boolean;
-  tap: boolean;
+  tapped: boolean;
   swipingDirection: string;
   swipedDirection: string;
   delta: string;
@@ -50,6 +51,7 @@ interface IState {
   showOnSwipeds: boolean;
   onSwipingApplied: boolean;
   onSwipedApplied: boolean;
+  onTapApplied: boolean;
   onSwipedLeftApplied: boolean;
   onSwipedRightApplied: boolean;
   onSwipedUpApplied: boolean;
@@ -90,6 +92,16 @@ export default class Main extends Component<any, IState> {
     });
   }
 
+  onTap(args: any) {
+    console.log('tap args: ', args)
+
+    this.setState({
+      swiping: false,
+      swiped: false,
+      tapped: true
+    })
+  }
+
   onSwipedDirection(direction: any) {
     this.setState({
       swipedDirection: direction,
@@ -121,12 +133,14 @@ export default class Main extends Component<any, IState> {
     const {
       swiping,
       swiped,
+      tapped,
       swipingDirection,
       swipedDirection,
       delta,
       showOnSwipeds,
       onSwipingApplied,
       onSwipedApplied,
+      onTapApplied,
       persistEvent,
       preventDefaultTouchmoveEvent,
       trackTouch,
@@ -150,6 +164,10 @@ export default class Main extends Component<any, IState> {
     if (onSwipedApplied) {
       // @ts-ignore
       swipeableDirProps.onSwiped = persistSyntheticEvent((...args: any)=>this.onSwiped(...args), persistEvent);
+    }
+    if(onTapApplied) {
+      // @ts-ignore
+      swipeableDirProps.onTap = persistSyntheticEvent((...args: any) => this.onTap(...args), persistEvent);
     }
 
     return (
@@ -190,6 +208,13 @@ export default class Main extends Component<any, IState> {
                     onChange={(e)=>this.updateValue('onSwipedApplied', e.target.checked)} />
                 </td>
                 <td>onSwiped</td><td>{swiped ? 'True' : 'False'}</td>
+              </tr>
+                            <tr style={{color: onTapApplied ? '#000000' : '#cccccc'}}>
+                <td className="text-center">
+                  <input type="checkbox" checked={onTapApplied} style={{margin: "0"}}
+                    onChange={(e)=>this.updateValue('onTapApplied', e.target.checked)} />
+                </td>
+                <td>onTap</td><td>{tapped ? 'True' : 'False'}</td>
               </tr>
               <tr>
                 <td className="text-center"></td>
