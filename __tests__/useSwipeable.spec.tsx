@@ -108,7 +108,7 @@ describe("useSwipeable", () => {
     fireEvent[TM](touchArea, cte({ x: 100, y: 175 }));
     fireEvent[TM](touchArea, cte({ x: 100, y: 200 }));
     fireEvent[TE](touchArea, cte({}));
-    // make sure onTap is not called here. also make a new test to make sure on tap is called.
+
     expect(swipeFuncs.onSwipedDown).toHaveBeenCalled();
     expect(swipeFuncs.onSwipedUp).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled();
