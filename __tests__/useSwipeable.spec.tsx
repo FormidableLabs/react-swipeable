@@ -79,9 +79,26 @@ describe("useSwipeable", () => {
     defaultPrevented = 0;
   });
 
-  it("handles touch events and fires correct props", () => {
+  it("handles onTap callbacks", () => {
+    const onTap = jest.fn();
     const swipeFuncs = getMockedSwipeFunctions();
-    const { getByText } = render(<SwipeableUsingHook {...swipeFuncs} />);
+    const { getByText } = render(
+      <SwipeableUsingHook {...swipeFuncs} onTap={onTap} />
+    );
+    const touchArea = getByText(TESTING_TEXT);
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TE](touchArea, cte({ x: 100, y: 100 }));
+
+    expect(onTap).toHaveBeenCalled();
+  });
+
+  it("handles touch events and fires correct props", () => {
+    const onTap = jest.fn();
+    const swipeFuncs = getMockedSwipeFunctions();
+    const { getByText } = render(
+      <SwipeableUsingHook {...swipeFuncs} onTap={onTap} />
+    );
 
     const touchArea = getByText(TESTING_TEXT);
 
@@ -104,6 +121,7 @@ describe("useSwipeable", () => {
       { velocity: expect.any(Number) },
       `useSwipeable onSwiping trackTouch`
     );
+    expect(onTap).not.toHaveBeenCalled();
   });
 
   it("handles mouse events with trackMouse prop and fires correct props", () => {
