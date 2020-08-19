@@ -166,6 +166,8 @@ function getHandlers(
 
   const onMove = (event: HandledEvents) => {
     set((state, props) => {
+      // Discount a swipe if additional touches are present after
+      // a swipe has started.
       if ("touches" in event && event.touches.length > 1) {
         return state;
       }
