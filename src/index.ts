@@ -176,8 +176,6 @@ function getHandlers(
       const { clientX, clientY } =
         "touches" in event ? event.touches[0] : event;
       const [x, y] = rotateXYByAngle([clientX, clientY], props.rotationAngle);
-      // const deltaX = state.xy[0] - x;
-      // const deltaY = state.xy[1] - y;
       const deltaX = x - state.xy[0];
       const deltaY = y - state.xy[1];
       const absX = Math.abs(deltaX);
@@ -190,7 +188,6 @@ function getHandlers(
         return state;
 
       const dir = getDirection(absX, absY, deltaX, deltaY);
-      console.log(dir);
       const eventData: EventData = {
         ...state.eventData,
         event,
