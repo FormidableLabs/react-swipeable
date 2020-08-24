@@ -11,7 +11,7 @@ export type EventData = {
   absY: number;
   first: boolean;
   initial: Vector2;
-  velocity: number;
+  velocity: Vector2;
   dir: "Left" | "Right" | "Up" | "Down";
 };
 
@@ -47,7 +47,7 @@ type StateEventData = {
   absY?: number;
   first: boolean;
   initial: Vector2;
-  velocity?: number;
+  velocity?: Vector2;
   dir?: "Left" | "Right" | "Up" | "Down";
 };
 
@@ -181,8 +181,11 @@ function getHandlers(
       const absX = Math.abs(deltaX);
       const absY = Math.abs(deltaY);
       const time = (event.timeStamp || 0) - state.start;
-      const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1);
+      const velocity = [deltaX / time, deltaY / time];
+      //const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1);
 
+      console.log("time", time);
+      console.log("velocity", velocity);
       // if swipe is under delta and we have not started to track a swipe: skip update
       if (absX < props.delta && absY < props.delta && !state.swiping)
         return state;
