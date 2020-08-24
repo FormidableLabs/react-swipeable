@@ -182,10 +182,7 @@ function getHandlers(
       const absY = Math.abs(deltaY);
       const time = (event.timeStamp || 0) - state.start;
       const velocity = [deltaX / time, deltaY / time];
-      //const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1);
 
-      console.log("time", time);
-      console.log("velocity", velocity);
       // if swipe is under delta and we have not started to track a swipe: skip update
       if (absX < props.delta && absY < props.delta && !state.swiping)
         return state;
