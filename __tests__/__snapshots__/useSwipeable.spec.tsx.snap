@@ -4,7 +4,7 @@ exports[`useSwipeable handles mouse events with trackMouse prop and fires correc
 Object {
   "absX": 100,
   "absY": 0,
-  "deltaX": -100,
+  "deltaX": 100,
   "deltaY": 0,
   "dir": "Right",
   "event": MouseEvent {
@@ -23,7 +23,7 @@ exports[`useSwipeable handles mouse events with trackMouse prop and fires correc
 Object {
   "absX": 25,
   "absY": 0,
-  "deltaX": -25,
+  "deltaX": 25,
   "deltaY": 0,
   "dir": "Right",
   "event": MouseEvent {
@@ -43,7 +43,7 @@ Object {
   "absX": 0,
   "absY": 100,
   "deltaX": 0,
-  "deltaY": -100,
+  "deltaY": 100,
   "dir": "Down",
   "event": TouchEvent {
     "isTrusted": false,
@@ -62,7 +62,7 @@ Object {
   "absX": 0,
   "absY": 25,
   "deltaX": 0,
-  "deltaY": -25,
+  "deltaY": 25,
   "dir": "Down",
   "event": TouchEvent {
     "isTrusted": false,
