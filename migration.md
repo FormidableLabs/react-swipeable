@@ -8,3 +8,5 @@
 ## Migrate Swipeable v5 to v6
 
 - modified `velocity` to be a vector quantity of two dimensions instead of a scalar
+- update calculation of `deltaX` and `deltaY` from `initial - current` to `current - initial`
+  - Example: `const deltaX = state.xy[0] - x;` is now `const deltaX = x - state.xy[0];`
