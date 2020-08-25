@@ -1,5 +1,4 @@
-React Swipeable
-=========================
+# React Swipeable
 
 React swipe event handler hook
 
@@ -12,11 +11,17 @@ React swipe event handler hook
 [Github Pages Demo](http://stack.formidable.com/react-swipeable/)
 
 ### Api
+
 Use the hook and set your swipe(d) handlers.
+
 ```jsx
-const handlers = useSwipeable({ onSwiped: (eventData) => eventHandler, ...config })
-return (<div {...handlers}> You can swipe here </div>)
+const handlers = useSwipeable({
+  onSwiped: (eventData) => eventHandler,
+  ...config,
+});
+return <div {...handlers}> You can swipe here </div>;
 ```
+
 Spread `handlers` onto the element you wish to track swipes inside of. [Details below](#hook-details).
 
 ## Props / Config Options
@@ -31,11 +36,14 @@ Spread `handlers` onto the element you wish to track swipes inside of. [Details 
   onSwipedUp,        // Fired after UP swipe
   onSwipedDown,      // Fired after DOWN swipe
   onSwiping,         // Fired during any swipe
+  onTap,             // Fired after a tap
 }
 ```
 
 ### Event data
+
 All Event Handlers are called with the below event data.
+
 ```
 {
   event,          // source event
@@ -65,6 +73,7 @@ All Event Handlers are called with the below event data.
 **None of the props/config options are required.**
 
 ### Hook details
+
 - Hook use requires **react >= 16.8.0**
 - The props contained in `handlers` are currently `ref` and `onMouseDown`
   - Please spread `handlers` as the props contained in it could change as react improves event listening capabilities
@@ -73,16 +82,17 @@ All Event Handlers are called with the below event data.
 ### preventDefaultTouchmoveEvent Details
 
 **`preventDefaultTouchmoveEvent`** prevents the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event. Use this to stop the browser from scrolling while a user swipes.
-* `e.preventDefault()` is only called when:
-  * `preventDefaultTouchmoveEvent: true`
-  * `trackTouch: true`
-  * the users current swipe has an associated `onSwiping` or `onSwiped` handler/prop
+
+- `e.preventDefault()` is only called when:
+  - `preventDefaultTouchmoveEvent: true`
+  - `trackTouch: true`
+  - the users current swipe has an associated `onSwiping` or `onSwiped` handler/prop
 
 Example:
-   * If a user is swiping right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if the user was swiping left then `e.preventDefault()` would **not** be called.
+
+- If a user is swiping right with `<Swipable onSwipedRight={this.userSwipedRight} preventDefaultTouchmoveEvent={true} >` then `e.preventDefault()` will be called, but if the user was swiping left then `e.preventDefault()` would **not** be called.
 
 Please experiment with the [example](http://stack.formidable.com/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
-
 
 ### passive listener issue
 
@@ -106,7 +116,7 @@ Initial set up, with `node 10+`, run `npm install`.
 
 Make changes/updates to the `src/index.js` file.
 
-***Please add tests if PR adds/changes functionality.***
+**_Please add tests if PR adds/changes functionality._**
 
 #### Verify updates with the examples
 
