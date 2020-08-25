@@ -15,7 +15,7 @@ Object {
     100,
     100,
   ],
-  "velocity": Any<Number>,
+  "velocity": Any<Array>,
 }
 `;
 
@@ -34,7 +34,7 @@ Object {
     100,
     100,
   ],
-  "velocity": Any<Number>,
+  "velocity": Any<Array>,
 }
 `;
 
@@ -53,7 +53,7 @@ Object {
     100,
     100,
   ],
-  "velocity": Any<Number>,
+  "velocity": Any<Array>,
 }
 `;
 
@@ -72,6 +72,6 @@ Object {
     100,
     100,
   ],
-  "velocity": Any<Number>,
+  "velocity": Any<Array>,
 }
 `;

@@ -97,11 +97,11 @@ describe("useSwipeable", () => {
     expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipedRight).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwiped.mock.calls[0][0]).toMatchSnapshot(
-      { velocity: expect.any(Number) },
+      { velocity: expect.any(Array) },
       `useSwipeable onSwiped trackTouch`
     );
     expect(swipeFuncs.onSwiping.mock.calls[0][0]).toMatchSnapshot(
-      { velocity: expect.any(Number) },
+      { velocity: expect.any(Array) },
       `useSwipeable onSwiping trackTouch`
     );
   });
@@ -130,11 +130,11 @@ describe("useSwipeable", () => {
     expect(swipeFuncs.onSwipedDown).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwiped.mock.calls[0][0]).toMatchSnapshot(
-      { velocity: expect.any(Number) },
+      { velocity: expect.any(Array) },
       `useSwipeable onSwiped trackMouse`
     );
     expect(swipeFuncs.onSwiping.mock.calls[0][0]).toMatchSnapshot(
-      { velocity: expect.any(Number) },
+      { velocity: expect.any(Array) },
       `useSwipeable onSwiping trackMouse`
     );
   });
