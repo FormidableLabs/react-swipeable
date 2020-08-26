@@ -30,6 +30,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      -name: Install dependences
+        run: npm install
       - name: Run unit tests
         run: npm run test
       # Runs a single command using the runners shell
