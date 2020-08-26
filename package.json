@@ -1,37 +1,42 @@
 {
   "name": "react-swipeable",
   "version": "5.5.1",
-  "description": "React Swipe event handler component & hook",
-  "main": "./lib/index.js",
-  "module": "es/index.js",
+  "description": "React Swipe event handler hook",
+  "main": "./dist/react-swipeable.js",
+  "browser": "./dist/react-swipeable.umd.js",
+  "umd:main": "./dist/react-swipeable.umd.js",
+  "jsnext:main": "./dist/react-swipeable.modern.js",
+  "module": "./dist/react-swipeable.module.js",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
-    "build:examples": "cd ./examples && npm install && npm run build",
+    "build": "microbundle --no-compress --name swipeable --output dist",
+    "build:examples": "webpack -p --config ./examples/webpack.config.min.js",
     "build:publish:examples": "npm run build:examples && rimraf examples/node_modules && gh-pages -d examples",
-    "clean": "rimraf lib es",
-    "format": "prettier --write '{src,__{tests,mocks}__}/**/*.js'",
-    "lint": "eslint .",
+    "clean": "rimraf dist",
+    "format": "prettier --write src __tests__",
+    "lint": "eslint . --ext .ts,.tsx",
     "prebuild": "npm run clean",
     "prepare": "npm run build",
     "pretest": "npm run lint",
     "size": "size-limit",
-    "start:examples": "cd ./examples && npm install && npm run start:dev",
-    "test": "npm run test:unit && npm run dtslint && npm run build && npm run size",
+    "start:examples": "cd ./examples && webpack-dev-server",
+    "test": "yarn run test:unit && npm run build && npm run size",
     "test:unit": "jest",
-    "test:cover": "jest --coverage",
-    "dtslint": "dtslint types"
+    "test:unit:watch": "jest --watch",
+    "test:cover": "jest --coverage"
   },
   "size-limit": [
     {
-      "limit": "1.875 KB",
-      "path": "es/index.js"
+      "limit": "1.15 KB",
+      "path": "dist/react-swipeable.js"
     }
   ],
   "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/types/",
-      "/__tests__/helpers/"
+    "preset": "ts-jest",
+    "testMatch": [
+      "<rootDir>/__tests__/**/*.(test|spec).ts?(x)"
     ]
   },
   "keywords": [
@@ -58,51 +63,42 @@
   },
   "homepage": "https://github.com/FormidableLabs/react-swipeable",
   "files": [
-    "lib",
-    "es",
-    "src",
-    "types/index.d.ts"
+    "dist",
+    "src"
   ],
   "license": "MIT",
-  "types": "types",
   "devDependencies": {
-    "@babel/cli": "^7.2.0",
-    "@babel/core": "^7.2.0",
-    "@babel/plugin-proposal-class-properties": "^7.2.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
-    "@babel/plugin-transform-runtime": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/runtime": "^7.1.2",
+    "@testing-library/react": "^10.4.3",
+    "@types/jest": "^26.0.4",
     "@types/react": "^16.8.12",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^24.8.0",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.19",
+    "@types/react-dom": "^16.9.8",
+    "@typescript-eslint/eslint-plugin": "^3.6.1",
+    "@typescript-eslint/parser": "^3.6.1",
     "coveralls": "^3.0.3",
-    "dtslint": "^2.0.2",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.12.1",
-    "eslint": "^5.9.0",
-    "eslint-config-prettier": "^3.3.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-prettier": "^3.0.0",
-    "eslint-plugin-react": "^7.11.1",
-    "eslint-plugin-react-hooks": "^1.6.0",
+    "eslint": "^7.4.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.5",
     "gh-pages": "^1.0.0",
-    "jest": "^24.8.0",
-    "prettier": "1.15.3",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0",
+    "jest": "^26.1.0",
+    "microbundle": "^0.12.2",
+    "prettier": "^2.0.5",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-scroll-up": "^1.3.3",
     "rimraf": "^2.6.1",
     "rollup": "^1.1.2",
     "rollup-plugin-babel": "^4.3.2",
-    "size-limit": "^1.3.5"
+    "size-limit": "^1.3.5",
+    "ts-jest": "^26.1.2",
+    "ts-loader": "^8.0.1",
+    "typescript": "^3.9.6",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
   },
-  "dependencies": {
-    "prop-types": "^15.6.2"
-  },
+  "dependencies": {},
   "peerDependencies": {
-    "react": "^16.0.0-0"
+    "react": ">= 16.8.0"
   }
 }
