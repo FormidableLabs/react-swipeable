@@ -1,9 +1,9 @@
 node_modules
 TODO
-npm-debug.log
+*.log
 .DS_Store
 lib
-es
+dist
 examples/static
 coverage
 dist

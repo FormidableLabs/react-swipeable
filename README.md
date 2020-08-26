@@ -1,7 +1,9 @@
 React Swipeable
 =========================
 
-React swipe event handler component & hook
+React swipe event handler hook
+
+## WIP - This is the v6.0.0 working branch
 
 [![build status](https://img.shields.io/travis/FormidableLabs/react-swipeable/master.svg?style=flat-square)](https://travis-ci.org/FormidableLabs/react-swipeable) [![Coverage Status](https://img.shields.io/coveralls/FormidableLabs/react-swipeable/master.svg?style=flat-square)](https://coveralls.io/github/FormidableLabs/react-swipeable?branch=master) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![gzip size](https://flat.badgen.net/bundlephobia/minzip/react-swipeable)](https://bundlephobia.com/result?p=react-swipeable)
 
@@ -10,26 +12,12 @@ React swipe event handler component & hook
 [Github Pages Demo](http://stack.formidable.com/react-swipeable/)
 
 ### Api
-Use React-hooks or a Component and set your swipe(d) handlers.
-```js
-import { useSwipeable, Swipeable } from 'react-swipeable'
-```
-
-#### Hook
+Use the hook and set your swipe(d) handlers.
 ```jsx
 const handlers = useSwipeable({ onSwiped: (eventData) => eventHandler, ...config })
 return (<div {...handlers}> You can swipe here </div>)
 ```
 Spread `handlers` onto the element you wish to track swipes inside of. [Details below](#hook-details).
-
-#### Component
-```jsx
-<Swipeable onSwiped={(eventData) => eventHandler} {...config} >
-  You can swipe here!
-</Swipeable>
-```
-
-The Component `<Swipeable>` uses a `<div>` by default under the hood to attach event handlers to.
 
 ## Props / Config Options
 
@@ -74,15 +62,6 @@ All Event Handlers are called with the below event data.
 }
 ```
 
-### Component Specific Props
-
-```
-{
-  nodeName: 'div',    // internally rendered component dom node
-  innerRef            // callback ref for internal component dom node
-}
-```
-
 **None of the props/config options are required.**
 
 ### Hook details
@@ -115,12 +94,11 @@ audit.
 
 This is currently being tracked in [issue 167](https://github.com/FormidableLabs/react-swipeable/issues/167).
 
-### Version 5 Updates
-[React hooks](https://reactjs.org/docs/hooks-reference.html) have been released with [16.8.0](https://reactjs.org/blog/2019/02/06/react-v16.8.0.html) 🎉
+### Version 6 Updates and migration
 
-v5 of `react-swipeable` includes a hook, `useSwipeable`, that provides the same great functionality as `<Swipeable>`. See the `useSwipeable` hook in action with this [codesandbox](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js).
+v6 of `react-swipeable` only exports a hook now, `useSwipeable`. See the `useSwipeable` hook in action with this [codesandbox](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js).
 
-The component is still included and migration to v5 is straightforward. Please see the [migration doc](./migration.md) for more details including more info on the simplified api.
+If would like something similar to the old `<Swipeable>` component you can recreate it from the hook. There is an example in the [migration doc](./migration.md).
 
 ## Development
 
