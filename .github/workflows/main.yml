@@ -31,7 +31,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Run unit tests
-        run: npm run tests
+        run: npm run test
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
