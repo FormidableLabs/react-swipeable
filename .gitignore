@@ -6,3 +6,4 @@ lib
 es
 examples/static
 coverage
+dist

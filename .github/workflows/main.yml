@@ -6,9 +6,9 @@ name: CI/CD
 # events but only for the master branch
 on:
   push:
-    branches: [v6-deploy-pull-request]
+    branches: [v6-deploy-pull-request, v6-cicd-playground]
   pull_request:
-    branches: [v6-deploy-pull-request]
+    branches: [v6-deploy-pull-request, v6-cicd-playground]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
