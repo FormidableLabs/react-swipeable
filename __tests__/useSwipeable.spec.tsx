@@ -79,6 +79,23 @@ describe("useSwipeable", () => {
     defaultPrevented = 0;
   });
 
+  it("handles touch events that start at clientX or clientY 0", () => {
+    const swipeFuncs = getMockedSwipeFunctions();
+    const { getByText } = render(<SwipeableUsingHook {...swipeFuncs} />);
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    fireEvent[TS](touchArea, cte({ x: 0, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 0, y: 125 }));
+    fireEvent[TE](touchArea, cte({}));
+    fireEvent[TS](touchArea, cte({ x: 100, y: 0 }));
+    fireEvent[TM](touchArea, cte({ x: 125, y: 0 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(2);
+    expect(swipeFuncs.onSwiped).toHaveBeenCalledTimes(2);
+  });
+
   it("handles touch events and fires correct props", () => {
     const swipeFuncs = getMockedSwipeFunctions();
     const { getByText } = render(<SwipeableUsingHook {...swipeFuncs} />);
