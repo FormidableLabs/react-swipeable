@@ -230,10 +230,9 @@ function getHandlers(
 
   const onEnd = (event: HandledEvents) => {
     set((state, props) => {
-      //let eventData: EventData | undefined;
-      const eventData = { ...state.eventData, event } as EventData;
-
+      let eventData: EventData | undefined;
       if (state.swiping) {
+        eventData = { ...state.eventData, event } as EventData;
         props.onSwiped && props.onSwiped(eventData);
 
         const onSwipedDir = `onSwiped${eventData.dir}`;
