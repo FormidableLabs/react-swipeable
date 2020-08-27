@@ -1,10 +1,12 @@
 # React Swipeable v6 changes and migration
 
+## New Features
+
+- addition of `onTap` event handler prop which executes the callback after a tap
+
 ## Major Changes
 
 - removal of `<Swipeable>` component
   - _TODO_ add example for creating one and migrating
 
 ## Migrate Swipeable v5 to v6
-
-- addition of `onTap` event handler prop which executes the callback after a tap
