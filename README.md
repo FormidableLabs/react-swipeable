@@ -49,8 +49,8 @@ All Event Handlers are called with the below event data.
   event,          // source event
   initial,        // initial swipe [x,y]
   first,          // true for first event
-  deltaX,         // x offset (initial.x - current.x)
-  deltaY,         // y offset (initial.y - current.y)
+  deltaX,         // x offset (current.x - initial.x)
+  deltaY,         // y offset (current.y - initial.y)
   absX,           // absolute deltaX
   absY,           // absolute deltaY
   velocity,       // √(absX^2 + absY^2) / time
