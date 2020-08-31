@@ -34,6 +34,17 @@ export interface SwipeableOptions {
   rotationAngle?: number;
 }
 
+export type DomTarget = EventTarget | React.RefObject<EventTarget>;
+export interface EventOptions {
+  capture?: boolean;
+  passive?: boolean;
+}
+export interface GenericOptions {
+  domTarget?: DomTarget;
+  eventOptions?: EventOptions;
+  window?: Window;
+}
+
 export interface SwipeableHandlers {
   ref(element: HTMLElement | null): void;
   onMouseDown?(event: React.MouseEvent): void;
@@ -324,12 +335,15 @@ function updateTransientState(
   return { ...state, ...addState };
 }
 
-export function useSwipeable(options: SwipeableOptions): SwipeableHandlers {
+export function useSwipeable(
+  options: SwipeableOptions,
+  genericOptions?: GenericOptions
+): SwipeableHandlers {
   const { trackMouse } = options;
   const transientState = React.useRef({ ...initialState });
   const transientProps = React.useRef<Props>({ ...defaultProps });
   transientProps.current = { ...defaultProps, ...options };
-
+  console.log(genericOptions);
   const [handlers, attachTouch] = React.useMemo(
     () =>
       getHandlers(
@@ -348,6 +362,15 @@ export function useSwipeable(options: SwipeableOptions): SwipeableHandlers {
     transientProps.current,
     attachTouch
   );
+  console.log("handlers", handlers);
+
+  // if (genericOptions?.domTarget) {
+  //   const domTargetShell = genericOptions.domTarget;
+  //   const domTarget = "current" in domTargetShell ?? domTargetShell.current : domTargetShell;
+
+  //   domTarget && addDomTargetListeners(domTarget);
+  //   //return clean;
+  // }
 
   return handlers;
 }
