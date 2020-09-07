@@ -1,118 +1,51 @@
 /* global document */
 import * as React from "react";
+import {
+  Directions,
+  DOWN,
+  EventData,
+  HandledEvents,
+  LEFT,
+  RIGHT,
+  Set,
+  SwipeableHandlers,
+  SwipeableProps,
+  SwipeablePropsWithDefaultOptions,
+  SwipeableState,
+  SwipeCallback,
+  UP,
+  Vector2,
+} from './types';
 
-export type HandledEvents = React.MouseEvent | TouchEvent | MouseEvent;
-export type Vector2 = [number, number];
-export type EventData = {
-  event: HandledEvents;
-  deltaX: number;
-  deltaY: number;
-  absX: number;
-  absY: number;
-  first: boolean;
-  initial: Vector2;
-  velocity: number;
-  vxvy: Vector2;
-  dir: "Left" | "Right" | "Up" | "Down";
-};
-
-export type SwipeCallback = (eventData: EventData) => void;
-export type TapCallback = ({ event }: { event: HandledEvents }) => void;
-
-export interface SwipeableOptions {
-  // Event handler/callbacks
-  onSwiped?: SwipeCallback;
-  onSwipedLeft?: SwipeCallback;
-  onSwipedRight?: SwipeCallback;
-  onSwipedUp?: SwipeCallback;
-  onSwipedDown?: SwipeCallback;
-  onSwiping?: SwipeCallback;
-  onTap?: TapCallback;
-
-  // Configuration Props
-  delta?: number;
-  preventDefaultTouchmoveEvent?: boolean;
-  trackTouch?: boolean;
-  trackMouse?: boolean;
-  rotationAngle?: number;
-}
-
-export interface SwipeableHandlers {
-  ref(element: HTMLElement | null): void;
-  onMouseDown?(event: React.MouseEvent): void;
-}
-
-type StateEventData = {
-  event?: HandledEvents;
-  deltaX?: number;
-  deltaY?: number;
-  absX?: number;
-  absY?: number;
-  first: boolean;
-  initial: Vector2;
-  velocity?: number;
-  vxvy?: Vector2;
-  dir?: "Left" | "Right" | "Up" | "Down";
-};
-
-type State = {
-  xy: Vector2;
-  swiping: boolean;
-  eventData?: StateEventData;
-  start: number;
-  first?: boolean;
-  cleanUpTouch?(): void;
-  el?: HTMLElement;
-};
-
-type Props = {
-  // Event handler/callbacks
-  onSwiped?: SwipeCallback;
-  onSwipedLeft?: SwipeCallback;
-  onSwipedRight?: SwipeCallback;
-  onSwipedUp?: SwipeCallback;
-  onSwipedDown?: SwipeCallback;
-  onSwiping?: SwipeCallback;
-  onTap?: TapCallback;
-
-  // Configuration Props
-  delta: number;
-  preventDefaultTouchmoveEvent: boolean;
-  trackTouch: boolean;
-  trackMouse: boolean;
-  rotationAngle: number;
-};
+export { LEFT, RIGHT, UP, DOWN };
 
 const defaultProps = {
-  preventDefaultTouchmoveEvent: false,
   delta: 10,
+  preventDefaultTouchmoveEvent: false,
   rotationAngle: 0,
   trackMouse: false,
   trackTouch: true,
 };
 
-const initialState: State = {
-  xy: [0, 0],
-  swiping: false,
-  eventData: undefined,
+const initialState: SwipeableState = {
+  first: true,
+  initial: [0, 0],
   start: 0,
+  swiping: false,
+  xy: [0, 0],
 };
-export const LEFT = "Left";
-export const RIGHT = "Right";
-export const UP = "Up";
-export const DOWN = "Down";
-const touchStart = "touchstart";
-const touchMove = "touchmove";
-const touchEnd = "touchend";
 const mouseMove = "mousemove";
 const mouseUp = "mouseup";
+const touchEnd = "touchend";
+const touchMove = "touchmove";
+const touchStart = "touchstart";
 
 function getDirection(
   absX: number,
   absY: number,
   deltaX: number,
   deltaY: number
-) {
+): Directions {
   if (absX > absY) {
     if (deltaX > 0) {
       return RIGHT;
@@ -134,8 +67,6 @@ function rotateXYByAngle(pos: Vector2, angle: number): Vector2 {
   return [x, y];
 }
 
-type Setter = (state: State, props: Props) => State;
-type Set = (setter: Setter) => void;
 function getHandlers(
   set: Set,
   handlerProps: { trackMouse: boolean | undefined }
@@ -162,7 +93,7 @@ function getHandlers(
       return {
         ...state,
         ...initialState,
-        eventData: { initial: [...xy], first: true },
+        initial: [...xy],
         xy,
         start: event.timeStamp || 0,
       };
@@ -185,24 +116,25 @@ function getHandlers(
       const absY = Math.abs(deltaY);
       const time = (event.timeStamp || 0) - state.start;
       const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1);
-      const vxvy = [deltaX / (time || 1), deltaY / (time || 1)];
+      const vxvy: Vector2 = [deltaX / (time || 1), deltaY / (time || 1)];
 
       // if swipe is under delta and we have not started to track a swipe: skip update
       if (absX < props.delta && absY < props.delta && !state.swiping)
         return state;
 
       const dir = getDirection(absX, absY, deltaX, deltaY);
-      const eventData: EventData = {
-        ...state.eventData,
-        event,
+      const eventData = {
         absX,
         absY,
         deltaX,
         deltaY,
+        dir,
+        event,
+        first: state.first,
+        initial: state.initial,
         velocity,
         vxvy,
-        dir,
-      } as EventData;
+      };
 
       props.onSwiping && props.onSwiping(eventData);
 
@@ -233,13 +165,13 @@ function getHandlers(
   const onEnd = (event: HandledEvents) => {
     set((state, props) => {
       let eventData: EventData | undefined;
-      if (state.swiping) {
-        eventData = { ...state.eventData, event } as EventData;
+      if (state.swiping && state.eventData) {
+        eventData = { ...state.eventData, event };
         props.onSwiped && props.onSwiped(eventData);
 
         const onSwipedDir = `onSwiped${eventData.dir}`;
         if (onSwipedDir in props) {
-          (props as any)[onSwipedDir](eventData);
+          ((props as any)[onSwipedDir] as SwipeCallback)(eventData);
         }
       } else {
         props.onTap && props.onTap({ event });
@@ -296,7 +228,7 @@ function getHandlers(
       }
 
       // store event attached DOM el for comparison, clean up, and re-attachment
-      return { ...state, el, ...addState } as State;
+      return { ...state, el, ...addState };
     });
   };
 
@@ -314,8 +246,8 @@ function getHandlers(
 }
 
 function updateTransientState(
-  state: State,
-  props: Props,
+  state: SwipeableState,
+  props: SwipeableProps,
   attachTouch: (el: any) => (() => void) | undefined
 ) {
   const addState: { cleanUpTouch?(): void } = {};
@@ -332,10 +264,10 @@ function updateTransientState(
   return { ...state, ...addState };
 }
 
-export function useSwipeable(options: SwipeableOptions): SwipeableHandlers {
+export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   const { trackMouse } = options;
   const transientState = React.useRef({ ...initialState });
-  const transientProps = React.useRef<Props>({ ...defaultProps });
+  const transientProps = React.useRef<SwipeablePropsWithDefaultOptions>({ ...defaultProps });
   transientProps.current = { ...defaultProps, ...options };
 
   const [handlers, attachTouch] = React.useMemo(
