@@ -1,7 +1,7 @@
 import * as React from "react";
 import { render, fireEvent, act } from "@testing-library/react";
 import { useSwipeable } from "../src/index";
-import { LEFT, RIGHT, UP, DOWN} from '../src/types';
+import { LEFT, RIGHT, UP, DOWN } from "../src/types";
 import { expectSwipeFuncsDir } from "./helpers";
 
 const DIRECTIONS: [typeof LEFT, typeof RIGHT, typeof UP, typeof DOWN] = [
@@ -132,11 +132,17 @@ describe("useSwipeable", () => {
     expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipedRight).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwiped.mock.calls[0][0]).toMatchSnapshot(
-      { velocity: expect.any(Number), vxvy: expect.arrayContaining([expect.any(Number), expect.any(Number)]) },
+      {
+        velocity: expect.any(Number),
+        vxvy: expect.arrayContaining([expect.any(Number), expect.any(Number)]),
+      },
       `useSwipeable onSwiped trackTouch`
     );
     expect(swipeFuncs.onSwiping.mock.calls[0][0]).toMatchSnapshot(
-      { velocity: expect.any(Number), vxvy: expect.arrayContaining([expect.any(Number), expect.any(Number)]) },
+      {
+        velocity: expect.any(Number),
+        vxvy: expect.arrayContaining([expect.any(Number), expect.any(Number)]),
+      },
       `useSwipeable onSwiping trackTouch`
     );
     expect(onTap).not.toHaveBeenCalled();

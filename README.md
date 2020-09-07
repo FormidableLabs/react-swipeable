@@ -113,7 +113,7 @@ If would like something similar to the old `<Swipeable>` component you can recre
 
 ## Development
 
-Initial set up, with `node 10+`, run `npm install`.
+Initial set up, with `node 10+` & `yarn v1`, run `yarn`.
 
 Make changes/updates to the `src/index.js` file.
 
@@ -122,7 +122,7 @@ Make changes/updates to the `src/index.js` file.
 #### Verify updates with the examples
 
 Build, run, and test examples locally:
-`npm run start:examples`
+`yarn run start:examples`
 
 After the server starts you can then view the examples page with your changes at `http://localhost:3000`.
 

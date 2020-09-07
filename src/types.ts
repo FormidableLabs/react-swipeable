@@ -4,7 +4,7 @@ export const UP = "Up";
 export const DOWN = "Down";
 export type HandledEvents = React.MouseEvent | TouchEvent | MouseEvent;
 export type Vector2 = [number, number];
-export type Directions = typeof LEFT | typeof  RIGHT | typeof UP | typeof DOWN;
+export type Directions = typeof LEFT | typeof RIGHT | typeof UP | typeof DOWN;
 export interface EventData {
   absX: number;
   absY: number;
@@ -16,7 +16,7 @@ export interface EventData {
   initial: Vector2;
   velocity: number;
   vxvy: Vector2;
-};
+}
 
 export type SwipeCallback = (eventData: EventData) => void;
 export type TapCallback = ({ event }: { event: HandledEvents }) => void;
@@ -30,7 +30,7 @@ export type SwipeableCallbacks = {
   onSwipedUp: SwipeCallback;
   onSwiping: SwipeCallback;
   onTap: TapCallback;
-}
+};
 
 // Configuration Options
 export interface ConfigurationOptions {
@@ -41,9 +41,10 @@ export interface ConfigurationOptions {
   trackTouch: boolean;
 }
 
-export type SwipeableProps = Partial<SwipeableCallbacks & ConfigurationOptions>
+export type SwipeableProps = Partial<SwipeableCallbacks & ConfigurationOptions>;
 
-export type SwipeablePropsWithDefaultOptions = Partial<SwipeableCallbacks> & ConfigurationOptions
+export type SwipeablePropsWithDefaultOptions = Partial<SwipeableCallbacks> &
+  ConfigurationOptions;
 
 export interface SwipeableHandlers {
   ref(element: HTMLElement | null): void;
@@ -51,7 +52,7 @@ export interface SwipeableHandlers {
 }
 
 export type SwipeableState = {
-  cleanUpTouch?: (() => void) | null;
+  cleanUpTouch?: (() => void);
   el?: HTMLElement;
   eventData?: EventData;
   first: boolean;
@@ -61,5 +62,9 @@ export type SwipeableState = {
   xy: Vector2;
 };
 
-export type StateSetter = (state: SwipeableState, props: SwipeablePropsWithDefaultOptions) => SwipeableState;
+export type StateSetter = (
+  state: SwipeableState,
+  props: SwipeablePropsWithDefaultOptions
+) => SwipeableState;
 export type Set = (setter: StateSetter) => void;
+export type AttachTouch = (el: HTMLElement, passive: boolean) => () => void;

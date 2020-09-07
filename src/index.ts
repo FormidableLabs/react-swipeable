@@ -1,6 +1,7 @@
 /* global document */
 import * as React from "react";
 import {
+  AttachTouch,
   Directions,
   DOWN,
   EventData,
@@ -15,7 +16,7 @@ import {
   SwipeCallback,
   UP,
   Vector2,
-} from './types';
+} from "./types";
 
 export { LEFT, RIGHT, UP, DOWN };
 
@@ -26,7 +27,6 @@ const defaultProps = {
   trackMouse: false,
   trackTouch: true,
 };
-
 const initialState: SwipeableState = {
   first: true,
   initial: [0, 0],
@@ -75,7 +75,7 @@ function getHandlers(
     ref: (element: HTMLElement | null) => void;
     onMouseDown?: (event: React.MouseEvent) => void;
   },
-  (el: any) => (() => void) | undefined
+  AttachTouch
 ] {
   const onStart = (event: HandledEvents) => {
     // if more than a single touch don't track, for now...
@@ -191,7 +191,16 @@ function getHandlers(
     onEnd(e);
   };
 
-  const attachTouch = (el: HTMLElement) => {
+  /**
+   * Switch of "passive" property for now.
+   * When `preventDefaultTouchmoveEvent` is:
+   * - true => { passive: false }
+   * - false => { passive: true }
+   *
+   * Could take entire `addEventListener` options object as a param later?
+   */
+  const attachTouch: AttachTouch = (el, passive) => {
+    let cleanup = () => {};
     if (el && el.addEventListener) {
       // attach touch event listeners and handlers
       const tls: [
@@ -202,10 +211,11 @@ function getHandlers(
         [touchMove, onMove],
         [touchEnd, onEnd],
       ];
-      tls.forEach(([e, h]) => el.addEventListener(e, h));
-      // return properly scoped cleanup method for removing listeners
-      return () => tls.forEach(([e, h]) => el.removeEventListener(e, h));
+      tls.forEach(([e, h]) => el.addEventListener(e, h, { passive }));
+      // return properly scoped cleanup method for removing listeners, options not required
+      cleanup = () => tls.forEach(([e, h]) => el.removeEventListener(e, h));
     }
+    return cleanup;
   };
 
   const onRef = (el: HTMLElement | null) => {
@@ -216,15 +226,15 @@ function getHandlers(
       // if the same DOM el as previous just return state
       if (state.el === el) return state;
 
-      const addState: { cleanUpTouch?: (() => void) | null } = {};
+      const addState: { cleanUpTouch?: () => void } = {};
       // if new DOM el clean up old DOM and reset cleanUpTouch
       if (state.el && state.el !== el && state.cleanUpTouch) {
         state.cleanUpTouch();
-        addState.cleanUpTouch = null;
+        addState.cleanUpTouch = undefined;
       }
       // only attach if we want to track touch
       if (props.trackTouch && el) {
-        addState.cleanUpTouch = attachTouch(el);
+        addState.cleanUpTouch = attachTouch(el, !props.preventDefaultTouchmoveEvent);
       }
 
       // store event attached DOM el for comparison, clean up, and re-attachment
@@ -248,7 +258,7 @@ function getHandlers(
 function updateTransientState(
   state: SwipeableState,
   props: SwipeableProps,
-  attachTouch: (el: any) => (() => void) | undefined
+  attachTouch: AttachTouch
 ) {
   const addState: { cleanUpTouch?(): void } = {};
   // clean up touch handlers if no longer tracking touches
@@ -258,7 +268,7 @@ function updateTransientState(
   } else if (props.trackTouch && !state.cleanUpTouch) {
     // attach/re-attach touch handlers
     if (state.el) {
-      addState.cleanUpTouch = attachTouch(state.el);
+      addState.cleanUpTouch = attachTouch(state.el, !props.preventDefaultTouchmoveEvent);
     }
   }
   return { ...state, ...addState };
@@ -267,7 +277,9 @@ function updateTransientState(
 export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   const { trackMouse } = options;
   const transientState = React.useRef({ ...initialState });
-  const transientProps = React.useRef<SwipeablePropsWithDefaultOptions>({ ...defaultProps });
+  const transientProps = React.useRef<SwipeablePropsWithDefaultOptions>({
+    ...defaultProps,
+  });
   transientProps.current = { ...defaultProps, ...options };
 
   const [handlers, attachTouch] = React.useMemo(

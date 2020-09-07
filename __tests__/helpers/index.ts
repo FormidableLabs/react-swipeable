@@ -1,4 +1,4 @@
-import {MockedSwipeFunctions} from '../useSwipeable.spec';
+import { MockedSwipeFunctions } from "../useSwipeable.spec";
 
 const expectSwipingDir = (fns: jest.Mock, dir: string) => {
   fns.mock.calls.forEach((call) => {
@@ -6,7 +6,10 @@ const expectSwipingDir = (fns: jest.Mock, dir: string) => {
   });
 };
 
-export const expectSwipeFuncsDir = (sf: MockedSwipeFunctions, dir: string): void => {
+export const expectSwipeFuncsDir = (
+  sf: MockedSwipeFunctions,
+  dir: string
+): void => {
   Object.keys(sf).forEach((s) => {
     if (s.endsWith(dir) || s === "onSwiped") {
       expect(sf[s as keyof MockedSwipeFunctions]).toHaveBeenCalled();
@@ -16,4 +19,4 @@ export const expectSwipeFuncsDir = (sf: MockedSwipeFunctions, dir: string): void
       expect(sf[s as keyof MockedSwipeFunctions]).not.toHaveBeenCalled();
     }
   });
-}
+};
