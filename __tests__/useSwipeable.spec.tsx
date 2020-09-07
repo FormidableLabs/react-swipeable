@@ -1,6 +1,7 @@
 import * as React from "react";
 import { render, fireEvent, act } from "@testing-library/react";
-import { useSwipeable, LEFT, RIGHT, UP, DOWN } from "../src/index";
+import { useSwipeable } from "../src/index";
+import { LEFT, RIGHT, UP, DOWN} from '../src/types';
 import { expectSwipeFuncsDir } from "./helpers";
 
 const DIRECTIONS: [typeof LEFT, typeof RIGHT, typeof UP, typeof DOWN] = [
