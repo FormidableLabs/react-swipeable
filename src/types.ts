@@ -52,7 +52,7 @@ export interface SwipeableHandlers {
 }
 
 export type SwipeableState = {
-  cleanUpTouch?: (() => void);
+  cleanUpTouch?: () => void;
   el?: HTMLElement;
   eventData?: EventData;
   first: boolean;

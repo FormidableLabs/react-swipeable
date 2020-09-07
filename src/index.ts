@@ -234,7 +234,10 @@ function getHandlers(
       }
       // only attach if we want to track touch
       if (props.trackTouch && el) {
-        addState.cleanUpTouch = attachTouch(el, !props.preventDefaultTouchmoveEvent);
+        addState.cleanUpTouch = attachTouch(
+          el,
+          !props.preventDefaultTouchmoveEvent
+        );
       }
 
       // store event attached DOM el for comparison, clean up, and re-attachment
@@ -268,7 +271,10 @@ function updateTransientState(
   } else if (props.trackTouch && !state.cleanUpTouch) {
     // attach/re-attach touch handlers
     if (state.el) {
-      addState.cleanUpTouch = attachTouch(state.el, !props.preventDefaultTouchmoveEvent);
+      addState.cleanUpTouch = attachTouch(
+        state.el,
+        !props.preventDefaultTouchmoveEvent
+      );
     }
   }
   return { ...state, ...addState };
