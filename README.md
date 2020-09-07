@@ -36,6 +36,7 @@ Spread `handlers` onto the element you wish to track swipes inside of. [Details 
   onSwipedUp,        // Fired after UP swipe
   onSwipedDown,      // Fired after DOWN swipe
   onSwiping,         // Fired during any swipe
+  onTap,             // Fired after a tap
 }
 ```
 

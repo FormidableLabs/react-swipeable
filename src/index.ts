@@ -16,6 +16,7 @@ export type EventData = {
 };
 
 export type SwipeCallback = (eventData: EventData) => void;
+export type TapCallback = ({ event }: { event: HandledEvents }) => void;
 
 export interface SwipeableOptions {
   // Event handler/callbacks
@@ -25,6 +26,7 @@ export interface SwipeableOptions {
   onSwipedUp?: SwipeCallback;
   onSwipedDown?: SwipeCallback;
   onSwiping?: SwipeCallback;
+  onTap?: TapCallback;
 
   // Configuration Props
   delta?: number;
@@ -69,6 +71,7 @@ type Props = {
   onSwipedUp?: SwipeCallback;
   onSwipedDown?: SwipeCallback;
   onSwiping?: SwipeCallback;
+  onTap?: TapCallback;
 
   // Configuration Props
   delta: number;
@@ -228,13 +231,14 @@ function getHandlers(
       let eventData: EventData | undefined;
       if (state.swiping) {
         eventData = { ...state.eventData, event } as EventData;
-
         props.onSwiped && props.onSwiped(eventData);
 
         const onSwipedDir = `onSwiped${eventData.dir}`;
         if (onSwipedDir in props) {
           (props as any)[onSwipedDir](eventData);
         }
+      } else {
+        props.onTap && props.onTap({ event });
       }
       return { ...state, ...initialState, eventData };
     });
