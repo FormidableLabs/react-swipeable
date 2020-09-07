@@ -52,8 +52,8 @@ All Event Handlers are called with the below event data.
   deltaY,         // y offset (current.y - initial.y)
   absX,           // absolute deltaX
   absY,           // absolute deltaY
-  velocity,       // √(absX^2 + absY^2) / time "absolute velocity" (speed)
-  vxvy,           // [ deltaX/time, deltaY/time]
+  velocity,       // √(absX^2 + absY^2) / time - "absolute velocity" (speed)
+  vxvy,           // [ deltaX/time, deltaY/time] - velocity per axis
   dir,            // direction of swipe (Left|Right|Up|Down)
 }
 ```
