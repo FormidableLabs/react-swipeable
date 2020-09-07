@@ -56,7 +56,10 @@ Object {
     100,
   ],
   "velocity": Any<Number>,
-  "vxvy": Any<Array>,
+  "vxvy": ArrayContaining [
+    Any<Number>,
+    Any<Number>,
+  ],
 }
 `;
 
@@ -76,6 +79,9 @@ Object {
     100,
   ],
   "velocity": Any<Number>,
-  "vxvy": Any<Array>,
+  "vxvy": ArrayContaining [
+    Any<Number>,
+    Any<Number>,
+  ],
 }
 `;

@@ -97,11 +97,11 @@ describe("useSwipeable", () => {
     expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwipedRight).not.toHaveBeenCalled();
     expect(swipeFuncs.onSwiped.mock.calls[0][0]).toMatchSnapshot(
-      { velocity: expect.any(Number), vxvy: expect.any(Array) },
+      { velocity: expect.any(Number), vxvy: expect.arrayContaining([expect.any(Number), expect.any(Number)]) },
       `useSwipeable onSwiped trackTouch`
     );
     expect(swipeFuncs.onSwiping.mock.calls[0][0]).toMatchSnapshot(
-      { velocity: expect.any(Number), vxvy: expect.any(Array) },
+      { velocity: expect.any(Number), vxvy: expect.arrayContaining([expect.any(Number), expect.any(Number)]) },
       `useSwipeable onSwiping trackTouch`
     );
   });
