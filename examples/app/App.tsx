@@ -23,6 +23,9 @@ export default function App({version}: {version: any}) {
         <hr />
         <FeatureTestConsole />
         <hr />
+        <div className="row" id="SimpleCarousel">
+          <iframe src="https://codesandbox.io/embed/lrk6955l79" style={{width:'100%', height:'500px', border:'0', borderRadius:'4px', overflow:'hidden'}} sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin" />
+        </div>
         <hr />
         <p style={{"marginBottom": "2rem"}}>
           Thanks for checking out the example app! Let us know if you find any bugs, and&nbsp;
