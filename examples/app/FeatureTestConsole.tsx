@@ -273,7 +273,7 @@ export default class Main extends Component<any, IState> {
                 onChange={this.updateValue}
               />
               <tr>
-                <td colSpan={2} className="text-center">Persist React Events for logging:</td>
+                <td colSpan={2} className="text-center">Persist React Events for logging ( React &lt; 17 ):</td>
                 <td style={{textAlign: "center"}}>
                   <input style={{margin: "0px"}}
                     type="checkbox"
