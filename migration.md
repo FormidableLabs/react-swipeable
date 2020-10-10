@@ -4,7 +4,7 @@
 
 - include passive event listener option, by default, to internal uses of `addEventListener`
   - solves issue with chrome and lighthouse - [#167](https://github.com/FormidableLabs/react-swipeable/issues/167)
-  - set `passive` to `false` only when `preventDefaultTouchmoveEvent` is `true.
+  - set `passive` to `false` only when `preventDefaultTouchmoveEvent` is `true`.
   - more details in [readme#passive-listener-issue](https://github.com/FormidableLabs/react-swipeable#passive-listener-issue)
 - addition of `onTap` event handler prop which executes its callback after a tap
 - add new `vxvy` event data property

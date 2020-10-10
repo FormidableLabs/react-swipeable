@@ -1,9 +1,31 @@
-# Unreleased
+# v6.0.0
 **Features:**
+- include passive event listener option, by default, to internal uses of `addEventListener`
+  - solves issue with chrome and lighthouse - [#167](https://github.com/FormidableLabs/react-swipeable/issues/167)
+  - set `passive` to `false` only when `preventDefaultTouchmoveEvent` is `true`.
+  - more details in [readme#passive-listener-issue](https://github.com/FormidableLabs/react-swipeable#passive-listener-issue)
+- addition of `onTap` event handler prop which executes its callback after a tap
+  - Thank you [@upatel32](https://github.com/upatel32)!
+- add new `vxvy` event data property
+  - `[ deltaX/time, deltaY/time]` - velocity per axis
+  - Thank you [@upatel32](https://github.com/upatel32)!
 
-**Breaking changes:**
-- removal of `<Swipeable>` component
-  - _TODO_ add example for creating one and migrating
+**Breaking Changes:**
+- **remove** `<Swipeable>` component
+  - see below for an example of how to make your own
+  - [Swipeable component examples](https://github.com/FormidableLabs/react-swipeable/blob/main/migration.md#swipeable-component-examples)
+- **event data update** re-calculate `deltaX` and `deltaY`
+  - from `initial - current` **to** `current - initial`
+  - fixes issue [#157](https://github.com/FormidableLabs/react-swipeable/issues/157)
+  - Thank you [@upatel32](https://github.com/upatel32)!
+- **drop support for ie11**
+  - using `addEventListener` options object needs to be polyfilled, [browser support](https://github.com/FormidableLabs/react-swipeable#browser-support)
+- **requires** react >= 16.8.0
+
+**Bug fixes:**
+- Swipes can now start at edges (x or y === 0)
+  - fixes [#182](https://github.com/FormidableLabs/react-swipeable/issues/182)
+  - Thank you [@upatel32](https://github.com/upatel32)!
 
 **Infrastructure:**
 - **typescript** Converted entire code base, tests, and examples to typescript
