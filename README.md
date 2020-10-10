@@ -16,13 +16,13 @@ Use the hook and set your swipe(d) handlers.
 
 ```jsx
 const handlers = useSwipeable({
-  onSwiped: (eventData) => eventHandler,
+  onSwiped: (eventData) => console.log("User Swiped!", evenData),
   ...config,
 });
 return <div {...handlers}> You can swipe here </div>;
 ```
 
-Spread `handlers` onto the element you wish to track swipes inside of. [Details below](#hook-details).
+Spread `handlers` onto the element you wish to track swipes on.
 
 ## Props / Config Options
 
@@ -78,11 +78,12 @@ All Event Handlers are called with the below event data.
 - Hook use requires **react >= 16.8.0**
 - The props contained in `handlers` are currently `ref` and `onMouseDown`
   - Please spread `handlers` as the props contained in it could change as react improves event listening capabilities
-    - See [#127](https://github.com/FormidableLabs/react-swipeable/issues/127) for some more context
 
 ### preventDefaultTouchmoveEvent Details
 
-**`preventDefaultTouchmoveEvent`** prevents the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event. Use this to stop the browser from scrolling while a user swipes.
+**`preventDefaultTouchmoveEvent`** prevents the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.
+
+Use this to **stop scrolling** in the browser while a user swipes.
 
 - `e.preventDefault()` is only called when:
   - `preventDefaultTouchmoveEvent: true`
@@ -95,29 +96,31 @@ Example:
 
 Please experiment with the [example](http://stack.formidable.com/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
 
-### passive listener issue
+#### passive listener issue
 
-At the moment, the lighthouse audit is deducting 7 points from the best practices
-metric for "Does not use passive listeners to improve scrolling performance".
+With v6 we've added the passive event listener option by default, setting to it to `false` only when `preventDefaultTouchmoveEvent` is `true.
 
-This will not affect behavior in the application, merely the score on the lighthouse
-audit.
+**When `preventDefaultTouchmoveEvent` is:**
+  - `true`  => `{ passive: false }`
+  - `false` => `{ passive: true }`
 
-This is currently being tracked in [issue 167](https://github.com/FormidableLabs/react-swipeable/issues/167).
+### Browser Support
+
+With the release of v6 `react-swipeable` only supports browsers that support options object for `addEventListener`, [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Browser_compatibility). Which mainly means `react-swipeable` does not support ie11 by default, you need to polyfill options. For example using [event-listener-with-options](https://github.com/Macil/event-listener-with-options).
 
 ### Version 6 Updates and migration
 
-v6 of `react-swipeable` only exports a hook now, `useSwipeable`. See the `useSwipeable` hook in action with this [codesandbox](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js).
+v6 now only exports a hook, `useSwipeable`.
 
-If would like something similar to the old `<Swipeable>` component you can recreate it from the hook. There is an example in the [migration doc](./migration.md).
+If would like something similar to the old `<Swipeable>` component you can recreate it from the hook. There are examples in the [migration doc](./migration.md#swipeable-component-examples).
 
 ## Development
 
-Initial set up, with `node 10+` & `yarn v1`, run `yarn`.
+Initial set up, with **node 10+** & **yarn v1**, run `yarn`.
 
-Make changes/updates to the `src/index.js` file.
+Make changes/updates to the `src/index.ts` file.
 
-**_Please add tests if PR adds/changes functionality._**
+**_Please add/update tests if PR adds/changes functionality._**
 
 #### Verify updates with the examples
 
@@ -126,7 +129,7 @@ Build, run, and test examples locally:
 
 After the server starts you can then view the examples page with your changes at `http://localhost:3000`.
 
-You can now make updates/changes to `src/index.js` and webpack will rebuild, then reload the page so you can test your changes!
+You can now make updates/changes to `src/index.ts` and webpack will rebuild, then reload the page so you can test your changes!
 
 ## License
 

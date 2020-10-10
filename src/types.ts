@@ -4,13 +4,17 @@ export const UP = "Up";
 export const DOWN = "Down";
 export type HandledEvents = React.MouseEvent | TouchEvent | MouseEvent;
 export type Vector2 = [number, number];
-export type Directions = typeof LEFT | typeof RIGHT | typeof UP | typeof DOWN;
-export interface EventData {
+export type SwipeDirections =
+  | typeof LEFT
+  | typeof RIGHT
+  | typeof UP
+  | typeof DOWN;
+export interface SwipeEventData {
   absX: number;
   absY: number;
   deltaX: number;
   deltaY: number;
-  dir: Directions;
+  dir: SwipeDirections;
   event: HandledEvents;
   first: boolean;
   initial: Vector2;
@@ -18,7 +22,7 @@ export interface EventData {
   vxvy: Vector2;
 }
 
-export type SwipeCallback = (eventData: EventData) => void;
+export type SwipeCallback = (eventData: SwipeEventData) => void;
 export type TapCallback = ({ event }: { event: HandledEvents }) => void;
 
 export type SwipeableCallbacks = {
@@ -54,7 +58,7 @@ export interface SwipeableHandlers {
 export type SwipeableState = {
   cleanUpTouch?: () => void;
   el?: HTMLElement;
-  eventData?: EventData;
+  eventData?: SwipeEventData;
   first: boolean;
   initial: Vector2;
   start: number;
@@ -66,5 +70,5 @@ export type StateSetter = (
   state: SwipeableState,
   props: SwipeablePropsWithDefaultOptions
 ) => SwipeableState;
-export type Set = (setter: StateSetter) => void;
+export type Setter = (stateSetter: StateSetter) => void;
 export type AttachTouch = (el: HTMLElement, passive: boolean) => () => void;

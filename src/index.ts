@@ -2,23 +2,36 @@
 import * as React from "react";
 import {
   AttachTouch,
-  Directions,
+  SwipeDirections,
   DOWN,
-  EventData,
+  SwipeEventData,
   HandledEvents,
   LEFT,
   RIGHT,
-  Set,
+  Setter,
   SwipeableHandlers,
   SwipeableProps,
   SwipeablePropsWithDefaultOptions,
   SwipeableState,
   SwipeCallback,
+  TapCallback,
   UP,
   Vector2,
 } from "./types";
 
-export { LEFT, RIGHT, UP, DOWN };
+export {
+  LEFT,
+  RIGHT,
+  UP,
+  DOWN,
+  SwipeDirections,
+  SwipeEventData,
+  SwipeCallback,
+  TapCallback,
+  SwipeableHandlers,
+  SwipeableProps,
+  Vector2,
+};
 
 const defaultProps = {
   delta: 10,
@@ -45,7 +58,7 @@ function getDirection(
   absY: number,
   deltaX: number,
   deltaY: number
-): Directions {
+): SwipeDirections {
   if (absX > absY) {
     if (deltaX > 0) {
       return RIGHT;
@@ -68,7 +81,7 @@ function rotateXYByAngle(pos: Vector2, angle: number): Vector2 {
 }
 
 function getHandlers(
-  set: Set,
+  set: Setter,
   handlerProps: { trackMouse: boolean | undefined }
 ): [
   {
@@ -164,7 +177,7 @@ function getHandlers(
 
   const onEnd = (event: HandledEvents) => {
     set((state, props) => {
-      let eventData: EventData | undefined;
+      let eventData: SwipeEventData | undefined;
       if (state.swiping && state.eventData) {
         eventData = { ...state.eventData, event };
         props.onSwiped && props.onSwiped(eventData);
@@ -291,8 +304,8 @@ export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   const [handlers, attachTouch] = React.useMemo(
     () =>
       getHandlers(
-        (cb) =>
-          (transientState.current = cb(
+        (stateSetter) =>
+          (transientState.current = stateSetter(
             transientState.current,
             transientProps.current
           )),

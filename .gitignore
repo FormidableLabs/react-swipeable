@@ -2,6 +2,7 @@ node_modules
 TODO
 *.log
 .DS_Store
+.vscode
 lib
 dist
 examples/static
