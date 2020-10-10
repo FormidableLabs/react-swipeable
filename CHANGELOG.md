@@ -6,8 +6,11 @@
   - _TODO_ add example for creating one and migrating
 
 **Infrastructure:**
+- **typescript** Converted entire code base, tests, and examples to typescript
 - Converted tests to `@testing-library/react`, [react testing library](https://github.com/testing-library/react-testing-library)
-- Bundle with `microbundle`. [microbundle](https://github.com/developit/microbundle)
+- Build bundles with `microbundle`. [microbundle](https://github.com/developit/microbundle)
+  - export new "modern" build - via package.json `esmodule` property
+    - [microbundle modern mode](https://github.com/developit/microbundle#-modern-mode-)
 
 # 5.5.0
 * Add `first` property to `eventData` that is `true` for first swipe event [issue #160](https://github.com/formidablelabs/react-swipeable/issues/160) and [PR #162](https://github.com/formidablelabs/react-swipeable/pull/162)
