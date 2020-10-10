@@ -22,6 +22,10 @@
   - using `addEventListener` options object needs to be polyfilled, [browser support](https://github.com/FormidableLabs/react-swipeable#browser-support)
 - **requires** react >= 16.8.0
 
+### Bug fixes
+- Swipes can now start at edges (x or y === 0)
+  - fixes [#182](https://github.com/FormidableLabs/react-swipeable/issues/182)
+
 #### Browser Support
 
 With the release of v6 `react-swipeable` only supports browsers that support options object for `addEventListener`, [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Browser_compatibility). Which mainly means `react-swipeable` does not support ie11 by default, you need to polyfill options. For example using [event-listener-with-options](https://github.com/Macil/event-listener-with-options).

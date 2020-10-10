@@ -2,8 +2,6 @@
 
 React swipe event handler hook
 
-## WIP - This is the v6.0.0 working branch
-
 [![build status](https://img.shields.io/travis/FormidableLabs/react-swipeable/master.svg?style=flat-square)](https://travis-ci.org/FormidableLabs/react-swipeable) [![Coverage Status](https://img.shields.io/coveralls/FormidableLabs/react-swipeable/master.svg?style=flat-square)](https://coveralls.io/github/FormidableLabs/react-swipeable?branch=master) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![gzip size](https://flat.badgen.net/bundlephobia/minzip/react-swipeable)](https://bundlephobia.com/result?p=react-swipeable)
 
 [![Edit react-swipeable image carousel with hook](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js)
@@ -28,7 +26,7 @@ Spread `handlers` onto the element you wish to track swipes on.
 
 ### Event Handler Props
 
-```
+```js
 {
   onSwiped,          // Fired after any swipe
   onSwipedLeft,      // Fired after LEFT swipe
@@ -44,7 +42,7 @@ Spread `handlers` onto the element you wish to track swipes on.
 
 All Event Handlers are called with the below event data.
 
-```
+```js
 {
   event,          // source event
   initial,        // initial swipe [x,y]
@@ -61,7 +59,7 @@ All Event Handlers are called with the below event data.
 
 ### Configuration Props
 
-```
+```js
 {
   delta: 10,                             // min distance(px) before a swipe starts
   preventDefaultTouchmoveEvent: false,   // preventDefault on touchmove, *See Details*
@@ -113,6 +111,21 @@ With the release of v6 `react-swipeable` only supports browsers that support opt
 v6 now only exports a hook, `useSwipeable`.
 
 If would like something similar to the old `<Swipeable>` component you can recreate it from the hook. There are examples in the [migration doc](./migration.md#swipeable-component-examples).
+
+## FAQs
+
+#### How can I add a swipe listener to the `document`?
+Example by @merrywhether
+- https://github.com/FormidableLabs/react-swipeable/issues/180#issuecomment-649677983
+```js
+const { ref } = useSwipeable({
+  ...
+}) as { ref: RefCallback<Document> };
+
+useEffect(() => {
+  ref(document);
+});
+```
 
 ## Development
 
