@@ -7,7 +7,7 @@ React swipe event handler component & hook
 
 [![Edit react-swipeable image carousel with hook](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/lrk6955l79?module=%2Fsrc%2FCarousel.js)
 
-[Github Pages Demo](http://stack.formidable.com/react-swipeable/)
+[Github Pages Demo](http://formidablelabs.github.io/react-swipeable/)
 
 ### Api
 Use React-hooks or a Component and set your swipe(d) handlers.
