@@ -1,3 +1,5 @@
+import * as React from "react";
+
 export const LEFT = "Left";
 export const RIGHT = "Right";
 export const UP = "Up";
