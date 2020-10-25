@@ -82,6 +82,7 @@ All Event Handlers are called with the below event data.
 **`preventDefaultTouchmoveEvent`** prevents the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event.
 
 Use this to **stop scrolling** in the browser while a user swipes.
+- You can additionally try `touch-action` css property, [see below]
 
 - `e.preventDefault()` is only called when:
   - `preventDefaultTouchmoveEvent: true`
@@ -94,7 +95,7 @@ Example:
 
 Please experiment with the [example](http://stack.formidable.com/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
 
-#### passive listener issue
+#### passive listener
 
 With v6 we've added the passive event listener option by default, setting to it to `false` only when `preventDefaultTouchmoveEvent` is `true.
 
@@ -102,11 +103,15 @@ With v6 we've added the passive event listener option by default, setting to it 
   - `true`  => `{ passive: false }`
   - `false` => `{ passive: true }`
 
+React's long running passive [event issue](https://github.com/facebook/react/issues/6436).
+
 ### Browser Support
 
-With the release of v6 `react-swipeable` only supports browsers that support options object for `addEventListener`, [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Browser_compatibility). Which mainly means `react-swipeable` does not support ie11 by default, you need to polyfill options. For example using [event-listener-with-options](https://github.com/Macil/event-listener-with-options).
+The release of v6 `react-swipeable` we only support browsers that support options object for `addEventListener`, [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Browser_compatibility). Which mainly means `react-swipeable` does not support ie11 by default, you need to polyfill options. For example using [event-listener-with-options](https://github.com/Macil/event-listener-with-options).
 
 ### Version 6 Updates and migration
+
+[v6 migration doc](./migration.md#swipeable-component-examples)
 
 v6 now only exports a hook, `useSwipeable`.
 
@@ -127,9 +132,50 @@ useEffect(() => {
 });
 ```
 
-## Development
+#### How to use & share `ref` from `useSwipeable?
 
-Initial set up, with **node 10+** & **yarn v1**, run `yarn`.
+More details in [issue 189](https://github.com/FormidableLabs/react-swipeable/issues/189#issuecomment-656302682).
+
+**Example ref passthrough:**
+```js
+const MyComponent = () => {
+  const handlers = useSwipeable({ onSwiped: () => console.log('swiped') })
+
+  // setup ref for your usage
+  const myRef = React.useRef();
+
+  const refPassthrough = (el) => {
+    // call useSwipeable ref prop with el
+    handlers.ref(el);
+
+    // set myRef el so you can access it yourself
+    myRef.current = el;
+  }
+
+  return (<div {...handlers} ref={refPassthrough} />
+}
+```
+
+#### `touch-action` and preventing scrolling
+
+Sometimes you don't want the `body` of your page to scroll along with the user manipulating or swiping an item.
+
+You might try to prevent the event default action via `preventDefaultTouchmoveEvent`, which calls `event.preventDefault()`. **But** there may be a simpler, more effective solution, which has to do with a simple CSS property.
+
+`touch-action` is a CSS property that sets how an element's region can be manipulated by a touchscreen user.
+
+```js
+const handlers = useSwipeable({
+  onSwiped: (eventData) => console.log("User Swiped!", evenData),
+  ...config,
+});
+return <div {...handlers} style={{ touchAction: 'pan-y' }}> Swipe here </div>;
+```
+This explanation and example borrowed from `use-gesture`'s [wonderful docs here](https://use-gesture.netlify.app/docs/extras/#touch-action).
+
+## Local Development
+
+Initial install & setup, with **node 10+** & **yarn v1**, run `yarn`.
 
 Make changes/updates to the `src/index.ts` file.
 

@@ -4,7 +4,7 @@
   - solves issue with chrome and lighthouse - [#167](https://github.com/FormidableLabs/react-swipeable/issues/167)
   - set `passive` to `false` only when `preventDefaultTouchmoveEvent` is `true`.
   - more details in [readme#passive-listener-issue](https://github.com/FormidableLabs/react-swipeable#passive-listener-issue)
-- addition of `onTap` event handler prop which executes its callback after a tap
+- add new `onTap` event handler prop which executes its callback after a tap
   - Thank you [@upatel32](https://github.com/upatel32)!
 - add new `vxvy` event data property
   - `[ deltaX/time, deltaY/time]` - velocity per axis
@@ -20,7 +20,7 @@
   - Thank you [@upatel32](https://github.com/upatel32)!
 - **drop support for ie11**
   - using `addEventListener` options object needs to be polyfilled, [browser support](https://github.com/FormidableLabs/react-swipeable#browser-support)
-- **requires** react >= 16.8.0
+- **requires** react >= 16.8.3, additionally supports new react v17
 
 **Bug fixes:**
 - Swipes can now start at edges (x or y === 0)
@@ -33,6 +33,9 @@
 - Build bundles with `microbundle`. [microbundle](https://github.com/developit/microbundle)
   - export new "modern" build - via package.json `esmodule` property
     - [microbundle modern mode](https://github.com/developit/microbundle#-modern-mode-)
+
+**Maintenance:**
+- Upgraded all dev dependencies, `jest`, `babel`, `webpack`, `eslint`, `prettier`
 
 # 5.5.0
 * Add `first` property to `eventData` that is `true` for first swipe event [issue #160](https://github.com/formidablelabs/react-swipeable/issues/160) and [PR #162](https://github.com/formidablelabs/react-swipeable/pull/162)

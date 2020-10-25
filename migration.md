@@ -6,9 +6,10 @@
   - solves issue with chrome and lighthouse - [#167](https://github.com/FormidableLabs/react-swipeable/issues/167)
   - set `passive` to `false` only when `preventDefaultTouchmoveEvent` is `true`.
   - more details in [readme#passive-listener-issue](https://github.com/FormidableLabs/react-swipeable#passive-listener-issue)
-- addition of `onTap` event handler prop which executes its callback after a tap
+- add new `onTap` event handler prop which executes its callback after a "tap"
+  - a "tap" is considered a touch that is < `delta` value, defaults to `10px`
 - add new `vxvy` event data property
-  - `[ deltaX/time, deltaY/time]` - velocity per axis
+  - `[ deltaX/time, deltaY/time ]` - velocity per axis
 
 ## Major Changes
 
@@ -41,7 +42,7 @@ With the release of v6 `react-swipeable` only supports browsers that support opt
 
 ### Swipeable component examples
 
-You should be able to recreate all `≤Swipeable>` use cases with the `useSwipeable` hook.
+You should be able to recreate all `≤Swipeable>` use cases with the `useSwipeable` hook. If you find you're unable please reach out via an issue and we'll explore other possibilities.
 
 Notes:
 - `nodeName` can be handled by directly changing your custom `Swipeable`'s returned element
