@@ -82,7 +82,7 @@ All Event Handlers are called with the below event data, `SwipeEventData`.
 This prop allows you to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event default action, mostly "scrolling".
 
 Use this to **stop scrolling** in the browser while a user swipes.
-- You can additionally try `touch-action` css property, [see below](#touch-action-and-preventing-scrolling)
+- You can additionally try `touch-action` css property, [see below](#how-to-use-touch-action-to-prevent-scrolling)
 
 `e.preventDefault()` is only called when:
   - `preventDefaultTouchmoveEvent: true`
@@ -131,7 +131,7 @@ useEffect(() => {
 });
 ```
 
-### How to use & share `ref` from `useSwipeable`?
+### How to share `ref` from `useSwipeable`?
 
 **Example ref passthrough, [more details #189](https://github.com/FormidableLabs/react-swipeable/issues/189#issuecomment-656302682):**
 ```js
@@ -153,7 +153,7 @@ const MyComponent = () => {
 }
 ```
 
-### `touch-action` and preventing scrolling
+### How to use `touch-action` to prevent scrolling?
 
 Sometimes you don't want the `body` of your page to scroll along with the user manipulating or swiping an item.
 
