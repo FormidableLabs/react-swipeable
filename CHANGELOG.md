@@ -1,9 +1,9 @@
 # v6.0.0
-**Features:**
+**New Features:**
 - include passive event listener option, by default, to internal uses of `addEventListener`
   - solves issue with chrome and lighthouse - [#167](https://github.com/FormidableLabs/react-swipeable/issues/167)
   - set `passive` to `false` only when `preventDefaultTouchmoveEvent` is `true`.
-  - more details in [readme#passive-listener-issue](https://github.com/FormidableLabs/react-swipeable#passive-listener-issue)
+  - more details in [readme#passive-listener-issue](https://github.com/FormidableLabs/react-swipeable#passive-listener)
 - add new `onTap` event handler prop which executes its callback after a tap
   - Thank you [@upatel32](https://github.com/upatel32)!
 - add new `vxvy` event data property
@@ -14,7 +14,7 @@
 - **remove** `<Swipeable>` component
   - see below for an example of how to make your own
   - [Swipeable component examples](https://github.com/FormidableLabs/react-swipeable/blob/main/migration.md#swipeable-component-examples)
-- **event data update** re-calculate `deltaX` and `deltaY`
+- **event data update** correctly calculate `deltaX` and `deltaY`
   - from `initial - current` **to** `current - initial`
   - fixes issue [#157](https://github.com/FormidableLabs/react-swipeable/issues/157)
   - Thank you [@upatel32](https://github.com/upatel32)!
@@ -29,6 +29,11 @@
 
 **Infrastructure:**
 - **typescript** Converted entire code base, tests, and examples to typescript
+  - **changed type** `EventData` -> `SwipeEventData` - The event data provided for all swipe event callbacks
+  - **removed type** `SwipeableOptions` - use `SwipeableProps` now
+  - **removed types** associated with `<Swipeable>` component
+  - **new type** `TapCallback` - callback for the new `onTap` prop handler
+  - **new type** `SwipeDirections` - `"Left" | "Right" | "Up" | "Down"`
 - Converted tests to `@testing-library/react`, [react testing library](https://github.com/testing-library/react-testing-library)
 - Build bundles with `microbundle`. [microbundle](https://github.com/developit/microbundle)
   - export new "modern" build - via package.json `esmodule` property

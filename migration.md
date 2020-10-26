@@ -1,44 +1,25 @@
 # React Swipeable v6 changes and migration
 
-## New Features
-
-- include passive event listener option, by default, to internal uses of `addEventListener`
-  - solves issue with chrome and lighthouse - [#167](https://github.com/FormidableLabs/react-swipeable/issues/167)
-  - set `passive` to `false` only when `preventDefaultTouchmoveEvent` is `true`.
-  - more details in [readme#passive-listener-issue](https://github.com/FormidableLabs/react-swipeable#passive-listener-issue)
-- add new `onTap` event handler prop which executes its callback after a "tap"
-  - a "tap" is considered a touch that is < `delta` value, defaults to `10px`
-- add new `vxvy` event data property
-  - `[ deltaX/time, deltaY/time ]` - velocity per axis
-
 ## Major Changes
 
-- **remove** `<Swipeable>` component
-  - see below for an example of how to make your own
-  - [Swipeable component examples](https://github.com/FormidableLabs/react-swipeable/blob/main/migration.md#swipeable-component-examples)
-- **event data update** re-calculate `deltaX` and `deltaY`
+- **remove** `<Swipeable>` component, see below for examples on how to make your own
+  - [Swipeable component examples](#swipeable-component-examples)
+- **event data update** correctly calculate `deltaX` and `deltaY`
   - from `initial - current` **to** `current - initial`
-  - fixes issue [#157](https://github.com/FormidableLabs/react-swipeable/issues/157)
-- **drop support for ie11**
-  - using `addEventListener` options object needs to be polyfilled, [browser support](https://github.com/FormidableLabs/react-swipeable#browser-support)
-- **requires** react >= 16.8.0
+- **drop direct support for ie11** can be fixed with a polyfill
+  - `addEventListener` options need to be polyfilled for ie11, [browser support](./README.md#browser-support)
+- **requires** react >= 16.8.3, additionally supports new react v17
 
-### Bug fixes
-- Swipes can now start at edges (x or y === 0)
-  - fixes [#182](https://github.com/FormidableLabs/react-swipeable/issues/182)
+### Typescript changes
+- **changed** `EventData` -> `SwipeEventData` - The event data provided for all swipe event callbacks
+- **removed** `SwipeableOptions` - use `SwipeableProps` now
+- **removed** all types associated with `<Swipeable>` component
 
 #### Browser Support
 
 With the release of v6 `react-swipeable` only supports browsers that support options object for `addEventListener`, [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Browser_compatibility). Which mainly means `react-swipeable` does not support ie11 by default, you need to polyfill options. For example using [event-listener-with-options](https://github.com/Macil/event-listener-with-options).
 
 ## Migrate Swipeable v5 to v6
-
-### Type changes
-- **changed** `EventData` -> `SwipeEventData` - The event data provided for all swipe event callbacks
-- **new** `TapCallback` - callback for the new `onTap` prop handler
-- **new** `SwipeDirections` - all swipe directions: `"Left" | "Right" | "Up" | "Down"`
-- **removed** `SwipeableOptions` - can use `SwipeableProps` now
-- **removed** all prop types on `SwipeableProps` associated with `<Swipeable>` component
 
 ### Swipeable component examples
 
