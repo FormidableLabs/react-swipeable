@@ -4,13 +4,6 @@ import SwipeableHook from './SwipeableHook';
 
 const DIRECTIONS = ['Left', 'Right', 'Up', 'Down'];
 
-const persistSyntheticEvent = (func: any, persist: any) => {
-  return (e: any, ...rest: any) => {
-    if (persist && e.persist) e.persist();
-    return func(e, ...rest);
-  }
-}
-
 const initialState = {
   swiping: false,
   swiped: false,
@@ -34,7 +27,6 @@ const initialStateApplied = {
   onSwipedRightApplied: true,
   onSwipedUpApplied: true,
   onSwipedDownApplied: true,
-  persistEvent: true,
 };
 
 interface IState {
@@ -56,7 +48,6 @@ interface IState {
   onSwipedRightApplied: boolean;
   onSwipedUpApplied: boolean;
   onSwipedDownApplied: boolean;
-  persistEvent: boolean;
 }
 
 export default class Main extends Component<any, IState> {
@@ -141,7 +132,6 @@ export default class Main extends Component<any, IState> {
       onSwipingApplied,
       onSwipedApplied,
       onTapApplied,
-      persistEvent,
       preventDefaultTouchmoveEvent,
       trackTouch,
       trackMouse,
@@ -159,15 +149,15 @@ export default class Main extends Component<any, IState> {
     let swipeableDirProps: any = {};
     if (onSwipingApplied) {
       // @ts-ignore
-      swipeableDirProps.onSwiping = persistSyntheticEvent((...args: any)=>this.onSwiping(...args), persistEvent);
+      swipeableDirProps.onSwiping = (...args: any)=>this.onSwiping(...args);
     }
     if (onSwipedApplied) {
       // @ts-ignore
-      swipeableDirProps.onSwiped = persistSyntheticEvent((...args: any)=>this.onSwiped(...args), persistEvent);
+      swipeableDirProps.onSwiped = (...args: any)=>this.onSwiped(...args);
     }
     if(onTapApplied) {
       // @ts-ignore
-      swipeableDirProps.onTap = persistSyntheticEvent((...args: any) => this.onTap(...args), persistEvent);
+      swipeableDirProps.onTap = (...args: any) => this.onTap(...args);
     }
 
     return (
@@ -272,15 +262,6 @@ export default class Main extends Component<any, IState> {
                 name="trackMouse"
                 onChange={this.updateValue}
               />
-              <tr>
-                <td colSpan={2} className="text-center">Persist React Events for logging ( React &lt; 17 ):</td>
-                <td style={{textAlign: "center"}}>
-                  <input style={{margin: "0px"}}
-                    type="checkbox"
-                    checked={persistEvent}
-                    onChange={(e)=>this.updateValue('persistEvent', e.target.checked)}/>
-                </td>
-              </tr>
             </tbody>
           </table>
           <table style={{width: "100%"}}>
@@ -296,12 +277,11 @@ export default class Main extends Component<any, IState> {
 }
 
 function getBoundSwipes(component: any) {
-  const {persistEvent} = component.state;
   let boundSwipes = {};
   DIRECTIONS.forEach((dir)=>{
     if (component.state[`onSwiped${dir}Applied`]) {
       // @ts-ignore
-      boundSwipes[`onSwiped${dir}`] = persistSyntheticEvent(component.onSwipedDirection.bind(component, dir), persistEvent);
+      boundSwipes[`onSwiped${dir}`] = component.onSwipedDirection.bind(component, dir);
     }
   });
   return boundSwipes;
