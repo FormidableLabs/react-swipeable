@@ -35,12 +35,10 @@ export interface SwipeableOptions {
 }
 
 // Component Specific Props
-export interface SwipeableProps {
+export interface SwipeableProps extends React.HTMLProps<HTMLDivElement> {
   nodeName?: string
   innerRef?: (element: HTMLElement | null) => void
   children?: React.ReactNode
-  style?: React.CSSProperties
-  className?: string
 }
 
 export interface SwipeableHandlers {

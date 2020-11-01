@@ -32,6 +32,7 @@ class SampleComponent extends React.PureComponent<SwipeableProps> {
         innerRef={() => {}}
         style={{ backgroundColor: 'blue' }}
         className="classname"
+        aria-hidden={false}
       >
         <div>This element can be swiped</div>
       </Swipeable>

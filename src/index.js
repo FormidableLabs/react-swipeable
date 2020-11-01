@@ -219,6 +219,22 @@ export function useSwipeable(props) {
   return handlers
 }
 
+const reservedProps = {
+  delta: true,
+  innerRef: true,
+  nodeName: true,
+  onSwiped: true,
+  onSwipedDown: true,
+  onSwipedLeft: true,
+  onSwipedRight: true,
+  onSwipedUp: true,
+  onSwiping: true,
+  preventDefaultTouchmoveEvent: true,
+  rotationAngle: true,
+  trackMouse: true,
+  trackTouch: true
+}
+
 export class Swipeable extends React.PureComponent {
   static propTypes = {
     onSwiped: PropTypes.func,
@@ -248,10 +264,16 @@ export class Swipeable extends React.PureComponent {
   }
 
   render() {
-    const { className, style, nodeName = 'div', innerRef, children, trackMouse } = this.props
+    const { nodeName = 'div', innerRef, children, trackMouse } = this.props
+    const otherProps = {}
+    for (const prop in this.props) {
+      if (!reservedProps[prop]) {
+        otherProps[prop] = this.props[prop]
+      }
+    }
     const [handlers, attachTouch] = getHandlers(this._set, { trackMouse })
     this.transientState = updateTransientState(this.transientState, this.props, attachTouch)
     const ref = innerRef ? el => (innerRef(el), handlers.ref(el)) : handlers.ref
-    return React.createElement(nodeName, { ...handlers, className, style, ref }, children)
+    return React.createElement(nodeName, { ...otherProps, ...handlers, ref }, children)
   }
 }
