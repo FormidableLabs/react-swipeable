@@ -11,9 +11,8 @@ If you have a question that doesn't concern bugs or requests, all i am asking yo
 
 When you haven't found anything, please isolate your issue in a [codesandbox](https://codesandbox.io/), that makes it so much easier on our side to inspect and understand the issue.
 
-Fork the example codesandboxes:
-- hook: https://codesandbox.io/s/lrk6955l79
-- component: https://codesandbox.io/s/4q7n429vl4
+Fork the example codesandbox:
+- https://codesandbox.io/s/react-swipeable-image-carousel-hben8
 
 
 Thanks for understanding!

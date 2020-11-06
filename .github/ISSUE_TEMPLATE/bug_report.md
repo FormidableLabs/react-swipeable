@@ -11,9 +11,8 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **Steps or Sandbox to reproduce**
-Fork the example codesanboxes
-- hook: https://codesandbox.io/s/lrk6955l79
-- component: https://codesandbox.io/s/4q7n429vl4
+Fork the example codesandbox:
+- https://codesandbox.io/s/react-swipeable-image-carousel-hben8
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.

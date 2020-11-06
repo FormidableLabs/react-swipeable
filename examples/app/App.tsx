@@ -18,13 +18,17 @@ export default function App({version}: {version: any}) {
         <dl>
           <dt>Examples:</dt>
           <dd><a href="#FeatureTestConsole">Feature testing with console log output ⇨</a></dd>
-          <dd><a href="#SimpleCarousel">Simple Image Carousel using react-swipeable ⇨</a></dd>
+          <dd><a href="#SimpleCarousel">Image Carousel using react-swipeable ⇨</a></dd>
         </dl>
         <hr />
         <FeatureTestConsole />
         <hr />
         <div className="row" id="SimpleCarousel">
-          <iframe src="https://codesandbox.io/embed/lrk6955l79" style={{width:'100%', height:'500px', border:'0', borderRadius:'4px', overflow:'hidden'}} sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin" />
+          <h2>Codesandbox Example:</h2>
+          <a href="https://codesandbox.io/s/react-swipeable-image-carousel-hben8?autoresize=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2FCarousel.js&theme=light&view=preview" style={{ margin: 'auto', paddingBottom: '1rem' }}>
+            <img alt="Edit react-swipeable image carousel" src="https://codesandbox.io/static/img/play-codesandbox.svg" />
+          </a>
+          <iframe src="https://codesandbox.io/embed/react-swipeable-image-carousel-hben8?autoresize=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2FCarousel.js&theme=light&view=preview" style={{width: '100%', height: '500px', border: '0', borderRadius: '4px', overflow: 'hidden'}} title="react-swipeable image carousel" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts" />
         </div>
         <hr />
         <p style={{"marginBottom": "2rem"}}>
