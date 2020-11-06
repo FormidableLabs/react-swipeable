@@ -1,95 +1,54 @@
-Migrate Swipeable v4 to v5
-=========================
+# React Swipeable v6 changes and migration
 
-### Simple Component usage:
-The component usage for swiped events is the same except `eventData` can now be destructured and `isFlick` is deprecated, [see below](#flickThreshold).
-```diff
-- import Swipeable from 'react-swipeable';
-+ import { Swipeable } from 'react-swipeable';
+## Major Changes
 
+- **remove** `<Swipeable>` component, see below for examples on how to make your own
+  - [Swipeable component examples](#swipeable-component-examples)
+- **event data update** correctly calculate `deltaX` and `deltaY`
+  - from `initial - current` **to** `current - initial`
+- **drop direct support for ie11** can be fixed with a polyfill
+  - `addEventListener` options need to be polyfilled for ie11, [browser support](./README.md#browser-support)
+- **requires** react >= 16.8.3, additionally supports new react v17
 
-- swiped = (event, deltaX, deltaY, isFlick, velocity) => {
-+ swiped = ({ event, deltaX, deltaY, velocity }) => {
+### Typescript changes
+- **changed** `EventData` -> `SwipeEventData` - The event data provided for all swipe event callbacks
+- **removed** `SwipeableOptions` - use `SwipeableProps` now
+- **removed** all types associated with `<Swipeable>` component
 
-- swipedUp = (event, deltaY, isFlick) => {
-+ swipedUp = ({ event, deltaY }) => {
+#### Browser Support
 
-- swipedRight = (event, deltaX, isFlick) => {
-+ swipedRight = ({ event, deltaX }) => {
+With the release of v6 `react-swipeable` only supports browsers that support options object for `addEventListener`, [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Browser_compatibility). Which mainly means `react-swipeable` does not support ie11 by default, you need to polyfill options. For example using [event-listener-with-options](https://github.com/Macil/event-listener-with-options).
 
-<Swipeable
-  onSwiped={this.swiped}
-  onSwipedUp={this.swipedUp}
-  onSwipedRight={this.swipedRight}
-/>
-```
+## Migrate Swipeable v5 to v6
 
-### Swiping direction usage:
-The props for swiping directions have been removed. Please use the newly provided `dir` property in the `eventData` from `onSwiping` to determine direction. We also provided directional constants you can import.
-```diff
-- import Swipeable from 'react-swipeable';
-+ import {
-+   Swipeable,
-+   LEFT,
-+   RIGHT,
-+   UP,
-+   DOWN,
-+ } from 'react-swipeable;
+### Swipeable component examples
 
-+ const onSwiping = ({ dir }) => {
-+   if (dir === LEFT)  console.log('Swiping - LEFT');
-+   if (dir === RIGHT) console.log('Swiping - RIGHT');
-+   if (dir === UP)    console.log('Swiping - UP');
-+   if (dir === DOWN)  console.log('Swiping - DOWN');
-+ }
+You should be able to recreate all `≤Swipeable>` use cases with the `useSwipeable` hook. If you find you're unable please reach out via an issue and we'll explore other possibilities.
 
-<Swipeable
--   onSwipingLeft={swipingLeft}
--   onSwipingRight={swipingRight}
--   onSwipingUp={swipingUp}
--   onSwipingDown={swipingDown}
-+   onSwiping={(eventData) => onSwiping(eventData) }
-  />
-```
+Notes:
+- `nodeName` can be handled by directly changing your custom `Swipeable`'s returned element
+- `className` and `style` props can be handled directly
 
-### Deprecated props
-With the v5 core rewrite we dropped a few props that seemed superfluous.
-
-```diff
-<Swipeable
--   flickThreshold
--   stopPropagation
--   disabled
--   onSwipingLeft={swipingLeft}
--   onSwipingRight={swipingRight}
--   onSwipingUp={swipingUp}
--   onSwipingDown={swipingDown}
-  />
-```
-#### flickThreshold
-`flickThreshold` and the associated `isFlick` functionality can be still be obtained using any of the `onSwiped[direction]` handlers.
+#### Swipeable Simple example
 ```js
-// The old default
-const flickThreshold = 0.6;
-onSwipedLeft = (eventData) => {
-  if (eveData.velocity > flickThreshold) {
-    console.log('swipe was a flick');
-  }
+import { useSwipeable } from 'react-swipeable';
+
+export const Swipeable = ({children, ...props}) => {
+  const handlers = useSwipeable(props);
+  return (<div { ...handlers }>{children}</div>);
 }
 ```
 
-#### stopPropagation
-Since `Swipeable` provides the `event` for all handlers you can just call `event.stopPropagation()` whenever you need.
+#### Swipeable with innerRef example
+```js
+import { useSwipeable } from 'react-swipeable';
 
-#### disabled
-You can just stop tracking any hanlder or turn off the component or hook yourself when you want it disabled.
-
-#### onSwiping[direction]
-Please see above [example migration](#swiping-direction-usage).
-
-### Comments suggestions
-Please do not hesitate to [create an issue](https://github.com/FormidableLabs/react-swipeable/issues/new) using the provided templates to discuss bugs, ideas and/or any feedback.
-
-If you feel that we removed a prop or functionality you truly depended on lets have a [conversation](https://github.com/FormidableLabs/react-swipeable/issues/new) about adding it back.
-
-Cheers!
+export const Swipeable = ({children, innerRef, ...props}) => {
+  const handlers = useSwipeable(props);
+  const refCallback = (ref) => {
+    handlers.ref(ref);
+    innerRef(ref);
+  }
+  return (<div { ...handlers } ref={refCallback} >{children}</div>);
+}
+```

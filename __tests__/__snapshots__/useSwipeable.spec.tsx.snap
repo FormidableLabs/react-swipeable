@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useSwipeable handles mouse events with trackMouse prop and fires correct props: useSwipeable onSwiped trackMouse 1`] = `
+Object {
+  "absX": 100,
+  "absY": 0,
+  "deltaX": 100,
+  "deltaY": 0,
+  "dir": "Right",
+  "event": MouseEvent {
+    "isTrusted": false,
+  },
+  "first": false,
+  "initial": Array [
+    100,
+    100,
+  ],
+  "velocity": Any<Number>,
+  "vxvy": Any<Array>,
+}
+`;
+
+exports[`useSwipeable handles mouse events with trackMouse prop and fires correct props: useSwipeable onSwiping trackMouse 1`] = `
+Object {
+  "absX": 25,
+  "absY": 0,
+  "deltaX": 25,
+  "deltaY": 0,
+  "dir": "Right",
+  "event": MouseEvent {
+    "isTrusted": false,
+  },
+  "first": true,
+  "initial": Array [
+    100,
+    100,
+  ],
+  "velocity": Any<Number>,
+  "vxvy": Any<Array>,
+}
+`;
+
+exports[`useSwipeable handles touch events and fires correct props: useSwipeable onSwiped trackTouch 1`] = `
+Object {
+  "absX": 0,
+  "absY": 100,
+  "deltaX": 0,
+  "deltaY": 100,
+  "dir": "Down",
+  "event": TouchEvent {
+    "isTrusted": false,
+  },
+  "first": false,
+  "initial": Array [
+    100,
+    100,
+  ],
+  "velocity": Any<Number>,
+  "vxvy": ArrayContaining [
+    Any<Number>,
+    Any<Number>,
+  ],
+}
+`;
+
+exports[`useSwipeable handles touch events and fires correct props: useSwipeable onSwiping trackTouch 1`] = `
+Object {
+  "absX": 0,
+  "absY": 25,
+  "deltaX": 0,
+  "deltaY": 25,
+  "dir": "Down",
+  "event": TouchEvent {
+    "isTrusted": false,
+  },
+  "first": true,
+  "initial": Array [
+    100,
+    100,
+  ],
+  "velocity": Any<Number>,
+  "vxvy": ArrayContaining [
+    Any<Number>,
+    Any<Number>,
+  ],
+}
+`;
