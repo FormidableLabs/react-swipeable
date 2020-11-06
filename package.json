@@ -1,6 +1,6 @@
 {
   "name": "react-swipeable",
-  "version": "6.0.0-alpha.2",
+  "version": "6.0.0",
   "description": "React Swipe event handler hook",
   "main": "./dist/react-swipeable.js",
   "browser": "./dist/react-swipeable.umd.js",
