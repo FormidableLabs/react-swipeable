@@ -183,8 +183,10 @@ function getHandlers(
         props.onSwiped && props.onSwiped(eventData);
 
         const onSwipedDir = `onSwiped${eventData.dir}`;
-        if (onSwipedDir in props) {
-          ((props as any)[onSwipedDir] as SwipeCallback)(eventData);
+        const callback = (props as any)[onSwipedDir];
+
+        if (typeof callback === "function") {
+          (callback as SwipeCallback)(eventData);
         }
       } else {
         props.onTap && props.onTap({ event });
