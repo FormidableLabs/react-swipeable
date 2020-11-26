@@ -166,10 +166,11 @@ function getHandlers(
       )
         event.preventDefault();
 
-      // first is now always false
       return {
         ...state,
-        eventData: { ...eventData, first: false },
+        // first is now always false
+        first: false,
+        eventData,
         swiping: true,
       };
     });
