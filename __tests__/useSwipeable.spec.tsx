@@ -181,6 +181,47 @@ describe("useSwipeable", () => {
     );
   });
 
+  it("correctly tracks the first event for swipes", () => {
+    const onSwiping = jest.fn();
+    const { getByText } = render(<SwipeableUsingHook onSwiping={onSwiping} />);
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    // first swipe
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 125 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 150 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 175 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwiping.mock.calls[0][0]).toEqual(
+      expect.objectContaining({ first: true })
+    );
+    expect(onSwiping.mock.calls[1][0]).toEqual(
+      expect.objectContaining({ first: false })
+    );
+    expect(onSwiping.mock.calls[2][0]).toEqual(
+      expect.objectContaining({ first: false })
+    );
+
+    // second swipe
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 125, y: 125 }));
+    fireEvent[TM](touchArea, cte({ x: 150, y: 150 }));
+    fireEvent[TM](touchArea, cte({ x: 175, y: 175 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwiping.mock.calls[3][0]).toEqual(
+      expect.objectContaining({ first: true })
+    );
+    expect(onSwiping.mock.calls[4][0]).toEqual(
+      expect.objectContaining({ first: false })
+    );
+    expect(onSwiping.mock.calls[5][0]).toEqual(
+      expect.objectContaining({ first: false })
+    );
+  });
+
   it("calls preventDefault when swiping in direction that has a callback", () => {
     const onSwipedDown = jest.fn();
 
