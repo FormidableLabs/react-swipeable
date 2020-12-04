@@ -1,3 +1,9 @@
+# v6.0.1
+* Fix issue with `first` property on `SwipeEventData` always being `true`.
+  * `first` is now only `true` for the first event, then `false` for subsequent events
+  * [issue #221](https://github.com/formidablelabs/react-swipeable/issues/221) and [PR #223](https://github.com/formidablelabs/react-swipeable/pull/223)
+  * Thank you [@feketegy](https://github.com/feketegy)!
+
 # v6.0.0
 **New Features:**
 - include passive event listener option, by default, to internal uses of `addEventListener`
