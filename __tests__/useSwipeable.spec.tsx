@@ -34,7 +34,10 @@ const TESTING_TEXT = "touch here";
 /*
  * Wrapping component for the hook testing
  */
-function SwipeableUsingHook({ nodeName = "div", ...rest }: SwipeableProps & {nodeName?: string}) {
+function SwipeableUsingHook({
+  nodeName = "div",
+  ...rest
+}: SwipeableProps & { nodeName?: string }) {
   const eventHandlers = useSwipeable(rest);
   const Elem = nodeName as React.ElementType;
   return (
@@ -224,7 +227,9 @@ describe("useSwipeable", () => {
 
   it("correctly calls onSwipeStart for first swipe event", () => {
     const onSwipeStart = jest.fn();
-    const { getByText } = render(<SwipeableUsingHook onSwipeStart={onSwipeStart} />);
+    const { getByText } = render(
+      <SwipeableUsingHook onSwipeStart={onSwipeStart} />
+    );
 
     const touchArea = getByText(TESTING_TEXT);
 
