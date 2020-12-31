@@ -149,6 +149,10 @@ function getHandlers(
         vxvy,
       };
 
+      // call onSwipeStart if present and is first swipe event
+      eventData.first && props.onSwipeStart && props.onSwipeStart(eventData);
+
+      // Call onSwiping if present
       props.onSwiping && props.onSwiping(eventData);
 
       // track if a swipe is cancelable(handler for swiping or swiped(dir) exists)

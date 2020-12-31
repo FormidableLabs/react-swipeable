@@ -1,7 +1,7 @@
 import * as React from "react";
 import { render, fireEvent, act } from "@testing-library/react";
 import { useSwipeable } from "../src/index";
-import { LEFT, RIGHT, UP, DOWN } from "../src/types";
+import { LEFT, RIGHT, UP, DOWN, SwipeableProps } from "../src/types";
 import { expectSwipeFuncsDir } from "./helpers";
 
 const DIRECTIONS: [typeof LEFT, typeof RIGHT, typeof UP, typeof DOWN] = [
@@ -34,7 +34,7 @@ const TESTING_TEXT = "touch here";
 /*
  * Wrapping component for the hook testing
  */
-function SwipeableUsingHook({ nodeName = "div", ...rest }) {
+function SwipeableUsingHook({ nodeName = "div", ...rest }: SwipeableProps & {nodeName?: string}) {
   const eventHandlers = useSwipeable(rest);
   const Elem = nodeName as React.ElementType;
   return (
@@ -222,6 +222,31 @@ describe("useSwipeable", () => {
     );
   });
 
+  it("correctly calls onSwipeStart for first swipe event", () => {
+    const onSwipeStart = jest.fn();
+    const { getByText } = render(<SwipeableUsingHook onSwipeStart={onSwipeStart} />);
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    // first swipe
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 125 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 150 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 175 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipeStart).toHaveBeenCalledTimes(1);
+
+    // second swipe
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 125, y: 125 }));
+    fireEvent[TM](touchArea, cte({ x: 150, y: 150 }));
+    fireEvent[TM](touchArea, cte({ x: 175, y: 175 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipeStart).toHaveBeenCalledTimes(2);
+  });
+
   it("calls preventDefault when swiping in direction that has a callback", () => {
     const onSwipedDown = jest.fn();
 
@@ -346,22 +371,22 @@ describe("useSwipeable", () => {
     expectSwipeFuncsDir(swipeFuncsLeft, LEFT);
 
     // check up
-    const swipeFunsUp = getMockedSwipeFunctions();
-    rerender(<SwipeableUsingHook {...swipeFunsUp} rotationAngle={90} />);
+    const swipeFuncsUp = getMockedSwipeFunctions();
+    rerender(<SwipeableUsingHook {...swipeFuncsUp} rotationAngle={90} />);
     fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
     fireEvent[TM](touchArea, cte({ x: 125, y: 100 }));
     fireEvent[TM](touchArea, cte({ x: 150, y: 100 }));
     fireEvent[TE](touchArea, cte({}));
-    expectSwipeFuncsDir(swipeFunsUp, UP);
+    expectSwipeFuncsDir(swipeFuncsUp, UP);
 
     // check down
-    const swipeFunsDown = getMockedSwipeFunctions();
-    rerender(<SwipeableUsingHook {...swipeFunsDown} rotationAngle={90} />);
+    const swipeFuncsDown = getMockedSwipeFunctions();
+    rerender(<SwipeableUsingHook {...swipeFuncsDown} rotationAngle={90} />);
     fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
     fireEvent[TM](touchArea, cte({ x: 75, y: 100 }));
     fireEvent[TM](touchArea, cte({ x: 50, y: 100 }));
     fireEvent[TE](touchArea, cte({}));
-    expectSwipeFuncsDir(swipeFunsDown, DOWN);
+    expectSwipeFuncsDir(swipeFuncsDown, DOWN);
   });
 
   it('Handle "odd" rotations', () => {
