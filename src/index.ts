@@ -17,6 +17,7 @@ import {
   TapCallback,
   UP,
   Vector2,
+  OnSwipedDirs,
 } from "./types";
 
 export {
@@ -183,10 +184,8 @@ function getHandlers(
         eventData = { ...state.eventData, event };
         props.onSwiped && props.onSwiped(eventData);
 
-        const onSwipedDir = `onSwiped${eventData.dir}`;
-        if (onSwipedDir in props) {
-          ((props as any)[onSwipedDir] as SwipeCallback)(eventData);
-        }
+        const onSwipedDir = `onSwiped${eventData.dir}` as OnSwipedDirs;
+        props[onSwipedDir]?.(eventData);
       } else {
         props.onTap && props.onTap({ event });
       }

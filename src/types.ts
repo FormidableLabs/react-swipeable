@@ -11,6 +11,7 @@ export type SwipeDirections =
   | typeof RIGHT
   | typeof UP
   | typeof DOWN;
+export type OnSwipedDirs = `onSwiped${SwipeDirections}`;
 export interface SwipeEventData {
   absX: number;
   absY: number;
@@ -27,13 +28,13 @@ export interface SwipeEventData {
 export type SwipeCallback = (eventData: SwipeEventData) => void;
 export type TapCallback = ({ event }: { event: HandledEvents }) => void;
 
-export type SwipeableCallbacks = {
+type SwipedCallbacks = {
+  [K in OnSwipedDirs]?: SwipeCallback;
+}
+
+export type SwipeableCallbacks = SwipedCallbacks & {
   // Event handler/callbacks
   onSwiped: SwipeCallback;
-  onSwipedDown: SwipeCallback;
-  onSwipedLeft: SwipeCallback;
-  onSwipedRight: SwipeCallback;
-  onSwipedUp: SwipeCallback;
   onSwiping: SwipeCallback;
   onTap: TapCallback;
 };
