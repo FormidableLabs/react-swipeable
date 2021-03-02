@@ -187,8 +187,11 @@ function getHandlers(
         if (onSwipedDir in props) {
           ((props as any)[onSwipedDir] as SwipeCallback)(eventData);
         }
-      } else {
-        props.onTap && props.onTap({ event });
+      } else if (props.onTap) {
+        // Only fire onTap once for touchEnd if tracking both mouse and touch events
+        props.trackMouse && props.trackTouch
+          ? event.type === touchEnd && props.onTap({ event })
+          : props.onTap({ event });
       }
       return { ...state, ...initialState, eventData };
     });

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { render, fireEvent, act } from "@testing-library/react";
 import { useSwipeable } from "../src/index";
-import { LEFT, RIGHT, UP, DOWN } from "../src/types";
+import { LEFT, RIGHT, UP, DOWN, SwipeableProps } from "../src/types";
 import { expectSwipeFuncsDir } from "./helpers";
 
 const DIRECTIONS: [typeof LEFT, typeof RIGHT, typeof UP, typeof DOWN] = [
@@ -34,7 +34,10 @@ const TESTING_TEXT = "touch here";
 /*
  * Wrapping component for the hook testing
  */
-function SwipeableUsingHook({ nodeName = "div", ...rest }) {
+function SwipeableUsingHook({
+  nodeName = "div",
+  ...rest
+}: SwipeableProps & { nodeName?: string }) {
   const eventHandlers = useSwipeable(rest);
   const Elem = nodeName as React.ElementType;
   return (
@@ -92,6 +95,29 @@ describe("useSwipeable", () => {
     fireEvent[TE](touchArea, cte({ x: 100, y: 100 }));
 
     expect(onTap).toHaveBeenCalled();
+  });
+
+  it("calls onTap callback only for touch when tracking touch and mouse events", () => {
+    const onTap = jest.fn();
+    const swipeFuncs = getMockedSwipeFunctions();
+    const { getByText } = render(
+      <SwipeableUsingHook
+        {...swipeFuncs}
+        onTap={onTap}
+        trackTouch={true}
+        trackMouse={true}
+      />
+    );
+    const touchArea = getByText(TESTING_TEXT);
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 101, y: 101 }));
+    fireEvent[TE](touchArea, cte({ x: 101, y: 101 }));
+    fireEvent[MD](touchArea, cme({ x: 100, y: 100 }));
+    fireEvent[MM](touchArea, cme({ x: 101, y: 101 }));
+    fireEvent[MU](document, cme({}));
+
+    expect(onTap).toHaveBeenCalledTimes(1);
   });
 
   it("handles touch events that start at clientX or clientY 0", () => {
