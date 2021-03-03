@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render, fireEvent, createEvent, act } from "@testing-library/react";
+import { render, fireEvent, act } from "@testing-library/react";
 import { useSwipeable } from "../src/index";
 import { LEFT, RIGHT, UP, DOWN, SwipeableProps } from "../src/types";
 import { expectSwipeFuncsDir } from "./helpers";
@@ -69,18 +69,25 @@ const cme = ({ x, y }: { x?: number; y?: number }) => ({
 
 describe("useSwipeable", () => {
   let defaultPreventedTouchMove = 0;
+  let defaultPreventedTouchEnd = 0;
 
   beforeAll(() => {
-    // listen on document for touchmove events, track if their default was prevented
+    // listen on document for touchmove & touchend events, track if their default was prevented
     document.addEventListener("touchmove", (e) => {
       if (e.defaultPrevented) {
         defaultPreventedTouchMove += 1;
+      }
+    });
+    document.addEventListener("touchend", (e) => {
+      if (e.defaultPrevented) {
+        defaultPreventedTouchEnd += 1;
       }
     });
   });
 
   beforeEach(() => {
     defaultPreventedTouchMove = 0;
+    defaultPreventedTouchEnd = 0;
   });
 
   it("handles onTap callbacks", () => {
@@ -110,19 +117,13 @@ describe("useSwipeable", () => {
     );
     const touchArea = getByText(TESTING_TEXT);
 
-    // Needed to create our own event and spy on preventDefault to verify
-    // "defaultPrevented" check is not working for some reason
-    // I dug into a lot of react-testing library code and the issue may actually be in jsdom /shrug
-    const touchEndEvent = createEvent.touchEnd(touchArea);
-    const pdSpy = jest.spyOn(touchEndEvent, "preventDefault");
-
     fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
     fireEvent[TM](touchArea, cte({ x: 101, y: 101 }));
-    fireEvent(touchArea, touchEndEvent);
+    fireEvent[TE](touchArea, cte({ x: 101, y: 101 }));
 
     // We are unable to test that onTap is only called once in this situation,
     // but we can verify that preventDefault was called correctly
-    expect(pdSpy).toHaveBeenCalled();
+    expect(defaultPreventedTouchEnd).toBe(1);
   });
 
   it("handles touch events that start at clientX or clientY 0", () => {

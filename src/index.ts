@@ -229,13 +229,15 @@ function getHandlers(
       // attach touch event listeners and handlers
       const tls: [
         typeof touchStart | typeof touchMove | typeof touchEnd,
-        (e: HandledEvents) => void
+        (e: HandledEvents) => void,
+        AddEventListenerOptions
       ][] = [
-        [touchStart, onStart],
-        [touchMove, onMove],
-        [touchEnd, onEnd],
+        [touchStart, onStart, { passive }],
+        [touchMove, onMove, { passive }],
+        // we don't need passive option for touchend
+        [touchEnd, onEnd, {}],
       ];
-      tls.forEach(([e, h]) => el.addEventListener(e, h, { passive }));
+      tls.forEach(([e, h, options]) => el.addEventListener(e, h, options));
       // return properly scoped cleanup method for removing listeners, options not required
       cleanup = () => tls.forEach(([e, h]) => el.removeEventListener(e, h));
     }
