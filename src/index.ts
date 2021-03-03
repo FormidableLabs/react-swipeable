@@ -35,7 +35,7 @@ export {
 
 const defaultProps = {
   delta: 10,
-  preventDefaultTouchmoveEvent: false,
+  touchEventOptions: { passive: true },
   rotationAngle: 0,
   trackMouse: false,
   trackTouch: true,
@@ -151,21 +151,6 @@ function getHandlers(
 
       props.onSwiping && props.onSwiping(eventData);
 
-      // track if a swipe is cancelable(handler for swiping or swiped(dir) exists)
-      // so we can call preventDefault if needed
-      let cancelablePageSwipe = false;
-      if (props.onSwiping || props.onSwiped || `onSwiped${dir}` in props) {
-        cancelablePageSwipe = true;
-      }
-
-      if (
-        cancelablePageSwipe &&
-        props.preventDefaultTouchmoveEvent &&
-        props.trackTouch &&
-        event.cancelable
-      )
-        event.preventDefault();
-
       return {
         ...state,
         // first is now always false
@@ -205,29 +190,24 @@ function getHandlers(
     onEnd(e);
   };
 
-  /**
-   * Switch of "passive" property for now.
-   * When `preventDefaultTouchmoveEvent` is:
-   * - true => { passive: false }
-   * - false => { passive: true }
-   *
-   * Could take entire `addEventListener` options object as a param later?
-   */
-  const attachTouch: AttachTouch = (el, passive) => {
+  const attachTouch: AttachTouch = (el, eventOptions) => {
     let cleanup = () => {};
     if (el && el.addEventListener) {
       // attach touch event listeners and handlers
       const tls: [
         typeof touchStart | typeof touchMove | typeof touchEnd,
-        (e: HandledEvents) => void
+        (e: HandledEvents) => void,
+        AddEventListenerOptions
       ][] = [
-        [touchStart, onStart],
-        [touchMove, onMove],
-        [touchEnd, onEnd],
+        [touchStart, onStart, eventOptions],
+        [touchMove, onMove, eventOptions],
+        [touchEnd, onEnd, {}],
       ];
-      tls.forEach(([e, h]) => el.addEventListener(e, h, { passive }));
-      // return properly scoped cleanup method for removing listeners, options not required
-      cleanup = () => tls.forEach(([e, h]) => el.removeEventListener(e, h));
+
+      tls.forEach(([e, h, o]) => el.addEventListener(e, h, o));
+
+      cleanup = () =>
+        tls.forEach(([e, h, o]) => el.removeEventListener(e, h, o));
     }
     return cleanup;
   };
@@ -248,10 +228,7 @@ function getHandlers(
       }
       // only attach if we want to track touch
       if (props.trackTouch && el) {
-        addState.cleanUpTouch = attachTouch(
-          el,
-          !props.preventDefaultTouchmoveEvent
-        );
+        addState.cleanUpTouch = attachTouch(el, props.touchEventOptions);
       }
 
       // store event attached DOM el for comparison, clean up, and re-attachment
@@ -274,7 +251,7 @@ function getHandlers(
 
 function updateTransientState(
   state: SwipeableState,
-  props: SwipeableProps,
+  props: SwipeablePropsWithDefaultOptions,
   attachTouch: AttachTouch
 ) {
   const addState: { cleanUpTouch?(): void } = {};
@@ -285,10 +262,7 @@ function updateTransientState(
   } else if (props.trackTouch && !state.cleanUpTouch) {
     // attach/re-attach touch handlers
     if (state.el) {
-      addState.cleanUpTouch = attachTouch(
-        state.el,
-        !props.preventDefaultTouchmoveEvent
-      );
+      addState.cleanUpTouch = attachTouch(state.el, props.touchEventOptions);
     }
   }
   return { ...state, ...addState };
