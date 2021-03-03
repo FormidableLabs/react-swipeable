@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render, fireEvent, act } from "@testing-library/react";
+import { render, fireEvent, createEvent, act } from "@testing-library/react";
 import { useSwipeable } from "../src/index";
 import { LEFT, RIGHT, UP, DOWN, SwipeableProps } from "../src/types";
 import { expectSwipeFuncsDir } from "./helpers";
@@ -68,19 +68,19 @@ const cme = ({ x, y }: { x?: number; y?: number }) => ({
 });
 
 describe("useSwipeable", () => {
-  let defaultPrevented = 0;
+  let defaultPreventedTouchMove = 0;
 
   beforeAll(() => {
     // listen on document for touchmove events, track if their default was prevented
     document.addEventListener("touchmove", (e) => {
       if (e.defaultPrevented) {
-        defaultPrevented += 1;
+        defaultPreventedTouchMove += 1;
       }
     });
   });
 
   beforeEach(() => {
-    defaultPrevented = 0;
+    defaultPreventedTouchMove = 0;
   });
 
   it("handles onTap callbacks", () => {
@@ -110,14 +110,19 @@ describe("useSwipeable", () => {
     );
     const touchArea = getByText(TESTING_TEXT);
 
+    // Needed to create our own event and spy on preventDefault to verify
+    // "defaultPrevented" check is not working for some reason
+    // I dug into a lot of react-testing library code and the issue may actually be in jsdom /shrug
+    const touchEndEvent = createEvent.touchEnd(touchArea);
+    const pdSpy = jest.spyOn(touchEndEvent, "preventDefault");
+
     fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
     fireEvent[TM](touchArea, cte({ x: 101, y: 101 }));
-    fireEvent[TE](touchArea, cte({ x: 101, y: 101 }));
-    fireEvent[MD](touchArea, cme({ x: 100, y: 100 }));
-    fireEvent[MM](touchArea, cme({ x: 101, y: 101 }));
-    fireEvent[MU](document, cme({}));
+    fireEvent(touchArea, touchEndEvent);
 
-    expect(onTap).toHaveBeenCalledTimes(1);
+    // We are unable to test that onTap is only called once in this situation,
+    // but we can verify that preventDefault was called correctly
+    expect(pdSpy).toHaveBeenCalled();
   });
 
   it("handles touch events that start at clientX or clientY 0", () => {
@@ -268,7 +273,7 @@ describe("useSwipeable", () => {
     fireEvent[TE](touchArea, cte({}));
 
     expect(onSwipedDown).toHaveBeenCalled();
-    expect(defaultPrevented).toBe(4);
+    expect(defaultPreventedTouchMove).toBe(4);
   });
 
   it("does not call preventDefault when false", () => {
@@ -288,7 +293,7 @@ describe("useSwipeable", () => {
     fireEvent[TE](touchArea, cte({}));
 
     expect(onSwipedUp).toHaveBeenCalled();
-    expect(defaultPrevented).toBe(0);
+    expect(defaultPreventedTouchMove).toBe(0);
   });
 
   it("calls preventDefault when onSwiping or onSwiped is present", () => {
@@ -306,7 +311,7 @@ describe("useSwipeable", () => {
     fireEvent[TE](touchArea, cte({}));
 
     expect(onSwiping).toHaveBeenCalled();
-    expect(defaultPrevented).toBe(1);
+    expect(defaultPreventedTouchMove).toBe(1);
 
     rerender(
       <SwipeableUsingHook onSwiped={onSwiped} preventDefaultTouchmoveEvent />
@@ -317,7 +322,7 @@ describe("useSwipeable", () => {
     fireEvent[TE](touchArea, cte({}));
 
     expect(onSwiped).toHaveBeenCalled();
-    expect(defaultPrevented).toBe(2);
+    expect(defaultPreventedTouchMove).toBe(2);
   });
 
   it("does not re-check delta when swiping already in progress", () => {

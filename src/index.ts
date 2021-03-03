@@ -188,10 +188,17 @@ function getHandlers(
           ((props as any)[onSwipedDir] as SwipeCallback)(eventData);
         }
       } else if (props.onTap) {
-        // Only fire onTap once for touchEnd if tracking both mouse and touch events
-        props.trackMouse && props.trackTouch
-          ? event.type === touchEnd && props.onTap({ event })
-          : props.onTap({ event });
+        /**
+         * We want to only fire onTap once if tracking both mouse and touch events.
+         * By calling preventDefault on the touchend event this should stop the "mouseup" event from triggering
+         * when the event is a both a touch & "click". See issue/PR #231 & #234
+         * But still allow just a touch tap and just a mouse click/tap.
+         */
+        if (props.trackMouse && props.trackTouch && event.type === touchEnd) {
+          event.preventDefault();
+        }
+
+        props.onTap({ event });
       }
       return { ...state, ...initialState, eventData };
     });
