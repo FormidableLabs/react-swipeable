@@ -29,6 +29,7 @@ export type TapCallback = ({ event }: { event: HandledEvents }) => void;
 
 export type SwipeableCallbacks = {
   // Event handler/callbacks
+  onSwipeStart: SwipeCallback;
   onSwiped: SwipeCallback;
   onSwipedDown: SwipeCallback;
   onSwipedLeft: SwipeCallback;

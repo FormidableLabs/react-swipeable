@@ -33,10 +33,15 @@ Spread `handlers` onto the element you wish to track swipes on.
   onSwipedRight,  // After RIGHT swipe (SwipeEventData) => void
   onSwipedUp,     // After UP swipe    (SwipeEventData) => void
   onSwipedDown,   // After DOWN swipe  (SwipeEventData) => void
+  onSwipeStart,   // Start of swipe    (SwipeEventData) => void *see details*
   onSwiping,      // During swiping    (SwipeEventData) => void
   onTap,          // After a tap       ({ event }) => void
 }
 ```
+
+#### Details
+- `onSwipeStart` - called only once per swipe at the start and before the first `onSwiping` callback
+  - The `first` property of the `SwipeEventData` will be `true`
 
 ### Configuration props and default values
 
