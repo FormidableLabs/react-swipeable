@@ -1,3 +1,14 @@
+# v6.1.0
+* Add new event handler prop `onSwipeStart`
+  * called only once per swipe at the start and before the first `onSwiping` callback
+    * The `first` property of the `SwipeEventData` will be `true`
+  * [PR #226](https://github.com/formidablelabs/react-swipeable/pull/226)
+  * Thank you [@feketegy](https://github.com/feketegy) for the idea!
+
+* **typescript** updated to `v4.1.3` and associated deps bumped to be compatible
+  * [PR #228](https://github.com/formidablelabs/react-swipeable/pull/228)
+  * Thank you [@cwise89](https://github.com/cwise89)!
+
 # v6.0.1
 * Fix issue with `first` property on `SwipeEventData` always being `true`.
   * `first` is now only `true` for the first event, then `false` for subsequent events
