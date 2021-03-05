@@ -19,21 +19,27 @@ export default function App({version}: {version: any}) {
           <dt>Examples:</dt>
           <dd><a href="#FeatureTestConsole">Feature testing with console log output ⇨</a></dd>
           <dd><a href="#SimpleCarousel">Image Carousel using react-swipeable ⇨</a></dd>
+          <dd><a href="#SimplePattern">Swipe pattern using react-swipeable ⇨</a></dd>
         </dl>
         <hr />
         <FeatureTestConsole />
         <hr />
+        <h2>Codesandbox Examples:</h2>
         <div className="row" id="SimpleCarousel">
-          <h2>Codesandbox Example:</h2>
-          <a href="https://codesandbox.io/s/react-swipeable-image-carousel-hben8?autoresize=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2FCarousel.js&theme=light&view=preview" style={{ margin: 'auto', paddingBottom: '1rem' }}>
-            <img alt="Edit react-swipeable image carousel" src="https://codesandbox.io/static/img/play-codesandbox.svg" />
-          </a>
           <iframe src="https://codesandbox.io/embed/react-swipeable-image-carousel-hben8?autoresize=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2FCarousel.js&theme=light&view=preview" style={{width: '100%', height: '500px', border: '0', borderRadius: '4px', overflow: 'hidden'}} title="react-swipeable image carousel" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts" />
         </div>
         <hr />
+        <div className="row" id="SimplePattern">
+          <iframe src="https://codesandbox.io/embed/react-swipeable-direction-pattern-example-jkt4z?autoresize=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fpattern.js&theme=light&view=preview"
+          style={{width: '100%', height: '500px', border: '0', borderRadius: '4px', overflow: 'hidden'}}
+          title="react-swipeable direction pattern example"
+          allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+          sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts" />
+        </div>
+        <hr />
         <p style={{"marginBottom": "2rem"}}>
-          Thanks for checking out the example app! Let us know if you find any bugs, and&nbsp;
-          <a href="https://github.com/FormidableLabs/react-swipeable/pulls">submit a PR!</a>
+          Thanks for checking out the examples! Let us know if you discover anything or have thoughts on improvements, and&nbsp;
+          <a href="https://github.com/FormidableLabs/react-swipeable/issues">submit an issue or PR!</a>
         </p>
       </div>
     </div>
