@@ -23,6 +23,7 @@
     "prebuild": "yarn run clean",
     "prepare": "yarn run build",
     "pretest": "yarn run prettier && yarn run lint",
+    "preversion": "yarn test",
     "size": "size-limit",
     "start:examples": "cd ./examples && webpack-dev-server",
     "test": "yarn run test:unit && yarn run build && yarn run size",

@@ -175,23 +175,14 @@ return <div {...handlers} style={{ touchAction: 'pan-y' }}> Swipe here </div>;
 ```
 This explanation and example borrowed from `use-gesture`'s [wonderful docs](https://use-gesture.netlify.app/docs/extras/#touch-action).
 
-## Local Development
-
-Initial install & setup, with **node 10+** & **yarn v1**, run `yarn`.
-
-Make changes/updates to the `src/index.ts` file.
-
-**_Please add/update tests if PR adds/changes functionality._**
-
-#### Verify updates with the examples
-
-Build, run, and test examples locally:
-`yarn run start:examples`
-
-After the server starts you can then view the examples page with your changes at `http://localhost:3000`.
-
-You can now make updates/changes to `src/index.ts` and webpack will rebuild, then reload the page so you can test your changes!
-
 ## License
 
-MIT
+[MIT]((./LICENSE))
+
+## Contributing
+
+Please see our [contributions guide](./CONTRIBUTING.md).
+
+## Maintenance Status
+
+**Active:** Formidable is actively working on this project, and we expect to continue for work for the foreseeable future. Bug reports, feature requests and pull requests are welcome.
