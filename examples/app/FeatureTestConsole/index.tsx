@@ -161,7 +161,7 @@ export default class Main extends Component<any, IState> {
     }
 
     return (
-      <div className="row" id="FeatureTestConsole">
+      <div className="row">
         <div className="small-12 column">
           <h5><strong>Test react-swipeable features.</strong></h5>
           <SwipeableHook

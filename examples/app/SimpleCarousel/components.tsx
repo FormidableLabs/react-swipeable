@@ -56,17 +56,3 @@ export const SlideButton = styled.button<{ float: 'left' | 'right' }>`
     outline: 0;
   }
 `;
-
-export const AppContainer = styled.div`
-  font-family: sans-serif;
-  text-align: center;
-  width: 75%;
-  height: 1000px;
-`;
-
-export const Code = styled.code`
-  background-color: rgba(27, 31, 35, 0.05);
-  border-radius: 3px;
-  margin: 0;
-  padding: 0.2em 0.4em;
-`;
