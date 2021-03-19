@@ -25,7 +25,7 @@
     "pretest": "yarn run prettier && yarn run lint",
     "preversion": "yarn test",
     "size": "size-limit",
-    "start:examples": "cd ./examples && webpack-dev-server",
+    "start:examples": "cd ./examples && yarn start",
     "test": "yarn run test:unit && yarn run build && yarn run size",
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
