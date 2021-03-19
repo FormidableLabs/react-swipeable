@@ -3,16 +3,19 @@ import * as React from 'react';
 import ScrollUp from 'react-scroll-up';
 import FeatureTestConsole from './FeatureTestConsole';
 import SimpleCarousel from './SimpleCarousel';
+import SimplePattern from './SimplePattern';
 
 const scrollUpArrowStyles = { fontSize: '20px', border: '2px solid black', borderRadius: '50%', padding: '10px', background: 'white' };
 
 export default function App({version}: {version: any}) {
   return (
     <div className="row">
-      <ScrollUp showUnder={20}
-                easing={'easeOutCubic'}
-                duration={500}>
-          <span style={scrollUpArrowStyles}>▲</span>
+      <ScrollUp
+        showUnder={20}
+        easing={'easeOutCubic'}
+        duration={500}
+      >
+        <span style={scrollUpArrowStyles}>▲</span>
       </ScrollUp>
 
       <div className="medium-6 column" style={{width: "95%"}}>
@@ -44,14 +47,11 @@ export default function App({version}: {version: any}) {
         </div>
         <hr />
 
-        <div className="row" id="SimplePattern">
-          <iframe src="https://codesandbox.io/embed/react-swipeable-direction-pattern-example-jkt4z?autoresize=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fpattern.js&theme=light&view=preview"
-          style={{width: '100%', height: '500px', border: '0', borderRadius: '4px', overflow: 'hidden'}}
-          title="react-swipeable direction pattern example"
-          allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-          sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts" />
+        <div id="SimplePattern">
+          <SimplePattern />
         </div>
         <hr />
+
         <p style={{"marginBottom": "2rem"}}>
           Thanks for checking out the examples! Let us know if you discover anything or have thoughts on improvements, and&nbsp;
           <a href="https://github.com/FormidableLabs/react-swipeable/issues">submit an issue or PR!</a>

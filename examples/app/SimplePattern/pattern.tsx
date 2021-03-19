@@ -1,12 +1,13 @@
 import React, { FunctionComponent } from 'react';
-import { useSwipeable } from '../../../src';
+import { useSwipeable, UP, DOWN, SwipeEventData } from '../../../src';
 import {
   Wrapper,
   CarouselContainer,
   CarouselSlot,
-  SlideButton,
+  PatternBox,
   PREV,
-  NEXT
+  NEXT,
+  D
 } from './components';
 
 type Direction = typeof PREV | typeof NEXT;
@@ -25,6 +26,8 @@ const getOrder = (index: number, pos: number, numItems: number) => {
   return index - pos < 0 ? numItems - Math.abs(index - pos) : index - pos;
 };
 
+const pattern = [UP, DOWN, UP, DOWN];
+
 const initialState: CarouselState = { pos: 0, sliding: false, dir: NEXT };
 
 const Carousel: FunctionComponent = (props) => {
@@ -38,34 +41,58 @@ const Carousel: FunctionComponent = (props) => {
     }, 50);
   };
 
+  const [pIdx, setPIdx] = React.useState(0);
+
+  const handleSwiped = (eventData: SwipeEventData) => {
+    if (eventData.dir === pattern[pIdx]) {
+      // user successfully got to the end of the pattern!
+      if (pIdx + 1 === pattern.length) {
+        setPIdx(0);
+        slide(NEXT);
+      } else {
+        // user is cont. with the pattern
+        setPIdx((i) => (i += 1));
+      }
+    } else {
+      // user got the next pattern step wrong, reset pattern
+      setPIdx(0);
+    }
+  };
+
   const handlers = useSwipeable({
-    onSwipedLeft: () => slide(NEXT),
-    onSwipedRight: () => slide(PREV),
+    onSwiped: handleSwiped,
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
   });
 
   return (
-    <div {...handlers}>
-      <Wrapper>
-        <CarouselContainer dir={state.dir} sliding={state.sliding}>
-          {React.Children.map(props.children, (child, index) => (
-            <CarouselSlot
-              key={index}
-              order={getOrder(index, state.pos, numItems)}
-            >
-              {child}
-            </CarouselSlot>
-          ))}
-        </CarouselContainer>
-      </Wrapper>
-      <SlideButton onClick={() => slide(PREV)} float="left">
-        Prev
-      </SlideButton>
-      <SlideButton onClick={() => slide(NEXT)} float="right">
-        Next
-      </SlideButton>
-    </div>
+    <>
+      <PatternBox {...handlers}>
+        Swipe Directions:{`\n`}
+        <D active={pIdx > 0}>⬆</D>
+        <D active={pIdx > 1}>⬇</D>
+        <D active={pIdx > 2}>⬆</D>
+        <D active={pIdx > 3}>⬇</D>
+        {`\n`}
+        {`\n`}
+        Swipe this pattern within this box to make the carousel go to the next
+        slide
+      </PatternBox>
+      <div>
+        <Wrapper>
+          <CarouselContainer dir={state.dir} sliding={state.sliding}>
+            {React.Children.map(props.children, (child, index) => (
+              <CarouselSlot
+                key={index}
+                order={getOrder(index, state.pos, numItems)}
+              >
+                {child}
+              </CarouselSlot>
+            ))}
+          </CarouselContainer>
+        </Wrapper>
+      </div>
+    </>
   );
 };
 
