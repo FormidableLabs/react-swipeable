@@ -3,8 +3,6 @@
     "allowJs": true,
     "baseUrl": ".",
     "esModuleInterop": true,
-    "exclude": ["node_modules"],
-    "include": ["./**/*"],
     "jsx": "react",
     "lib": ["ESNext", "dom"],
     "module": "ESNext",
@@ -18,5 +16,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "ESNext"
-  }
+  },
+  "exclude": ["node_modules"],
+  "include": ["./**/*"]
 }
