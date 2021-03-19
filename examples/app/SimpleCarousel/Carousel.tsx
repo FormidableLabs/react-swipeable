@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { useSwipeable } from '../../../src';
+import { useSwipeable } from 'react-swipeable';
 import {
   Wrapper,
   CarouselContainer,

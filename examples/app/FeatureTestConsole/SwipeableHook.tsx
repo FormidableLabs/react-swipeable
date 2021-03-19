@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSwipeable } from '../../../src/index';
+import { useSwipeable } from 'react-swipeable';
 
 function SwipeableHook(props: any) {
   const { children, className, style, ...rest } = props;
