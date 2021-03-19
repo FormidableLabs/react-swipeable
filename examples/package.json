@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "build": "webpack -p --config ./examples/webpack.config.min.js"
   },
   "dependencies": {
     "react": "^17.0.1",

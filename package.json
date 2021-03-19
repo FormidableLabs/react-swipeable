@@ -14,7 +14,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "microbundle --no-compress --name swipeable --output dist",
-    "build:examples": "webpack -p --config ./examples/webpack.config.min.js",
+    "build:examples": "cd ./examples && yarn && yarn build",
     "build:publish:examples": "yarn run build:examples && rimraf examples/node_modules && gh-pages -d examples",
     "clean": "rimraf dist",
     "prettier": "prettier --check src __tests__",
@@ -25,7 +25,7 @@
     "pretest": "yarn run prettier && yarn run lint",
     "preversion": "yarn test",
     "size": "size-limit",
-    "start:examples": "cd ./examples && yarn start",
+    "start:examples": "cd ./examples && yarn && yarn start",
     "test": "yarn run test:unit && yarn run build && yarn run size",
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
