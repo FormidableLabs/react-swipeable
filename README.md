@@ -48,7 +48,7 @@ Spread `handlers` onto the element you wish to track swipes on.
 ```js
 {
   delta: 10,                            // min distance(px) before a swipe starts
-  preventDefaultTouchmoveEvent: false,  // call e.preventDefault *See Details*
+  preventScrollOnSwipe: false,          // prevents scroll during swipe in most cases (*See Details*)
   trackTouch: true,                     // track touch input
   trackMouse: false,                    // track mouse input
   rotationAngle: 0,                     // set a rotation angle
@@ -82,33 +82,34 @@ All Event Handlers are called with the below event data, `SwipeEventData`.
 - The props contained in `handlers` are currently `ref` and `onMouseDown`
   - Please spread `handlers` as the props contained in it could change as react improves event listening capabilities
 
-### `preventDefaultTouchmoveEvent` details
+### `preventScrollOnSwipe` details
 
-This prop allows you to prevent the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event default action, mostly "scrolling".
+This prop prevents the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event default action (mostly scrolling) by calling `e.preventDefault()` internally.
 
 Use this to **stop scrolling** in the browser while a user swipes.
-- You can additionally try `touch-action` css property, [see below](#how-to-use-touch-action-to-prevent-scrolling)
 
 `e.preventDefault()` is only called when:
-  - `preventDefaultTouchmoveEvent: true`
+  - `preventScrollOnSwipe: true`
   - `trackTouch: true`
   - the users current swipe has an associated `onSwiping` or `onSwiped` handler/prop
 
 Example scenario:
-> If a user is swiping right with props `{ onSwipedRight: userSwipedRight, preventDefaultTouchmoveEvent: true }` then `e.preventDefault()` will be called, but if the user was swiping left then `e.preventDefault()` would **not** be called.
+> If a user is swiping right with props `{ onSwipedRight: userSwipedRight, preventScrollOnSwipe: true }` then `e.preventDefault()` will be called, but if the user was swiping left then `e.preventDefault()` would **not** be called.
 
-Please experiment with the [example app](http://formidablelabs.github.io/react-swipeable/) to test `preventDefaultTouchmoveEvent`.
+Please experiment with the [example app](http://formidablelabs.github.io/react-swipeable/) to test `preventScrollOnSwipe`.
 
 #### passive listener
-With v6 we've added the passive event listener option, by default, to **internal uses** of `addEventListener`. We set the `passive` option to `false` only when `preventDefaultTouchmoveEvent` is `true`.
+With v6 we've added the passive event listener option, by default, to **internal uses** of `addEventListener`. We set the `passive` option to `false` only when `preventScrollOnSwipe` is `true` and only `onTouchMove`. Other listeners will retain `passive: true`.
 
 **When `preventDefaultTouchmoveEvent` is:**
   - `true`  => `el.addEventListener(event, cb, { passive: false })`
   - `false` => `el.addEventListener(event, cb, { passive: true })`
 
-React's long running passive [event issue](https://github.com/facebook/react/issues/6436).
+Here is more information on react's long running passive [event issue](https://github.com/facebook/react/issues/6436).
 
-We previously had issues with chrome lighthouse performance deducting points for not having passive option set.
+We previously had issues with chrome lighthouse performance deducting points for not having passive option set so it is now on by default except in the case mentioned above.
+
+If, however, you really **need** _all_ of the listeners to be passive (for performance reasons or otherwise), you can use the `touch-action` css property instead, [see below for an example](#how-to-use-touch-action-to-prevent-scrolling).
 
 ### Browser Support
 
@@ -160,20 +161,38 @@ const MyComponent = () => {
 
 ### How to use `touch-action` to prevent scrolling?
 
-Sometimes you don't want the `body` of your page to scroll along with the user manipulating or swiping an item.
+Sometimes you don't want the `body` of your page to scroll along with the user manipulating or swiping an item. Or you might want all of the internal event listeners to be passive and performant.
 
-You might try to prevent the event default action via [preventDefaultTouchmoveEvent](#preventdefaulttouchmoveevent-details), which calls `event.preventDefault()`. **But** there may be a simpler, more effective solution, which has to do with a simple CSS property.
+You can prevent scrolling via [preventScrollOnSwipe](#preventscrollonswipe-details), which calls `event.preventDefault()` during `onTouchMove`. **But** there may be a simpler, more effective solution, which has to do with a simple CSS property.
 
-`touch-action` is a CSS property that sets how an element's region can be manipulated by a touchscreen user.
+`touch-action` is a CSS property that sets how an element's region can be manipulated by a touchscreen user. See the [documentation for `touch-action`](https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action) to determine which property value to use for your particular usecase.
 
+#### Static example
 ```js
 const handlers = useSwipeable({
-  onSwiped: (eventData) => console.log("User Swiped!", evenData),
+  onSwiped: (eventData) => console.log("User Swiped!", eventData),
   ...config,
 });
-return <div {...handlers} style={{ touchAction: 'pan-y' }}> Swipe here </div>;
+
+return <div {...handlers} style={{ touchAction: 'pan-y' }}>Swipe here</div>;
 ```
 This explanation and example borrowed from `use-gesture`'s [wonderful docs](https://use-gesture.netlify.app/docs/extras/#touch-action).
+
+#### Dynamic example
+```js
+const MySwipeableComponent = props => {
+  const [stopScroll, setStopScroll] = useState(false);
+
+  const handlers = useSwipeable({
+    onSwipeStart: () => setStopScroll(true),
+    onSwiped: () => setStopScroll(false)
+  });
+
+  return <div {...handlers} style={{ touchAction: stopScroll ? 'none' : 'auto' }}>Swipe here</div>;
+};
+```
+
+This is a somewhat contrived example as the final outcome would be similar to the static example. However, there may be cases where you want to determine when the user can scoll based on the user's swiping action along with any number of variables from state and props.
 
 ## License
 
