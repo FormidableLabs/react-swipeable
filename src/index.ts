@@ -285,23 +285,48 @@ function getHandlers(
 function updateTransientState(
   state: SwipeableState,
   props: SwipeablePropsWithDefaultOptions,
+  previousProps: SwipeablePropsWithDefaultOptions,
   attachTouch: AttachTouch
 ) {
-  const addState: { cleanUpTouch?(): void } = {};
-  // clean up touch handlers if no longer tracking touches
-  if (!props.trackTouch && state.cleanUpTouch) {
-    state.cleanUpTouch();
-    addState.cleanUpTouch = undefined;
-  } else if (props.trackTouch && !state.cleanUpTouch) {
-    // attach/re-attach touch handlers
-    if (state.el) {
-      addState.cleanUpTouch = attachTouch(
+  // if trackTouch is off or there is no el, then remove handlers if necessesary and exit
+  if (!props.trackTouch || !state.el) {
+    if (state.cleanUpTouch) {
+      state.cleanUpTouch();
+    }
+
+    return {
+      ...state,
+      cleanUpTouch: undefined
+    };
+  }
+
+  // trackTouch is on, so if there are no handlers attached, attach them and exit
+  if (!state.cleanUpTouch) {
+    return {
+      ...state,
+      cleanUpTouch: attachTouch(
         state.el,
         !props.preventScrollOnSwipe
-      );
+      )
     }
   }
-  return { ...state, ...addState };
+
+  // trackTouch is on and handlers are already attached, so if preventScrollOnSwipe changes value,
+  // remove and reattach handlers (this is required to update the passive option when attaching
+  // the handlers)
+  if (props.preventScrollOnSwipe !== previousProps.preventScrollOnSwipe) {
+    state.cleanUpTouch();
+
+    return {
+      ...state,
+      cleanUpTouch: attachTouch(
+        state.el,
+        !props.preventScrollOnSwipe
+      )
+    }
+  }
+
+  return state;
 }
 
 export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
@@ -310,6 +335,11 @@ export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   const transientProps = React.useRef<SwipeablePropsWithDefaultOptions>({
     ...defaultProps,
   });
+  const previousProps = React.useRef<SwipeablePropsWithDefaultOptions>({
+    ...transientProps.current,
+  });
+
+  previousProps.current = { ...transientProps.current };
   transientProps.current = { ...defaultProps, ...options };
 
   const [handlers, attachTouch] = React.useMemo(
@@ -328,6 +358,7 @@ export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   transientState.current = updateTransientState(
     transientState.current,
     transientProps.current,
+    previousProps.current,
     attachTouch
   );
 
