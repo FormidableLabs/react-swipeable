@@ -1,35 +1,36 @@
 /* global document */
 import * as React from "react";
 import {
-  AttachTouch,
-  SwipeDirections,
   DOWN,
-  SwipeEventData,
-  HandledEvents,
   LEFT,
   RIGHT,
+  UP,
+  AttachTouch,
+  HandledEvents,
+  OnSwipedDirections,
   Setter,
   SwipeableHandlers,
   SwipeableProps,
   SwipeablePropsWithDefaultOptions,
   SwipeableState,
   SwipeCallback,
+  SwipeDirections,
+  SwipeEventData,
   TapCallback,
-  UP,
   Vector2,
 } from "./types";
 
 export {
+  DOWN,
   LEFT,
   RIGHT,
   UP,
-  DOWN,
-  SwipeDirections,
-  SwipeEventData,
-  SwipeCallback,
   TapCallback,
   SwipeableHandlers,
   SwipeableProps,
+  SwipeCallback,
+  SwipeDirections,
+  SwipeEventData,
   Vector2,
 };
 
@@ -187,13 +188,12 @@ function getHandlers(
         eventData = { ...state.eventData, event };
         props.onSwiped && props.onSwiped(eventData);
 
-        const onSwipedDir = `onSwiped${eventData.dir}`;
-        if (onSwipedDir in props) {
-          ((props as any)[onSwipedDir] as SwipeCallback)(eventData);
-        }
+        const onSwipedDir = props[`onSwiped${eventData.dir}` as OnSwipedDirections];
+        onSwipedDir && onSwipedDir(eventData);
       } else {
         props.onTap && props.onTap({ event });
       }
+
       return { ...state, ...initialState, eventData };
     });
   };
