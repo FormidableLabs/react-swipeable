@@ -229,7 +229,7 @@ function getHandlers(
       const tls: [
         typeof touchStart | typeof touchMove | typeof touchEnd,
         (e: HandledEvents) => void,
-        { passive: boolean; }
+        { passive: boolean }
       ][] = [
         [touchStart, onStart, { passive: true }],
         [touchMove, onMove, { passive: passiveOnTouchMove }],
@@ -258,10 +258,7 @@ function getHandlers(
       }
       // only attach if we want to track touch
       if (props.trackTouch && el) {
-        addState.cleanUpTouch = attachTouch(
-          el,
-          !props.preventScrollOnSwipe
-        );
+        addState.cleanUpTouch = attachTouch(el, !props.preventScrollOnSwipe);
       }
 
       // store event attached DOM el for comparison, clean up, and re-attachment
@@ -296,7 +293,7 @@ function updateTransientState(
 
     return {
       ...state,
-      cleanUpTouch: undefined
+      cleanUpTouch: undefined,
     };
   }
 
@@ -304,11 +301,8 @@ function updateTransientState(
   if (!state.cleanUpTouch) {
     return {
       ...state,
-      cleanUpTouch: attachTouch(
-        state.el,
-        !props.preventScrollOnSwipe
-      )
-    }
+      cleanUpTouch: attachTouch(state.el, !props.preventScrollOnSwipe),
+    };
   }
 
   // trackTouch is on and handlers are already attached, so if preventScrollOnSwipe changes value,
@@ -319,11 +313,8 @@ function updateTransientState(
 
     return {
       ...state,
-      cleanUpTouch: attachTouch(
-        state.el,
-        !props.preventScrollOnSwipe
-      )
-    }
+      cleanUpTouch: attachTouch(state.el, !props.preventScrollOnSwipe),
+    };
   }
 
   return state;

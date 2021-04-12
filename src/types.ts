@@ -74,4 +74,7 @@ export type StateSetter = (
   props: SwipeablePropsWithDefaultOptions
 ) => SwipeableState;
 export type Setter = (stateSetter: StateSetter) => void;
-export type AttachTouch = (el: HTMLElement, passiveOnTouchMove: boolean) => () => void;
+export type AttachTouch = (
+  el: HTMLElement,
+  passiveOnTouchMove: boolean
+) => () => void;
