@@ -31,7 +31,7 @@ export type TapCallback = ({ event }: { event: HandledEvents }) => void;
 export type OnSwipedDirections = `onSwiped${SwipeDirections}`;
 export type OnSwipedDirectionCallbacks = {
   [Property in OnSwipedDirections]: SwipeCallback;
-}
+};
 
 export type SwipeableCallbacks = OnSwipedDirectionCallbacks & {
   // Event handler/callbacks

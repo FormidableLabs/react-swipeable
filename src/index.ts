@@ -188,7 +188,8 @@ function getHandlers(
         eventData = { ...state.eventData, event };
         props.onSwiped && props.onSwiped(eventData);
 
-        const onSwipedDir = props[`onSwiped${eventData.dir}` as OnSwipedDirections];
+        const onSwipedDir =
+          props[`onSwiped${eventData.dir}` as OnSwipedDirections];
         onSwipedDir && onSwipedDir(eventData);
       } else {
         props.onTap && props.onTap({ event });
