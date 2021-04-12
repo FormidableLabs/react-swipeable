@@ -13,7 +13,7 @@ const initialState = {
 };
 const initialStateSwipeable = {
   delta: '10',
-  preventDefaultTouchmoveEvent: false,
+  preventScrollOnSwipe: false,
   trackMouse: false,
   trackTouch: true,
   rotationAngle: 0,
@@ -36,7 +36,7 @@ interface IState {
   swipingDirection: string;
   swipedDirection: string;
   delta: string;
-  preventDefaultTouchmoveEvent: boolean;
+  preventScrollOnSwipe: boolean;
   trackMouse: boolean;
   trackTouch: boolean;
   rotationAngle: number | string;
@@ -132,7 +132,7 @@ export default class Main extends Component<any, IState> {
       onSwipingApplied,
       onSwipedApplied,
       onTapApplied,
-      preventDefaultTouchmoveEvent,
+      preventScrollOnSwipe,
       trackTouch,
       trackMouse,
       rotationAngle,
@@ -168,7 +168,7 @@ export default class Main extends Component<any, IState> {
             {...boundSwipes}
             {...swipeableDirProps}
             delta={deltaNum}
-            preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
+            preventScrollOnSwipe={preventScrollOnSwipe}
             trackTouch={trackTouch}
             trackMouse={trackMouse}
             rotationAngle={rotationAngleNum}
@@ -248,8 +248,8 @@ export default class Main extends Component<any, IState> {
                 </td>
               </tr>
               <RowSimpleCheckbox
-                value={preventDefaultTouchmoveEvent}
-                name="preventDefaultTouchmoveEvent"
+                value={preventScrollOnSwipe}
+                name="preventScrollOnSwipe"
                 onChange={this.updateValue}
               />
               <RowSimpleCheckbox
