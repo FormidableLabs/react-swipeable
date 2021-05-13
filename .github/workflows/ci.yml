@@ -1,0 +1,56 @@
+name: CI
+
+# Runs build and test on:
+#   every push that has a change in a file not in the docs or examples folder
+#   every pull request with main branch as the base that has a change in a file not in the docs or examples folder
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**'
+      - '!docs/**'
+      - '!examples/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**'
+      - '!docs/**'
+      - '!examples/**'
+
+jobs:
+  build:
+    name: Check and build codebase
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 15.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Get Yarn Cache Directory Path
+        id: cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Use Yarn Cache
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: ${{ steps.cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('./yarn.lock') }}
+
+      - name: Installation ${{ matrix.node-version }}
+        run: yarn --prefer-offline --frozen-lockfile --non-interactive
+
+      - name: Check Code ${{ matrix.node-version }}
+        run: yarn check:ci
+
+      - name: Build Core ${{ matrix.node-version }}
+        run: yarn build
+
+      - name: Check size ${{ matrix.node-version }}
+        run: yarn size
