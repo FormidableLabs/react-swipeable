@@ -25,7 +25,14 @@ Make changes/updates to the `src/index.ts` file.
 ### Verify updates with the examples
 
 Build, run, and test examples locally:
-`yarn run start:examples`
+```sh
+# Go into examples folder
+react-swipeable$ cd examples
+# Yarn install
+react-swipeable/examples$ yarn
+# Run the start:dev:local command
+react-swipeable/examples$ yarn start:dev:local
+```
 
 Then open a browser tab to `http://localhost:8080/`.
 
@@ -72,10 +79,12 @@ $ yarn run prettier
 $ yarn run format
 ```
 
-## Releasing a new version to NPM
+## Project Maintainers
+### Releasing a new version
+1. Publish to npm
+2. Update version in `examples`
 
-_Only for project administrators_
-
+#### 1. Publish to npm
 ```sh
 # (1) Runs tests, lint, build published dir, updates package.json
 $ npm version [patch|minor|major|<version>]
@@ -85,4 +94,35 @@ $ npm publish
 
 # (3) Then, update github and push new associated tag
 $ git push --follow-tags
+```
+
+#### 2. Update version in the examples
+
+After publishing a new version to npm we need to make sure the `examples` get updated.
+1. Bump the `react-swipeable` version in `examples/package.json` to the new just released version
+2. Run `yarn` to install and update the lock file
+3. Push changes to `main` branch so the codesandbox examples get updated
+4. Build and deploy updated examples to github pages
+
+### Building and deploying examples to github pages
+
+The examples build using the most recent version of `react-swipeable`.
+
+Make sure you've already completed the above steps for `Update version in the examples` so the `examples` have the most recent version installed.
+
+(Optional) Validate examples build locally
+```sh
+# From root run build:examples
+$ yarn build:examples
+
+# cd into examples and start simple http server(python v3)
+# validate everything works locally: http://localhost:8080/
+$ cd examples
+examples$ python -m http.server 8080
+```
+
+```sh
+# From the root run build:publish:examples
+# This will build and publish the examples app to github pages
+$ yarn build:publish:examples
 ```
