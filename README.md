@@ -3,4 +3,6 @@ react-swipeable examples
 
 This is the code that generates the example app - http://stack.formidable.com/react-swipeable/.
 
-Please look at the steps in the [main readme](https://github.com/FormidableLabs/react-swipeable#development), up one directory.
+You can play with the examples on [codesandbox](https://codesandbox.io/s/github/FormidableLabs/react-swipeable/tree/main/examples).
+
+Or you can run `yarn && yarn start` inside of this folder to run the examples locally.
