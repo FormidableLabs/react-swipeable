@@ -4,10 +4,11 @@ import {
   Wrapper,
   CarouselContainer,
   CarouselSlot,
+  SlideButtonContainer,
   SlideButton,
   PREV,
   NEXT
-} from './components';
+} from '../components';
 
 type Direction = typeof PREV | typeof NEXT;
 
@@ -59,12 +60,14 @@ const Carousel: FunctionComponent = (props) => {
           ))}
         </CarouselContainer>
       </Wrapper>
-      <SlideButton onClick={() => slide(PREV)} float="left">
-        Prev
-      </SlideButton>
-      <SlideButton onClick={() => slide(NEXT)} float="right">
-        Next
-      </SlideButton>
+      <SlideButtonContainer>
+        <SlideButton onClick={() => slide(PREV)} float="left">
+          Prev
+        </SlideButton>
+        <SlideButton onClick={() => slide(NEXT)} float="right">
+          Next
+        </SlideButton>
+      </SlideButtonContainer>
     </div>
   );
 };

@@ -1,14 +1,14 @@
 import React from 'react';
-import { Item } from './components';
+import { Item } from '../components';
 import Carousel from './pattern';
-// CREDITS for Carousel:
+// Carousel originally copied from:
 // https://medium.com/@incubation.ff/build-your-own-css-carousel-in-react-part-one-86f71f6670ca
 
 function SimplePattern() {
   return (
     <div>
       <h5 style={{ marginBottom: '20px' }}>
-        <strong>Use useSwipeable hook to track a swipe pattern.</strong>
+        <strong>👉 Swipe pattern</strong>
       </h5>
       <Carousel>
         <Item img="https://unsplash.it/475/205" />

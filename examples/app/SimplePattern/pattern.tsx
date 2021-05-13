@@ -8,7 +8,24 @@ import {
   PREV,
   NEXT,
   D
-} from './components';
+} from '../components';
+
+const UpArrow = ({active}: {active: boolean}) => (
+  <svg viewBox="0 0 16 16" version="1.1" style={{width: '15px'}}>
+    <g transform="translate(-35.399 -582.91)">
+      <path style={{fill: active ? '#EEEE00' : '#000000'}} d="m40.836 598.91v-6.75h-5.4375l4-4.625 4-4.625 4 4.625 4 4.625h-5.0938v6.75h-5.4688z" />
+    </g>
+  </svg>
+);
+
+const DownArrow = ({active}: {active: boolean}) => (
+  <svg viewBox="0 0 16 16" version="1.1" style={{width: '15px'}}>
+    <g transform="translate(-35.399 -598.91)">
+      <path style={{fill: active ? '#EEEE00' : '#000000'}} d="m40.836 598.91v6.75h-5.4375l4 4.625 4 4.625 4-4.625 4-4.625h-5.0938v-6.75h-5.4688z" />
+    </g>
+  </svg>
+);
+
 
 type Direction = typeof PREV | typeof NEXT;
 
@@ -47,8 +64,11 @@ const Carousel: FunctionComponent = (props) => {
     if (eventData.dir === pattern[pIdx]) {
       // user successfully got to the end of the pattern!
       if (pIdx + 1 === pattern.length) {
-        setPIdx(0);
+        setPIdx(pattern.length);
         slide(NEXT);
+        setTimeout(() => {
+          setPIdx(0);
+        }, 50);
       } else {
         // user is cont. with the pattern
         setPIdx((i) => (i += 1));
@@ -68,15 +88,16 @@ const Carousel: FunctionComponent = (props) => {
   return (
     <>
       <PatternBox {...handlers}>
-        Swipe Directions:{`\n`}
-        <D active={pIdx > 0}>⬆</D>
-        <D active={pIdx > 1}>⬇</D>
-        <D active={pIdx > 2}>⬆</D>
-        <D active={pIdx > 3}>⬇</D>
-        {`\n`}
-        {`\n`}
-        Swipe this pattern within this box to make the carousel go to the next
+        Swipe the pattern below, within this box, to make the carousel go to the next
         slide
+        {`\n`}
+        <p style={{textAlign: 'center', paddingTop: '15px'}}>
+          Swipe:
+          <D><UpArrow active={pIdx > 0} /></D>
+          <D><DownArrow active={pIdx > 1} /></D>
+          <D><UpArrow active={pIdx > 2} /></D>
+          <D><DownArrow active={pIdx > 3} /></D>
+        </p>
       </PatternBox>
       <div>
         <Wrapper>

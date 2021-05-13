@@ -1,23 +1,12 @@
 import * as React from 'react';
-// @ts-ignore
-import ScrollUp from 'react-scroll-up';
 import FeatureTestConsole from './FeatureTestConsole';
 import SimpleCarousel from './SimpleCarousel';
 import SimplePattern from './SimplePattern';
-
-const scrollUpArrowStyles = { fontSize: '20px', border: '2px solid black', borderRadius: '50%', padding: '10px', background: 'white' };
+import { Paper } from './components';
 
 export default function App({version}: {version: any}) {
   return (
     <div className="row">
-      <ScrollUp
-        showUnder={20}
-        easing={'easeOutCubic'}
-        duration={500}
-      >
-        <span style={scrollUpArrowStyles}>▲</span>
-      </ScrollUp>
-
       <div className="medium-6 column" style={{width: "95%"}}>
         <h1>
           react-swipeable&nbsp;
@@ -31,25 +20,25 @@ export default function App({version}: {version: any}) {
 
         <dl>
           <dt>Examples:</dt>
-          <dd><a href="#FeatureTestConsole">Feature testing with console log output ⇨</a></dd>
-          <dd><a href="#SimpleCarousel">Image Carousel using react-swipeable ⇨</a></dd>
-          <dd><a href="#SimplePattern">Swipe pattern using react-swipeable ⇨</a></dd>
+          <dd><a href="#FeatureTestConsole">💻 Feature testing with console log ⇨</a></dd>
+          <dd><a href="#SimpleCarousel">🖼 Image Carousel ⇨</a></dd>
+          <dd><a href="#SimplePattern">👉 Swipe pattern ⇨</a></dd>
         </dl>
         <hr />
 
-        <div id="FeatureTestConsole">
+        <Paper id="FeatureTestConsole">
           <FeatureTestConsole />
-        </div>
+        </Paper>
         <hr />
 
-        <div id="SimpleCarousel" style={{ marginBottom: '84px' }}>
+        <Paper id="SimpleCarousel">
           <SimpleCarousel />
-        </div>
+        </Paper>
         <hr />
 
-        <div id="SimplePattern">
+        <Paper id="SimplePattern">
           <SimplePattern />
-        </div>
+        </Paper>
         <hr />
 
         <p style={{"marginBottom": "2rem"}}>
