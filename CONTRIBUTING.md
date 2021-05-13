@@ -25,7 +25,14 @@ Make changes/updates to the `src/index.ts` file.
 ### Verify updates with the examples
 
 Build, run, and test examples locally:
-`yarn run start:examples`
+```bash
+# Go into examples folder
+react-swipeable$ cd examples
+# Yarn install
+react-swipeable/examples$ yarn
+# Run the start:dev:local command
+react-swipeable/examples$ yarn start:dev:local
+```
 
 Then open a browser tab to `http://localhost:8080/`.
 

@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server",
+    "start:dev:local": "DEV_LOCAL=true webpack-dev-server",
     "build": "webpack -p --config ./examples/webpack.config.min.js"
   },
   "dependencies": {
