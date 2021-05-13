@@ -1,3 +1,9 @@
+# v6.1.1
+* Maintenance
+  * dependabot security updates
+  * Migrate to github actions, remove travis, update badges
+  * Update examples and provide link via codesandbox
+
 # v6.1.0
 * Add new event handler prop `onSwipeStart`
   * called only once per swipe at the start and before the first `onSwiping` callback
