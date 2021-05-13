@@ -2,7 +2,7 @@
 
 React swipe event handler hook
 
-[![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg)](https://www.npmjs.com/package/react-swipeable) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg)](https://www.npmjs.com/package/react-swipeable) [![build status](https://github.com/FormidableLabs/victory/actions/workflows/ci.yml/badge.svg)](https://travis-ci.org/FormidableLabs/react-swipeable) [![Coverage Status](https://img.shields.io/coveralls/FormidableLabs/react-swipeable/main.svg)](https://coveralls.io/github/FormidableLabs/react-swipeable?branch=main) [![gzip size](https://badgen.net/bundlephobia/minzip/react-swipeable)](https://bundlephobia.com/result?p=react-swipeable) [![maintenance status](https://img.shields.io/badge/maintenance-active-green.svg)](https://github.com/FormidableLabs/react-swipeable#maintenance-status)
+[![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg)](https://www.npmjs.com/package/react-swipeable) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg)](https://www.npmjs.com/package/react-swipeable) [![build status](https://github.com/FormidableLabs/react-swipeable/actions/workflows/ci.yml/badge.svg)](https://github.com/FormidableLabs/react-swipeable/actions) [![gzip size](https://badgen.net/bundlephobia/minzip/react-swipeable)](https://bundlephobia.com/result?p=react-swipeable) [![maintenance status](https://img.shields.io/badge/maintenance-active-green.svg)](https://github.com/FormidableLabs/react-swipeable#maintenance-status)
 
 [![Edit react-swipeable image carousel](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/FormidableLabs/react-swipeable/tree/main/examples?file=/app/SimpleCarousel/Carousel.tsx)
 

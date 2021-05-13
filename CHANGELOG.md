@@ -1,6 +1,11 @@
+# v6.1.2
+* Maintenance
+  * actually include dependabot security updates
+  * update badge links
+
 # v6.1.1
 * Maintenance
-  * dependabot security updates
+  * ~dependabot security updates~
   * Migrate to github actions, remove travis, update badges
   * Update examples and provide link via codesandbox
 
