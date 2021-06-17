@@ -120,7 +120,7 @@ If upgrading from v5 or later please refer to the release notes and the [v6 migr
 
 v6 now only exports a hook, `useSwipeable`.
 
-If would like something similar to the old `<Swipeable>` component you can recreate it from the hook. There are examples in the [migration doc](./migration.md#swipeable-component-examples).
+If you would like something similar to the old `<Swipeable>` component you can recreate it from the hook. There are examples in the [migration doc](./migration.md#swipeable-component-examples).
 
 ## FAQs
 
