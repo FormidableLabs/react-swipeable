@@ -9,6 +9,7 @@ import {
   LEFT,
   RIGHT,
   Setter,
+  SwipeableCallbacks,
   SwipeableHandlers,
   SwipeableProps,
   SwipeablePropsWithDefaultOptions,
@@ -52,6 +53,15 @@ const mouseUp = "mouseup";
 const touchEnd = "touchend";
 const touchMove = "touchmove";
 const touchStart = "touchstart";
+const callbackNameByDirection: Record<
+  SwipeDirections,
+  keyof SwipeableCallbacks
+> = {
+  [DOWN]: "onSwipedDown",
+  [LEFT]: "onSwipedLeft",
+  [RIGHT]: "onSwipedRight",
+  [UP]: "onSwipedUp",
+};
 
 function getDirection(
   absX: number,
@@ -185,12 +195,8 @@ function getHandlers(
       let eventData: SwipeEventData | undefined;
       if (state.swiping && state.eventData) {
         eventData = { ...state.eventData, event };
-        props.onSwiped && props.onSwiped(eventData);
-
-        const onSwipedDir = `onSwiped${eventData.dir}`;
-        if (onSwipedDir in props) {
-          ((props as any)[onSwipedDir] as SwipeCallback)(eventData);
-        }
+        props.onSwiped?.(eventData);
+        props[callbackNameByDirection[eventData.dir]]?.(eventData);
       } else {
         props.onTap && props.onTap({ event });
       }
