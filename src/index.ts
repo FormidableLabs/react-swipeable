@@ -70,6 +70,21 @@ function getDirection(
   return UP;
 }
 
+function uncapitalizeDirection(
+  dir: SwipeDirections
+): Uncapitalize<SwipeDirections> {
+  switch (dir) {
+    case "Down":
+      return "down";
+    case "Left":
+      return "left";
+    case "Right":
+      return "right";
+    case "Up":
+      return "up";
+  }
+}
+
 function rotateXYByAngle(pos: Vector2, angle: number): Vector2 {
   if (angle === 0) return pos;
   const angleInRadians = (Math.PI / 180) * angle;
@@ -131,11 +146,15 @@ function getHandlers(
       const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1);
       const vxvy: Vector2 = [deltaX / (time || 1), deltaY / (time || 1)];
 
-      // if swipe is under delta and we have not started to track a swipe: skip update
-      if (absX < props.delta && absY < props.delta && !state.swiping)
-        return state;
-
       const dir = getDirection(absX, absY, deltaX, deltaY);
+
+      // if swipe is under delta and we have not started to track a swipe: skip update
+      const delta =
+        typeof props.delta === "number"
+          ? props.delta
+          : props.delta[uncapitalizeDirection(dir)];
+      if (absX < delta && absY < delta && !state.swiping) return state;
+
       const eventData = {
         absX,
         absY,
