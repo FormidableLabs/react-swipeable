@@ -55,6 +55,16 @@ Spread `handlers` onto the element you wish to track swipes on.
 }
 ```
 
+#### Delta
+
+You can also set a different delta for each side:
+
+```js
+{
+  delta: { right: 10, left: 10, top: 20, bottom: 20 } // right and left starts when ">= 10", top and bottom when ">= 20"
+}
+```
+
 ## Swipe Event Data
 
 All Event Handlers are called with the below event data, `SwipeEventData`.
