@@ -70,21 +70,6 @@ function getDirection(
   return UP;
 }
 
-function uncapitalizeDirection(
-  dir: SwipeDirections
-): Uncapitalize<SwipeDirections> {
-  switch (dir) {
-    case "Down":
-      return "down";
-    case "Left":
-      return "left";
-    case "Right":
-      return "right";
-    case "Up":
-      return "up";
-  }
-}
-
 function rotateXYByAngle(pos: Vector2, angle: number): Vector2 {
   if (angle === 0) return pos;
   const angleInRadians = (Math.PI / 180) * angle;
@@ -152,7 +137,7 @@ function getHandlers(
       const delta =
         typeof props.delta === "number"
           ? props.delta
-          : props.delta[uncapitalizeDirection(dir)];
+          : props.delta[dir.toLowerCase() as Lowercase<SwipeDirections>];
       if (absX < delta && absY < delta && !state.swiping) return state;
 
       const eventData = {
