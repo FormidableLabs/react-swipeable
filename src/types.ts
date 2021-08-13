@@ -42,7 +42,7 @@ export type SwipeableCallbacks = {
 // Configuration Options
 export type ConfigurationOptionDelta =
   | number
-  | { [key in Uncapitalize<SwipeDirections>]: number };
+  | { [key in Lowercase<SwipeDirections>]?: number };
 export interface ConfigurationOptions {
   delta: ConfigurationOptionDelta;
   preventDefaultTouchmoveEvent: boolean;
