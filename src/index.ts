@@ -9,6 +9,7 @@ import {
   LEFT,
   RIGHT,
   Setter,
+  SwipeableCallbacks,
   SwipeableHandlers,
   SwipeableProps,
   SwipeablePropsWithDefaultOptions,
@@ -137,7 +138,8 @@ function getHandlers(
       const delta =
         typeof props.delta === "number"
           ? props.delta
-          : props.delta[dir.toLowerCase() as Lowercase<SwipeDirections>];
+          : props.delta[dir.toLowerCase() as Lowercase<SwipeDirections>] ||
+            defaultProps.delta;
       if (absX < delta && absY < delta && !state.swiping) return state;
 
       const eventData = {
@@ -191,10 +193,9 @@ function getHandlers(
         eventData = { ...state.eventData, event };
         props.onSwiped && props.onSwiped(eventData);
 
-        const onSwipedDir = `onSwiped${eventData.dir}`;
-        if (onSwipedDir in props) {
-          ((props as any)[onSwipedDir] as SwipeCallback)(eventData);
-        }
+        const onSwipedDir =
+          props[`onSwiped${eventData.dir}` as keyof SwipeableCallbacks];
+        onSwipedDir && onSwipedDir(eventData);
       } else {
         props.onTap && props.onTap({ event });
       }
