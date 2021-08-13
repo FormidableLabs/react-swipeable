@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "removeComments": true,
     "baseUrl": ".",
     "esModuleInterop": true,
     "jsx": "react",
