@@ -132,11 +132,15 @@ function getHandlers(
       const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1);
       const vxvy: Vector2 = [deltaX / (time || 1), deltaY / (time || 1)];
 
-      // if swipe is under delta and we have not started to track a swipe: skip update
-      if (absX < props.delta && absY < props.delta && !state.swiping)
-        return state;
-
       const dir = getDirection(absX, absY, deltaX, deltaY);
+
+      // if swipe is under delta and we have not started to track a swipe: skip update
+      const delta =
+        typeof props.delta === "number"
+          ? props.delta
+          : props.delta[dir.toLowerCase() as Lowercase<SwipeDirections>];
+      if (absX < delta && absY < delta && !state.swiping) return state;
+
       const eventData = {
         absX,
         absY,

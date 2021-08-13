@@ -34,7 +34,7 @@
   },
   "size-limit": [
     {
-      "limit": "1.15 KB",
+      "limit": "1.4 KB",
       "path": "dist/react-swipeable.js"
     }
   ],
