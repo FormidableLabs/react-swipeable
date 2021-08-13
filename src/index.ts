@@ -138,7 +138,8 @@ function getHandlers(
       const delta =
         typeof props.delta === "number"
           ? props.delta
-          : props.delta[dir.toLowerCase() as Lowercase<SwipeDirections>];
+          : props.delta[dir.toLowerCase() as Lowercase<SwipeDirections>] ||
+            defaultProps.delta;
       if (absX < delta && absY < delta && !state.swiping) return state;
 
       const eventData = {

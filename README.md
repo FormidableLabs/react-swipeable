@@ -47,7 +47,7 @@ Spread `handlers` onto the element you wish to track swipes on.
 
 ```js
 {
-  delta: 10,                            // min distance(px) before a swipe starts
+  delta: 10,                            // min distance(px) before a swipe starts. *See Notes*
   preventDefaultTouchmoveEvent: false,  // call e.preventDefault *See Details*
   trackTouch: true,                     // track touch input
   trackMouse: false,                    // track mouse input
@@ -57,11 +57,11 @@ Spread `handlers` onto the element you wish to track swipes on.
 
 #### Delta
 
-You can also set a different delta for each side:
+`delta` can be either a `number` or an `object` specifying different deltas for each direction, [`left`, `right`, `up`, `down`], direction values are optional and will default to `10`;
 
 ```js
 {
-  delta: { right: 10, left: 10, top: 20, bottom: 20 } // right and left starts when ">= 10", top and bottom when ">= 20"
+  delta: { top: 20, bottom: 20 } // top and bottom when ">= 20", left and right default to ">= 10"
 }
 ```
 
