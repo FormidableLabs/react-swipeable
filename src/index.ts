@@ -192,9 +192,9 @@ function getHandlers(
         eventData = { ...state.eventData, event };
         props.onSwiped && props.onSwiped(eventData);
 
-        const onSwipedDir = `onSwiped${eventData.dir}` as keyof SwipeableCallbacks;
-        // @ts-expect-error Existence validated before calling
-        props[onSwipedDir] && props[onSwipedDir](eventData);
+        const onSwipedDir =
+          props[`onSwiped${eventData.dir}` as keyof SwipeableCallbacks];
+        onSwipedDir && onSwipedDir(eventData);
       } else {
         props.onTap && props.onTap({ event });
       }
