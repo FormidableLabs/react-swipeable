@@ -1,3 +1,16 @@
+# v6.2.0
+* `delta` prop can now be an `object` specifying different values for each direction
+  * [PR #260](https://github.com/formidablelabs/react-swipeable/pull/260)
+    * Thank you [@macabeus](https://github.com/macabeus) for the idea and PR!
+  * defaults `delta` if direction not present in object, [PR #262](https://github.com/formidablelabs/react-swipeable/pull/262)
+* Maintenance
+  * upgrade to latest version of `microbundle`
+    * remove comments from built files
+      * attempt to lower size to counter unnecessary increase from `microbundle` upgrade due to `rollup` `output.interop`
+    * include type updates influenced by [PR #259](https://github.com/formidablelabs/react-swipeable/pull/259)
+      * Thank you [@jaketodaro](https://github.com/jaketodaro)
+  * ~dependabot security updates~
+
 # v6.1.2
 * Maintenance
   * actually include dependabot security updates
