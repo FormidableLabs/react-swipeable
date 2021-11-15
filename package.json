@@ -3,17 +3,14 @@
   "version": "6.2.0",
   "description": "React Swipe event handler hook",
   "main": "./dist/react-swipeable.js",
-  "browser": "./dist/react-swipeable.umd.js",
-  "umd:main": "./dist/react-swipeable.umd.js",
-  "esmodule": "./dist/react-swipeable.modern.js",
-  "module": "./dist/react-swipeable.module.js",
-  "jsnext:main": "./dist/react-swipeable.module.js",
+  "module": "./dist/react-swipeable.es.js",
   "source": "./src/index.ts",
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "microbundle --no-compress --name swipeable --output dist",
+    "build": "node ./esbuild && yarn build:types",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
     "build:examples": "cd ./examples && yarn && yarn build",
     "build:publish:examples": "yarn run build:examples && rimraf examples/node_modules && gh-pages -d examples",
     "check:ci": "yarn run prettier && yarn run lint && yarn run test:unit",
@@ -36,6 +33,10 @@
     {
       "limit": "1.4 KB",
       "path": "dist/react-swipeable.js"
+    },
+    {
+      "limit": "1.4 KB",
+      "path": "dist/react-swipeable.es.js"
     }
   ],
   "jest": {
@@ -80,6 +81,7 @@
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
     "coveralls": "^3.0.3",
+    "esbuild": "^0.13.13",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-react": "^7.20.3",
