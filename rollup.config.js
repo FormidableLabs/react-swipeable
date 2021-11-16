@@ -7,15 +7,18 @@ export default [
   {
     input: "src/index.ts",
     output: {
-      name: "howLongUntilLunch",
+      name: "react-swipeable",
       file: pkg.browser,
       format: "umd",
       sourcemap: true,
+      globals: {
+        react: 'React'
+      }
     },
     external: ["react"],
     plugins: [
       typescript(),
-      commonjs(), // so Rollup can convert `ms` to an ES module
+      commonjs()
     ],
   },
 
