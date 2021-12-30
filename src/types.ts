@@ -46,6 +46,7 @@ export type ConfigurationOptionDelta =
 export interface ConfigurationOptions {
   delta: ConfigurationOptionDelta;
   preventDefaultTouchmoveEvent: boolean;
+  preventMixDirections: boolean;
   rotationAngle: number;
   trackMouse: boolean;
   trackTouch: boolean;
@@ -70,6 +71,7 @@ export type SwipeableState = {
   start: number;
   swiping: boolean;
   xy: Vector2;
+  initialDirection: null | SwipeDirections;
 };
 
 export type StateSetter = (
