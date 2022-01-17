@@ -20,17 +20,17 @@ interface CarouselState {
 
 type CarouselAction =
   | { type: Direction, numItems: number }
-  | { type: 'stopSliding' | 'reset' };
+  | { type: 'stopSliding' };
 
 const getOrder = (index: number, pos: number, numItems: number) => {
   return index - pos < 0 ? numItems - Math.abs(index - pos) : index - pos;
 };
 
-const initialState: CarouselState = { pos: 0, sliding: false, dir: NEXT };
+const getInitialState = (numItems: number): CarouselState => ({ pos: numItems - 1, sliding: false, dir: NEXT });
 
 const Carousel: FunctionComponent = (props) => {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
   const numItems = React.Children.count(props.children);
+  const [state, dispatch] = React.useReducer(reducer, getInitialState(numItems));
 
   const slide = (dir: Direction) => {
     dispatch({ type: dir, numItems });
@@ -52,7 +52,6 @@ const Carousel: FunctionComponent = (props) => {
         <CarouselContainer dir={state.dir} sliding={state.sliding}>
           {React.Children.map(props.children, (child, index) => (
             <CarouselSlot
-              key={index}
               order={getOrder(index, state.pos, numItems)}
             >
               {child}
@@ -74,8 +73,6 @@ const Carousel: FunctionComponent = (props) => {
 
 function reducer(state: CarouselState, action: CarouselAction): CarouselState {
   switch (action.type) {
-    case 'reset':
-      return initialState;
     case PREV:
       return {
         ...state,
