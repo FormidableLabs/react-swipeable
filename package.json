@@ -5,7 +5,6 @@
   "main": "./dist/react-swipeable.js",
   "browser": "./dist/react-swipeable.umd.js",
   "umd:main": "./dist/react-swipeable.umd.js",
-  "esmodule": "./dist/react-swipeable.modern.js",
   "module": "./dist/react-swipeable.module.js",
   "jsnext:main": "./dist/react-swipeable.module.js",
   "source": "./src/index.ts",
