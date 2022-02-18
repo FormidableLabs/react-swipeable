@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "removeComments": true,
     "baseUrl": ".",
     "esModuleInterop": true,
     "jsx": "react",
@@ -17,5 +16,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "ESNext"
-  }
+  },
+  "exclude": ["node_modules"],
+  "include": ["./**/*"]
 }

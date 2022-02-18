@@ -161,9 +161,9 @@ export default class Main extends Component<any, IState> {
     }
 
     return (
-      <div className="row" id="FeatureTestConsole">
+      <div className="row">
         <div className="small-12 column">
-          <h5><strong>Test react-swipeable features.</strong></h5>
+          <h5><strong>💻 Test react-swipeable features.</strong></h5>
           <SwipeableHook
             {...boundSwipes}
             {...swipeableDirProps}
@@ -174,8 +174,8 @@ export default class Main extends Component<any, IState> {
             rotationAngle={rotationAngleNum}
             className="callout hookComponent"
             style={swipeableStyle}>
-              <div onTouchStart={()=>this.resetState()}>
-                <h5>Hook - Swipe inside here to test</h5>
+              <div onTouchStart={()=>this.resetState()} onMouseDown={()=>this.resetState()}>
+                <h5>Swipe inside here to test</h5>
                 <p>See output below and check the console for 'onSwiping' and 'onSwiped' callback output(open dev tools)</p>
                 <span>You can also 'toggle' the swiped props being applied to this container below.</span>
               </div>

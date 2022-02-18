@@ -2,11 +2,11 @@
 
 React swipe event handler hook
 
-[![build status](https://img.shields.io/travis/FormidableLabs/react-swipeable/master.svg?style=flat-square)](https://travis-ci.org/FormidableLabs/react-swipeable) [![Coverage Status](https://img.shields.io/coveralls/FormidableLabs/react-swipeable/master.svg?style=flat-square)](https://coveralls.io/github/FormidableLabs/react-swipeable?branch=master) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg?style=flat-square)](https://www.npmjs.com/package/react-swipeable) [![gzip size](https://flat.badgen.net/bundlephobia/minzip/react-swipeable)](https://bundlephobia.com/result?p=react-swipeable)
+[![npm downloads](https://img.shields.io/npm/dm/react-swipeable.svg)](https://www.npmjs.com/package/react-swipeable) [![npm version](https://img.shields.io/npm/v/react-swipeable.svg)](https://www.npmjs.com/package/react-swipeable) [![build status](https://github.com/FormidableLabs/react-swipeable/actions/workflows/ci.yml/badge.svg)](https://github.com/FormidableLabs/react-swipeable/actions) [![gzip size](https://badgen.net/bundlephobia/minzip/react-swipeable)](https://bundlephobia.com/result?p=react-swipeable) [![maintenance status](https://img.shields.io/badge/maintenance-active-green.svg)](https://github.com/FormidableLabs/react-swipeable#maintenance-status)
 
-[![Edit react-swipeable image carousel](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-swipeable-image-carousel-hben8?file=/src/Carousel.js)
+[![Edit react-swipeable image carousel](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/FormidableLabs/react-swipeable/tree/main/examples?file=/app/SimpleCarousel/Carousel.tsx)
 
-[Github Pages Demo](http://formidablelabs.github.io/react-swipeable/)
+### [Github Pages Demo](http://formidablelabs.github.io/react-swipeable/)
 
 ### Api
 
@@ -47,11 +47,21 @@ Spread `handlers` onto the element you wish to track swipes on.
 
 ```js
 {
-  delta: 10,                            // min distance(px) before a swipe starts
+  delta: 10,                            // min distance(px) before a swipe starts. *See Notes*
   preventScrollOnSwipe: false,          // prevents scroll during swipe in most cases (*See Details*)
   trackTouch: true,                     // track touch input
   trackMouse: false,                    // track mouse input
   rotationAngle: 0,                     // set a rotation angle
+}
+```
+
+#### Delta
+
+`delta` can be either a `number` or an `object` specifying different deltas for each direction, [`left`, `right`, `up`, `down`], direction values are optional and will default to `10`;
+
+```js
+{
+  delta: { top: 20, bottom: 20 } // top and bottom when ">= 20", left and right default to ">= 10"
 }
 ```
 
@@ -121,7 +131,7 @@ If upgrading from v5 or later please refer to the release notes and the [v6 migr
 
 v6 now only exports a hook, `useSwipeable`.
 
-If would like something similar to the old `<Swipeable>` component you can recreate it from the hook. There are examples in the [migration doc](./migration.md#swipeable-component-examples).
+If you would like something similar to the old `<Swipeable>` component you can recreate it from the hook. There are examples in the [migration doc](./migration.md#swipeable-component-examples).
 
 ## FAQs
 
@@ -201,6 +211,9 @@ This is a somewhat contrived example as the final outcome would be similar to th
 ## Contributing
 
 Please see our [contributions guide](./CONTRIBUTING.md).
+
+### Maintainers
+[Project Maintenance](./CONTRIBUTING.md#project-maintainers)
 
 ## Maintenance Status
 

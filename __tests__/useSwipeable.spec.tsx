@@ -413,6 +413,128 @@ describe("useSwipeable", () => {
     expect(onSwipedRight).not.toHaveBeenCalled();
   });
 
+  it("allows different delta for each side", () => {
+    const onSwipedRight = jest.fn();
+    const onSwipedLeft = jest.fn();
+    const onSwipedUp = jest.fn();
+    const onSwipedDown = jest.fn();
+    const { getByText } = render(
+      <SwipeableUsingHook
+        onSwipedRight={onSwipedRight}
+        onSwipedLeft={onSwipedLeft}
+        onSwipedUp={onSwipedUp}
+        onSwipedDown={onSwipedDown}
+        delta={{
+          right: 10,
+          left: 20,
+          up: 30,
+          down: 40,
+        }}
+      />
+    );
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    // check right
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 105, y: 100 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedRight).not.toHaveBeenCalled();
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 110, y: 100 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedRight).toHaveBeenCalledTimes(1);
+
+    // check left
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 90, y: 100 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedLeft).not.toHaveBeenCalled();
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 80, y: 100 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedLeft).toHaveBeenCalledTimes(1);
+
+    // check up
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 80 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedUp).not.toHaveBeenCalled();
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 70 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedUp).toHaveBeenCalledTimes(1);
+
+    // check down
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 130 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedDown).not.toHaveBeenCalled();
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 140 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedDown).toHaveBeenCalledTimes(1);
+  });
+
+  it("defaults delta for side", () => {
+    const onSwipedRight = jest.fn();
+    const onSwipedLeft = jest.fn();
+    const onSwipedUp = jest.fn();
+    const onSwipedDown = jest.fn();
+    const { getByText } = render(
+      <SwipeableUsingHook
+        onSwipedRight={onSwipedRight}
+        onSwipedLeft={onSwipedLeft}
+        onSwipedUp={onSwipedUp}
+        onSwipedDown={onSwipedDown}
+        delta={{
+          right: 40,
+          down: 40,
+        }}
+      />
+    );
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    // check left
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 95, y: 100 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedLeft).not.toHaveBeenCalled();
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 90, y: 100 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedLeft).toHaveBeenCalledTimes(1);
+
+    // check up
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 95 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedUp).not.toHaveBeenCalled();
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 90 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedUp).toHaveBeenCalledTimes(1);
+  });
+
   it("Handle Rotation by 90 degree", () => {
     const swipeFuncsRight = getMockedSwipeFunctions();
     const { getByText, rerender } = render(

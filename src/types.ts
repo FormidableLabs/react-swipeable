@@ -40,8 +40,11 @@ export type SwipeableCallbacks = {
 };
 
 // Configuration Options
+export type ConfigurationOptionDelta =
+  | number
+  | { [key in Lowercase<SwipeDirections>]?: number };
 export interface ConfigurationOptions {
-  delta: number;
+  delta: ConfigurationOptionDelta;
   preventScrollOnSwipe: boolean;
   rotationAngle: number;
   trackMouse: boolean;

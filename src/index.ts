@@ -9,6 +9,7 @@ import {
   LEFT,
   RIGHT,
   Setter,
+  SwipeableCallbacks,
   SwipeableHandlers,
   SwipeableProps,
   SwipeablePropsWithDefaultOptions,
@@ -133,12 +134,16 @@ function getHandlers(
       const velocity = Math.sqrt(absX * absX + absY * absY) / (time || 1);
       const vxvy: Vector2 = [deltaX / (time || 1), deltaY / (time || 1)];
 
-      // if swipe is under delta and we have not started to track a swipe: skip update
-      if (absX < props.delta && absY < props.delta && !state.swiping) {
-        return state;
-      }
-
       const dir = getDirection(absX, absY, deltaX, deltaY);
+
+      // if swipe is under delta and we have not started to track a swipe: skip update
+      const delta =
+        typeof props.delta === "number"
+          ? props.delta
+          : props.delta[dir.toLowerCase() as Lowercase<SwipeDirections>] ||
+            defaultProps.delta;
+      if (absX < delta && absY < delta && !state.swiping) return state;
+
       const eventData = {
         absX,
         absY,
@@ -191,10 +196,9 @@ function getHandlers(
         eventData = { ...state.eventData, event };
         props.onSwiped && props.onSwiped(eventData);
 
-        const onSwipedDir = `onSwiped${eventData.dir}`;
-        if (onSwipedDir in props) {
-          ((props as any)[onSwipedDir] as SwipeCallback)(eventData);
-        }
+        const onSwipedDir =
+          props[`onSwiped${eventData.dir}` as keyof SwipeableCallbacks];
+        onSwipedDir && onSwipedDir(eventData);
       } else {
         props.onTap && props.onTap({ event });
       }
