@@ -157,18 +157,50 @@ describe("useSwipeable", () => {
 
     const touchArea = getByText(TESTING_TEXT);
 
-    const setupMultipleTouchEvent = (touches: { x?: number; y?: number }[]) => ({
-      touches: touches.map(t => createClientXYObject(t.x, t.y)),
+    const setupMultipleTouchEvent = (
+      touches: { x?: number; y?: number }[]
+    ) => ({
+      touches: touches.map((t) => createClientXYObject(t.x, t.y)),
     });
 
     fireEvent[TS](touchArea, cte({ x: 100, y: 10 }));
-    fireEvent[TM](touchArea, setupMultipleTouchEvent([{ x: 125, y: 0 }, {x: 130, y: 10}]));
-    fireEvent[TM](touchArea, setupMultipleTouchEvent([{ x: 130, y: 0 }, {x: 135, y: 10}]));
+    fireEvent[TM](
+      touchArea,
+      setupMultipleTouchEvent([
+        { x: 125, y: 0 },
+        { x: 130, y: 10 },
+      ])
+    );
+    fireEvent[TM](
+      touchArea,
+      setupMultipleTouchEvent([
+        { x: 130, y: 0 },
+        { x: 135, y: 10 },
+      ])
+    );
     fireEvent[TE](touchArea, cte({}));
 
-    fireEvent[TS](touchArea, setupMultipleTouchEvent([{ x: 100, y: 0 }, {x: 110, y: 10}]));
-    fireEvent[TM](touchArea, setupMultipleTouchEvent([{ x: 125, y: 0 }, {x: 130, y: 10}]));
-    fireEvent[TM](touchArea, setupMultipleTouchEvent([{ x: 130, y: 0 }, {x: 135, y: 10}]));
+    fireEvent[TS](
+      touchArea,
+      setupMultipleTouchEvent([
+        { x: 100, y: 0 },
+        { x: 110, y: 10 },
+      ])
+    );
+    fireEvent[TM](
+      touchArea,
+      setupMultipleTouchEvent([
+        { x: 125, y: 0 },
+        { x: 130, y: 10 },
+      ])
+    );
+    fireEvent[TM](
+      touchArea,
+      setupMultipleTouchEvent([
+        { x: 130, y: 0 },
+        { x: 135, y: 10 },
+      ])
+    );
     fireEvent[TE](touchArea, cte({}));
 
     expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(0);
@@ -357,7 +389,12 @@ describe("useSwipeable", () => {
     fireEvent[TM](touchArea, cte({ x: 100, y: 150 }));
 
     // change preventScrollOnSwipe in middle of swipe
-    rerender(<SwipeableUsingHook onSwipedDown={onSwipedDown} preventScrollOnSwipe={false} />);
+    rerender(
+      <SwipeableUsingHook
+        onSwipedDown={onSwipedDown}
+        preventScrollOnSwipe={false}
+      />
+    );
 
     fireEvent[TM](touchArea, cte({ x: 100, y: 175 }));
     fireEvent[TM](touchArea, cte({ x: 100, y: 200 }));
@@ -370,10 +407,7 @@ describe("useSwipeable", () => {
   it("does not fire onSwiped when under delta", () => {
     const onSwiped = jest.fn();
     const { getByText } = render(
-      <SwipeableUsingHook
-        onSwiped={onSwiped}
-        delta={40}
-      />
+      <SwipeableUsingHook onSwiped={onSwiped} delta={40} />
     );
 
     const touchArea = getByText(TESTING_TEXT);
