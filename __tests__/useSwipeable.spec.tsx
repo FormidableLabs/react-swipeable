@@ -151,6 +151,30 @@ describe("useSwipeable", () => {
     expect(onTap).not.toHaveBeenCalled();
   });
 
+  it("skips touch events with more than 1 touch", () => {
+    const swipeFuncs = getMockedSwipeFunctions();
+    const { getByText } = render(<SwipeableUsingHook {...swipeFuncs} />);
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    const setupMultipleTouchEvent = (touches: { x?: number; y?: number }[]) => ({
+      touches: touches.map(t => createClientXYObject(t.x, t.y)),
+    });
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 10 }));
+    fireEvent[TM](touchArea, setupMultipleTouchEvent([{ x: 125, y: 0 }, {x: 130, y: 10}]));
+    fireEvent[TM](touchArea, setupMultipleTouchEvent([{ x: 130, y: 0 }, {x: 135, y: 10}]));
+    fireEvent[TE](touchArea, cte({}));
+
+    fireEvent[TS](touchArea, setupMultipleTouchEvent([{ x: 100, y: 0 }, {x: 110, y: 10}]));
+    fireEvent[TM](touchArea, setupMultipleTouchEvent([{ x: 125, y: 0 }, {x: 130, y: 10}]));
+    fireEvent[TM](touchArea, setupMultipleTouchEvent([{ x: 130, y: 0 }, {x: 135, y: 10}]));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(0);
+    expect(swipeFuncs.onSwiped).toHaveBeenCalledTimes(0);
+  });
+
   it("handles mouse events with trackMouse prop and fires correct props", () => {
     const swipeFuncs = getMockedSwipeFunctions();
     const { getByText } = render(
@@ -256,10 +280,7 @@ describe("useSwipeable", () => {
     const onSwipedDown = jest.fn();
 
     const { getByText } = render(
-      <SwipeableUsingHook
-        onSwipedDown={onSwipedDown}
-        preventDefaultTouchmoveEvent
-      />
+      <SwipeableUsingHook onSwipedDown={onSwipedDown} preventScrollOnSwipe />
     );
 
     const touchArea = getByText(TESTING_TEXT);
@@ -300,7 +321,7 @@ describe("useSwipeable", () => {
     const onSwiped = jest.fn();
 
     const { getByText, rerender } = render(
-      <SwipeableUsingHook onSwiping={onSwiping} preventDefaultTouchmoveEvent />
+      <SwipeableUsingHook onSwiping={onSwiping} preventScrollOnSwipe />
     );
 
     const touchArea = getByText(TESTING_TEXT);
@@ -312,9 +333,7 @@ describe("useSwipeable", () => {
     expect(onSwiping).toHaveBeenCalled();
     expect(defaultPrevented).toBe(1);
 
-    rerender(
-      <SwipeableUsingHook onSwiped={onSwiped} preventDefaultTouchmoveEvent />
-    );
+    rerender(<SwipeableUsingHook onSwiped={onSwiped} preventScrollOnSwipe />);
 
     fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
     fireEvent[TM](touchArea, cte({ x: 100, y: 50 }));
@@ -322,6 +341,49 @@ describe("useSwipeable", () => {
 
     expect(onSwiped).toHaveBeenCalled();
     expect(defaultPrevented).toBe(2);
+  });
+
+  it("calls preventDefault appropriately when preventScrollOnSwipe value changes", () => {
+    const onSwipedDown = jest.fn();
+
+    const { getByText, rerender } = render(
+      <SwipeableUsingHook onSwipedDown={onSwipedDown} preventScrollOnSwipe />
+    );
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 125 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 150 }));
+
+    // change preventScrollOnSwipe in middle of swipe
+    rerender(<SwipeableUsingHook onSwipedDown={onSwipedDown} preventScrollOnSwipe={false} />);
+
+    fireEvent[TM](touchArea, cte({ x: 100, y: 175 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 200 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwipedDown).toHaveBeenCalled();
+    expect(defaultPrevented).toBe(2);
+  });
+
+  it("does not fire onSwiped when under delta", () => {
+    const onSwiped = jest.fn();
+    const { getByText } = render(
+      <SwipeableUsingHook
+        onSwiped={onSwiped}
+        delta={40}
+      />
+    );
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 120, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 130, y: 100 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwiped).not.toHaveBeenCalled();
   });
 
   it("does not re-check delta when swiping already in progress", () => {
