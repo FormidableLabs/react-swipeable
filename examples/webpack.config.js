@@ -30,7 +30,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       // retrieve react-swipeable version to display on demo page
-      SWIPEABLE_VERSION: JSON.stringify(
+      SWIPEABLE_VERSION: useLocalSwipeable ? JSON.stringify('DEV') : JSON.stringify(
         require('./node_modules/react-swipeable/package.json').version
       )
     })

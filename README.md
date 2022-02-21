@@ -111,9 +111,9 @@ Please experiment with the [example app](http://formidablelabs.github.io/react-s
 #### passive listener
 With v6 we've added the passive event listener option, by default, to **internal uses** of `addEventListener`. We set the `passive` option to `false` only when `preventScrollOnSwipe` is `true` and only `onTouchMove`. Other listeners will retain `passive: true`.
 
-**When `preventDefaultTouchmoveEvent` is:**
-  - `true`  => `el.addEventListener(event, cb, { passive: false })`
-  - `false` => `el.addEventListener(event, cb, { passive: true })`
+**When `preventScrollOnSwipe` is:**
+  - `true`  => `el.addEventListener('touchmove', cb, { passive: false })`
+  - `false` => `el.addEventListener('touchmove', cb, { passive: true })`
 
 Here is more information on react's long running passive [event issue](https://github.com/facebook/react/issues/6436).
 
