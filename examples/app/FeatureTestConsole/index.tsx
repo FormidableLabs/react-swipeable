@@ -23,10 +23,7 @@ const initialStateApplied = {
   onSwipingApplied: true,
   onSwipedApplied: true,
   onTapApplied: true,
-  onSwipedLeftApplied: true,
-  onSwipedRightApplied: true,
-  onSwipedUpApplied: true,
-  onSwipedDownApplied: true,
+  stopScrollCss: false,
 };
 
 interface IState {
@@ -44,10 +41,7 @@ interface IState {
   onSwipingApplied: boolean;
   onSwipedApplied: boolean;
   onTapApplied: boolean;
-  onSwipedLeftApplied: boolean;
-  onSwipedRightApplied: boolean;
-  onSwipedUpApplied: boolean;
-  onSwipedDownApplied: boolean;
+  stopScrollCss: boolean;
 }
 
 export default class Main extends Component<any, IState> {
@@ -136,6 +130,7 @@ export default class Main extends Component<any, IState> {
       trackTouch,
       trackMouse,
       rotationAngle,
+      stopScrollCss,
     } = this.state;
 
     const isDeltaNumber = !(isNaN(delta as any) || delta === '');
@@ -143,7 +138,10 @@ export default class Main extends Component<any, IState> {
     const deltaNum = isDeltaNumber ? +delta : 10;
     const rotationAngleNum = isRotationAngleNumber ? +rotationAngle : 0;
 
-    const swipeableStyle = {fontSize: "0.75rem"};
+    const swipeableStyle = {
+      fontSize: '0.75rem',
+      touchAction: stopScrollCss ? 'none' : 'auto',
+    };
 
     const boundSwipes = getBoundSwipes(this);
     let swipeableDirProps: any = {};
@@ -266,7 +264,12 @@ export default class Main extends Component<any, IState> {
           </table>
           <table style={{width: "100%"}}>
             <tbody>
-
+              <RowSimpleCheckbox
+                value={stopScrollCss}
+                name="stopScrollCss"
+                displayText="Prevent scroll via CSS (touch-action)"
+                onChange={this.updateValue}
+              />
             </tbody>
           </table>
           <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset All Options</button>

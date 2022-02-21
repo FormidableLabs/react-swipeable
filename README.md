@@ -175,7 +175,7 @@ Sometimes you don't want the `body` of your page to scroll along with the user m
 
 You can prevent scrolling via [preventScrollOnSwipe](#preventscrollonswipe-details), which calls `event.preventDefault()` during `onTouchMove`. **But** there may be a simpler, more effective solution, which has to do with a simple CSS property.
 
-`touch-action` is a CSS property that sets how an element's region can be manipulated by a touchscreen user. See the [documentation for `touch-action`](https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action) to determine which property value to use for your particular usecase.
+`touch-action` is a CSS property that sets how an element's region can be manipulated by a touchscreen user. See the [documentation for `touch-action`](https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action) to determine which property value to use for your particular use case.
 
 #### Static example
 ```js
@@ -202,7 +202,7 @@ const MySwipeableComponent = props => {
 };
 ```
 
-This is a somewhat contrived example as the final outcome would be similar to the static example. However, there may be cases where you want to determine when the user can scoll based on the user's swiping action along with any number of variables from state and props.
+This is a somewhat contrived example as the final outcome would be similar to the static example. However, there may be cases where you want to determine when the user can scroll based on the user's swiping action along with any number of variables from state and props.
 
 ## License
 
