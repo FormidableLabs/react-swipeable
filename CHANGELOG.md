@@ -1,3 +1,10 @@
+# UNRELEASED
+* `preventScrollOnSwipe` - "new" prop. Replaces `preventDefaultTouchmoveEvent`
+  * same functionality but renamed to be more explicit on its intended use
+  * **fixed bug** - where toggling this prop did not re-attach event listeners
+  * **small update** - we now only change the `passive` event listener option for `touchmove` depending on this prop
+    * see notes in README for more details [readme#passive-listener](https://github.com/FormidableLabs/react-swipeable#passive-listener)
+
 # v6.2.0
 * `delta` prop can now be an `object` specifying different values for each direction
   * [PR #260](https://github.com/formidablelabs/react-swipeable/pull/260)
