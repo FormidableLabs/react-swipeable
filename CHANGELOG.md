@@ -5,6 +5,7 @@
   * **fixed bug** - where toggling this prop did not re-attach event listeners
   * **small update** - we now only change the `passive` event listener option for `touchmove` depending on this prop
     * see notes in README for more details [readme#passive-listener](https://github.com/FormidableLabs/react-swipeable#passive-listener)
+  * Thank you [@stefvhuynh](https://github.com/stefvhuynh)
 **Bug fixes:**
 * fix bug where directional swiped check allowed `undefined`/falsy values to set `cancelablePageSwipe`
   * Thank you [@bhj](https://github.com/bhj) for the [comment](https://github.com/FormidableLabs/react-swipeable/pull/240#issuecomment-1014980025)
@@ -14,6 +15,7 @@
 * utilize `rollup` for build & output
   * remove dependency on `microbundle`
   * remove `interop` injected code - [pull/260](https://github.com/FormidableLabs/react-swipeable/pull/260#discussion_r679541081)
+  * Thank you [@binoy14](https://github.com/binoy14)
 
 # v6.2.0
 * `delta` prop can now be an `object` specifying different values for each direction
