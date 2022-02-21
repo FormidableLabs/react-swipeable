@@ -166,7 +166,11 @@ function getHandlers(
       // track if a swipe is cancelable (handler for swiping or swiped(dir) exists)
       // so we can call preventDefault if needed
       let cancelablePageSwipe = false;
-      if (props.onSwiping || props.onSwiped || props[`onSwiped${dir}` as keyof SwipeableCallbacks]) {
+      if (
+        props.onSwiping ||
+        props.onSwiped ||
+        props[`onSwiped${dir}` as keyof SwipeableCallbacks]
+      ) {
         cancelablePageSwipe = true;
       }
 

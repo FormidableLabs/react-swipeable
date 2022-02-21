@@ -326,7 +326,9 @@ describe("useSwipeable", () => {
     expect(onSwipedDown).not.toHaveBeenCalled();
     expect(defaultPrevented).toBe(0);
 
-    rerender(<SwipeableUsingHook onSwipedDown={onSwipedDown} preventScrollOnSwipe />)
+    rerender(
+      <SwipeableUsingHook onSwipedDown={onSwipedDown} preventScrollOnSwipe />
+    );
 
     fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
     fireEvent[TM](touchArea, cte({ x: 100, y: 125 }));

@@ -79,6 +79,15 @@ $ yarn run prettier
 $ yarn run format
 ```
 
+If you see this error:
+```
+[warn] Code style issues found in the above file(s). Forgot to run Prettier?
+```
+Then run the formatter:
+```sh
+$ yarn run format
+```
+
 ## Project Maintainers
 ### Releasing a new version
 1. Publish to npm
