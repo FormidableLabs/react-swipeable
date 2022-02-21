@@ -3,7 +3,8 @@
   "scripts": {
     "start": "webpack-dev-server",
     "start:dev:local": "DEV_LOCAL=true webpack-dev-server",
-    "build": "webpack -p --config ./webpack.config.min.js"
+    "build": "webpack -p --config ./webpack.config.min.js",
+    "build:local": "DEV_LOCAL=true webpack -p --config ./webpack.config.js"
   },
   "dependencies": {
     "react": "^17.0.1",

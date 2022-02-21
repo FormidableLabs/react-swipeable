@@ -45,7 +45,7 @@ export type ConfigurationOptionDelta =
   | { [key in Lowercase<SwipeDirections>]?: number };
 export interface ConfigurationOptions {
   delta: ConfigurationOptionDelta;
-  preventDefaultTouchmoveEvent: boolean;
+  preventScrollOnSwipe: boolean;
   rotationAngle: number;
   trackMouse: boolean;
   trackTouch: boolean;
@@ -77,4 +77,7 @@ export type StateSetter = (
   props: SwipeablePropsWithDefaultOptions
 ) => SwipeableState;
 export type Setter = (stateSetter: StateSetter) => void;
-export type AttachTouch = (el: HTMLElement, passive: boolean) => () => void;
+export type AttachTouch = (
+  el: HTMLElement,
+  passiveOnTouchMove: boolean
+) => () => void;

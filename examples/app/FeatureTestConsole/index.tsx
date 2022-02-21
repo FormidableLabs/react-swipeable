@@ -13,7 +13,7 @@ const initialState = {
 };
 const initialStateSwipeable = {
   delta: '10',
-  preventDefaultTouchmoveEvent: false,
+  preventScrollOnSwipe: false,
   trackMouse: false,
   trackTouch: true,
   rotationAngle: 0,
@@ -23,10 +23,7 @@ const initialStateApplied = {
   onSwipingApplied: true,
   onSwipedApplied: true,
   onTapApplied: true,
-  onSwipedLeftApplied: true,
-  onSwipedRightApplied: true,
-  onSwipedUpApplied: true,
-  onSwipedDownApplied: true,
+  stopScrollCss: false,
 };
 
 interface IState {
@@ -36,7 +33,7 @@ interface IState {
   swipingDirection: string;
   swipedDirection: string;
   delta: string;
-  preventDefaultTouchmoveEvent: boolean;
+  preventScrollOnSwipe: boolean;
   trackMouse: boolean;
   trackTouch: boolean;
   rotationAngle: number | string;
@@ -44,10 +41,7 @@ interface IState {
   onSwipingApplied: boolean;
   onSwipedApplied: boolean;
   onTapApplied: boolean;
-  onSwipedLeftApplied: boolean;
-  onSwipedRightApplied: boolean;
-  onSwipedUpApplied: boolean;
-  onSwipedDownApplied: boolean;
+  stopScrollCss: boolean;
 }
 
 export default class Main extends Component<any, IState> {
@@ -132,10 +126,11 @@ export default class Main extends Component<any, IState> {
       onSwipingApplied,
       onSwipedApplied,
       onTapApplied,
-      preventDefaultTouchmoveEvent,
+      preventScrollOnSwipe,
       trackTouch,
       trackMouse,
       rotationAngle,
+      stopScrollCss,
     } = this.state;
 
     const isDeltaNumber = !(isNaN(delta as any) || delta === '');
@@ -143,7 +138,10 @@ export default class Main extends Component<any, IState> {
     const deltaNum = isDeltaNumber ? +delta : 10;
     const rotationAngleNum = isRotationAngleNumber ? +rotationAngle : 0;
 
-    const swipeableStyle = {fontSize: "0.75rem"};
+    const swipeableStyle = {
+      fontSize: '0.75rem',
+      touchAction: stopScrollCss ? 'none' : 'auto',
+    };
 
     const boundSwipes = getBoundSwipes(this);
     let swipeableDirProps: any = {};
@@ -168,7 +166,7 @@ export default class Main extends Component<any, IState> {
             {...boundSwipes}
             {...swipeableDirProps}
             delta={deltaNum}
-            preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
+            preventScrollOnSwipe={preventScrollOnSwipe}
             trackTouch={trackTouch}
             trackMouse={trackMouse}
             rotationAngle={rotationAngleNum}
@@ -248,8 +246,8 @@ export default class Main extends Component<any, IState> {
                 </td>
               </tr>
               <RowSimpleCheckbox
-                value={preventDefaultTouchmoveEvent}
-                name="preventDefaultTouchmoveEvent"
+                value={preventScrollOnSwipe}
+                name="preventScrollOnSwipe"
                 onChange={this.updateValue}
               />
               <RowSimpleCheckbox
@@ -266,7 +264,12 @@ export default class Main extends Component<any, IState> {
           </table>
           <table style={{width: "100%"}}>
             <tbody>
-
+              <RowSimpleCheckbox
+                value={stopScrollCss}
+                name="stopScrollCss"
+                displayText="Prevent scroll via CSS (touch-action)"
+                onChange={this.updateValue}
+              />
             </tbody>
           </table>
           <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset All Options</button>

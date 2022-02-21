@@ -26,6 +26,7 @@
     "preversion": "yarn test",
     "size": "size-limit",
     "start:examples": "cd ./examples && yarn && yarn start",
+    "start:examples:local": "cd ./examples && yarn && yarn start:dev:local",
     "test": "yarn run test:unit && yarn run build && yarn run size",
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
