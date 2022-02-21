@@ -1,40 +1,30 @@
-import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import pkg from "./package.json";
 
 export default [
-  // browser-friendly UMD build
-  {
-    input: "src/index.ts",
-    output: {
-      name: "react-swipeable",
-      file: pkg.browser,
-      format: "umd",
-      sourcemap: true,
-      globals: {
-        react: 'React'
-      }
-    },
-    external: ["react"],
-    plugins: [
-      typescript(),
-      commonjs()
-    ],
-  },
-
-  // CommonJS (for Node) and ES module (for bundlers) build.
-  // (We could have three entries in the configuration array
-  // instead of two, but it's quicker to generate multiple
-  // builds from a single configuration where possible, using
-  // an array for the `output` option, where we can specify
-  // `file` and `format` for each target)
+  // - CommonJS (for Node)
+  // - ES module (for bundlers)
+  // - UMD (for browser)
   {
     input: "src/index.ts",
     external: ["react"],
     output: [
+      // NOTE: interop: false is deprecated.
+      // When we upgrade need to identify best path forward to avoid bloat.
       { file: pkg.main, format: "cjs", sourcemap: true, interop: false },
       { file: pkg.module, format: "es", sourcemap: true },
+      {
+        name: "swipeable",
+        file: pkg.browser,
+        format: "umd",
+        sourcemap: true,
+        globals: {
+          react: 'React'
+        },
+        interop: false,
+      }
     ],
-    plugins: [typescript()],
+    // ts definition outputs specified in config
+    plugins: [typescript({ tsconfig: './tsconfig.json' })],
   },
 ];
