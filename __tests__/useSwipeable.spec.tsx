@@ -308,14 +308,25 @@ describe("useSwipeable", () => {
     expect(onSwipeStart).toHaveBeenCalledTimes(2);
   });
 
-  it("calls preventDefault when swiping in direction that has a callback", () => {
+  it("calls preventDefault when swiping in direction with callback defined", () => {
     const onSwipedDown = jest.fn();
 
-    const { getByText } = render(
-      <SwipeableUsingHook onSwipedDown={onSwipedDown} preventScrollOnSwipe />
+    const { getByText, rerender } = render(
+      <SwipeableUsingHook onSwipedDown={undefined} preventScrollOnSwipe />
     );
 
     const touchArea = getByText(TESTING_TEXT);
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 150 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 200 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    // Validate `undefined` does not trigger defaultPrevented
+    expect(onSwipedDown).not.toHaveBeenCalled();
+    expect(defaultPrevented).toBe(0);
+
+    rerender(<SwipeableUsingHook onSwipedDown={onSwipedDown} preventScrollOnSwipe />)
 
     fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
     fireEvent[TM](touchArea, cte({ x: 100, y: 125 }));
