@@ -5,7 +5,6 @@
   "main": "./dist/react-swipeable.js",
   "browser": "./dist/react-swipeable.umd.js",
   "umd:main": "./dist/react-swipeable.umd.js",
-  "esmodule": "./dist/react-swipeable.modern.js",
   "module": "./dist/react-swipeable.module.js",
   "jsnext:main": "./dist/react-swipeable.module.js",
   "source": "./src/index.ts",
@@ -13,7 +12,7 @@
   "typings": "./dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "microbundle --no-compress --name swipeable --output dist",
+    "build": "rollup -c",
     "build:examples": "cd ./examples && yarn && yarn build",
     "build:publish:examples": "yarn run build:examples && rimraf examples/node_modules && gh-pages -d examples",
     "check:ci": "yarn run prettier && yarn run lint && yarn run test:unit",
@@ -35,8 +34,16 @@
   },
   "size-limit": [
     {
-      "limit": "1.4 KB",
+      "limit": "1.2 KB",
       "path": "dist/react-swipeable.js"
+    },
+    {
+      "limit": "1.2 KB",
+      "path": "dist/react-swipeable.umd.js"
+    },
+    {
+      "limit": "1.25 KB",
+      "path": "dist/react-swipeable.module.js"
     }
   ],
   "jest": {
@@ -73,6 +80,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^8.3.0",
     "@size-limit/preset-small-lib": "^4.6.0",
     "@testing-library/react": "^10.4.3",
     "@types/jest": "^26.0.20",
@@ -87,13 +95,11 @@
     "eslint-plugin-react-hooks": "^4.0.5",
     "gh-pages": "^3.0.0",
     "jest": "^26.1.0",
-    "microbundle": "^0.13.3",
     "prettier": "^2.0.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "rimraf": "^3.0.2",
-    "rollup": "^1.1.2",
-    "rollup-plugin-babel": "^4.3.2",
+    "rollup": "^2.60.0",
     "size-limit": "^4.6.0",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.1",

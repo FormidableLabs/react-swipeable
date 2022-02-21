@@ -9,6 +9,12 @@
 * fix bug where directional swiped check allowed `undefined`/falsy values to set `cancelablePageSwipe`
   * Thank you [@bhj](https://github.com/bhj) for the [comment](https://github.com/FormidableLabs/react-swipeable/pull/240#issuecomment-1014980025)
 
+**Infrastructure:**
+* post `size-limit report` to PRs with bundle diff sizes
+* utilize `rollup` for build & output
+  * remove dependency on `microbundle`
+  * remove `interop` injected code - [pull/260](https://github.com/FormidableLabs/react-swipeable/pull/260#discussion_r679541081)
+
 # v6.2.0
 * `delta` prop can now be an `object` specifying different values for each direction
   * [PR #260](https://github.com/formidablelabs/react-swipeable/pull/260)
