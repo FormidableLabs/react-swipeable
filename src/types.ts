@@ -27,14 +27,17 @@ export interface SwipeEventData {
 export type SwipeCallback = (eventData: SwipeEventData) => void;
 export type TapCallback = ({ event }: { event: HandledEvents }) => void;
 
-export type SwipeableCallbacks = {
-  // Event handler/callbacks
-  onSwipeStart: SwipeCallback;
-  onSwiped: SwipeCallback;
+export type SwipeableDirectionCallbacks = {
   onSwipedDown: SwipeCallback;
   onSwipedLeft: SwipeCallback;
   onSwipedRight: SwipeCallback;
   onSwipedUp: SwipeCallback;
+};
+
+export type SwipeableCallbacks = SwipeableDirectionCallbacks & {
+  // Event handler/callbacks
+  onSwipeStart: SwipeCallback;
+  onSwiped: SwipeCallback;
   onSwiping: SwipeCallback;
   onTap: TapCallback;
 };
@@ -49,6 +52,7 @@ export interface ConfigurationOptions {
   rotationAngle: number;
   trackMouse: boolean;
   trackTouch: boolean;
+  touchEventOptions: { passive: boolean };
 }
 
 export type SwipeableProps = Partial<SwipeableCallbacks & ConfigurationOptions>;
@@ -79,5 +83,5 @@ export type StateSetter = (
 export type Setter = (stateSetter: StateSetter) => void;
 export type AttachTouch = (
   el: HTMLElement,
-  passiveOnTouchMove: boolean
+  props: SwipeablePropsWithDefaultOptions
 ) => () => void;
