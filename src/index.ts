@@ -108,7 +108,8 @@ function getHandlers(
         "touches" in event ? event.touches[0] : event;
       const xy = rotateXYByAngle([clientX, clientY], props.rotationAngle);
 
-      props.onTouchStartOrOnMouseDown && props.onTouchStartOrOnMouseDown({ event });
+      props.onTouchStartOrOnMouseDown &&
+        props.onTouchStartOrOnMouseDown({ event });
 
       return {
         ...state,

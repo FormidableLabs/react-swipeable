@@ -315,10 +315,14 @@ describe("useSwipeable", () => {
     fireEvent[MU](document, cme({}));
 
     expect(onTouchStartOrOnMouseDownMock).toHaveBeenCalled();
-    expect(onTouchStartOrOnMouseDownMock.mock.calls[0][0].event.type).toEqual('mousedown');
+    expect(onTouchStartOrOnMouseDownMock.mock.calls[0][0].event.type).toEqual(
+      "mousedown"
+    );
 
     rerender(
-      <SwipeableUsingHook onTouchStartOrOnMouseDown={onTouchStartOrOnMouseDownMock} />
+      <SwipeableUsingHook
+        onTouchStartOrOnMouseDown={onTouchStartOrOnMouseDownMock}
+      />
     );
 
     fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
@@ -326,7 +330,9 @@ describe("useSwipeable", () => {
     fireEvent[TE](touchArea, cte({}));
 
     expect(onTouchStartOrOnMouseDownMock).toHaveBeenCalledTimes(2);
-    expect(onTouchStartOrOnMouseDownMock.mock.calls[1][0].event.type).toEqual('touchstart');
+    expect(onTouchStartOrOnMouseDownMock.mock.calls[1][0].event.type).toEqual(
+      "touchstart"
+    );
   });
 
   it("correctly calls onSwipeStart for first swipe event", () => {
