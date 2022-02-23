@@ -10,6 +10,7 @@ import {
   RIGHT,
   Setter,
   SwipeableCallbacks,
+  ConfigurationOptions,
   SwipeableHandlers,
   SwipeableProps,
   SwipeablePropsWithDefaultOptions,
@@ -34,12 +35,13 @@ export {
   Vector2,
 };
 
-const defaultProps = {
+const defaultProps: ConfigurationOptions = {
   delta: 10,
   preventScrollOnSwipe: false,
   rotationAngle: 0,
   trackMouse: false,
   trackTouch: true,
+  swipeDuration: Infinity,
 };
 const initialState: SwipeableState = {
   first: true,
@@ -123,6 +125,11 @@ function getHandlers(
         return state;
       }
 
+      // if swipe has exceeded duration stop tracking
+      if (event.timeStamp - state.start > props.swipeDuration) {
+        return state.swiping ? { ...state, swiping: false } : state;
+      }
+
       const { clientX, clientY } =
         "touches" in event ? event.touches[0] : event;
       const [x, y] = rotateXYByAngle([clientX, clientY], props.rotationAngle);
@@ -197,12 +204,15 @@ function getHandlers(
     set((state, props) => {
       let eventData: SwipeEventData | undefined;
       if (state.swiping && state.eventData) {
-        eventData = { ...state.eventData, event };
-        props.onSwiped && props.onSwiped(eventData);
+        // if swipe is less than duration fire swiped callbacks
+        if (event.timeStamp - state.start < props.swipeDuration) {
+          eventData = { ...state.eventData, event };
+          props.onSwiped && props.onSwiped(eventData);
 
-        const onSwipedDir =
-          props[`onSwiped${eventData.dir}` as keyof SwipeableCallbacks];
-        onSwipedDir && onSwipedDir(eventData);
+          const onSwipedDir =
+            props[`onSwiped${eventData.dir}` as keyof SwipeableCallbacks];
+          onSwipedDir && onSwipedDir(eventData);
+        }
       } else {
         props.onTap && props.onTap({ event });
       }

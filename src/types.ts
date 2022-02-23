@@ -49,6 +49,7 @@ export interface ConfigurationOptions {
   rotationAngle: number;
   trackMouse: boolean;
   trackTouch: boolean;
+  swipeDuration: number;
 }
 
 export type SwipeableProps = Partial<SwipeableCallbacks & ConfigurationOptions>;

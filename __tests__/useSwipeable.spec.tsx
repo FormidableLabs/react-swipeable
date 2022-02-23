@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render, fireEvent, act } from "@testing-library/react";
+import { render, fireEvent, createEvent, act } from "@testing-library/react";
 import { useSwipeable } from "../src/index";
 import { LEFT, RIGHT, UP, DOWN, SwipeableProps } from "../src/types";
 import { expectSwipeFuncsDir } from "./helpers";
@@ -53,17 +53,36 @@ const MU = "mouseUp";
 const TS = "touchStart";
 const TM = "touchMove";
 const TE = "touchEnd";
+type touchTypes = typeof TS | typeof TM | typeof TE;
 
 const createClientXYObject = (x?: number, y?: number) => ({
   clientX: x,
   clientY: y,
 });
+type xyObj = { x?: number; y?: number };
 // Create touch event
-const cte = ({ x, y }: { x?: number; y?: number }) => ({
+const cte = ({ x, y }: xyObj) => ({
   touches: [createClientXYObject(x, y)],
 });
+// create touch event with timestamp
+const cteTs = ({
+  x,
+  y,
+  timeStamp,
+  type,
+  node,
+}: xyObj & { timeStamp?: number; type: touchTypes; node: HTMLElement }) => {
+  const e = createEvent[type](node, cte({ x, y }));
+  if (timeStamp) {
+    Object.defineProperty(e, "timeStamp", {
+      value: timeStamp,
+      writable: false,
+    });
+  }
+  return e;
+};
 // Create Mouse Event
-const cme = ({ x, y }: { x?: number; y?: number }) => ({
+const cme = ({ x, y }: xyObj) => ({
   ...createClientXYObject(x, y),
 });
 
@@ -306,6 +325,49 @@ describe("useSwipeable", () => {
     fireEvent[TE](touchArea, cte({}));
 
     expect(onSwipeStart).toHaveBeenCalledTimes(2);
+  });
+
+  it("calls callbacks appropriately for swipeDuration", () => {
+    const onSwiped = jest.fn();
+    const onSwiping = jest.fn();
+    const { getByText, rerender } = render(
+      <SwipeableUsingHook
+        onSwiped={onSwiped}
+        onSwiping={onSwiping}
+        swipeDuration={15}
+      />
+    );
+
+    const el = getByText(TESTING_TEXT);
+    const fE = fireEvent;
+
+    fE(el, cteTs({ x: 100, y: 100, node: el, type: TS, timeStamp: 1000 }));
+    fE(el, cteTs({ x: 100, y: 125, node: el, type: TM, timeStamp: 1010 }));
+    fE(el, cteTs({ x: 100, y: 150, node: el, type: TM, timeStamp: 1020 }));
+    fE(el, cteTs({ x: 100, y: 175, node: el, type: TM, timeStamp: 1030 }));
+    fE(el, cteTs({ node: el, type: TE, timeStamp: 1040 }));
+
+    expect(onSwiping).toHaveBeenCalledTimes(1);
+    expect(onSwiped).not.toHaveBeenCalled();
+
+    onSwiping.mockClear();
+    onSwiped.mockClear();
+    rerender(
+      <SwipeableUsingHook
+        onSwiped={onSwiped}
+        onSwiping={onSwiping}
+        swipeDuration={50}
+      />
+    );
+
+    fE(el, cteTs({ x: 100, y: 100, node: el, type: TS, timeStamp: 1000 }));
+    fE(el, cteTs({ x: 100, y: 125, node: el, type: TM, timeStamp: 1010 }));
+    fE(el, cteTs({ x: 100, y: 150, node: el, type: TM, timeStamp: 1020 }));
+    fE(el, cteTs({ x: 100, y: 175, node: el, type: TM, timeStamp: 1030 }));
+    fE(el, cteTs({ node: el, type: TE, timeStamp: 1040 }));
+
+    expect(onSwiping).toHaveBeenCalledTimes(3);
+    expect(onSwiped).toHaveBeenCalled();
   });
 
   it("calls preventDefault when swiping in direction with callback defined", () => {
