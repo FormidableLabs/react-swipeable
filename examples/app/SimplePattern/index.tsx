@@ -17,6 +17,9 @@ function SimplePattern() {
         <Item img="https://unsplash.it/478/205" />
         <Item img="https://unsplash.it/479/205" />
       </Carousel>
+      <h6>
+        <a href="https://github.com/FormidableLabs/react-swipeable/blob/main/examples/app/SimplePattern/pattern.tsx">See code</a> for example usage of <code style={{ whiteSpace: "nowrap" }}>touch-action: none</code> to prevent scrolling.
+      </h6>
     </div>
   );
 }

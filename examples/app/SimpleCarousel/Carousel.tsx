@@ -42,7 +42,8 @@ const Carousel: FunctionComponent = (props) => {
   const handlers = useSwipeable({
     onSwipedLeft: () => slide(NEXT),
     onSwipedRight: () => slide(PREV),
-    preventScrollOnSwipe: true,
+    onTouchStartOrOnMouseDown: (({ event }) => (console.log('yup'),event.preventDefault())),
+    touchEventOptions: { passive: false },
     trackMouse: true
   });
 
