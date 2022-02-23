@@ -1,11 +1,17 @@
 # UNRELEASED
+
+**New Features:**
+- add new `touchEventOptions` prop that can set the options for the the touch event listeners
+  - this helps provides users full control of if/when they want to set [passive](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#options)
+
 **Breaking Changes:**
 * `preventScrollOnSwipe` - "new" prop. Replaces `preventDefaultTouchmoveEvent`
   * same functionality but renamed to be more explicit on its intended use
   * **fixed bug** - where toggling this prop did not re-attach event listeners
-  * **small update** - we now only change the `passive` event listener option for `touchmove` depending on this prop
+  * **update** - we now **only** change the `passive` event listener option for `touchmove` depending on this prop
     * see notes in README for more details [readme#passive-listener](https://github.com/FormidableLabs/react-swipeable#passive-listener)
   * Thank you [@stefvhuynh](https://github.com/stefvhuynh)
+
 **Bug fixes:**
 * fix bug where directional swiped check allowed `undefined`/falsy values to set `cancelablePageSwipe`
   * Thank you [@bhj](https://github.com/bhj) for the [comment](https://github.com/FormidableLabs/react-swipeable/pull/240#issuecomment-1014980025)
