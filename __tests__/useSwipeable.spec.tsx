@@ -498,9 +498,9 @@ describe("useSwipeable", () => {
     expect(addEventListenerSpy.mock.calls.length).toBe(3);
     const calls = addEventListenerSpy.mock.calls;
     touchListeners.forEach((l, idx) => {
-      const call: any = calls[idx];
-      expect(call[0]).toBe(l);
-      expect(call[2]).toEqual({ passive: true });
+      const [arg1, , arg3] = calls[idx] as any[];
+      expect(arg1).toBe(l);
+      expect(arg3).toEqual({ passive: true });
     });
 
     expect(onSwiping).not.toHaveBeenCalled();
@@ -529,13 +529,13 @@ describe("useSwipeable", () => {
     expect(addEventListenerSpy.mock.calls.length).toBe(3);
     const calls = addEventListenerSpy.mock.calls;
     touchListeners.forEach((l, idx) => {
-      const call: any = calls[idx];
-      expect(call[0]).toBe(l);
+      const [arg1, , arg3] = calls[idx] as any[];
+      expect(arg1).toBe(l);
       if (l === touchMove) {
         // preventScrollOnSwipe overrides passive for touchmove
-        expect(call[2]).toEqual({ passive: false });
+        expect(arg3).toEqual({ passive: false });
       } else {
-        expect(call[2]).toEqual({ passive: true });
+        expect(arg3).toEqual({ passive: true });
       }
     });
 
