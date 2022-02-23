@@ -298,6 +298,37 @@ describe("useSwipeable", () => {
     );
   });
 
+  it("calls onTouchStartOrOnMouseDown for touch or mouse events", () => {
+    const onTouchStartOrOnMouseDownMock = jest.fn();
+    const { getByText, rerender } = render(
+      <SwipeableUsingHook
+        onTouchStartOrOnMouseDown={onTouchStartOrOnMouseDownMock}
+        trackMouse={true}
+        trackTouch={false}
+      />
+    );
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    fireEvent[MD](touchArea, cme({ x: 100, y: 100 }));
+    fireEvent[MM](touchArea, cme({ x: 125, y: 100 }));
+    fireEvent[MU](document, cme({}));
+
+    expect(onTouchStartOrOnMouseDownMock).toHaveBeenCalled();
+    expect(onTouchStartOrOnMouseDownMock.mock.calls[0][0].event.type).toEqual('mousedown');
+
+    rerender(
+      <SwipeableUsingHook onTouchStartOrOnMouseDown={onTouchStartOrOnMouseDownMock} />
+    );
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 125 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onTouchStartOrOnMouseDownMock).toHaveBeenCalledTimes(2);
+    expect(onTouchStartOrOnMouseDownMock.mock.calls[1][0].event.type).toEqual('touchstart');
+  });
+
   it("correctly calls onSwipeStart for first swipe event", () => {
     const onSwipeStart = jest.fn();
     const { getByText } = render(
