@@ -150,8 +150,6 @@ useEffect(() => {
 });
 ```
 
-
-
 ### How to share `ref` from `useSwipeable`?
 
 **Example ref passthrough, [more details #189](https://github.com/FormidableLabs/react-swipeable/issues/189#issuecomment-656302682):**
