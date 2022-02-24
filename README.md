@@ -136,6 +136,10 @@ If you would like something similar to the old `<Swipeable>` component you can r
 
 ### How can I add a swipe listener to the `document`?
 Example by [@merrywhether #180](https://github.com/FormidableLabs/react-swipeable/issues/180#issuecomment-649677983)
+
+##### Example codesandbox with swipeable on document and nested swipe
+https://codesandbox.io/s/react-swipeable-document-swipe-example-1yvr2v
+
 ```js
 const { ref } = useSwipeable({
   ...
@@ -145,6 +149,8 @@ useEffect(() => {
   ref(document);
 });
 ```
+
+
 
 ### How to share `ref` from `useSwipeable`?
 
