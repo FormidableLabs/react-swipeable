@@ -36,11 +36,18 @@ export type SwipeableDirectionCallbacks = {
 
 export type SwipeableCallbacks = SwipeableDirectionCallbacks & {
   // Event handler/callbacks
-  onTouchStartOrOnMouseDown: TapCallback;
   onSwipeStart: SwipeCallback;
   onSwiped: SwipeCallback;
   onSwiping: SwipeCallback;
   onTap: TapCallback;
+  /**
+   * Called for `touchstart` and `mousedown`.
+   */
+  onTouchStartOrOnMouseDown: TapCallback;
+  /**
+   * Called for `touchend` and `mouseup`.
+   */
+  onTouchEndOrOnMouseUp: TapCallback;
 };
 
 // Configuration Options

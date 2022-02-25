@@ -36,6 +36,10 @@ Spread `handlers` onto the element you wish to track swipes on.
   onSwipeStart,   // Start of swipe    (SwipeEventData) => void *see details*
   onSwiping,      // During swiping    (SwipeEventData) => void
   onTap,          // After a tap       ({ event }) => void
+
+  // Pass through callbacks, event provided: ({ event }) => void
+  onTouchStartOrOnMouseDown, // Called for `touchstart` and `mousedown`
+  onTouchEndOrOnMouseUp,     // Called for `touchend` and `mouseup`
 }
 ```
 

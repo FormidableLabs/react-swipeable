@@ -214,6 +214,9 @@ function getHandlers(
       } else {
         props.onTap && props.onTap({ event });
       }
+
+      props.onTouchEndOrOnMouseUp && props.onTouchEndOrOnMouseUp({ event });
+
       return { ...state, ...initialState, eventData };
     });
   };

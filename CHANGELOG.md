@@ -5,6 +5,7 @@
   - this helps provides users full control of if/when they want to set [passive](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#options)
 - add new `onTouchStartOrOnMouseDown` prop that is called for `touchstart` and `mousedown`. Before a swipe even starts.
   - combined with `touchEventOptions` allows users the ability to now call `preventDefault` on `touchstart`
+- add new `onTouchEndOrOnMouseUp` prop that is always called for `touchend` and `mouseup`.
 
 **Breaking Changes:**
 * `preventScrollOnSwipe` - "new" prop. Replaces `preventDefaultTouchmoveEvent`

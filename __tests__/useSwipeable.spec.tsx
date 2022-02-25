@@ -298,11 +298,13 @@ describe("useSwipeable", () => {
     );
   });
 
-  it("calls onTouchStartOrOnMouseDown for touch or mouse events", () => {
+  it("calls onTouchStartOrOnMouseDown and onTouchEndOrOnMouseUp for touch or mouse events", () => {
     const onTouchStartOrOnMouseDownMock = jest.fn();
+    const onTouchEndOrOnMouseUpMock = jest.fn();
     const { getByText, rerender } = render(
       <SwipeableUsingHook
         onTouchStartOrOnMouseDown={onTouchStartOrOnMouseDownMock}
+        onTouchEndOrOnMouseUp={onTouchEndOrOnMouseUpMock}
         trackMouse={true}
         trackTouch={false}
       />
@@ -318,10 +320,15 @@ describe("useSwipeable", () => {
     expect(onTouchStartOrOnMouseDownMock.mock.calls[0][0].event.type).toEqual(
       "mousedown"
     );
+    expect(onTouchEndOrOnMouseUpMock).toHaveBeenCalled();
+    expect(onTouchEndOrOnMouseUpMock.mock.calls[0][0].event.type).toEqual(
+      "mouseup"
+    );
 
     rerender(
       <SwipeableUsingHook
         onTouchStartOrOnMouseDown={onTouchStartOrOnMouseDownMock}
+        onTouchEndOrOnMouseUp={onTouchEndOrOnMouseUpMock}
       />
     );
 
@@ -332,6 +339,10 @@ describe("useSwipeable", () => {
     expect(onTouchStartOrOnMouseDownMock).toHaveBeenCalledTimes(2);
     expect(onTouchStartOrOnMouseDownMock.mock.calls[1][0].event.type).toEqual(
       "touchstart"
+    );
+    expect(onTouchEndOrOnMouseUpMock).toHaveBeenCalledTimes(2);
+    expect(onTouchEndOrOnMouseUpMock.mock.calls[1][0].event.type).toEqual(
+      "touchend"
     );
   });
 
