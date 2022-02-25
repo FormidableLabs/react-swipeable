@@ -12,30 +12,84 @@ export type SwipeDirections =
   | typeof UP
   | typeof DOWN;
 export interface SwipeEventData {
+  /**
+   * Absolute displacement of swipe in x. Math.abs(deltaX);
+   */
   absX: number;
+  /**
+   * Absolute displacement of swipe in y. Math.abs(deltaY);
+   */
   absY: number;
+  /**
+   * Displacement of swipe in x. (current.x - initial.x)
+   */
   deltaX: number;
+  /**
+   * Displacement of swipe in y. (current.y - initial.y)
+   */
   deltaY: number;
+  /**
+   * Direction of swipe - Left | Right | Up | Down
+   */
   dir: SwipeDirections;
+  /**
+   * Source event.
+   */
   event: HandledEvents;
+  /**
+   * True for the first event of a tracked swipe.
+   */
   first: boolean;
+  /**
+   * Location where swipe started.
+   */
   initial: Vector2;
+  /**
+   * "Absolute velocity" (speed) - √(absX^2 + absY^2) / time
+   */
   velocity: number;
+  /**
+   * Velocity per axis - [ deltaX/time, deltaY/time ]
+   */
   vxvy: Vector2;
 }
 
 export type SwipeCallback = (eventData: SwipeEventData) => void;
 export type TapCallback = ({ event }: { event: HandledEvents }) => void;
 
+// Event handler/callbacks
 export type SwipeableCallbacks = {
-  // Event handler/callbacks
+  /**
+   * Called at start of a tracked swipe.
+   */
   onSwipeStart: SwipeCallback;
+  /**
+   * Called after any swipe.
+   */
   onSwiped: SwipeCallback;
+  /**
+   * Called after a DOWN swipe
+   */
   onSwipedDown: SwipeCallback;
+  /**
+   * Called after a LEFT swipe
+   */
   onSwipedLeft: SwipeCallback;
+  /**
+   * Called after a RIGHT swipe
+   */
   onSwipedRight: SwipeCallback;
+  /**
+   * Called after a UP swipe
+   */
   onSwipedUp: SwipeCallback;
+  /**
+   * Called for each move event during a tracked swipe.
+   */
   onSwiping: SwipeCallback;
+  /**
+   * Called after a tap. A touch under the min distance, `delta`.
+   */
   onTap: TapCallback;
 };
 
@@ -43,11 +97,27 @@ export type SwipeableCallbacks = {
 export type ConfigurationOptionDelta =
   | number
   | { [key in Lowercase<SwipeDirections>]?: number };
+
 export interface ConfigurationOptions {
+  /**
+   * Min distance(px) before a swipe starts. **Default**: `10`
+   */
   delta: ConfigurationOptionDelta;
+  /**
+   * Prevents scroll during swipe in most cases. **Default**: `false`
+   */
   preventScrollOnSwipe: boolean;
+  /**
+   * Set a rotation angle. **Default**: `0`
+   */
   rotationAngle: number;
+  /**
+   * Track mouse input. **Default**: `false`
+   */
   trackMouse: boolean;
+  /**
+   * Track touch input. **Default**: `true`
+   */
   trackTouch: boolean;
 }
 
