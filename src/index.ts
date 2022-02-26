@@ -9,6 +9,7 @@ import {
   LEFT,
   RIGHT,
   Setter,
+  ConfigurationOptions,
   SwipeableCallbacks,
   SwipeableHandlers,
   SwipeableProps,
@@ -34,7 +35,7 @@ export {
   Vector2,
 };
 
-const defaultProps = {
+const defaultProps: ConfigurationOptions = {
   delta: 10,
   preventDefaultTouchmoveEvent: false,
   rotationAngle: 0,
@@ -253,7 +254,7 @@ function getHandlers(
       // if new DOM el clean up old DOM and reset cleanUpTouch
       if (state.el && state.el !== el && state.cleanUpTouch) {
         state.cleanUpTouch();
-        addState.cleanUpTouch = undefined;
+        addState.cleanUpTouch = void 0;
       }
       // only attach if we want to track touch
       if (props.trackTouch && el) {
@@ -290,7 +291,7 @@ function updateTransientState(
   // clean up touch handlers if no longer tracking touches
   if (!props.trackTouch && state.cleanUpTouch) {
     state.cleanUpTouch();
-    addState.cleanUpTouch = undefined;
+    addState.cleanUpTouch = void 0;
   } else if (props.trackTouch && !state.cleanUpTouch) {
     // attach/re-attach touch handlers
     if (state.el) {
@@ -309,7 +310,20 @@ export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   const transientProps = React.useRef<SwipeablePropsWithDefaultOptions>({
     ...defaultProps,
   });
-  transientProps.current = { ...defaultProps, ...options };
+  transientProps.current = {
+    ...defaultProps,
+    ...options,
+    // Force defaults for config properties
+    delta: options.delta === void 0 ? defaultProps.delta : options.delta,
+    rotationAngle:
+      options.rotationAngle === void 0
+        ? defaultProps.rotationAngle
+        : options.rotationAngle,
+    trackTouch:
+      options.trackTouch === void 0
+        ? defaultProps.trackTouch
+        : options.trackTouch,
+  };
 
   const [handlers, attachTouch] = React.useMemo(
     () =>
