@@ -161,10 +161,7 @@ describe("useSwipeable", () => {
       trackTouch: undefined,
     };
     const { getByText } = render(
-      <SwipeableUsingHook
-        {...swipeFuncs}
-        {...undefinedConfigOptions}
-      />
+      <SwipeableUsingHook {...swipeFuncs} {...undefinedConfigOptions} />
     );
 
     const touchArea = getByText(TESTING_TEXT);
