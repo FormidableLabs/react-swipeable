@@ -513,8 +513,7 @@ describe("useSwipeable", () => {
   it("defaults touchEventOptions passive", () => {
     const onSwiping = jest.fn();
 
-    // set to document to start to avoid TS issues
-    let addEventListenerSpy = jest.spyOn(document, "addEventListener");
+    let addEventListenerSpy: jest.SpyInstance | undefined;
     const onRefPassThrough = (el: HTMLElement) => {
       if (el === null) return;
       // re-assign to element and spy
@@ -534,8 +533,8 @@ describe("useSwipeable", () => {
     //   [ 'touchmove', [Function: onMove], { passive: true } ],
     //   [ 'touchend', [Function: onEnd], { passive: true } ]
     // ]
-    expect(addEventListenerSpy.mock.calls.length).toBe(3);
-    const calls = addEventListenerSpy.mock.calls;
+    expect(addEventListenerSpy?.mock.calls.length).toBe(3);
+    const calls = addEventListenerSpy?.mock.calls || [];
     touchListeners.forEach((l, idx) => {
       const [arg1, , arg3] = calls[idx] as any[];
       expect(arg1).toBe(l);
@@ -549,8 +548,7 @@ describe("useSwipeable", () => {
   it("preventScrollOnSwipe overwrites touchEventOptions passive", () => {
     const onSwiping = jest.fn();
 
-    // set to document to start to avoid TS issues
-    let addEventListenerSpy = jest.spyOn(document, "addEventListener");
+    let addEventListenerSpy: jest.SpyInstance | undefined;
     const onRefPassThrough = (el: HTMLElement) => {
       if (el === null) return;
       // re-assign to element and spy
@@ -565,8 +563,8 @@ describe("useSwipeable", () => {
       />
     );
 
-    expect(addEventListenerSpy.mock.calls.length).toBe(3);
-    const calls = addEventListenerSpy.mock.calls;
+    expect(addEventListenerSpy?.mock.calls.length).toBe(3);
+    const calls = addEventListenerSpy?.mock.calls || [];
     touchListeners.forEach((l, idx) => {
       const [arg1, , arg3] = calls[idx] as any[];
       expect(arg1).toBe(l);
