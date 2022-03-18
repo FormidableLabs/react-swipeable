@@ -129,6 +129,9 @@ export interface ConfigurationOptions {
    * Track touch input. **Default**: `true`
    */
   trackTouch: boolean;
+  /**
+   * Options for touch event listeners
+   */
   touchEventOptions: { passive: boolean };
 }
 
