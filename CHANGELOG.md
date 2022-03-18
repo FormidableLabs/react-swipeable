@@ -1,3 +1,9 @@
+# unreleased
+* Fix issue with some config properties being set to `undefined` breaking swipeable
+  * [PR #296](https://github.com/formidablelabs/react-swipeable/pull/296)
+  * explicitly set `undefined` config props to config defaults
+  * Thank you [@simonflk](https://github.com/simonflk)
+
 # v6.2.0
 * `delta` prop can now be an `object` specifying different values for each direction
   * [PR #260](https://github.com/formidablelabs/react-swipeable/pull/260)
