@@ -288,7 +288,7 @@ function getHandlers(
       // if new DOM el clean up old DOM and reset cleanUpTouch
       if (state.el && state.el !== el && state.cleanUpTouch) {
         state.cleanUpTouch();
-        addState.cleanUpTouch = undefined;
+        addState.cleanUpTouch = void 0;
       }
       // only attach if we want to track touch
       if (props.trackTouch && el) {
@@ -363,12 +363,28 @@ export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   const transientProps = React.useRef<SwipeablePropsWithDefaultOptions>({
     ...defaultProps,
   });
+
+  // track previous rendered props
   const previousProps = React.useRef<SwipeablePropsWithDefaultOptions>({
     ...transientProps.current,
   });
-
   previousProps.current = { ...transientProps.current };
-  transientProps.current = { ...defaultProps, ...options };
+
+  // update current render props & defaults
+  transientProps.current = {
+    ...defaultProps,
+    ...options,
+    // Force defaults for config properties
+    delta: options.delta === void 0 ? defaultProps.delta : options.delta,
+    rotationAngle:
+      options.rotationAngle === void 0
+        ? defaultProps.rotationAngle
+        : options.rotationAngle,
+    trackTouch:
+      options.trackTouch === void 0
+        ? defaultProps.trackTouch
+        : options.trackTouch,
+  };
 
   const [handlers, attachTouch] = React.useMemo(
     () =>

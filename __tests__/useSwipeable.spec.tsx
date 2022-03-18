@@ -224,6 +224,34 @@ describe("useSwipeable", () => {
     expect(swipeFuncs.onSwiped).toHaveBeenCalledTimes(0);
   });
 
+  it("handles touch events and fires correct props with undefined values for config", () => {
+    const swipeFuncs = getMockedSwipeFunctions();
+    const undefinedConfigOptions: SwipeableProps = {
+      delta: undefined,
+      preventScrollOnSwipe: undefined,
+      rotationAngle: undefined,
+      trackMouse: undefined,
+      trackTouch: undefined,
+    };
+    const { getByText } = render(
+      <SwipeableUsingHook {...swipeFuncs} {...undefinedConfigOptions} />
+    );
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 125 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 150 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(swipeFuncs.onSwiped).toHaveBeenCalled();
+    expect(swipeFuncs.onSwipedDown).toHaveBeenCalled();
+    expect(swipeFuncs.onSwipedUp).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwipedLeft).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwipedRight).not.toHaveBeenCalled();
+    expect(swipeFuncs.onSwiping).toHaveBeenCalledTimes(2);
+  });
+
   it("handles mouse events with trackMouse prop and fires correct props", () => {
     const swipeFuncs = getMockedSwipeFunctions();
     const { getByText } = render(

@@ -3103,10 +3103,10 @@ react-is@^16.7.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-swipeable@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/react-swipeable/-/react-swipeable-6.1.0.tgz#558b08a797a749a33e98492af84f2ca84a23d146"
-  integrity sha512-vB6+bv1I5L9nfuM7quu41o/kK1f3a7cTQ3NHNWkOltg5uhBpnH6xvkQJeoPfKQ6K4pnifELXY65wzWwWBa+zGg==
+react-swipeable@^6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/react-swipeable/-/react-swipeable-6.2.1.tgz#7359fadda9917ee8b214e946447b56d3c7b0d314"
+  integrity sha512-JpTj+tjJTDcIWtoMkab6zfwWD1T1tBzUyEfXsXnohnNkwA2dTuNS0gtN7HoxU1Qa+e3GDnfNYk2z7vwzfO4SoQ==
 
 react@^17.0.1:
   version "17.0.1"
@@ -3875,9 +3875,9 @@ urix@^0.1.0:
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
 
 url-parse@^1.4.3, url-parse@^1.4.7:
-  version "1.5.7"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.7.tgz#00780f60dbdae90181f51ed85fb24109422c932a"
-  integrity sha512-HxWkieX+STA38EDk7CE9MEryFeHCKzgagxlGvsdS7WBImq9Mk+PGwiT56w82WI3aicwJA8REp42Cxo98c8FZMA==
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.10.tgz#9d3c2f736c1d75dd3bd2be507dcc111f1e2ea9c1"
+  integrity sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"

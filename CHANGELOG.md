@@ -8,6 +8,9 @@
 - add new `onTouchEndOrOnMouseUp` prop that is always called for `touchend` and `mouseup`.
 
 **Breaking Changes:**
+* we have dropped support for `es5` transpiled output
+  * we target `es2015` for our transpilation now
+    * `swipeable` utilizes object/array spread & const/let natively
 * `preventScrollOnSwipe` - "new" prop. Replaces `preventDefaultTouchmoveEvent`
   * same functionality but renamed to be more explicit on its intended use
   * **fixed bug** - where toggling this prop did not re-attach event listeners
@@ -25,6 +28,12 @@
   * remove dependency on `microbundle`
   * remove `interop` injected code - [pull/260](https://github.com/FormidableLabs/react-swipeable/pull/260#discussion_r679541081)
   * Thank you [@binoy14](https://github.com/binoy14)
+
+# v6.2.1
+* Fix issue with some config properties being set to `undefined` breaking swipeable
+  * [PR #296](https://github.com/formidablelabs/react-swipeable/pull/296)
+  * explicitly set `undefined` config props to config defaults
+  * Thank you [@simonflk](https://github.com/simonflk)
 
 # v6.2.0
 * `delta` prop can now be an `object` specifying different values for each direction
