@@ -1,4 +1,4 @@
-# unreleased
+# v6.2.1
 * Fix issue with some config properties being set to `undefined` breaking swipeable
   * [PR #296](https://github.com/formidablelabs/react-swipeable/pull/296)
   * explicitly set `undefined` config props to config defaults
