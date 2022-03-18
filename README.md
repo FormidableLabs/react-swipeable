@@ -77,7 +77,7 @@ All Event Handlers are called with the below event data, `SwipeEventData`.
 {
   event,          // source event
   initial,        // initial swipe [x,y]
-  first,          // true for first event
+  first,          // true for the first event of a tracked swipe
   deltaX,         // x offset (current.x - initial.x)
   deltaY,         // y offset (current.y - initial.y)
   absX,           // absolute deltaX
