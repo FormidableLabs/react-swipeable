@@ -20,6 +20,12 @@
   * remove `interop` injected code - [pull/260](https://github.com/FormidableLabs/react-swipeable/pull/260#discussion_r679541081)
   * Thank you [@binoy14](https://github.com/binoy14)
 
+# v6.2.1
+* Fix issue with some config properties being set to `undefined` breaking swipeable
+  * [PR #296](https://github.com/formidablelabs/react-swipeable/pull/296)
+  * explicitly set `undefined` config props to config defaults
+  * Thank you [@simonflk](https://github.com/simonflk)
+
 # v6.2.0
 * `delta` prop can now be an `object` specifying different values for each direction
   * [PR #260](https://github.com/formidablelabs/react-swipeable/pull/260)

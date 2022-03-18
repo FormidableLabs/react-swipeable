@@ -9,6 +9,7 @@ import {
   LEFT,
   RIGHT,
   Setter,
+  ConfigurationOptions,
   SwipeableCallbacks,
   ConfigurationOptions,
   SwipeableHandlers,
@@ -232,7 +233,6 @@ function getHandlers(
   };
 
   /**
-   * Switch of "passive" property for now.
    * The value of passive on touchMove depends on `preventScrollOnSwipe`:
    * - true => { passive: false }
    * - false => { passive: true }
@@ -272,7 +272,7 @@ function getHandlers(
       // if new DOM el clean up old DOM and reset cleanUpTouch
       if (state.el && state.el !== el && state.cleanUpTouch) {
         state.cleanUpTouch();
-        addState.cleanUpTouch = undefined;
+        addState.cleanUpTouch = void 0;
       }
       // only attach if we want to track touch
       if (props.trackTouch && el) {
@@ -303,7 +303,7 @@ function updateTransientState(
   previousProps: SwipeablePropsWithDefaultOptions,
   attachTouch: AttachTouch
 ) {
-  // if trackTouch is off or there is no el, then remove handlers if necessesary and exit
+  // if trackTouch is off or there is no el, then remove handlers if necessary and exit
   if (!props.trackTouch || !state.el) {
     if (state.cleanUpTouch) {
       state.cleanUpTouch();
@@ -344,12 +344,28 @@ export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   const transientProps = React.useRef<SwipeablePropsWithDefaultOptions>({
     ...defaultProps,
   });
+
+  // track previous rendered props
   const previousProps = React.useRef<SwipeablePropsWithDefaultOptions>({
     ...transientProps.current,
   });
-
   previousProps.current = { ...transientProps.current };
-  transientProps.current = { ...defaultProps, ...options };
+
+  // update current render props & defaults
+  transientProps.current = {
+    ...defaultProps,
+    ...options,
+    // Force defaults for config properties
+    delta: options.delta === void 0 ? defaultProps.delta : options.delta,
+    rotationAngle:
+      options.rotationAngle === void 0
+        ? defaultProps.rotationAngle
+        : options.rotationAngle,
+    trackTouch:
+      options.trackTouch === void 0
+        ? defaultProps.trackTouch
+        : options.trackTouch,
+  };
 
   const [handlers, attachTouch] = React.useMemo(
     () =>
