@@ -11,12 +11,14 @@ const initialState = {
   swipingDirection: '',
   swipedDirection: '',
 };
+const INFINITY = 'Infinity';
 const initialStateSwipeable = {
   delta: '10',
   preventScrollOnSwipe: false,
   trackMouse: false,
   trackTouch: true,
   rotationAngle: 0,
+  swipeDuration: INFINITY,
 };
 const initialStateApplied = {
   showOnSwipeds: false,
@@ -33,6 +35,7 @@ interface IState {
   swipingDirection: string;
   swipedDirection: string;
   delta: string;
+  swipeDuration: string;
   preventScrollOnSwipe: boolean;
   trackMouse: boolean;
   trackTouch: boolean;
@@ -130,8 +133,13 @@ export default class Main extends Component<any, IState> {
       trackTouch,
       trackMouse,
       rotationAngle,
+      swipeDuration,
       stopScrollCss,
     } = this.state;
+
+    const isSwipeDurationInfinity = swipeDuration === INFINITY;
+    const swipeDurationTextValue = isSwipeDurationInfinity ? INFINITY : swipeDuration;
+    const isSwipeDurationNumber = isSwipeDurationInfinity ? Infinity : !(isNaN(swipeDuration as any) || swipeDuration === '');
 
     const isDeltaNumber = !(isNaN(delta as any) || delta === '');
     const isRotationAngleNumber = !(isNaN(rotationAngle as any) || rotationAngle === '');
@@ -170,6 +178,7 @@ export default class Main extends Component<any, IState> {
             trackTouch={trackTouch}
             trackMouse={trackMouse}
             rotationAngle={rotationAngleNum}
+            swipeDuration={swipeDuration}
             className="callout hookComponent"
             style={swipeableStyle}>
               <div onTouchStart={()=>this.resetState()} onMouseDown={()=>this.resetState()}>
@@ -243,6 +252,17 @@ export default class Main extends Component<any, IState> {
                   <input type="text"
                     style={{margin: '0px', border: !isRotationAngleNumber ? '2px solid red' : ''}}
                     onChange={(e)=>this.updateValue('rotationAngle', getVal(e))} value={rotationAngle}/>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2} className="text-center">
+                  swipeDuration:
+                  <div><b>(ms | Infinity)</b></div>
+                </td>
+                <td>
+                  <input type="text"
+                    style={{margin: '0px', border: !isSwipeDurationNumber ? '2px solid red' : ''}}
+                    onChange={(e)=>this.updateValue('swipeDuration', getVal(e))} value={swipeDurationTextValue}/>
                 </td>
               </tr>
               <RowSimpleCheckbox

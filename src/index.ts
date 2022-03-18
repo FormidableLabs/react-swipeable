@@ -9,7 +9,6 @@ import {
   LEFT,
   RIGHT,
   Setter,
-  ConfigurationOptions,
   SwipeableCallbacks,
   ConfigurationOptions,
   SwipeableHandlers,

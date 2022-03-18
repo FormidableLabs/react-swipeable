@@ -52,16 +52,29 @@ Spread `handlers` onto the element you wish to track swipes on.
   trackTouch: true,                     // track touch input
   trackMouse: false,                    // track mouse input
   rotationAngle: 0,                     // set a rotation angle
+  swipeDuration: Infinity,              // allowable duration of a swipe (ms). *See Notes*
 }
 ```
 
-#### Delta
+#### delta
 
 `delta` can be either a `number` or an `object` specifying different deltas for each direction, [`left`, `right`, `up`, `down`], direction values are optional and will default to `10`;
 
 ```js
 {
-  delta: { top: 20, bottom: 20 } // top and bottom when ">= 20", left and right default to ">= 10"
+  delta: { up: 20, down: 20 } // up and down ">= 20", left and right default to ">= 10"
+}
+```
+
+#### swipeDuration
+A swipe lasting more than `swipeDuration`, in milliseconds, will **not** be considered a swipe.
+- It will also **not** trigger any callbacks and the swipe event will stop being tracked
+- **Defaults** to `Infinity` for backwards compatibility, a sensible duration could be something like `250`
+  - Feature mimicked from `use-gesture` [swipe.duration](https://use-gesture.netlify.app/docs/options/#swipeduration)
+
+```js
+{
+  swipeDuration: 250 // only swipes under 250ms will trigger callbacks
 }
 ```
 

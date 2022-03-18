@@ -1,4 +1,10 @@
 # UNRELEASED
+
+**New Features:**
+- add new `swipeDuration` prop - "allowable duration of a swipe"
+  - A swipe lasting more than `swipeDuration`, in milliseconds, will **not** be considered a swipe.
+    - Feature mimicked from `use-gesture` [swipe.duration](https://use-gesture.netlify.app/docs/options/#swipeduration)
+
 **Breaking Changes:**
 * we have dropped support for `es5` transpiled output
   * we target `es2015` for our transpilation now
@@ -9,6 +15,7 @@
   * **small update** - we now only change the `passive` event listener option for `touchmove` depending on this prop
     * see notes in README for more details [readme#passive-listener](https://github.com/FormidableLabs/react-swipeable#passive-listener)
   * Thank you [@stefvhuynh](https://github.com/stefvhuynh)
+
 **Bug fixes:**
 * fix bug where directional swiped check allowed `undefined`/falsy values to set `cancelablePageSwipe`
   * Thank you [@bhj](https://github.com/bhj) for the [comment](https://github.com/FormidableLabs/react-swipeable/pull/240#issuecomment-1014980025)
