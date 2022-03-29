@@ -11,6 +11,11 @@ const DIRECTIONS: [typeof LEFT, typeof RIGHT, typeof UP, typeof DOWN] = [
   DOWN,
 ];
 
+const touchStart = "touchstart";
+const touchMove = "touchmove";
+const touchEnd = "touchend";
+const touchListeners = [touchStart, touchMove, touchEnd];
+
 export type MockedSwipeFunctions = {
   onSwiping: jest.Mock;
   onSwiped: jest.Mock;
@@ -36,12 +41,24 @@ const TESTING_TEXT = "touch here";
  */
 function SwipeableUsingHook({
   nodeName = "div",
+  onRefPassThrough,
   ...rest
-}: SwipeableProps & { nodeName?: string }) {
+}: SwipeableProps & {
+  nodeName?: string;
+  onRefPassThrough?(el: HTMLElement): void;
+}) {
   const eventHandlers = useSwipeable(rest);
   const Elem = nodeName as React.ElementType;
+
+  const refPassthrough = (el: HTMLElement) => {
+    onRefPassThrough?.(el);
+
+    // call useSwipeable ref prop with el
+    eventHandlers.ref(el);
+  };
+
   return (
-    <Elem {...eventHandlers}>
+    <Elem {...eventHandlers} ref={refPassthrough}>
       <span>{TESTING_TEXT}</span>
     </Elem>
   );
@@ -309,6 +326,54 @@ describe("useSwipeable", () => {
     );
   });
 
+  it("calls onTouchStartOrOnMouseDown and onTouchEndOrOnMouseUp for touch or mouse events", () => {
+    const onTouchStartOrOnMouseDownMock = jest.fn();
+    const onTouchEndOrOnMouseUpMock = jest.fn();
+    const { getByText, rerender } = render(
+      <SwipeableUsingHook
+        onTouchStartOrOnMouseDown={onTouchStartOrOnMouseDownMock}
+        onTouchEndOrOnMouseUp={onTouchEndOrOnMouseUpMock}
+        trackMouse={true}
+        trackTouch={false}
+      />
+    );
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    fireEvent[MD](touchArea, cme({ x: 100, y: 100 }));
+    fireEvent[MM](touchArea, cme({ x: 125, y: 100 }));
+    fireEvent[MU](document, cme({}));
+
+    expect(onTouchStartOrOnMouseDownMock).toHaveBeenCalled();
+    expect(onTouchStartOrOnMouseDownMock.mock.calls[0][0].event.type).toEqual(
+      "mousedown"
+    );
+    expect(onTouchEndOrOnMouseUpMock).toHaveBeenCalled();
+    expect(onTouchEndOrOnMouseUpMock.mock.calls[0][0].event.type).toEqual(
+      "mouseup"
+    );
+
+    rerender(
+      <SwipeableUsingHook
+        onTouchStartOrOnMouseDown={onTouchStartOrOnMouseDownMock}
+        onTouchEndOrOnMouseUp={onTouchEndOrOnMouseUpMock}
+      />
+    );
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 125 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onTouchStartOrOnMouseDownMock).toHaveBeenCalledTimes(2);
+    expect(onTouchStartOrOnMouseDownMock.mock.calls[1][0].event.type).toEqual(
+      "touchstart"
+    );
+    expect(onTouchEndOrOnMouseUpMock).toHaveBeenCalledTimes(2);
+    expect(onTouchEndOrOnMouseUpMock.mock.calls[1][0].event.type).toEqual(
+      "touchend"
+    );
+  });
+
   it("correctly calls onSwipeStart for first swipe event", () => {
     const onSwipeStart = jest.fn();
     const { getByText } = render(
@@ -443,6 +508,129 @@ describe("useSwipeable", () => {
 
     expect(onSwipedDown).toHaveBeenCalled();
     expect(defaultPrevented).toBe(2);
+  });
+
+  it("defaults touchEventOptions passive", () => {
+    const onSwiping = jest.fn();
+
+    let addEventListenerSpy: jest.SpyInstance | undefined;
+    const onRefPassThrough = (el: HTMLElement) => {
+      if (el === null) return;
+      // re-assign to element and spy
+      addEventListenerSpy = jest.spyOn(el, "addEventListener");
+    };
+
+    render(
+      <SwipeableUsingHook
+        onSwiping={onSwiping}
+        onRefPassThrough={onRefPassThrough}
+      />
+    );
+
+    // NOTE: this is what addEventListenerSpy.mock.calls looks like:
+    // [
+    //   [ 'touchstart', [Function: onStart], { passive: true } ],
+    //   [ 'touchmove', [Function: onMove], { passive: true } ],
+    //   [ 'touchend', [Function: onEnd], { passive: true } ]
+    // ]
+    expect(addEventListenerSpy?.mock.calls.length).toBe(3);
+    const calls = addEventListenerSpy?.mock.calls || [];
+    touchListeners.forEach((l, idx) => {
+      const [arg1, , arg3] = calls[idx] as any[];
+      expect(arg1).toBe(l);
+      expect(arg3).toEqual({ passive: true });
+    });
+
+    expect(onSwiping).not.toHaveBeenCalled();
+    expect(defaultPrevented).toBe(0);
+  });
+
+  it("preventScrollOnSwipe overwrites touchEventOptions passive", () => {
+    const onSwiping = jest.fn();
+
+    let addEventListenerSpy: jest.SpyInstance | undefined;
+    const onRefPassThrough = (el: HTMLElement) => {
+      if (el === null) return;
+      // re-assign to element and spy
+      addEventListenerSpy = jest.spyOn(el, "addEventListener");
+    };
+
+    render(
+      <SwipeableUsingHook
+        onSwiping={onSwiping}
+        onRefPassThrough={onRefPassThrough}
+        preventScrollOnSwipe
+      />
+    );
+
+    expect(addEventListenerSpy?.mock.calls.length).toBe(3);
+    const calls = addEventListenerSpy?.mock.calls || [];
+    touchListeners.forEach((l, idx) => {
+      const [arg1, , arg3] = calls[idx] as any[];
+      expect(arg1).toBe(l);
+      if (l === touchMove) {
+        // preventScrollOnSwipe overrides passive for touchmove
+        expect(arg3).toEqual({ passive: false });
+      } else {
+        expect(arg3).toEqual({ passive: true });
+      }
+    });
+
+    expect(onSwiping).not.toHaveBeenCalled();
+    expect(defaultPrevented).toBe(0);
+  });
+
+  it("changing touchEventOptions.passive re-attaches event listeners", () => {
+    const onSwiping = jest.fn();
+
+    // set to document to start to avoid TS issues
+    let addEventListenerSpy = jest.spyOn(document, "addEventListener");
+    const onRefPassThrough = (el: HTMLElement) => {
+      if (el === null) return;
+      // re-assign to element and spy
+      addEventListenerSpy = jest.spyOn(el, "addEventListener");
+    };
+
+    const { rerender } = render(
+      <SwipeableUsingHook
+        onSwiping={onSwiping}
+        onRefPassThrough={onRefPassThrough}
+      />
+    );
+
+    expect(addEventListenerSpy.mock.calls.length).toBe(3);
+    let calls = addEventListenerSpy.mock.calls;
+    touchListeners.forEach((l, idx) => {
+      const call: any = calls[idx];
+      expect(call[0]).toBe(l);
+      expect(call[2]).toEqual({ passive: true });
+    });
+
+    expect(onSwiping).not.toHaveBeenCalled();
+    expect(defaultPrevented).toBe(0);
+
+    // reset spy before re-render
+    addEventListenerSpy.mockClear();
+
+    // change touchEventOptions.passive from default
+    rerender(
+      <SwipeableUsingHook
+        onSwiping={onSwiping}
+        onRefPassThrough={onRefPassThrough}
+        touchEventOptions={{ passive: false }}
+      />
+    );
+
+    expect(addEventListenerSpy.mock.calls.length).toBe(3);
+    calls = addEventListenerSpy.mock.calls;
+    touchListeners.forEach((l, idx) => {
+      const call: any = calls[idx];
+      expect(call[0]).toBe(l);
+      expect(call[2]).toEqual({ passive: false });
+    });
+
+    expect(onSwiping).not.toHaveBeenCalled();
+    expect(defaultPrevented).toBe(0);
   });
 
   it("does not fire onSwiped when under delta", () => {

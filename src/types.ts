@@ -57,19 +57,10 @@ export interface SwipeEventData {
 export type SwipeCallback = (eventData: SwipeEventData) => void;
 export type TapCallback = ({ event }: { event: HandledEvents }) => void;
 
-// Event handler/callbacks
-export type SwipeableCallbacks = {
+export type SwipeableDirectionCallbacks = {
   /**
-   * Called at start of a tracked swipe.
-   */
-  onSwipeStart: SwipeCallback;
-  /**
-   * Called after any swipe.
-   */
-  onSwiped: SwipeCallback;
-  /**
-   * Called after a DOWN swipe
-   */
+  * Called after a DOWN swipe
+  */
   onSwipedDown: SwipeCallback;
   /**
    * Called after a LEFT swipe
@@ -83,6 +74,17 @@ export type SwipeableCallbacks = {
    * Called after a UP swipe
    */
   onSwipedUp: SwipeCallback;
+};
+
+export type SwipeableCallbacks = SwipeableDirectionCallbacks & {
+  /**
+   * Called at start of a tracked swipe.
+   */
+  onSwipeStart: SwipeCallback;
+  /**
+  * Called after any swipe.
+  */
+  onSwiped: SwipeCallback;
   /**
    * Called for each move event during a tracked swipe.
    */
@@ -91,6 +93,14 @@ export type SwipeableCallbacks = {
    * Called after a tap. A touch under the min distance, `delta`.
    */
   onTap: TapCallback;
+  /**
+   * Called for `touchstart` and `mousedown`.
+   */
+  onTouchStartOrOnMouseDown: TapCallback;
+  /**
+   * Called for `touchend` and `mouseup`.
+   */
+  onTouchEndOrOnMouseUp: TapCallback;
 };
 
 // Configuration Options
@@ -119,6 +129,10 @@ export interface ConfigurationOptions {
    * Track touch input. **Default**: `true`
    */
   trackTouch: boolean;
+  /**
+   * Options for touch event listeners
+   */
+  touchEventOptions: { passive: boolean };
 }
 
 export type SwipeableProps = Partial<SwipeableCallbacks & ConfigurationOptions>;
@@ -149,5 +163,5 @@ export type StateSetter = (
 export type Setter = (stateSetter: StateSetter) => void;
 export type AttachTouch = (
   el: HTMLElement,
-  passiveOnTouchMove: boolean
+  props: SwipeablePropsWithDefaultOptions
 ) => () => void;

@@ -42,7 +42,7 @@
       "path": "dist/react-swipeable.umd.js"
     },
     {
-      "limit": "1.25 KB",
+      "limit": "1.28 KB",
       "path": "dist/react-swipeable.module.js"
     }
   ],

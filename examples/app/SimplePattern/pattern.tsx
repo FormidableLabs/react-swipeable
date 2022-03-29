@@ -81,13 +81,12 @@ const Carousel: FunctionComponent = (props) => {
 
   const handlers = useSwipeable({
     onSwiped: handleSwiped,
-    preventScrollOnSwipe: true,
     trackMouse: true
   });
 
   return (
     <>
-      <PatternBox {...handlers}>
+      <PatternBox {...handlers} style={{ touchAction: 'none' }}>
         Swipe the pattern below, within this box, to make the carousel go to the next
         slide
         {`\n`}
@@ -99,7 +98,7 @@ const Carousel: FunctionComponent = (props) => {
           <D><DownArrow active={pIdx > 3} /></D>
         </p>
       </PatternBox>
-      <div>
+      <div style={{paddingBottom: '15px'}}>
         <Wrapper>
           <CarouselContainer dir={state.dir} sliding={state.sliding}>
             {React.Children.map(props.children, (child, index) => (

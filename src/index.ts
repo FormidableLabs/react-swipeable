@@ -10,7 +10,7 @@ import {
   RIGHT,
   Setter,
   ConfigurationOptions,
-  SwipeableCallbacks,
+  SwipeableDirectionCallbacks,
   SwipeableHandlers,
   SwipeableProps,
   SwipeablePropsWithDefaultOptions,
@@ -28,6 +28,7 @@ export {
   DOWN,
   SwipeDirections,
   SwipeEventData,
+  SwipeableDirectionCallbacks,
   SwipeCallback,
   TapCallback,
   SwipeableHandlers,
@@ -41,6 +42,7 @@ const defaultProps: ConfigurationOptions = {
   rotationAngle: 0,
   trackMouse: false,
   trackTouch: true,
+  touchEventOptions: { passive: true },
 };
 const initialState: SwipeableState = {
   first: true,
@@ -106,6 +108,9 @@ function getHandlers(
         "touches" in event ? event.touches[0] : event;
       const xy = rotateXYByAngle([clientX, clientY], props.rotationAngle);
 
+      props.onTouchStartOrOnMouseDown &&
+        props.onTouchStartOrOnMouseDown({ event });
+
       return {
         ...state,
         ...initialState,
@@ -170,7 +175,7 @@ function getHandlers(
       if (
         props.onSwiping ||
         props.onSwiped ||
-        props[`onSwiped${dir}` as keyof SwipeableCallbacks]
+        props[`onSwiped${dir}` as keyof SwipeableDirectionCallbacks]
       ) {
         cancelablePageSwipe = true;
       }
@@ -202,11 +207,16 @@ function getHandlers(
         props.onSwiped && props.onSwiped(eventData);
 
         const onSwipedDir =
-          props[`onSwiped${eventData.dir}` as keyof SwipeableCallbacks];
+          props[
+            `onSwiped${eventData.dir}` as keyof SwipeableDirectionCallbacks
+          ];
         onSwipedDir && onSwipedDir(eventData);
       } else {
         props.onTap && props.onTap({ event });
       }
+
+      props.onTouchEndOrOnMouseUp && props.onTouchEndOrOnMouseUp({ event });
+
       return { ...state, ...initialState, eventData };
     });
   };
@@ -225,23 +235,39 @@ function getHandlers(
   /**
    * The value of passive on touchMove depends on `preventScrollOnSwipe`:
    * - true => { passive: false }
-   * - false => { passive: true }
+   * - false => { passive: true } // Default
    *
-   * When passive is false, we can (and do) call preventDefault to prevent scroll. When it is true,
-   * the browser ignores any calls to preventDefault and logs a warning.
+   * NOTE: When preventScrollOnSwipe is true, we attempt to call preventDefault to prevent scroll.
+   *
+   * props.touchEventOptions can also be set for all touch event listeners,
+   * but for `touchmove` specifically when `preventScrollOnSwipe` it will
+   * supersede and force passive to false.
+   *
    */
-  const attachTouch: AttachTouch = (el, passiveOnTouchMove) => {
+  const attachTouch: AttachTouch = (el, props) => {
     let cleanup = () => {};
     if (el && el.addEventListener) {
+      const baseOptions = {
+        ...defaultProps.touchEventOptions,
+        ...props.touchEventOptions,
+      };
       // attach touch event listeners and handlers
       const tls: [
         typeof touchStart | typeof touchMove | typeof touchEnd,
         (e: HandledEvents) => void,
         { passive: boolean }
       ][] = [
-        [touchStart, onStart, { passive: true }],
-        [touchMove, onMove, { passive: passiveOnTouchMove }],
-        [touchEnd, onEnd, { passive: true }],
+        [touchStart, onStart, baseOptions],
+        // preventScrollOnSwipe option supersedes touchEventOptions.passive
+        [
+          touchMove,
+          onMove,
+          {
+            ...baseOptions,
+            ...(props.preventScrollOnSwipe ? { passive: false } : {}),
+          },
+        ],
+        [touchEnd, onEnd, baseOptions],
       ];
       tls.forEach(([e, h, o]) => el.addEventListener(e, h, o));
       // return properly scoped cleanup method for removing listeners, options not required
@@ -266,7 +292,7 @@ function getHandlers(
       }
       // only attach if we want to track touch
       if (props.trackTouch && el) {
-        addState.cleanUpTouch = attachTouch(el, !props.preventScrollOnSwipe);
+        addState.cleanUpTouch = attachTouch(el, props);
       }
 
       // store event attached DOM el for comparison, clean up, and re-attachment
@@ -309,19 +335,22 @@ function updateTransientState(
   if (!state.cleanUpTouch) {
     return {
       ...state,
-      cleanUpTouch: attachTouch(state.el, !props.preventScrollOnSwipe),
+      cleanUpTouch: attachTouch(state.el, props),
     };
   }
 
   // trackTouch is on and handlers are already attached, so if preventScrollOnSwipe changes value,
   // remove and reattach handlers (this is required to update the passive option when attaching
   // the handlers)
-  if (props.preventScrollOnSwipe !== previousProps.preventScrollOnSwipe) {
+  if (
+    props.preventScrollOnSwipe !== previousProps.preventScrollOnSwipe ||
+    props.touchEventOptions.passive !== previousProps.touchEventOptions.passive
+  ) {
     state.cleanUpTouch();
 
     return {
       ...state,
-      cleanUpTouch: attachTouch(state.el, !props.preventScrollOnSwipe),
+      cleanUpTouch: attachTouch(state.el, props),
     };
   }
 
