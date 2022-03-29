@@ -85,8 +85,9 @@ A swipe lasting more than `swipeDuration`, in milliseconds, will **not** be cons
 
 #### touchEventOptions
 
-Allows the user to set the options for the touch event listeners.
+Allows the user to set the options for the touch event listeners( currently only `passive` option ).
   - `touchstart`, `touchmove`, and `touchend` event listeners
+  - **Defaults** to `{ passive: true }`
   - this provides users full control of if/when they want to set [passive](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#options)
     - https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#options
   - `preventScrollOnSwipe` option **supersedes** `touchEventOptions.passive` for `touchmove` event listener

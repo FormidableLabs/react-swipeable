@@ -1,54 +1,26 @@
-# React Swipeable v6 changes and migration
+# React Swipeable v7 changes and migration
 
-## Major Changes
+## Major Changes / Breaking Changes
 
-- **remove** `<Swipeable>` component, see below for examples on how to make your own
-  - [Swipeable component examples](#swipeable-component-examples)
-- **event data update** correctly calculate `deltaX` and `deltaY`
-  - from `initial - current` **to** `current - initial`
-- **drop direct support for ie11** can be fixed with a polyfill
-  - `addEventListener` options need to be polyfilled for ie11, [browser support](./README.md#browser-support)
-- **requires** react >= 16.8.3, additionally supports new react v17
+- we have dropped support for `es5` transpiled output
+  - we target `es2015` for our transpilation now
+    - `swipeable` utilizes object/array spread & const/let natively
+- `preventScrollOnSwipe` - "new" prop. Replaces `preventDefaultTouchmoveEvent`
+  - same functionality but renamed to be more explicit on its intended use
+  - **fixed bug** - where toggling this prop did not re-attach event listeners
+  - **update** - we now **only** change the `passive` event listener option for `touchmove` depending on this prop
+    - see notes in README for more details [readme#passive-listener](https://github.com/FormidableLabs/react-swipeable#passive-listener)
 
 ### Typescript changes
-- **changed** `EventData` -> `SwipeEventData` - The event data provided for all swipe event callbacks
-- **removed** `SwipeableOptions` - use `SwipeableProps` now
-- **removed** all types associated with `<Swipeable>` component
+- Added a **ton** of comments to the types that should now show up in IDEs.
 
-#### Browser Support
+## Migrate Swipeable v6 to v7
 
-With the release of v6 `react-swipeable` only supports browsers that support options object for `addEventListener`, [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Browser_compatibility). Which mainly means `react-swipeable` does not support ie11 by default, you need to polyfill options. For example using [event-listener-with-options](https://github.com/Macil/event-listener-with-options).
+If you you're currently utilizing `preventDefaultTouchmoveEvent` you should be able to simply replace its usage with `preventScrollOnSwipe`.
 
-## Migrate Swipeable v5 to v6
-
-### Swipeable component examples
-
-You should be able to recreate all `≤Swipeable>` use cases with the `useSwipeable` hook. If you find you're unable please reach out via an issue and we'll explore other possibilities.
-
-Notes:
-- `nodeName` can be handled by directly changing your custom `Swipeable`'s returned element
-- `className` and `style` props can be handled directly
-
-#### Swipeable Simple example
-```js
-import { useSwipeable } from 'react-swipeable';
-
-export const Swipeable = ({children, ...props}) => {
-  const handlers = useSwipeable(props);
-  return (<div { ...handlers }>{children}</div>);
-}
-```
-
-#### Swipeable with innerRef example
-```js
-import { useSwipeable } from 'react-swipeable';
-
-export const Swipeable = ({children, innerRef, ...props}) => {
-  const handlers = useSwipeable(props);
-  const refCallback = (ref) => {
-    handlers.ref(ref);
-    innerRef(ref);
-  }
-  return (<div { ...handlers } ref={refCallback} >{children}</div>);
-}
+```diff
+const handlers = useSwipeable({
+-  preventDefaultTouchmoveEvent: true,
++  preventScrollOnSwipe: true,
+});
 ```
