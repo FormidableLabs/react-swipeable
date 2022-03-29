@@ -42,6 +42,7 @@ const defaultProps: ConfigurationOptions = {
   rotationAngle: 0,
   trackMouse: false,
   trackTouch: true,
+  swipeDuration: Infinity,
   touchEventOptions: { passive: true },
 };
 const initialState: SwipeableState = {
@@ -129,6 +130,11 @@ function getHandlers(
         return state;
       }
 
+      // if swipe has exceeded duration stop tracking
+      if (event.timeStamp - state.start > props.swipeDuration) {
+        return state.swiping ? { ...state, swiping: false } : state;
+      }
+
       const { clientX, clientY } =
         "touches" in event ? event.touches[0] : event;
       const [x, y] = rotateXYByAngle([clientX, clientY], props.rotationAngle);
@@ -203,14 +209,17 @@ function getHandlers(
     set((state, props) => {
       let eventData: SwipeEventData | undefined;
       if (state.swiping && state.eventData) {
-        eventData = { ...state.eventData, event };
-        props.onSwiped && props.onSwiped(eventData);
+        // if swipe is less than duration fire swiped callbacks
+        if (event.timeStamp - state.start < props.swipeDuration) {
+          eventData = { ...state.eventData, event };
+          props.onSwiped && props.onSwiped(eventData);
 
-        const onSwipedDir =
-          props[
-            `onSwiped${eventData.dir}` as keyof SwipeableDirectionCallbacks
-          ];
-        onSwipedDir && onSwipedDir(eventData);
+          const onSwipedDir =
+            props[
+              `onSwiped${eventData.dir}` as keyof SwipeableDirectionCallbacks
+            ];
+          onSwipedDir && onSwipedDir(eventData);
+        }
       } else {
         props.onTap && props.onTap({ event });
       }
@@ -374,17 +383,14 @@ export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   transientProps.current = {
     ...defaultProps,
     ...options,
-    // Force defaults for config properties
-    delta: options.delta === void 0 ? defaultProps.delta : options.delta,
-    rotationAngle:
-      options.rotationAngle === void 0
-        ? defaultProps.rotationAngle
-        : options.rotationAngle,
-    trackTouch:
-      options.trackTouch === void 0
-        ? defaultProps.trackTouch
-        : options.trackTouch,
   };
+  // Force defaults for config properties
+  let defaultKey: keyof ConfigurationOptions;
+  for (defaultKey in defaultProps) {
+    if (transientProps.current[defaultKey] === void 0) {
+      (transientProps.current[defaultKey] as any) = defaultProps[defaultKey];
+    }
+  }
 
   const [handlers, attachTouch] = React.useMemo(
     () =>

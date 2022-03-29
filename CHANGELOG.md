@@ -1,6 +1,10 @@
 # UNRELEASED
 
 **New Features:**
+- add new `swipeDuration` prop - "allowable duration of a swipe"
+  - A swipe lasting more than `swipeDuration`, in milliseconds, will **not** be considered a swipe.
+    - Feature mimicked from `use-gesture` [swipe.duration](https://use-gesture.netlify.app/docs/options/#swipeduration)
+  - Defaults to `Infinity` for backwards compatibility
 - add new `touchEventOptions` prop that can set the options for the touch event listeners
   - this provides users full control of if/when they want to set [passive](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#options)
 - add new `onTouchStartOrOnMouseDown` prop that is called for `touchstart` and `mousedown`. Before a swipe even starts.
