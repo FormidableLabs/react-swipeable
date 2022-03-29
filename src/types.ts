@@ -59,8 +59,8 @@ export type TapCallback = ({ event }: { event: HandledEvents }) => void;
 
 export type SwipeableDirectionCallbacks = {
   /**
-  * Called after a DOWN swipe
-  */
+   * Called after a DOWN swipe
+   */
   onSwipedDown: SwipeCallback;
   /**
    * Called after a LEFT swipe
@@ -82,8 +82,8 @@ export type SwipeableCallbacks = SwipeableDirectionCallbacks & {
    */
   onSwipeStart: SwipeCallback;
   /**
-  * Called after any swipe.
-  */
+   * Called after any swipe.
+   */
   onSwiped: SwipeCallback;
   /**
    * Called for each move event during a tracked swipe.

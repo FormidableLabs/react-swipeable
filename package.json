@@ -34,15 +34,15 @@
   },
   "size-limit": [
     {
-      "limit": "1.3 KB",
+      "limit": "1.375 KB",
       "path": "dist/react-swipeable.js"
     },
     {
-      "limit": "1.3 KB",
+      "limit": "1.375 KB",
       "path": "dist/react-swipeable.umd.js"
     },
     {
-      "limit": "1.28 KB",
+      "limit": "1.375 KB",
       "path": "dist/react-swipeable.module.js"
     }
   ],

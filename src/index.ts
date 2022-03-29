@@ -215,9 +215,9 @@ function getHandlers(
           props.onSwiped && props.onSwiped(eventData);
 
           const onSwipedDir =
-          props[
-            `onSwiped${eventData.dir}` as keyof SwipeableDirectionCallbacks
-          ];
+            props[
+              `onSwiped${eventData.dir}` as keyof SwipeableDirectionCallbacks
+            ];
           onSwipedDir && onSwipedDir(eventData);
         }
       } else {
