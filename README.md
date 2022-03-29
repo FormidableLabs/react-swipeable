@@ -36,6 +36,10 @@ Spread `handlers` onto the element you wish to track swipes on.
   onSwipeStart,   // Start of swipe    (SwipeEventData) => void *see details*
   onSwiping,      // During swiping    (SwipeEventData) => void
   onTap,          // After a tap       ({ event }) => void
+
+  // Pass through callbacks, event provided: ({ event }) => void
+  onTouchStartOrOnMouseDown, // Called for `touchstart` and `mousedown`
+  onTouchEndOrOnMouseUp,     // Called for `touchend` and `mouseup`
 }
 ```
 
@@ -47,12 +51,13 @@ Spread `handlers` onto the element you wish to track swipes on.
 
 ```js
 {
-  delta: 10,                            // min distance(px) before a swipe starts. *See Notes*
-  preventScrollOnSwipe: false,          // prevents scroll during swipe in most cases (*See Details*)
-  trackTouch: true,                     // track touch input
-  trackMouse: false,                    // track mouse input
-  rotationAngle: 0,                     // set a rotation angle
-  swipeDuration: Infinity,              // allowable duration of a swipe (ms). *See Notes*
+  delta: 10,                             // min distance(px) before a swipe starts. *See Notes*
+  preventScrollOnSwipe: false,           // prevents scroll during swipe (*See Details*)
+  trackTouch: true,                      // track touch input
+  trackMouse: false,                     // track mouse input
+  rotationAngle: 0,                      // set a rotation angle
+  swipeDuration: Infinity,               // allowable duration of a swipe (ms). *See Notes*
+  touchEventOptions: { passive: true },  // options for touch listeners (*See Details*)
 }
 ```
 
@@ -77,6 +82,15 @@ A swipe lasting more than `swipeDuration`, in milliseconds, will **not** be cons
   swipeDuration: 250 // only swipes under 250ms will trigger callbacks
 }
 ```
+
+#### touchEventOptions
+
+Allows the user to set the options for the touch event listeners.
+  - `touchstart`, `touchmove`, and `touchend` event listeners
+  - this provides users full control of if/when they want to set [passive](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#options)
+    - https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#options
+  - `preventScrollOnSwipe` option **supersedes** `touchEventOptions.passive` for `touchmove` event listener
+    - See `preventScrollOnSwipe` for [more details](#preventscrollonswipe-details)
 
 ## Swipe Event Data
 
@@ -107,22 +121,24 @@ All Event Handlers are called with the below event data, `SwipeEventData`.
 
 ### `preventScrollOnSwipe` details
 
-This prop prevents the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event default action (mostly scrolling) by calling `e.preventDefault()` internally.
+This prop prevents scroll during swipe in most cases. Use this to **stop scrolling** in the browser while a user swipes.
 
-Use this to **stop scrolling** in the browser while a user swipes.
+Swipeable will call `e.preventDefault()` internally in an attempt to stop the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event default action (mostly scrolling).
+
+**NOTE:** `preventScrollOnSwipe` option **supersedes** `touchEventOptions.passive` for `touchmove` event listener
+
+**Example scenario:**
+> If a user is swiping right with props `{ onSwipedRight: userSwipedRight, preventScrollOnSwipe: true }` then `e.preventDefault()` will be called, but if the user was swiping left then `e.preventDefault()` would **not** be called.
 
 `e.preventDefault()` is only called when:
   - `preventScrollOnSwipe: true`
   - `trackTouch: true`
   - the users current swipe has an associated `onSwiping` or `onSwiped` handler/prop
 
-Example scenario:
-> If a user is swiping right with props `{ onSwipedRight: userSwipedRight, preventScrollOnSwipe: true }` then `e.preventDefault()` will be called, but if the user was swiping left then `e.preventDefault()` would **not** be called.
-
 Please experiment with the [example app](http://formidablelabs.github.io/react-swipeable/) to test `preventScrollOnSwipe`.
 
-#### passive listener
-With v6 we've added the passive event listener option, by default, to **internal uses** of `addEventListener`. We set the `passive` option to `false` only when `preventScrollOnSwipe` is `true` and only `onTouchMove`. Other listeners will retain `passive: true`.
+#### passive listener details
+Swipeable adds the passive event listener option, by default, to **internal uses** of touch `addEventListener`'s. We set the `passive` option to `false` only when `preventScrollOnSwipe` is `true` and only to `touchmove`. Other listeners will retain `passive: true`.
 
 **When `preventScrollOnSwipe` is:**
   - `true`  => `el.addEventListener('touchmove', cb, { passive: false })`
