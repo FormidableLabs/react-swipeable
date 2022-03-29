@@ -38,6 +38,7 @@ export {
 const defaultProps: ConfigurationOptions = {
   delta: 10,
   preventDefaultTouchmoveEvent: false,
+  preventMixDirections: false,
   rotationAngle: 0,
   trackMouse: false,
   trackTouch: true,
@@ -48,6 +49,7 @@ const initialState: SwipeableState = {
   start: 0,
   swiping: false,
   xy: [0, 0],
+  initialDirection: null,
 };
 const mouseMove = "mousemove";
 const mouseUp = "mouseup";
@@ -109,6 +111,7 @@ function getHandlers(
         ...state,
         ...initialState,
         initial: [...xy],
+        initialDirection: null,
         xy,
         start: event.timeStamp || 0,
       };
@@ -141,7 +144,12 @@ function getHandlers(
           ? props.delta
           : props.delta[dir.toLowerCase() as Lowercase<SwipeDirections>] ||
             defaultProps.delta;
-      if (absX < delta && absY < delta && !state.swiping) return state;
+      if (absX < delta && absY < delta && !state.swiping)
+        return { ...state, initialDirection: state.initialDirection || dir };
+
+      if (props.preventMixDirections && dir !== state.initialDirection) {
+        return state;
+      }
 
       const eventData = {
         absX,
