@@ -383,17 +383,14 @@ export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   transientProps.current = {
     ...defaultProps,
     ...options,
-    // Force defaults for config properties
-    delta: options.delta === void 0 ? defaultProps.delta : options.delta,
-    rotationAngle:
-      options.rotationAngle === void 0
-        ? defaultProps.rotationAngle
-        : options.rotationAngle,
-    trackTouch:
-      options.trackTouch === void 0
-        ? defaultProps.trackTouch
-        : options.trackTouch,
   };
+  // Force defaults for config properties
+  let defaultKey: keyof ConfigurationOptions;
+  for (defaultKey in defaultProps) {
+    if (transientProps.current[defaultKey] === void 0) {
+      (transientProps.current[defaultKey] as any) = defaultProps[defaultKey];
+    }
+  }
 
   const [handlers, attachTouch] = React.useMemo(
     () =>

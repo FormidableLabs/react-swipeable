@@ -251,6 +251,8 @@ describe("useSwipeable", () => {
       rotationAngle: undefined,
       trackMouse: undefined,
       trackTouch: undefined,
+      swipeDuration: undefined,
+      touchEventOptions: undefined,
     };
     const { getByText } = render(
       <SwipeableUsingHook {...swipeFuncs} {...undefinedConfigOptions} />
