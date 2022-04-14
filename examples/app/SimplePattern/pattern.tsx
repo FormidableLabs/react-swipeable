@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 import { useSwipeable, UP, DOWN, SwipeEventData } from 'react-swipeable';
 import {
   Wrapper,
@@ -47,7 +47,7 @@ const pattern = [UP, DOWN, UP, DOWN];
 
 const getInitialState = (numItems: number): CarouselState => ({ pos: numItems - 1, sliding: false, dir: NEXT });
 
-const Carousel: FunctionComponent = (props) => {
+const Carousel: FunctionComponent<{children: ReactNode}> = (props) => {
   const numItems = React.Children.count(props.children);
   const [state, dispatch] = React.useReducer(reducer, getInitialState(numItems));
 
@@ -81,12 +81,15 @@ const Carousel: FunctionComponent = (props) => {
 
   const handlers = useSwipeable({
     onSwiped: handleSwiped,
+    onTouchStartOrOnMouseDown: (({ event }) => event.preventDefault()),
+    touchEventOptions: { passive: false },
+    preventScrollOnSwipe: true,
     trackMouse: true
   });
 
   return (
     <>
-      <PatternBox {...handlers} style={{ touchAction: 'none' }}>
+      <PatternBox {...handlers}>
         Swipe the pattern below, within this box, to make the carousel go to the next
         slide
         {`\n`}

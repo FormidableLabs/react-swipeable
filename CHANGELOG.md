@@ -11,6 +11,7 @@
 - add new `onTouchStartOrOnMouseDown` prop that is called for `touchstart` and `mousedown`. Before a swipe even starts.
   - combined with `touchEventOptions` allows users the ability to now call `preventDefault` on `touchstart`
 - add new `onTouchEndOrOnMouseUp` prop that is called for `touchend` and `mouseup`.
+- add [react 18](https://reactjs.org/blog/2022/03/29/react-v18.html) to `peerDependencies`
 
 **Breaking Changes:**
 * we have dropped support for `es5` transpiled output

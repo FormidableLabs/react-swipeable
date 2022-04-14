@@ -118,7 +118,7 @@ All Event Handlers are called with the below event data, `SwipeEventData`.
 
 - Hook use requires **react >= 16.8.3**
 - The props contained in `handlers` are currently `ref` and `onMouseDown`
-  - Please spread `handlers` as the props contained in it could change as react improves event listening capabilities
+  - Please spread `handlers` as the props contained in it could change as react changes event listening capabilities
 
 ### `preventScrollOnSwipe` details
 
@@ -126,7 +126,7 @@ This prop prevents scroll during swipe in most cases. Use this to **stop scrolli
 
 Swipeable will call `e.preventDefault()` internally in an attempt to stop the browser's [touchmove](https://developer.mozilla.org/en-US/docs/Web/Events/touchmove) event default action (mostly scrolling).
 
-**NOTE:** `preventScrollOnSwipe` option **supersedes** `touchEventOptions.passive` for `touchmove` event listener
+**NOTE:** `preventScrollOnSwipe` option **supersedes** `touchEventOptions.passive` for the `touchmove` event listener
 
 **Example scenario:**
 > If a user is swiping right with props `{ onSwipedRight: userSwipedRight, preventScrollOnSwipe: true }` then `e.preventDefault()` will be called, but if the user was swiping left then `e.preventDefault()` would **not** be called.
@@ -149,19 +149,11 @@ Here is more information on react's long running passive [event issue](https://g
 
 We previously had issues with chrome lighthouse performance deducting points for not having passive option set so it is now on by default except in the case mentioned above.
 
-If, however, you really **need** _all_ of the listeners to be passive (for performance reasons or otherwise), you can use the `touch-action` css property instead, [see below for an example](#how-to-use-touch-action-to-prevent-scrolling).
+If, however, you really **need** _all_ of the listeners to be passive (for performance reasons or otherwise), you can prevent all scrolling on the swipeable container by using the `touch-action` css property instead, [see below for an example](#how-to-use-touch-action-to-prevent-scrolling).
 
-### Browser Support
+### Version 7 Updates and migration
 
-The release of v6 `react-swipeable` we only support browsers that support options object for `addEventListener`, [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Browser_compatibility). Which mainly means `react-swipeable` does not support ie11 by default, you need to polyfill options. For example using [event-listener-with-options](https://github.com/Macil/event-listener-with-options).
-
-### Version 6 Updates and migration
-
-If upgrading from v5 or later please refer to the release notes and the [v6 migration doc](./migration.md)
-
-v6 now only exports a hook, `useSwipeable`.
-
-If you would like something similar to the old `<Swipeable>` component you can recreate it from the hook. There are examples in the [migration doc](./migration.md#swipeable-component-examples).
+If upgrading from v6 refer to the release notes and the [migration doc](./migration.md).
 
 ## FAQs
 

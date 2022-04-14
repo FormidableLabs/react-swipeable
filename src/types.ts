@@ -41,7 +41,7 @@ export interface SwipeEventData {
    */
   first: boolean;
   /**
-   * Location where swipe started.
+   * Location where swipe started - [x, y].
    */
   initial: Vector2;
   /**
