@@ -34,6 +34,13 @@
   * remove dependency on `microbundle`
   * remove `interop` injected code - [pull/260](https://github.com/FormidableLabs/react-swipeable/pull/260#discussion_r679541081)
   * Thank you [@binoy14](https://github.com/binoy14)
+* export/outputs housekeeping and cleaning (mimicked from `react-redux`)
+  * removed/renamed exports from `package.json`:
+    * `browser`, `umd:main`(renamed `dist`), `jsnext:main`(use `module`), `typings`(use `types`)
+  * moved exports - **old** => **new**
+    * `"main": "./dist/react-swipeable.js"` => `"main": "./lib/index.js"`
+    * `"module": "./dist/react-swipeable.module.js"` => `"module": "es/index.js"`
+    * `"types": "./dist/index.d.ts"` => `"types": "./es/index.d.ts"`
 
 # v6.2.1
 * Fix issue with some config properties being set to `undefined` breaking swipeable

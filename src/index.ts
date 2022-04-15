@@ -115,7 +115,7 @@ function getHandlers(
       return {
         ...state,
         ...initialState,
-        initial: [...xy] as Vector2,
+        initial: xy.slice() as Vector2,
         xy,
         start: event.timeStamp || 0,
       };

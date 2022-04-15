@@ -15,7 +15,7 @@ export default [
       { file: pkg.module, format: "es", sourcemap: true },
       {
         name: "swipeable",
-        file: pkg.browser,
+        file: pkg.unpkg,
         format: "umd",
         sourcemap: true,
         globals: {

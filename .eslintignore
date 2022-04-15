@@ -1,4 +1,5 @@
 node_modules
+es
 dist
 lib
 examples

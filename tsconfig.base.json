@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "removeComments": true,
     "baseUrl": ".",
     "esModuleInterop": true,
     "jsx": "react",
@@ -11,9 +10,6 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "dist",
-    "declaration": true,
-    "declarationDir": ".",
     "noEmitOnError": true,
     "pretty": true,
     "skipLibCheck": true,

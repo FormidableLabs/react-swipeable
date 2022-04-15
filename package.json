@@ -2,21 +2,20 @@
   "name": "react-swipeable",
   "version": "7.0.0-alpha.1",
   "description": "React Swipe event handler hook",
-  "main": "./dist/react-swipeable.js",
-  "browser": "./dist/react-swipeable.umd.js",
-  "umd:main": "./dist/react-swipeable.umd.js",
-  "module": "./dist/react-swipeable.module.js",
-  "jsnext:main": "./dist/react-swipeable.module.js",
   "source": "./src/index.ts",
-  "types": "./dist/index.d.ts",
-  "typings": "./dist/index.d.ts",
+  "main": "./lib/index.js",
+  "module": "es/index.js",
+  "types": "./es/index.d.ts",
+  "unpkg": "dist/react-swipeable.js",
   "sideEffects": false,
   "scripts": {
-    "build": "rollup -c",
-    "build:examples": "cd ./examples && yarn && yarn build",
-    "build:publish:examples": "yarn run build:examples && rimraf examples/node_modules && gh-pages -d examples",
+    "build": "yarn run build:types && yarn run build:outputs",
+    "build:outputs": "rollup -c",
+    "build:types": "tsc --project tsconfig.types.json",
     "check:ci": "yarn run prettier && yarn run lint && yarn run test:unit",
-    "clean": "rimraf dist",
+    "clean": "rimraf lib dist es",
+    "examples:build": "cd ./examples && yarn && yarn build",
+    "examples:build:publish": "yarn run build:examples && rimraf examples/node_modules && gh-pages -d examples",
     "prettier": "prettier --check src __tests__",
     "format": "prettier --write src __tests__",
     "lint": "eslint . --ext .ts,.tsx",
@@ -35,15 +34,15 @@
   "size-limit": [
     {
       "limit": "1.675 KB",
+      "path": "lib/index.js"
+    },
+    {
+      "limit": "1.75 KB",
       "path": "dist/react-swipeable.js"
     },
     {
       "limit": "1.75 KB",
-      "path": "dist/react-swipeable.umd.js"
-    },
-    {
-      "limit": "1.75 KB",
-      "path": "dist/react-swipeable.module.js"
+      "path": "es/index.js"
     }
   ],
   "jest": {
@@ -77,6 +76,8 @@
   "homepage": "https://github.com/FormidableLabs/react-swipeable",
   "files": [
     "dist",
+    "es",
+    "lib",
     "src"
   ],
   "license": "MIT",
