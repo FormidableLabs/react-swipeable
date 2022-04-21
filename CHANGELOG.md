@@ -27,6 +27,9 @@
 **Bug fixes:**
 * fix bug where directional swiped check allowed `undefined`/falsy values to set `cancelablePageSwipe`
   * Thank you [@bhj](https://github.com/bhj) for the [comment](https://github.com/FormidableLabs/react-swipeable/pull/240#issuecomment-1014980025)
+* fix bug when both `trackTouch` and `trackMouse` were present that triggered an erroneous swipe when the user clicked outside and above the swipeable area
+  * See [issue 304](https://github.com/FormidableLabs/react-swipeable/issues/304) for details
+  * Thank you [@Sacret](https://github.com/Sacret)
 
 **Infrastructure:**
 * post `size-limit report` to PRs with bundle diff sizes
@@ -34,6 +37,8 @@
   * remove dependency on `microbundle`
   * remove `interop` injected code - [pull/260](https://github.com/FormidableLabs/react-swipeable/pull/260#discussion_r679541081)
   * Thank you [@binoy14](https://github.com/binoy14)
+* upgrade lots of dev dependencies
+  * 🎉 upgrade to `typescript` `v4.6.3`
 * export/outputs housekeeping and cleaning (mimicked from `react-redux`)
   * removed/renamed exports from `package.json`:
     * `browser`, `umd:main`(renamed `dist`), `jsnext:main`(use `module`), `typings`(use `types`)

@@ -96,17 +96,17 @@ function getHandlers(
   AttachTouch
 ] {
   const onStart = (event: HandledEvents) => {
+    const isTouch = "touches" in event;
     // if more than a single touch don't track, for now...
-    if (event && "touches" in event && event.touches.length > 1) return;
+    if (isTouch && event.touches.length > 1) return;
 
     set((state, props) => {
       // setup mouse listeners on document to track swipe since swipe can leave container
-      if (props.trackMouse) {
+      if (props.trackMouse && !isTouch) {
         document.addEventListener(mouseMove, onMove);
         document.addEventListener(mouseUp, onUp);
       }
-      const { clientX, clientY } =
-        "touches" in event ? event.touches[0] : event;
+      const { clientX, clientY } = isTouch ? event.touches[0] : event;
       const xy = rotateXYByAngle([clientX, clientY], props.rotationAngle);
 
       props.onTouchStartOrOnMouseDown &&
@@ -124,9 +124,10 @@ function getHandlers(
 
   const onMove = (event: HandledEvents) => {
     set((state, props) => {
+      const isTouch = "touches" in event;
       // Discount a swipe if additional touches are present after
       // a swipe has started.
-      if ("touches" in event && event.touches.length > 1) {
+      if (isTouch && event.touches.length > 1) {
         return state;
       }
 
@@ -135,8 +136,7 @@ function getHandlers(
         return state.swiping ? { ...state, swiping: false } : state;
       }
 
-      const { clientX, clientY } =
-        "touches" in event ? event.touches[0] : event;
+      const { clientX, clientY } = isTouch ? event.touches[0] : event;
       const [x, y] = rotateXYByAngle([clientX, clientY], props.rotationAngle);
       const deltaX = x - state.xy[0];
       const deltaY = y - state.xy[1];

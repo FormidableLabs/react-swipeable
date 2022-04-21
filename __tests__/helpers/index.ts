@@ -1,4 +1,11 @@
-import { MockedSwipeFunctions } from "../useSwipeable.spec";
+export type MockedSwipeFunctions = {
+  onSwiping: jest.Mock;
+  onSwiped: jest.Mock;
+  onSwipedLeft: jest.Mock;
+  onSwipedRight: jest.Mock;
+  onSwipedUp: jest.Mock;
+  onSwipedDown: jest.Mock;
+};
 
 const expectSwipingDir = (fns: jest.Mock, dir: string) => {
   fns.mock.calls.forEach((call) => {

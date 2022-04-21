@@ -2,7 +2,7 @@ import * as React from "react";
 import { render, fireEvent, createEvent, act } from "@testing-library/react";
 import { useSwipeable } from "../src/index";
 import { LEFT, RIGHT, UP, DOWN, SwipeableProps } from "../src/types";
-import { expectSwipeFuncsDir } from "./helpers";
+import { expectSwipeFuncsDir, MockedSwipeFunctions } from "./helpers";
 
 const DIRECTIONS: [typeof LEFT, typeof RIGHT, typeof UP, typeof DOWN] = [
   LEFT,
@@ -16,14 +16,6 @@ const touchMove = "touchmove";
 const touchEnd = "touchend";
 const touchListeners = [touchStart, touchMove, touchEnd];
 
-export type MockedSwipeFunctions = {
-  onSwiping: jest.Mock;
-  onSwiped: jest.Mock;
-  onSwipedLeft: jest.Mock;
-  onSwipedRight: jest.Mock;
-  onSwipedUp: jest.Mock;
-  onSwipedDown: jest.Mock;
-};
 function getMockedSwipeFunctions(): MockedSwipeFunctions {
   const onSwiped = "onSwiped";
   return DIRECTIONS.reduce(
@@ -1076,5 +1068,29 @@ describe("useSwipeable", () => {
     pages.forEach((page, idx) => {
       expect(onSwipedSpy.mock.calls[idx][0]).toBe(page);
     });
+  });
+
+  it("Does not trigger onSwiped again clicking document after a previous touch swipe when trackTouch and trackMouse are present", () => {
+    // See issue #304
+    // - https://github.com/FormidableLabs/react-swipeable/issues/304
+    const onSwiped = jest.fn();
+
+    const { getByText } = render(
+      <SwipeableUsingHook onSwiped={onSwiped} trackMouse trackTouch />
+    );
+
+    const touchArea = getByText(TESTING_TEXT);
+
+    fireEvent[TS](touchArea, cte({ x: 100, y: 100 }));
+    fireEvent[TM](touchArea, cte({ x: 100, y: 200 }));
+    fireEvent[TE](touchArea, cte({}));
+
+    expect(onSwiped).toHaveBeenCalledTimes(1);
+
+    fireEvent[MD](document, cme({ x: 100, y: 100 }));
+    fireEvent[MM](document, cme({ x: 100, y: 100 }));
+    fireEvent[MU](document, cme({}));
+    // verify we did NOT trigger another swipe
+    expect(onSwiped).toHaveBeenCalledTimes(1);
   });
 });
