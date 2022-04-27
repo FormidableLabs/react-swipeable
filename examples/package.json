@@ -9,7 +9,7 @@
   "dependencies": {
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-swipeable": "^7.0.0-alpha.3",
+    "react-swipeable": "^7.0.0",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {

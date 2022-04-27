@@ -3128,10 +3128,10 @@ react-is@^16.7.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-swipeable@^7.0.0-alpha.3:
-  version "7.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/react-swipeable/-/react-swipeable-7.0.0-alpha.3.tgz#fb297d2172fa70cc84cec8593c52fbae32420150"
-  integrity sha512-K5MkPVjesjwO1oDjLXG3BLDWl2Y0St9N8ymN78UAf8ldluKZHZ3cMRDGlMN0GpHxNj47tIQoxd0McdvriCDFzQ==
+react-swipeable@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/react-swipeable/-/react-swipeable-7.0.0.tgz#7a12570ee435d35ac700511de338384aa78d12cd"
+  integrity sha512-NI7KGfQ6gwNFN0Hor3vytYW3iRfMMaivGEuxcADOOfBCx/kqwXE8IfHFxEcxSUkxCYf38COLKYd9EMYZghqaUA==
 
 react@^18.1.0:
   version "18.1.0"
