@@ -3,6 +3,7 @@ TODO
 *.log
 .DS_Store
 .vscode
+es
 lib
 dist
 examples/static

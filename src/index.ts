@@ -10,7 +10,7 @@ import {
   RIGHT,
   Setter,
   ConfigurationOptions,
-  SwipeableCallbacks,
+  SwipeableDirectionCallbacks,
   SwipeableHandlers,
   SwipeableProps,
   SwipeablePropsWithDefaultOptions,
@@ -28,6 +28,7 @@ export {
   DOWN,
   SwipeDirections,
   SwipeEventData,
+  SwipeableDirectionCallbacks,
   SwipeCallback,
   TapCallback,
   SwipeableHandlers,
@@ -37,10 +38,12 @@ export {
 
 const defaultProps: ConfigurationOptions = {
   delta: 10,
-  preventDefaultTouchmoveEvent: false,
+  preventScrollOnSwipe: false,
   rotationAngle: 0,
   trackMouse: false,
   trackTouch: true,
+  swipeDuration: Infinity,
+  touchEventOptions: { passive: true },
 };
 const initialState: SwipeableState = {
   first: true,
@@ -93,22 +96,26 @@ function getHandlers(
   AttachTouch
 ] {
   const onStart = (event: HandledEvents) => {
+    const isTouch = "touches" in event;
     // if more than a single touch don't track, for now...
-    if (event && "touches" in event && event.touches.length > 1) return;
+    if (isTouch && event.touches.length > 1) return;
 
     set((state, props) => {
       // setup mouse listeners on document to track swipe since swipe can leave container
-      if (props.trackMouse) {
+      if (props.trackMouse && !isTouch) {
         document.addEventListener(mouseMove, onMove);
         document.addEventListener(mouseUp, onUp);
       }
-      const { clientX, clientY } =
-        "touches" in event ? event.touches[0] : event;
+      const { clientX, clientY } = isTouch ? event.touches[0] : event;
       const xy = rotateXYByAngle([clientX, clientY], props.rotationAngle);
+
+      props.onTouchStartOrOnMouseDown &&
+        props.onTouchStartOrOnMouseDown({ event });
+
       return {
         ...state,
         ...initialState,
-        initial: [...xy],
+        initial: xy.slice() as Vector2,
         xy,
         start: event.timeStamp || 0,
       };
@@ -117,13 +124,19 @@ function getHandlers(
 
   const onMove = (event: HandledEvents) => {
     set((state, props) => {
+      const isTouch = "touches" in event;
       // Discount a swipe if additional touches are present after
       // a swipe has started.
-      if ("touches" in event && event.touches.length > 1) {
+      if (isTouch && event.touches.length > 1) {
         return state;
       }
-      const { clientX, clientY } =
-        "touches" in event ? event.touches[0] : event;
+
+      // if swipe has exceeded duration stop tracking
+      if (event.timeStamp - state.start > props.swipeDuration) {
+        return state.swiping ? { ...state, swiping: false } : state;
+      }
+
+      const { clientX, clientY } = isTouch ? event.touches[0] : event;
       const [x, y] = rotateXYByAngle([clientX, clientY], props.rotationAngle);
       const deltaX = x - state.xy[0];
       const deltaY = y - state.xy[1];
@@ -159,23 +172,28 @@ function getHandlers(
       // call onSwipeStart if present and is first swipe event
       eventData.first && props.onSwipeStart && props.onSwipeStart(eventData);
 
-      // Call onSwiping if present
+      // call onSwiping if present
       props.onSwiping && props.onSwiping(eventData);
 
-      // track if a swipe is cancelable(handler for swiping or swiped(dir) exists)
+      // track if a swipe is cancelable (handler for swiping or swiped(dir) exists)
       // so we can call preventDefault if needed
       let cancelablePageSwipe = false;
-      if (props.onSwiping || props.onSwiped || `onSwiped${dir}` in props) {
+      if (
+        props.onSwiping ||
+        props.onSwiped ||
+        props[`onSwiped${dir}` as keyof SwipeableDirectionCallbacks]
+      ) {
         cancelablePageSwipe = true;
       }
 
       if (
         cancelablePageSwipe &&
-        props.preventDefaultTouchmoveEvent &&
+        props.preventScrollOnSwipe &&
         props.trackTouch &&
         event.cancelable
-      )
+      ) {
         event.preventDefault();
+      }
 
       return {
         ...state,
@@ -191,15 +209,23 @@ function getHandlers(
     set((state, props) => {
       let eventData: SwipeEventData | undefined;
       if (state.swiping && state.eventData) {
-        eventData = { ...state.eventData, event };
-        props.onSwiped && props.onSwiped(eventData);
+        // if swipe is less than duration fire swiped callbacks
+        if (event.timeStamp - state.start < props.swipeDuration) {
+          eventData = { ...state.eventData, event };
+          props.onSwiped && props.onSwiped(eventData);
 
-        const onSwipedDir =
-          props[`onSwiped${eventData.dir}` as keyof SwipeableCallbacks];
-        onSwipedDir && onSwipedDir(eventData);
+          const onSwipedDir =
+            props[
+              `onSwiped${eventData.dir}` as keyof SwipeableDirectionCallbacks
+            ];
+          onSwipedDir && onSwipedDir(eventData);
+        }
       } else {
         props.onTap && props.onTap({ event });
       }
+
+      props.onTouchEndOrOnMouseUp && props.onTouchEndOrOnMouseUp({ event });
+
       return { ...state, ...initialState, eventData };
     });
   };
@@ -216,26 +242,43 @@ function getHandlers(
   };
 
   /**
-   * Switch of "passive" property for now.
-   * When `preventDefaultTouchmoveEvent` is:
+   * The value of passive on touchMove depends on `preventScrollOnSwipe`:
    * - true => { passive: false }
-   * - false => { passive: true }
+   * - false => { passive: true } // Default
    *
-   * Could take entire `addEventListener` options object as a param later?
+   * NOTE: When preventScrollOnSwipe is true, we attempt to call preventDefault to prevent scroll.
+   *
+   * props.touchEventOptions can also be set for all touch event listeners,
+   * but for `touchmove` specifically when `preventScrollOnSwipe` it will
+   * supersede and force passive to false.
+   *
    */
-  const attachTouch: AttachTouch = (el, passive) => {
+  const attachTouch: AttachTouch = (el, props) => {
     let cleanup = () => {};
     if (el && el.addEventListener) {
+      const baseOptions = {
+        ...defaultProps.touchEventOptions,
+        ...props.touchEventOptions,
+      };
       // attach touch event listeners and handlers
       const tls: [
         typeof touchStart | typeof touchMove | typeof touchEnd,
-        (e: HandledEvents) => void
+        (e: HandledEvents) => void,
+        { passive: boolean }
       ][] = [
-        [touchStart, onStart],
-        [touchMove, onMove],
-        [touchEnd, onEnd],
+        [touchStart, onStart, baseOptions],
+        // preventScrollOnSwipe option supersedes touchEventOptions.passive
+        [
+          touchMove,
+          onMove,
+          {
+            ...baseOptions,
+            ...(props.preventScrollOnSwipe ? { passive: false } : {}),
+          },
+        ],
+        [touchEnd, onEnd, baseOptions],
       ];
-      tls.forEach(([e, h]) => el.addEventListener(e, h, { passive }));
+      tls.forEach(([e, h, o]) => el.addEventListener(e, h, o));
       // return properly scoped cleanup method for removing listeners, options not required
       cleanup = () => tls.forEach(([e, h]) => el.removeEventListener(e, h));
     }
@@ -258,10 +301,7 @@ function getHandlers(
       }
       // only attach if we want to track touch
       if (props.trackTouch && el) {
-        addState.cleanUpTouch = attachTouch(
-          el,
-          !props.preventDefaultTouchmoveEvent
-        );
+        addState.cleanUpTouch = attachTouch(el, props);
       }
 
       // store event attached DOM el for comparison, clean up, and re-attachment
@@ -284,24 +324,46 @@ function getHandlers(
 
 function updateTransientState(
   state: SwipeableState,
-  props: SwipeableProps,
+  props: SwipeablePropsWithDefaultOptions,
+  previousProps: SwipeablePropsWithDefaultOptions,
   attachTouch: AttachTouch
 ) {
-  const addState: { cleanUpTouch?(): void } = {};
-  // clean up touch handlers if no longer tracking touches
-  if (!props.trackTouch && state.cleanUpTouch) {
-    state.cleanUpTouch();
-    addState.cleanUpTouch = void 0;
-  } else if (props.trackTouch && !state.cleanUpTouch) {
-    // attach/re-attach touch handlers
-    if (state.el) {
-      addState.cleanUpTouch = attachTouch(
-        state.el,
-        !props.preventDefaultTouchmoveEvent
-      );
+  // if trackTouch is off or there is no el, then remove handlers if necessary and exit
+  if (!props.trackTouch || !state.el) {
+    if (state.cleanUpTouch) {
+      state.cleanUpTouch();
     }
+
+    return {
+      ...state,
+      cleanUpTouch: undefined,
+    };
   }
-  return { ...state, ...addState };
+
+  // trackTouch is on, so if there are no handlers attached, attach them and exit
+  if (!state.cleanUpTouch) {
+    return {
+      ...state,
+      cleanUpTouch: attachTouch(state.el, props),
+    };
+  }
+
+  // trackTouch is on and handlers are already attached, so if preventScrollOnSwipe changes value,
+  // remove and reattach handlers (this is required to update the passive option when attaching
+  // the handlers)
+  if (
+    props.preventScrollOnSwipe !== previousProps.preventScrollOnSwipe ||
+    props.touchEventOptions.passive !== previousProps.touchEventOptions.passive
+  ) {
+    state.cleanUpTouch();
+
+    return {
+      ...state,
+      cleanUpTouch: attachTouch(state.el, props),
+    };
+  }
+
+  return state;
 }
 
 export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
@@ -310,20 +372,25 @@ export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   const transientProps = React.useRef<SwipeablePropsWithDefaultOptions>({
     ...defaultProps,
   });
+
+  // track previous rendered props
+  const previousProps = React.useRef<SwipeablePropsWithDefaultOptions>({
+    ...transientProps.current,
+  });
+  previousProps.current = { ...transientProps.current };
+
+  // update current render props & defaults
   transientProps.current = {
     ...defaultProps,
     ...options,
-    // Force defaults for config properties
-    delta: options.delta === void 0 ? defaultProps.delta : options.delta,
-    rotationAngle:
-      options.rotationAngle === void 0
-        ? defaultProps.rotationAngle
-        : options.rotationAngle,
-    trackTouch:
-      options.trackTouch === void 0
-        ? defaultProps.trackTouch
-        : options.trackTouch,
   };
+  // Force defaults for config properties
+  let defaultKey: keyof ConfigurationOptions;
+  for (defaultKey in defaultProps) {
+    if (transientProps.current[defaultKey] === void 0) {
+      (transientProps.current[defaultKey] as any) = defaultProps[defaultKey];
+    }
+  }
 
   const [handlers, attachTouch] = React.useMemo(
     () =>
@@ -341,6 +408,7 @@ export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   transientState.current = updateTransientState(
     transientState.current,
     transientProps.current,
+    previousProps.current,
     attachTouch
   );
 

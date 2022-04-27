@@ -42,6 +42,7 @@ export const CarouselSlot = styled.div<{ order: number }>`
 export const SlideButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  padding-bottom: 10px;
 `;
 
 export const SlideButton = styled.button<{ float: 'left' | 'right' }>`

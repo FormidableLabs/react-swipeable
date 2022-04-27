@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "removeComments": true,
     "baseUrl": ".",
     "esModuleInterop": true,
     "jsx": "react",
@@ -11,11 +10,11 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "lib/",
+    "noEmitOnError": true,
     "pretty": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "ESNext"
+    "target": "es2015"
   }
 }

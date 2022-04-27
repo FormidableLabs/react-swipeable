@@ -79,6 +79,15 @@ $ yarn run prettier
 $ yarn run format
 ```
 
+If you see this error:
+```
+[warn] Code style issues found in the above file(s). Forgot to run Prettier?
+```
+Then run the formatter:
+```sh
+$ yarn run format
+```
+
 ## Project Maintainers
 ### Releasing a new version
 1. Publish to npm
@@ -112,8 +121,8 @@ Make sure you've already completed the above steps for `Update version in the ex
 
 (Optional) Validate examples build locally
 ```sh
-# From root run build:examples
-$ yarn build:examples
+# From root - build the examples
+$ yarn examples:build
 
 # cd into examples and start simple http server(python v3)
 # validate everything works locally: http://localhost:8080/
@@ -122,7 +131,6 @@ examples$ python -m http.server 8080
 ```
 
 ```sh
-# From the root run build:publish:examples
-# This will build and publish the examples app to github pages
-$ yarn build:publish:examples
+# From root - build and publish the examples app to github pages
+$ yarn examples:build:publish
 ```

@@ -1,9 +1,13 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as ReactDOMClient from 'react-dom/client';
 import App from './app/App';
 
-ReactDOM.render(
-  // @ts-ignore
-  <App version={SWIPEABLE_VERSION} />,
-  document.getElementById('app')
-);
+const container = document.getElementById('app');
+
+// Create a root.
+// @ts-ignore
+const root = ReactDOMClient.createRoot(container);
+
+// Initial render: Render an element to the root.
+// @ts-ignore
+root.render(<App version={SWIPEABLE_VERSION} />);

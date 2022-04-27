@@ -1,3 +1,52 @@
+# UNRELEASED
+
+**New Features:**
+- add new `swipeDuration` prop - "allowable duration of a swipe"
+  - A swipe lasting more than `swipeDuration`, in milliseconds, will **not** be considered a swipe.
+    - Feature mimicked from `use-gesture` [swipe.duration](https://use-gesture.netlify.app/docs/options/#swipeduration)
+  - Defaults to `Infinity` for backwards compatibility
+- add new `touchEventOptions` prop that can set the options for the touch event listeners
+  - this provides users full control of if/when they want to set [passive](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#options)
+  - Defaults to `{ passive: true }`
+- add new `onTouchStartOrOnMouseDown` prop that is called for `touchstart` and `mousedown`. Before a swipe even starts.
+  - combined with `touchEventOptions` allows users the ability to now call `preventDefault` on `touchstart`
+- add new `onTouchEndOrOnMouseUp` prop that is called for `touchend` and `mouseup`.
+- add [react 18](https://reactjs.org/blog/2022/03/29/react-v18.html) to `peerDependencies`
+
+**Breaking Changes:**
+* we have dropped support for `es5` transpiled output
+  * we target `es2015` for our transpilation now
+    * `swipeable` utilizes object/array spread & const/let natively
+* `preventScrollOnSwipe` - "new" prop. Replaces `preventDefaultTouchmoveEvent`
+  * same functionality but renamed to be more explicit on its intended use
+  * **fixed bug** - where toggling this prop did not re-attach event listeners
+  * **update** - we now **only** change the `passive` event listener option for `touchmove` depending on this prop
+    * see notes in README for more details [readme#passive-listener](https://github.com/FormidableLabs/react-swipeable#passive-listener)
+  * Thank you [@stefvhuynh](https://github.com/stefvhuynh)
+
+**Bug fixes:**
+* fix bug where directional swiped check allowed `undefined`/falsy values to set `cancelablePageSwipe`
+  * Thank you [@bhj](https://github.com/bhj) for the [comment](https://github.com/FormidableLabs/react-swipeable/pull/240#issuecomment-1014980025)
+* fix bug when both `trackTouch` and `trackMouse` were present that triggered an erroneous swipe when the user clicked outside and above the swipeable area
+  * See [issue 304](https://github.com/FormidableLabs/react-swipeable/issues/304) for details
+  * Thank you [@Sacret](https://github.com/Sacret)
+
+**Infrastructure:**
+* post `size-limit report` to PRs with bundle diff sizes
+* utilize `rollup` for build & output
+  * remove dependency on `microbundle`
+  * remove `interop` injected code - [pull/260](https://github.com/FormidableLabs/react-swipeable/pull/260#discussion_r679541081)
+  * Thank you [@binoy14](https://github.com/binoy14)
+* upgrade lots of dev dependencies
+  * 🎉 upgrade to `typescript` `v4.6.3`
+* export/outputs housekeeping and cleaning (mimicked from `react-redux`)
+  * removed/renamed exports from `package.json`:
+    * `browser`, `umd:main`(renamed `dist`), `jsnext:main`(use `module`), `typings`(use `types`)
+  * moved exports - **old** => **new**
+    * `"main": "./dist/react-swipeable.js"` => `"main": "./lib/index.js"`
+    * `"module": "./dist/react-swipeable.module.js"` => `"module": "es/index.js"`
+    * `"types": "./dist/index.d.ts"` => `"types": "./es/index.d.ts"`
+
 # v6.2.2
 * add react v18 to `peerDependencies`
 
