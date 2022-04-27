@@ -1,5 +1,4 @@
-# UNRELEASED
-
+# v7.0.0
 **New Features:**
 - add new `swipeDuration` prop - "allowable duration of a swipe"
   - A swipe lasting more than `swipeDuration`, in milliseconds, will **not** be considered a swipe.
