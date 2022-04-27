@@ -15,7 +15,7 @@
     "check:ci": "yarn run prettier && yarn run lint && yarn run test:unit",
     "clean": "rimraf lib dist es",
     "examples:build": "cd ./examples && yarn && yarn build",
-    "examples:build:publish": "yarn run build:examples && rimraf examples/node_modules && gh-pages -d examples",
+    "examples:build:publish": "yarn run examples:build && rimraf examples/node_modules && gh-pages -d examples",
     "prettier": "prettier --check src __tests__",
     "format": "prettier --write src __tests__",
     "lint": "eslint . --ext .ts,.tsx",
