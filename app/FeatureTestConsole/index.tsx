@@ -11,22 +11,21 @@ const initialState = {
   swipingDirection: '',
   swipedDirection: '',
 };
+const INFINITY = 'Infinity';
 const initialStateSwipeable = {
   delta: '10',
-  preventDefaultTouchmoveEvent: false,
+  preventScrollOnSwipe: false,
   trackMouse: false,
   trackTouch: true,
   rotationAngle: 0,
+  swipeDuration: INFINITY,
 };
 const initialStateApplied = {
   showOnSwipeds: false,
   onSwipingApplied: true,
   onSwipedApplied: true,
   onTapApplied: true,
-  onSwipedLeftApplied: true,
-  onSwipedRightApplied: true,
-  onSwipedUpApplied: true,
-  onSwipedDownApplied: true,
+  stopScrollCss: false,
 };
 
 interface IState {
@@ -36,7 +35,8 @@ interface IState {
   swipingDirection: string;
   swipedDirection: string;
   delta: string;
-  preventDefaultTouchmoveEvent: boolean;
+  swipeDuration: string;
+  preventScrollOnSwipe: boolean;
   trackMouse: boolean;
   trackTouch: boolean;
   rotationAngle: number | string;
@@ -44,10 +44,7 @@ interface IState {
   onSwipingApplied: boolean;
   onSwipedApplied: boolean;
   onTapApplied: boolean;
-  onSwipedLeftApplied: boolean;
-  onSwipedRightApplied: boolean;
-  onSwipedUpApplied: boolean;
-  onSwipedDownApplied: boolean;
+  stopScrollCss: boolean;
 }
 
 export default class Main extends Component<any, IState> {
@@ -132,18 +129,27 @@ export default class Main extends Component<any, IState> {
       onSwipingApplied,
       onSwipedApplied,
       onTapApplied,
-      preventDefaultTouchmoveEvent,
+      preventScrollOnSwipe,
       trackTouch,
       trackMouse,
       rotationAngle,
+      swipeDuration,
+      stopScrollCss,
     } = this.state;
+
+    const isSwipeDurationInfinity = swipeDuration === INFINITY;
+    const swipeDurationTextValue = isSwipeDurationInfinity ? INFINITY : swipeDuration;
+    const isSwipeDurationNumber = isSwipeDurationInfinity ? Infinity : !(isNaN(swipeDuration as any) || swipeDuration === '');
 
     const isDeltaNumber = !(isNaN(delta as any) || delta === '');
     const isRotationAngleNumber = !(isNaN(rotationAngle as any) || rotationAngle === '');
     const deltaNum = isDeltaNumber ? +delta : 10;
     const rotationAngleNum = isRotationAngleNumber ? +rotationAngle : 0;
 
-    const swipeableStyle = {fontSize: "0.75rem"};
+    const swipeableStyle = {
+      fontSize: '0.75rem',
+      touchAction: stopScrollCss ? 'none' : 'auto',
+    };
 
     const boundSwipes = getBoundSwipes(this);
     let swipeableDirProps: any = {};
@@ -168,10 +174,11 @@ export default class Main extends Component<any, IState> {
             {...boundSwipes}
             {...swipeableDirProps}
             delta={deltaNum}
-            preventDefaultTouchmoveEvent={preventDefaultTouchmoveEvent}
+            preventScrollOnSwipe={preventScrollOnSwipe}
             trackTouch={trackTouch}
             trackMouse={trackMouse}
             rotationAngle={rotationAngleNum}
+            swipeDuration={swipeDuration}
             className="callout hookComponent"
             style={swipeableStyle}>
               <div onTouchStart={()=>this.resetState()} onMouseDown={()=>this.resetState()}>
@@ -247,9 +254,20 @@ export default class Main extends Component<any, IState> {
                     onChange={(e)=>this.updateValue('rotationAngle', getVal(e))} value={rotationAngle}/>
                 </td>
               </tr>
+              <tr>
+                <td colSpan={2} className="text-center">
+                  swipeDuration:
+                  <div><b>(ms | Infinity)</b></div>
+                </td>
+                <td>
+                  <input type="text"
+                    style={{margin: '0px', border: !isSwipeDurationNumber ? '2px solid red' : ''}}
+                    onChange={(e)=>this.updateValue('swipeDuration', getVal(e))} value={swipeDurationTextValue}/>
+                </td>
+              </tr>
               <RowSimpleCheckbox
-                value={preventDefaultTouchmoveEvent}
-                name="preventDefaultTouchmoveEvent"
+                value={preventScrollOnSwipe}
+                name="preventScrollOnSwipe"
                 onChange={this.updateValue}
               />
               <RowSimpleCheckbox
@@ -266,7 +284,12 @@ export default class Main extends Component<any, IState> {
           </table>
           <table style={{width: "100%"}}>
             <tbody>
-
+              <RowSimpleCheckbox
+                value={stopScrollCss}
+                name="stopScrollCss"
+                displayText="Prevent scroll via CSS (touch-action)"
+                onChange={this.updateValue}
+              />
             </tbody>
           </table>
           <button type="button" className="tiny button expanded" onClick={()=>this.resetState(true)}>Reset All Options</button>

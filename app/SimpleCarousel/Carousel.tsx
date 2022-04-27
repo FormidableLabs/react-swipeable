@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import {
   Wrapper,
@@ -28,7 +28,7 @@ const getOrder = (index: number, pos: number, numItems: number) => {
 
 const getInitialState = (numItems: number): CarouselState => ({ pos: numItems - 1, sliding: false, dir: NEXT });
 
-const Carousel: FunctionComponent = (props) => {
+const Carousel: FunctionComponent<{children: ReactNode}> = (props) => {
   const numItems = React.Children.count(props.children);
   const [state, dispatch] = React.useReducer(reducer, getInitialState(numItems));
 
@@ -42,7 +42,8 @@ const Carousel: FunctionComponent = (props) => {
   const handlers = useSwipeable({
     onSwipedLeft: () => slide(NEXT),
     onSwipedRight: () => slide(PREV),
-    preventDefaultTouchmoveEvent: true,
+    swipeDuration: 500,
+    preventScrollOnSwipe: true,
     trackMouse: true
   });
 

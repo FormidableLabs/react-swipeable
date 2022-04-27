@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 import { useSwipeable, UP, DOWN, SwipeEventData } from 'react-swipeable';
 import {
   Wrapper,
@@ -47,7 +47,7 @@ const pattern = [UP, DOWN, UP, DOWN];
 
 const getInitialState = (numItems: number): CarouselState => ({ pos: numItems - 1, sliding: false, dir: NEXT });
 
-const Carousel: FunctionComponent = (props) => {
+const Carousel: FunctionComponent<{children: ReactNode}> = (props) => {
   const numItems = React.Children.count(props.children);
   const [state, dispatch] = React.useReducer(reducer, getInitialState(numItems));
 
@@ -81,7 +81,9 @@ const Carousel: FunctionComponent = (props) => {
 
   const handlers = useSwipeable({
     onSwiped: handleSwiped,
-    preventDefaultTouchmoveEvent: true,
+    onTouchStartOrOnMouseDown: (({ event }) => event.preventDefault()),
+    touchEventOptions: { passive: false },
+    preventScrollOnSwipe: true,
     trackMouse: true
   });
 
@@ -99,7 +101,7 @@ const Carousel: FunctionComponent = (props) => {
           <D><DownArrow active={pIdx > 3} /></D>
         </p>
       </PatternBox>
-      <div>
+      <div style={{paddingBottom: '15px'}}>
         <Wrapper>
           <CarouselContainer dir={state.dir} sliding={state.sliding}>
             {React.Children.map(props.children, (child, index) => (
