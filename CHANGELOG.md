@@ -1,3 +1,6 @@
+# v6.2.2
+* add react v18 to `peerDependencies`
+
 # v6.2.1
 * Fix issue with some config properties being set to `undefined` breaking swipeable
   * [PR #296](https://github.com/formidablelabs/react-swipeable/pull/296)
