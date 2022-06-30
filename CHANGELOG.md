@@ -15,7 +15,9 @@
 **Breaking Changes:**
 * we have dropped support for `es5` transpiled output
   * we target `es2015` for our transpilation now
-    * `swipeable` utilizes object/array spread & const/let natively
+    * `swipeable` utilizes object spread & const/let natively
+    * **NOTE** - [tsc/typescript compiler](https://www.typescriptlang.org/tsconfig#target) still transpiles object spreads to `Object.assign`, so this may not actually be a breaking change
+      * see comment for more details: [#289 (comment)](https://github.com/FormidableLabs/react-swipeable/pull/289#issuecomment-1168553572)
 * `preventScrollOnSwipe` - "new" prop. Replaces `preventDefaultTouchmoveEvent`
   * same functionality but renamed to be more explicit on its intended use
   * **fixed bug** - where toggling this prop did not re-attach event listeners
