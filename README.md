@@ -1,4 +1,4 @@
-# React Swipeable
+[![React Swipeable — Formidable, We build the modern web](./react-swipeable-Hero.png)](https://formidable.com/open-source/)
 
 React swipe event handler hook
 
