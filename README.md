@@ -174,6 +174,7 @@ useEffect(() => {
   return () => ref({});
 });
 ```
+**Note:** Issues can arise if you forget to clean up listeners - [#332](https://github.com/FormidableLabs/react-swipeable/issues/322)
 
 ### How to share `ref` from `useSwipeable`?
 
