@@ -170,6 +170,8 @@ const { ref } = useSwipeable({
 
 useEffect(() => {
   ref(document);
+  // Clean up swipeable event listeners
+  return () => ref({});
 });
 ```
 
