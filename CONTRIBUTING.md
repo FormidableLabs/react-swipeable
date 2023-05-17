@@ -127,6 +127,8 @@ Untracked files:
 	.changeset/flimsy-pandas-marry.md
 ```
 
+Changeset will use a randomly generated file name for the markdown description file.
+
 Review the file, make any necessary adjustments, and commit it to source. When we eventually do a package release, the changeset notes and version will be incorporated!
 
 ### Creating versions
