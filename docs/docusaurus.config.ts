@@ -67,45 +67,14 @@ const config: Config = {
       ],
     },
     footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Tutorial',
-              to: '/docs/intro',
-            },
-          ],
+        logo: {
+          alt: 'Nearform logo',
+          src: 'img/nearform-logo-white.svg',
+          href: 'https://nearform.com',
+          width: 100,
+          height: 100,
         },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Todo',
-              href: 'https://commerce.nearform.com',
-            },
-            {
-              label: 'Todo',
-              href: 'https://commerce.nearform.com',
-            },
-            {
-              label: 'Todo',
-              href: 'https://commerce.nearform.com',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'GitHub',
-              href: 'https://github.com/FormidableLabs/react-swipeable',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} Nearform_Commerce`,
+        copyright: `© ${new Date().getFullYear()} Nearform`,
     },
     prism: {
       theme: prismThemes.github,
