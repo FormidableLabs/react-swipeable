@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'React Swipeable',
   tagline: 'Documentation Site',
-  favicon: 'img/favicon.ico', //todo: update
+  favicon: 'img/nearform-icon.svg', //todo: update
 
   // Set the production url of your site here
   url: 'https://commerce.nearform.com/',
@@ -31,7 +31,7 @@ const config: Config = {
         },
         blog: false,
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: './src/css/custom2.css',
         },
       } satisfies Preset.Options,
     ],
@@ -40,22 +40,28 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
+    docs: {
+      sidebar: {
+        hideable: true
+      }
+    },
     navbar: {
-      title: 'My Site',
+      title: 'React Swipeable',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'Nearform logo',
+        src: 'img/nearform-logo-white.svg',
       },
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'sidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Documentation',
         },
         {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
+          href: 'https://github.com/FormidableLabs/react-swipeable',
+          'aria-label': 'GitHub Repository',
+          className: 'header-github-link',
           position: 'right',
         },
       ],
