@@ -9,7 +9,6 @@ export default function Hero(): JSX.Element {
         abbreviation="RS"
         description="React Swipeable"
       />
-      ;
     </div>
   );
 }

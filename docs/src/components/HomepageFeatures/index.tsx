@@ -1,3 +1,4 @@
+import React from "react";
 import clsx from "clsx";
 import Heading from "@theme/Heading";
 import styles from "./styles.module.css";
@@ -11,19 +12,19 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: "Todo",
+    title: "Expressive API",
     Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
-    description: <>Todo</>,
+    description: <>The api is well documented and such</>,
   },
   {
-    title: "Todo",
+    title: "Use your own Stuff",
     Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
-    description: <>Todo</>,
+    description: <>Use your own Stuff, have a great time with it!</>,
   },
   {
     title: "Powered by React",
     Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
-    description: <>Extend or customize your website layout by reusing React.</>,
+    description: <>Written with React components in mind!</>,
   },
 ];
 
