@@ -70,7 +70,7 @@ const config: Config = {
         logo: {
           alt: 'Nearform logo',
           src: 'img/nearform-logo-white.svg',
-          href: 'https://nearform.com',
+          href: 'https://nearform.com', // todo: this isn't a link on nearform.com
           width: 100,
           height: 100,
         },
