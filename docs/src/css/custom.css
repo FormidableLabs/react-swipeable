@@ -104,3 +104,7 @@ body {
   min-width: 100px;
   min-height: 100px;
 }
+
+.hero-pattern {
+  background-image: url("../../static/img/hero-pattern.png");
+}

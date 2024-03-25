@@ -5,7 +5,7 @@ export default function Hero(): JSX.Element {
   return (
     <div>
       <ProjectBadge
-        color="#190E"
+        color="#5ABDEE"
         abbreviation="Rs"
         description="React Swipeable"
       />
