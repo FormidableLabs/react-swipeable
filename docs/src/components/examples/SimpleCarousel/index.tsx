@@ -1,11 +1,7 @@
 import React from "react";
 import { Item } from "../components";
 import Carousel from "./Carousel";
-import Product1 from "@site/static/img/product-1.jpg";
-import Product2 from "@site/static/img/product-2.jpg";
-import Product3 from "@site/static/img/product-3.jpg";
-import Product4 from "@site/static/img/product-4.jpg";
-import Product5 from "@site/static/img/product-5.jpg";
+import { Product1, Product2, Product3, Product4, Product5 } from "../images";
 
 // Carousel originally copied from:
 // https://medium.com/@incubation.ff/build-your-own-css-carousel-in-react-part-one-86f71f6670ca
