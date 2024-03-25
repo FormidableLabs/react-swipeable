@@ -1,23 +1,28 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Paper = styled.div`
-  box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%), 0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
+  box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%),
+    0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
   border-radius: 4px;
   padding: 25px;
 `;
 
-export const NEXT = 'NEXT';
-export const PREV = 'PREV';
+export const NEXT = "NEXT";
+export const PREV = "PREV";
 
-export const Item = styled.div<{ img: string }>`
-  text-align: center;
-  padding: 100px;
-  background-image: ${(props) => `url(${props.img})`};
-  background-size: cover;
+export const Item = styled.img<{ src: string }>`
+  src: ${(props) => `url(${props.src})`}
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 `;
 
 export const CarouselContainer = styled.div<{ sliding: boolean }>`
   display: flex;
+  padding: 2px;
   transition: ${(props) => (props.sliding ? "none" : "transform 1s ease")};
   transform: ${(props) => {
     if (!props.sliding) return "translateX(calc(-80% - 20px))";
@@ -33,9 +38,8 @@ export const Wrapper = styled.div`
 `;
 
 export const CarouselSlot = styled.div<{ order: number }>`
-  flex: 1 0 100%;
-  flex-basis: 80%;
-  margin-right: 20px;
+  flex: 1 0 80%;
+  margin-right: 5px;
   order: ${(props) => props.order};
 `;
 
@@ -45,7 +49,7 @@ export const SlideButtonContainer = styled.div`
   padding-bottom: 10px;
 `;
 
-export const SlideButton = styled.button<{ float: 'left' | 'right' }>`
+export const SlideButton = styled.button<{ float: "left" | "right" }>`
   color: #ffffff;
   font-family: Open Sans;
   font-size: 16px;
