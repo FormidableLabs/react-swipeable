@@ -1,6 +1,6 @@
 # v7 migration guide
 
-## Major Changes / Breaking Changes
+## :construction: Major Changes / Breaking Changes :construction:
 
 - we have dropped support for `es5` transpiled output
   - we target `es2015` for our transpilation now

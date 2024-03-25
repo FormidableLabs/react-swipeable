@@ -3,7 +3,9 @@ import { PatternBox } from "../components";
 import { useSwipeable, SwipeEventData } from "react-swipeable";
 
 function Simple() {
-  const [buttonText, setButtonText] = useState("Which way did you swipe? 🔮");
+  const [buttonText, setButtonText] = useState(
+    "🔮 Which way did you swipe? 🔮"
+  );
 
   const changeText = (text) => {
     console.log(text);
