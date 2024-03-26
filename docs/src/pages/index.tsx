@@ -5,8 +5,8 @@ import Layout from "@theme/Layout";
 import { LandingHero } from "../components/landing/landing-hero";
 import { LandingBanner } from "../components/landing/landing-banner";
 import { LandingFeaturedProjects } from "../components/landing/landing-featured-projects";
-import Simple from "../components/examples/Simple";
 import { LandingFeatures } from "../components/landing/landing-features";
+import SwipeDemo from "../components/examples/SwipeDemo";
 import {
   feature1,
   feature2,
@@ -62,7 +62,7 @@ export default function Home(): JSX.Element {
           },
         ]}
       />
-      <Simple showDivider />
+      <SwipeDemo showDivider />
       <LandingBanner
         showDivider
         heading="Get Started"
