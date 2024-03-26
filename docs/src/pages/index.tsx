@@ -73,17 +73,16 @@ export default function Home(): JSX.Element {
         heading="Other Open Source from Nearform_Commerce"
         projects={[
           {
+            name: "nuka",
+            link: "https://github.com/FormidableLabs/nuka-carousel",
+            description:
+              "Small, fast and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site.",
+          },
+          {
             name: "spectacle",
             link: "https://commerce.nearform.com/open-source/spectacle",
             description:
               "A React.js based library for creating sleek presentations using JSX syntax with the ability to live demo your code!",
-          },
-          {
-            name: "figlog",
-            link: "https://github.com/FormidableLabs/FigLog",
-            description:
-              "FigLog is the easiest and most efficient way to document team decisions and the evolution of your changes in Figma.",
-            title: "FigLog",
           },
           {
             name: "envy",
