@@ -43,7 +43,9 @@ const config: Config = {
           return postcssOptions
         },
       };
-    }
+    },
+    // adds search functionality to site
+    require.resolve('docusaurus-lunr-search'),
   ],
   themeConfig: {
     image: "img/docusaurus-social-card.jpg",
