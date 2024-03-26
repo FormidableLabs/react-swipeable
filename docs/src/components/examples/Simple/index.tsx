@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { PatternBox } from "../components";
 import { useSwipeable, SwipeEventData } from "react-swipeable";
 
-function Simple() {
+function Simple({ showDivider }: { showDivider?: boolean }) {
   const [buttonText, setButtonText] = useState(
     "🔮 Which way did you swipe? 🔮"
   );
@@ -40,6 +40,7 @@ function Simple() {
   return (
     <>
       <div className="flex flex-col text-left mx-16 lg:mx-32 xl:mx-64 my-auto py-12">
+        {showDivider && <div className="mt-8 h-1 bg-theme-1" />}
         <h1 className="my-8 text-4xl font-semibold">Demo</h1>
       </div>
       <div>
