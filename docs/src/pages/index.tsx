@@ -5,6 +5,12 @@ import Layout from "@theme/Layout";
 import { LandingHero } from "../components/landing/landing-hero";
 import { LandingFeaturedProjects } from "../components/landing/landing-featured-projects";
 import Simple from "../components/examples/Simple";
+import { LandingFeatures } from "../components/landing/landing-features";
+import {
+  feature1,
+  feature2,
+  feature3,
+} from "../components/landing/landing-images";
 
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
@@ -15,7 +21,7 @@ export default function Home(): JSX.Element {
     >
       <div className="dark:bg-gray-500 bg-gray-200 dark:text-white text-theme-2">
         <LandingHero
-          heading="Nuka Carousel"
+          heading={siteConfig.title}
           body="Todo"
           copyText="npm add react-swipeable"
           navItems={[
@@ -28,7 +34,32 @@ export default function Home(): JSX.Element {
           ]}
         ></LandingHero>
       </div>
-
+      <LandingFeatures
+        heading="Features"
+        list={[
+          {
+            imgSrc: feature1,
+            alt: "robust api",
+            title: "Robust API",
+            body:
+              "Swipeable provides a hook with all the details you'd ever want to know about a user's swipe behavior.",
+          },
+          {
+            imgSrc: feature2,
+            alt: "flexibility",
+            title: "Flexibility",
+            body:
+              "The hook is minimal, versatile and flexible. Can be attached to any HTML element, which allows for unlimited possibilities in component design.",
+          },
+          {
+            imgSrc: feature3,
+            alt: "dynamic",
+            title: "Dynamic",
+            body:
+              "Swipeable is intended for touch interactions, but can easily handle mouse drags as well!",
+          },
+        ]}
+      />
       <Simple />
       <LandingFeaturedProjects
         heading="Other Open Source from Nearform_Commerce"
