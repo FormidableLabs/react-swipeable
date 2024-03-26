@@ -1,4 +1,3 @@
-// @ts-nocheck -> Until we move to node18 and can enable the docusaurus eslint plugin, we have to add an ignore
 import Product1 from "@site/static/img/product-1.jpg";
 import Product2 from "@site/static/img/product-2.jpg";
 import Product3 from "@site/static/img/product-3.jpg";
