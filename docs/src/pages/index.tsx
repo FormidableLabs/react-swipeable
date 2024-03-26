@@ -3,6 +3,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 
 import { LandingHero } from "../components/landing/landing-hero";
+import { LandingBanner } from "../components/landing/landing-banner";
 import { LandingFeaturedProjects } from "../components/landing/landing-featured-projects";
 import Simple from "../components/examples/Simple";
 import { LandingFeatures } from "../components/landing/landing-features";
@@ -38,28 +39,37 @@ export default function Home(): JSX.Element {
             imgSrc: feature1,
             alt: "robust",
             title: "Robust",
-            body:
-              "Swipeable provides a hook with all the details you'd ever want to know about a user's swipe behavior.",
+            html: {
+              __html:
+                "The <code>useSwipeable</code> hook provides you with all the information you need to know about a user's swipe behavior.",
+            },
           },
           {
             imgSrc: feature2,
             alt: "flexible",
             title: "Flexible",
-            body:
-              "The hook is minimal, versatile and flexible. Can be attached to any HTML element, which allows for unlimited possibilities in component design.",
+            html: {
+              __html:
+                "<code>useSwipeable</code> is minimal, versatile and flexible. It can be attached to any HTML element, which allows for unlimited possibilities in component design.",
+            },
           },
           {
             imgSrc: feature3,
             alt: "dynamic",
             title: "Dynamic",
             body:
-              "Swipeable is intended for touch interactions, but can easily handle mouse drags as well!",
+              "Swipeable is intended for touch interactions, but can easily handle mouse drags as well. See it in action in the demo below!",
           },
         ]}
       />
       <Simple showDivider />
-      <LandingFeaturedProjects
+      <LandingBanner
         showDivider
+        heading="Get Started"
+        body="Implement a robust, flexible and dynamic Swipeable component today!"
+        cta={{ link: "/docs", text: "Documentation" }}
+      />
+      <LandingFeaturedProjects
         heading="Other Open Source from Nearform_Commerce"
         projects={[
           {

@@ -1,17 +1,17 @@
-import React from 'react';
-import { FeaturedBadge } from 'formidable-oss-badges';
-import { NFLinkButton } from './nf-link-button';
+import React from "react";
+import { FeaturedBadge } from "formidable-oss-badges";
+import { NFLinkButton } from "./nf-link-button";
 
 type featuredProject =
-  | 'renature'
-  | 'spectacle'
-  | 'urql'
-  | 'victory'
-  | 'nuka'
-  | 'owl'
-  | 'groqd'
-  | 'envy'
-  | 'figlog';
+  | "renature"
+  | "spectacle"
+  | "urql"
+  | "victory"
+  | "nuka"
+  | "owl"
+  | "groqd"
+  | "envy"
+  | "figlog";
 
 export const LandingFeaturedProjects = ({
   heading,
@@ -49,9 +49,10 @@ export const LandingFeaturedProjects = ({
     </div>
 
     <div className="my-8 pt-8 align-center">
-      <NFLinkButton link="https://commerce.nearform.com/open-source">
-        View All Projects
-      </NFLinkButton>
+      <NFLinkButton
+        link="https://commerce.nearform.com/open-source"
+        text="View All Projects"
+      />
     </div>
   </div>
 );
