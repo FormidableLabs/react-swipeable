@@ -26,7 +26,7 @@ export default function Home(): JSX.Element {
           copyText="npm add react-swipeable"
           navItems={[
             { link: "/docs", title: "Documentation" },
-            { link: "#demo", title: "Demo" },
+            { link: "/docs/examples/simple-carousel", title: "Demo" },
             {
               link: "https://github.com/FormidableLabs/react-swipeable",
               title: "Github",
@@ -60,8 +60,9 @@ export default function Home(): JSX.Element {
           },
         ]}
       />
-      <Simple />
+      <Simple showDivider />
       <LandingFeaturedProjects
+        showDivider
         heading="Other Open Source from Nearform_Commerce"
         projects={[
           {
