@@ -36,15 +36,15 @@ export default function Home(): JSX.Element {
         list={[
           {
             imgSrc: feature1,
-            alt: "robust api",
-            title: "Robust API",
+            alt: "robust",
+            title: "Robust",
             body:
               "Swipeable provides a hook with all the details you'd ever want to know about a user's swipe behavior.",
           },
           {
             imgSrc: feature2,
-            alt: "flexibility",
-            title: "Flexibility",
+            alt: "flexible",
+            title: "Flexible",
             body:
               "The hook is minimal, versatile and flexible. Can be attached to any HTML element, which allows for unlimited possibilities in component design.",
           },
