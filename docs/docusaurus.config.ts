@@ -5,21 +5,15 @@ import type * as Preset from "@docusaurus/preset-classic";
 const config: Config = {
   title: "React Swipeable",
   tagline: "Documentation Site",
-  favicon: "img/nearform-icon.svg", //todo: update
-
-  // Set the production url of your site here
+  favicon: "img/nearform-icon.svg",
   url: "https://commerce.nearform.com/",
-
-  // Set the /<baseUrl>/ pathname under which your site is served
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-
   i18n: {
     defaultLocale: "en",
     locales: ["en"],
   },
-
   presets: [
     [
       "classic",
@@ -36,9 +30,22 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-
+  plugins: [
+    async function myPlugin() {
+      return {
+        name: 'tailwind-plugin',
+        configurePostCss(postcssOptions) {
+          postcssOptions.plugins = [
+            require('postcss-import'), 
+            require('tailwindcss'), 
+            require('autoprefixer')
+          ];
+          return postcssOptions
+        },
+      };
+    }
+  ],
   themeConfig: {
-    // Replace with your project's social card
     image: "img/docusaurus-social-card.jpg",
     docs: {
       sidebar: {

@@ -36,6 +36,10 @@ body {
   font-display: swap;
 }
 
+.hero-pattern {
+  background-image: url("/img/hero-pattern.png");
+}
+
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #dd4add;
@@ -103,8 +107,4 @@ body {
 .demo-slide {
   min-width: 100px;
   min-height: 100px;
-}
-
-.hero-pattern {
-  background-image: url("../../static/img/hero-pattern.png");
 }
