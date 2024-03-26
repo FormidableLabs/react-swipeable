@@ -4,6 +4,7 @@ import Layout from "@theme/Layout";
 
 import { LandingHero } from "../components/landing/landing-hero";
 import { LandingFeaturedProjects } from "../components/landing/landing-featured-projects";
+import Simple from "../components/examples/Simple";
 
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
@@ -27,6 +28,8 @@ export default function Home(): JSX.Element {
           ]}
         ></LandingHero>
       </div>
+
+      <Simple />
       <LandingFeaturedProjects
         heading="Other Open Source from Nearform_Commerce"
         projects={[
