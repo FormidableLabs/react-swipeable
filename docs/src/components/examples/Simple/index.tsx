@@ -8,7 +8,6 @@ function Simple() {
   );
 
   const changeText = (text) => {
-    console.log(text);
     setButtonText(text);
   };
   const handleSwiped = (eventData: SwipeEventData) => {

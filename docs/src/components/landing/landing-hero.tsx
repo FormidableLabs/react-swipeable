@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ProjectBadge } from "formidable-oss-badges";
 
 export const LandingHero = ({
@@ -12,6 +12,12 @@ export const LandingHero = ({
   heading: string;
   navItems: { link: string; title: string }[];
 }) => {
+  const [buttonText, setButtonText] = useState("Copy");
+
+  const changeText = (text) => {
+    setButtonText(text);
+  };
+
   return (
     <div className="hero-pattern w-fill bg-cover bg-no-repeat">
       <div className="py-12 lg:py-24 mx-16 lg:mx-32 xl:mx-64 relative">
@@ -32,13 +38,16 @@ export const LandingHero = ({
             <div className="mt-10 flex flex-wrap flex-col xl:flex-row xl:items-center justify-start gap-6">
               <button
                 className="lg:max-w-fit grid lg:grid-cols-6 align-center rounded-md shadow-sm border-none bg-white my-0 py-0 px-0 text-sm font-semibold text-theme-2 hover:text-theme-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-1"
-                onClick={() => navigator.clipboard.writeText(copyText)}
+                onClick={() => {
+                  changeText("Copied!");
+                  navigator.clipboard.writeText(copyText);
+                }}
               >
                 <code className="max-w-fit py-2.5 pl-3.5 content-center grid-span-12 lg:col-span-4 border-0 bg-white">
                   {copyText}
                 </code>
                 <span className="w-full lg:min-w-fit col-span-2 capitalize rounded-b-md lg:rounded-l-none lg:!rounded-r-md text-theme-2 bg-theme-1 lg:ml-2 pr-3.5 lg:pl-2.5 py-2.5 h-full">
-                  Copy
+                  {buttonText}
                 </span>
               </button>
             </div>
