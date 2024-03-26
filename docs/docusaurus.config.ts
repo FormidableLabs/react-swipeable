@@ -4,7 +4,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "React Swipeable",
-  tagline: "Documentation Site",
+  tagline: "Customizable, fast, and lightweight React hook which provides all the information needed for your site to manage swipe interactions.",
   favicon: "img/nearform-icon.svg",
   url: "https://commerce.nearform.com/",
   baseUrl: "/",
@@ -77,7 +77,7 @@ const config: Config = {
       logo: {
         alt: "Nearform logo",
         src: "img/nearform-logo-white.svg",
-        href: "https://nearform.com", // todo: this isn't a link on nearform.com
+        href: "https://nearform.com",
         width: 100,
         height: 100,
       },

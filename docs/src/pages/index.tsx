@@ -15,14 +15,11 @@ import {
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout
-      title={siteConfig.title}
-      description="Description will go into a meta tag in <head />" //todo: update
-    >
+    <Layout title={siteConfig.title} description={siteConfig.tagline}>
       <div className="dark:bg-gray-500 bg-gray-200 dark:text-white text-theme-2">
         <LandingHero
           heading={siteConfig.title}
-          body="Todo"
+          body={siteConfig.tagline}
           copyText="npm add react-swipeable"
           navItems={[
             { link: "/docs", title: "Documentation" },
