@@ -1,46 +1,62 @@
 import React from "react";
-import clsx from "clsx";
-import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import HomepageFeatures from "@site/src/components/HomepageFeatures";
-import Heading from "@theme/Heading";
 
-import styles from "./index.module.css";
-
-function HomepageHeader() {
-  const { siteConfig } = useDocusaurusContext();
-  return (
-    <header className={clsx("hero hero--primary", styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/examples/simple-carousel"
-          >
-            View a demo!
-          </Link>
-        </div>
-      </div>
-    </header>
-  );
-}
+import { LandingHero } from "../components/landing/landing-hero";
+import { LandingFeaturedProjects } from "../components/landing/landing-featured-projects";
 
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={siteConfig.title} //todo: update
+      title={siteConfig.title}
       description="Description will go into a meta tag in <head />" //todo: update
     >
-      <HomepageHeader />
-      <main>
-        <HomepageFeatures />
-      </main>
+      <div className="dark:bg-gray-500 bg-gray-200 dark:text-white text-theme-2">
+        <LandingHero
+          heading="Nuka Carousel"
+          body="Todo"
+          copyText="npm add react-swipeable"
+          navItems={[
+            { link: "/docs", title: "Documentation" },
+            { link: "#demo", title: "Demo" },
+            {
+              link: "https://github.com/FormidableLabs/react-swipeable",
+              title: "Github",
+            },
+          ]}
+        ></LandingHero>
+      </div>
+      <LandingFeaturedProjects
+        heading="Other Open Source from Nearform_Commerce"
+        projects={[
+          {
+            name: "spectacle",
+            link: "https://commerce.nearform.com/open-source/spectacle",
+            description:
+              "A React.js based library for creating sleek presentations using JSX syntax with the ability to live demo your code!",
+          },
+          {
+            name: "figlog",
+            link: "https://github.com/FormidableLabs/FigLog",
+            description:
+              "FigLog is the easiest and most efficient way to document team decisions and the evolution of your changes in Figma.",
+            title: "FigLog",
+          },
+          {
+            name: "envy",
+            link: "https://github.com/FormidableLabs/envy",
+            description:
+              "Envy will trace the network calls from every application in your stack and allow you to view them in a central place.",
+          },
+          {
+            name: "victory",
+            link: "https://commerce.nearform.com/open-source/victory/",
+            description:
+              "React.js components for modular charting and data visualization.",
+          },
+        ]}
+      />
     </Layout>
   );
 }
