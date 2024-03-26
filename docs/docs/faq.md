@@ -49,6 +49,6 @@ const MyComponent = () => {
 
 Sometimes you don't want the `body` of your page to scroll along with the user manipulating or swiping an item. Or you might want all of the internal event listeners to be passive and performant.
 
-You can prevent scrolling via [preventScrollOnSwipe](#preventscrollonswipe-details), which calls `event.preventDefault()` during `onTouchMove`. **But** there may be a simpler, more effective solution, which has to do with a simple CSS property.
+You can prevent scrolling via [preventScrollOnSwipe](api#preventscrollonswipe-details), which calls `event.preventDefault()` during `onTouchMove`. **But** there may be a simpler, more effective solution, which has to do with a simple CSS property.
 
 `touch-action` is a CSS property that sets how an element's region can be manipulated by a touchscreen user. See the [documentation for `touch-action`](https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action) to determine which property value to use for your particular use case.

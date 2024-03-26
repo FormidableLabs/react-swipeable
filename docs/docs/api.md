@@ -114,7 +114,7 @@ Swipeable will call `e.preventDefault()` internally in an attempt to stop the br
   - `trackTouch: true`
   - the users current swipe has an associated `onSwiping` or `onSwiped` handler/prop
 
-Please experiment with the [example app](http://formidablelabs.github.io/react-swipeable/) to test `preventScrollOnSwipe`.
+Please experiment with the [Feature Testing Console](examples/feature-test-console) to test `preventScrollOnSwipe`.
 
 #### passive listener details
 Swipeable adds the passive event listener option, by default, to **internal uses** of touch `addEventListener`'s. We set the `passive` option to `false` only when `preventScrollOnSwipe` is `true` and only to `touchmove`. Other listeners will retain `passive: true`.
@@ -127,4 +127,4 @@ Here is more information on react's long running passive [event issue](https://g
 
 We previously had issues with chrome lighthouse performance deducting points for not having passive option set so it is now on by default except in the case mentioned above.
 
-If, however, you really **need** _all_ of the listeners to be passive (for performance reasons or otherwise), you can prevent all scrolling on the swipeable container by using the `touch-action` css property instead, [see below for an example](#how-to-use-touch-action-to-prevent-scrolling).
+If, however, you really **need** _all_ of the listeners to be passive (for performance reasons or otherwise), you can prevent all scrolling on the swipeable container by using the `touch-action` css property instead, [see an example](faq#how-to-use-touch-action-to-prevent-scrolling).
