@@ -30,6 +30,9 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
+  themes:[
+    "@easyops-cn/docusaurus-search-local",
+  ],
   plugins: [
     async function myPlugin() {
       return {
@@ -44,8 +47,6 @@ const config: Config = {
         },
       };
     },
-    // adds search functionality to site
-    require.resolve('docusaurus-lunr-search'),
   ],
   themeConfig: {
     image: "img/docusaurus-social-card.jpg",
