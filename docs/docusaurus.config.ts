@@ -31,7 +31,13 @@ const config: Config = {
     ],
   ],
   themes:[
-    "@easyops-cn/docusaurus-search-local",
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+      ({
+        hashed: true,
+      }),
+    ],
   ],
   plugins: [
     async function myPlugin() {
@@ -49,7 +55,9 @@ const config: Config = {
     },
   ],
   themeConfig: {
-    image: "img/docusaurus-social-card.jpg",
+    metadata: [
+     { name:"viewport", content:"width=device-width, initial-scale=1, maximum-scale=1"}
+    ],
     docs: {
       sidebar: {
         hideable: true,
@@ -84,7 +92,7 @@ const config: Config = {
         width: 100,
         height: 100,
       },
-      copyright: `© ${new Date().getFullYear()} Nearform`,
+      copyright: `Copyright © 2013-${new Date().getFullYear()} Nearform`,
     },
     prism: {
       theme: prismThemes.github,
