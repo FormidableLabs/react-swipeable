@@ -1,6 +1,6 @@
-# React Swipeable v7 changes and migration
+# v7 migration guide
 
-## Major Changes / Breaking Changes
+## :construction: Major Changes / Breaking Changes :construction:
 
 - we have dropped support for `es5` transpiled output
   - we target `es2015` for our transpilation now
@@ -9,7 +9,7 @@
   - same functionality but renamed to be more explicit on its intended use
   - **fixed bug** - where toggling this prop did not re-attach event listeners
   - **update** - we now **only** change the `passive` event listener option for `touchmove` depending on this prop
-    - see notes in README for more details [readme#passive-listener](https://github.com/FormidableLabs/react-swipeable#passive-listener)
+    - see notes in api docs for more details on [passive-listener](api#passive-listener-details)
 
 ### Typescript changes
 - Added a **ton** of comments to the types that should now show up in IDEs.
