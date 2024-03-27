@@ -80,7 +80,7 @@ const config: Config = {
       logo: {
         alt: "Nearform logo",
         src: "img/nearform-logo-white.svg",
-        href: "https://nearform.com",
+        href: "https://commerce.nearform.com",
         width: 100,
         height: 100,
       },
