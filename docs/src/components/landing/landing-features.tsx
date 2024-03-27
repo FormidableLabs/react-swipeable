@@ -22,13 +22,13 @@ export const LandingFeatures = ({
       {list.map(({ alt, body, imgSrc, title, html }, i) => (
         <li
           key={i}
-          className="col-span-3 md:col-span-1 flex flex-col items-start"
+          className="col-span-3 md:col-span-1 flex flex-col items-center text-center"
         >
           <img src={imgSrc} alt={alt} className="max-h-72" />
           <span className="mt-8 text-2xl font-semibold">{title}</span>
           <span
             dangerouslySetInnerHTML={html}
-            className="mt-2 text-lg leading-8"
+            className="mt-2 text-lg leading-8 mx-3"
           >
             {body}
           </span>
