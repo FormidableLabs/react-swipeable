@@ -47,8 +47,8 @@ function SwipeDemo({ showDivider }: { showDivider?: boolean }) {
             <h3>👆 Swipeable Box 👆</h3>
           </div>
           <div className="card__body">
-            Swipe within this box to test the useSwipeable hook. Open the
-            browser console window to see the event details.
+            Swipe within this box to test the <code>useSwipeable</code> hook.
+            Open the browser console window to see the event details.
           </div>
 
           <div className="card__footer">{swipeText}</div>
