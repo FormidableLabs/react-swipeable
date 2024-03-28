@@ -74,7 +74,7 @@ export default function Home(): JSX.Element {
         projects={[
           {
             name: "nuka",
-            link: "https://github.com/FormidableLabs/nuka-carousel",
+            link: "https://github.com/FormidableLabs/nuka-carousel", // todo: update with docs site once one exists
             description:
               "Small, fast and accessibility-first React carousel library with easily customizable UI and behavior to fit your brand and site.",
           },
@@ -86,7 +86,7 @@ export default function Home(): JSX.Element {
           },
           {
             name: "envy",
-            link: "https://github.com/FormidableLabs/envy",
+            link: "https://github.com/FormidableLabs/envy", // todo: update with docs site once one exists
             description:
               "Envy will trace the network calls from every application in your stack and allow you to view them in a central place.",
           },
