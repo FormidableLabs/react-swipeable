@@ -55,10 +55,10 @@ export default function Home(): JSX.Element {
           },
           {
             imgSrc: feature3,
-            alt: "dynamic",
-            title: "Dynamic",
+            alt: "powered by react",
+            title: "Powered by React",
             body:
-              "Swipeable is intended for touch interactions, but can easily handle mouse drags as well. See it in action in the demo below!",
+              "Swipeable leverages the power of React's declarative and component-based architecture for immersive swipe interactions.",
           },
         ]}
       />
