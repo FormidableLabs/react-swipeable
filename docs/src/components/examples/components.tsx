@@ -65,11 +65,8 @@ export const SlideButton = styled.button<{ float: "left" | "right" }>`
 `;
 
 export const PatternBox = styled.div`
-  border: 2px solid black;
-  width: 60%;
+  padding: 30px;
   margin: 20px auto;
-  padding: 30px 20px;
-  white-space: pre-line;
 `;
 
 export const D = styled.span`

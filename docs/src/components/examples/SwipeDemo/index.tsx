@@ -40,12 +40,10 @@ function SwipeDemo({ showDivider }: { showDivider?: boolean }) {
       <div className="flex flex-col text-left mx-16 lg:mx-32 xl:mx-64 my-auto py-12">
         {showDivider && <div className="mt-8 h-1 bg-theme-1" />}
         <h1 className="my-8 text-4xl font-semibold">Swipe Demo</h1>
-      </div>
-      <div>
-        <PatternBox {...handlers}>
-          Swipe within this box to test the <code>useSwipeable</code> hook. Open
-          the browser console window to see the event details.
-          <p style={{ textAlign: "center", paddingTop: "15px" }}>{swipeText}</p>
+        <PatternBox className="card self-center" {...handlers}>
+          Swipe within this box to test the useSwipeable hook. Open the browser
+          console window to see the event details.
+          <p className="text-center">{swipeText}</p>
         </PatternBox>
       </div>
     </>
