@@ -1,4 +1,5 @@
 import React from "react";
+import { Divider } from "./divider";
 
 export const LandingFeatures = ({
   heading,
@@ -16,7 +17,7 @@ export const LandingFeatures = ({
   showDivider?: boolean;
 }) => (
   <div className="flex flex-col text-left mx-16 lg:mx-32 xl:mx-64 my-12">
-    {showDivider && <div className="mt-8 h-1 bg-theme-1" />}
+    {showDivider && <Divider />}
     <h2 className="my-8 text-4xl font-semibold">{heading}</h2>
     <ul className="grid grid-cols-3 items-start content-start justify-items-start justify-between gap-12 list-none pl-0">
       {list.map(({ alt, body, imgSrc, title, html }, i) => (
