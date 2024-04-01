@@ -9,3 +9,4 @@ dist
 examples/static
 coverage
 package-lock.json
+build
