@@ -67,7 +67,7 @@ export default function Home(): JSX.Element {
         showDivider
         heading="Get Started"
         body="Implement a robust, flexible and dynamic Swipeable component today!"
-        cta={{ link: "/docs", text: "Documentation" }}
+        cta={{ link: "/open-source/react-swipeable/docs", text: "Documentation" }}
       />
       <LandingFeaturedProjects
         heading="Other Open Source from Nearform_Commerce"
