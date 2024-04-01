@@ -1,7 +1,10 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.all.json"
+    "project": "./tsconfig.all.json",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "extends": [
     "eslint:recommended",
@@ -18,7 +21,10 @@
     }
   },
   "rules": {
-    "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "_" }],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "_" }
+    ],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "off",

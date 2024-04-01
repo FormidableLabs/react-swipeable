@@ -1,0 +1,30 @@
+---
+sidebar_position: 1
+slug: /
+---
+
+# Introduction
+
+Using react swipeable is easy! Follow the simple steps below:
+
+1. Import `useSwipeable` hook from `react-swipeable`
+2. Set the swipe handlers you care about
+3. Spread the handlers onto an html tag to bind to the events
+
+```jsx
+import { useSwipeable } from 'react-swipeable';
+
+const handlers = useSwipeable({
+    onSwiped: (eventData) => console.log("User Swiped!", eventData),
+  ...config,
+});
+return <div {...handlers}> You can swipe here </div>;
+```
+
+Spread `handlers` onto the element you wish to track swipes on.
+
+import React from "react";
+
+import SwipeDemo from '@site/src/components/examples/SwipeDemo'
+
+<SwipeDemo />
