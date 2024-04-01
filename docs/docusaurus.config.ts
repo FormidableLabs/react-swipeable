@@ -7,7 +7,7 @@ const config: Config = {
   tagline: "Customizable, fast, and lightweight React hook which provides all the information needed for your site to manage swipe interactions.",
   favicon: "img/nearform-icon.svg",
   url: "https://commerce.nearform.com/",
-  baseUrl: "/",
+  baseUrl: "/open-source/react-swipeable",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   i18n: {
