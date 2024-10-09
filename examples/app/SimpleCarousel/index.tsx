@@ -7,10 +7,6 @@ import Carousel from './Carousel';
 function SimpleCarousel() {
   return (
     <div>
-      <h5 style={{ marginBottom: '20px' }}>
-        <strong>🖼 Image Carousel</strong>
-      </h5>
-
       <Carousel>
         <Item img="https://unsplash.it/475/205" />
         <Item img="https://unsplash.it/476/205" />
