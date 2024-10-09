@@ -4,7 +4,137 @@ import SimpleCarousel from '@site/src/components/examples/SimpleCarousel'
 
 # Simple Carousel
 
-Below is an example implementation of a simple carousel which utilizes the hooks provided by react-swipeable.
+Below is an example implementation of a simple carousel which utilizes the hooks provided by `react-swipeable` within a TypeScript context.
+
+Note: Swipe must have a duration of `500ms` or lower in order to trigger.
+
+## Simple Carousel Code Source
+
+You can see this full example as pure code within the [Carousel.tsx](https://github.com/FormidableLabs/react-swipeable/blob/main/examples/app/SimpleCarousel/Carousel.tsx) file within the React-Swipeable repo directly. 
+
+## Simple Carousel Live Preview
 
 <SimpleCarousel />
 
+Note: Swipe must have a duration of `500ms` or lower in order to trigger the swipe action.
+
+## Simple Carousel Code Explained
+
+Import the hook directly from the `react-swipeable` library. In our example, we built and imported a local set of UI components: you can utilize your own UI and styling, or use your favorite UI component library of choice.
+
+```
+import { useSwipeable } from 'react-swipeable';
+import {
+  Wrapper,
+  CarouselContainer,
+  CarouselSlot,
+  SlideButtonContainer,
+  SlideButton,
+  PREV,
+  NEXT
+} from '../components';
+```
+
+Below, we set up types and an interface for some of the work we'll be building. Next, we write a function called `getOrder`, which will drive the position of each item in the carousel, and what order of position each will be displayed in context of the carousel. Finally, we have a simple `getInitialState` position that sets the `CarouselState` of the carousel we'll be building.
+
+```
+type Direction = typeof PREV | typeof NEXT;
+
+interface CarouselState {
+  pos: number;
+  sliding: boolean;
+  dir: Direction;
+}
+
+type CarouselAction =
+  | { type: Direction, numItems: number }
+  | { type: 'stopSliding' };
+
+
+const getOrder = (index: number, pos: number, numItems: number) => {
+  return index - pos < 0 ? numItems - Math.abs(index - pos) : index - pos;
+};
+
+const getInitialState = (numItems: number): CarouselState => ({ pos: numItems - 1, sliding: false, dir: NEXT });
+```
+
+Next, we build a reducer for controlling the action of the Carousel, using a switch to set `CarouselState` logic.
+
+```
+function reducer(state: CarouselState, action: CarouselAction): CarouselState {
+  switch (action.type) {
+    case PREV:
+      return {
+        ...state,
+        dir: PREV,
+        sliding: true,
+        pos: state.pos === 0 ? action.numItems - 1 : state.pos - 1
+      };
+    case NEXT:
+      return {
+        ...state,
+        dir: NEXT,
+        sliding: true,
+        pos: state.pos === action.numItems - 1 ? 0 : state.pos + 1
+      };
+    case 'stopSliding':
+      return { ...state, sliding: false };
+    default:
+      return state;
+  }
+}
+```
+
+Then, building upon the logic we've built, the Carousel as a functional component is constructed. We hold the number of items within a count of `numItems`. We utilize the reducer within the `React.useReducer` hook.
+
+By creating `slide`, as a `const`, we can utilize that later in the component, calling it within `useSwipeable`: called upon `slide(NEXT)` and `slide(PREV)`, invoking the `dispatch` and the `timeout` we built within `slide`. Within the use of `useSwippeable`, we set `swipeDuration` to `500ms`. We set `preventScrollOnSwipe` to `true`, and `trackMouse` to `true`.
+
+At the end, we return the component itself, built with the components we've created, with `handlers` passed into the wrapping `<div>` around the surrounding container. The `<CarouselContainer>` holds the directional and sliding state, and within that container the items we want to display are mapped as `React.Children`, utilizing `getOrder`. 
+
+
+
+```
+const Carousel: FunctionComponent<{children: ReactNode}> = (props) => {
+  const numItems = React.Children.count(props.children);
+  const [state, dispatch] = React.useReducer(reducer, getInitialState(numItems));
+
+  const slide = (dir: Direction) => {
+    dispatch({ type: dir, numItems });
+    setTimeout(() => {
+      dispatch({ type: 'stopSliding' });
+    }, 50);
+  };
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => slide(NEXT),
+    onSwipedRight: () => slide(PREV),
+    swipeDuration: 500,
+    preventScrollOnSwipe: true,
+    trackMouse: true
+  });
+
+  return (
+    <div {...handlers}>
+      <Wrapper>
+        <CarouselContainer dir={state.dir} sliding={state.sliding}>
+          {React.Children.map(props.children, (child, index) => (
+            <CarouselSlot
+              order={getOrder(index, state.pos, numItems)}
+            >
+              {child}
+            </CarouselSlot>
+          ))}
+        </CarouselContainer>
+      </Wrapper>
+      <SlideButtonContainer>
+        <SlideButton onClick={() => slide(PREV)} float="left">
+          Prev
+        </SlideButton>
+        <SlideButton onClick={() => slide(NEXT)} float="right">
+          Next
+        </SlideButton>
+      </SlideButtonContainer>
+    </div>
+  );
+};
+```

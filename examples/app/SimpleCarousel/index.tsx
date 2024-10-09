@@ -18,10 +18,6 @@ function SimpleCarousel() {
         <Item img="https://unsplash.it/478/205" />
         <Item img="https://unsplash.it/479/205" />
       </Carousel>
-      <b>Note: swipe must be "faster" then 500ms to trigger.</b>
-      <h6>
-        <a href="https://github.com/FormidableLabs/react-swipeable/blob/main/examples/app/SimpleCarousel/Carousel.tsx">See code</a> for example usage of <code style={{ whiteSpace: "nowrap" }}>swipeDuration</code> and <code>preventScrollOnSwipe</code>.
-      </h6>
     </div>
   );
 }
