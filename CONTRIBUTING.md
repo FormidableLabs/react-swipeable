@@ -48,6 +48,19 @@ All these steps can be verified via a single command.
 yarn test
 ```
 
+## Documentation
+
+Documentation is managed within the `docs` directory. In order to test and preview changes, you'll require Node 18+ to run locally.
+
+```sh
+# navigate to docs directory
+cd docs
+# install modules
+docs$ yarn install
+# start locally and view at http://localhost:3000/
+docs$ yarn start
+```
+
 ### Unit Testing
 
 All unit tests are located in:
@@ -191,4 +204,6 @@ examples$ python -m http.server 8080
 ```sh
 # From root - build and publish the examples app to github pages
 $ yarn examples:build:publish
+
+
 ```

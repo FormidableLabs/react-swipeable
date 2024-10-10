@@ -16,15 +16,6 @@ function SimpleCarousel() {
         <Item src={Product4} />
         <Item src={Product5} />
       </Carousel>
-      <b>Note: swipe must be "faster" than 500ms to trigger.</b>
-      <h6>
-        <a href="https://github.com/FormidableLabs/react-swipeable/blob/main/examples/app/SimpleCarousel/Carousel.tsx">
-          See code
-        </a>{" "}
-        for example usage of{" "}
-        <code style={{ whiteSpace: "nowrap" }}>swipeDuration</code> and{" "}
-        <code>preventScrollOnSwipe</code>.
-      </h6>
     </div>
   );
 }
