@@ -16,7 +16,7 @@ We encourage pull requests concerning:
 
 ## Development
 
-Initial install & setup, with **node 10+** & **yarn v1**, run `yarn install`.
+Initial install & setup, with **node 16** & **yarn v1**, run `yarn install`.
 
 Make changes/updates to the `src/index.ts` file.
 
@@ -27,12 +27,10 @@ Make changes/updates to the `src/index.ts` file.
 Build, run, and test examples locally:
 
 ```sh
-# Go into examples folder
-react-swipeable$ cd examples
 # Yarn install
-react-swipeable/examples$ yarn
+yarn install
 # Run the start:dev:local command
-react-swipeable/examples$ yarn start:dev:local
+yarn start:examples:local
 ```
 
 Then open a browser tab to `http://localhost:8080/`.
@@ -48,6 +46,19 @@ All these steps can be verified via a single command.
 ```sh
 # validate all the things
 yarn test
+```
+
+## Documentation
+
+Documentation is managed within the `docs` directory. In order to test and preview changes, you'll require Node 18+ to run locally.
+
+```sh
+# navigate to docs directory
+cd docs
+# install modules
+docs$ yarn install
+# start locally and view at http://localhost:3000/
+docs$ yarn start
 ```
 
 ### Unit Testing
@@ -193,4 +204,6 @@ examples$ python -m http.server 8080
 ```sh
 # From root - build and publish the examples app to github pages
 $ yarn examples:build:publish
+
+
 ```
