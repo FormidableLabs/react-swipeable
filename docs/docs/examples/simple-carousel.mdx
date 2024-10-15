@@ -86,7 +86,7 @@ function reducer(state: CarouselState, action: CarouselAction): CarouselState {
 
 Then, building upon the reducer logic, the `<Carousel>` is constructed. We hold the number of items within a count of `numItems`. We utilize the reducer within the `React.useReducer` hook.
 
-By creating `slide`, as a `const`, we can utilize that later in the component, calling it within `useSwipeable`: called upon `slide(NEXT)` and `slide(PREV)`, invoking the `dispatch` and the `timeout` we built within `slide`. Within the use of `useSwippeable`, we set `swipeDuration` to `500ms`. We set `preventScrollOnSwipe` to `true`, and `trackMouse` to `true`.
+By creating `slide`, as a `const`, we can utilize that later in the component, calling it within `useSwipeable`: called upon `slide(NEXT)` and `slide(PREV)`, invoking the `dispatch` and the `timeout` we built within `slide`. Within the use of `useSwipeable`, we set `swipeDuration` to `500ms`. We set `preventScrollOnSwipe` to `true`, and `trackMouse` to `true`.
 
 At the end, we return the component itself, built with the components we've created, with `handlers` passed into the wrapping `<div>` around the surrounding container. The `<CarouselContainer>` holds the directional and sliding state, and within that container the items we want to display are mapped as `React.Children`, utilizing `getOrder`. 
 

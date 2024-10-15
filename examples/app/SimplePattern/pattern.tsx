@@ -90,8 +90,8 @@ const Carousel: FunctionComponent<{children: ReactNode}> = (props) => {
   return (
     <>
       <PatternBox {...handlers}>
-        Swipe the pattern below, within this box, to make the carousel go to the next
-        slide
+      Within this text area, swipe the pattern seen below to make the carousel
+      navigate to the next slide.
         {`\n`}
         <p style={{textAlign: 'center', paddingTop: '15px'}}>
           Swipe:
