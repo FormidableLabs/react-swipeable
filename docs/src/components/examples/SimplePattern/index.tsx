@@ -15,13 +15,6 @@ function SimplePattern() {
         <Item src={Product4} />
         <Item src={Product5} />
       </Carousel>
-      <h6>
-        <a href="https://github.com/FormidableLabs/react-swipeable/blob/main/examples/app/SimplePattern/pattern.tsx">
-          See code
-        </a>{" "}
-        for example usage of <code>onTouchStartOrMouseDown</code> and{" "}
-        <code>touchEventOptions</code>
-      </h6>
     </div>
   );
 }

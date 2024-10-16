@@ -4,5 +4,194 @@ import SimplePattern from '@site/src/components/examples/SimplePattern'
 
 # Simple Pattern
 
+Below is an example implementation of a simple pattern which utilizes the hooks provided by `react-swipeable` within a TypeScript context.
+
+## Simple Pattern Code Source
+
+You can see this full example as pure code within the [Pattern.tsx](https://github.com/FormidableLabs/react-swipeable/blob/main/examples/app/SimplePattern/pattern.tsx) file within the React-Swipeable repo directly. 
+
+## Simple Pattern Live Preview
+
 <SimplePattern />
+
+## Simple Pattern Code Explained
+
+Import the hook directly from the `react-swipeable` library, along with the directions from the library, and the `SwipeEventData`. In our example, we built and imported a local set of UI components: you can utilize your own UI and styling, or use your favorite UI component library of choice.
+
+```typescript
+import React, { FunctionComponent, ReactNode } from 'react';
+import { useSwipeable, UP, DOWN, SwipeEventData } from 'react-swipeable';
+import {
+  Wrapper,
+  CarouselContainer,
+  CarouselSlot,
+  PatternBox,
+  PREV,
+  NEXT,
+  D
+} from '../components';
+```
+
+In our example, we utilize SVGs for our `UpArrow` and `DownArrow` to give indications of when someone is successfully activating the pattern for user feedback, but know you can use whatever UI library of your choice, or stylize your own!
+
+```typescript
+const UpArrow = ({active}: {active: boolean}) => (
+  <svg viewBox="0 0 16 16" version="1.1" style={{width: '15px'}}>
+    <g transform="translate(-35.399 -582.91)">
+      <path style={{fill: active ? '#EEEE00' : '#000000'}} d="m40.836 598.91v-6.75h-5.4375l4-4.625 4-4.625 4 4.625 4 4.625h-5.0938v6.75h-5.4688z" />
+    </g>
+  </svg>
+);
+
+const DownArrow = ({active}: {active: boolean}) => (
+  <svg viewBox="0 0 16 16" version="1.1" style={{width: '15px'}}>
+    <g transform="translate(-35.399 -598.91)">
+      <path style={{fill: active ? '#EEEE00' : '#000000'}} d="m40.836 598.91v6.75h-5.4375l4 4.625 4 4.625 4-4.625 4-4.625h-5.0938v-6.75h-5.4688z" />
+    </g>
+  </svg>
+);
+```
+
+Next, we set up our types for the `Directions`, `CarouselState`, and `CarouselAction`.
+
+```typescript
+type Direction = typeof PREV | typeof NEXT;
+
+interface CarouselState {
+  pos: number;
+  sliding: boolean;
+  dir: Direction;
+}
+
+type CarouselAction =
+  | { type: Direction, numItems: number }
+  | { type: 'stopSliding' };
+```
+
+Below, we create a function called `getOrder`, which drives the position of each item in the carousel, and what order of position each will be displayed in the context of the carousel. Then, we set a `pattern` as an array of the pattern we want the user to follow to unlock the slide action. Finally here, we then set `getInitialState`, setting the position of the initial items, the `sliding`, as false, and the direction. 
+
+```typescript
+
+const getOrder = (index: number, pos: number, numItems: number) => {
+  return index - pos < 0 ? numItems - Math.abs(index - pos) : index - pos;
+};
+
+const pattern = [UP, DOWN, UP, DOWN];
+
+const getInitialState = (numItems: number): CarouselState => ({ pos: numItems - 1, sliding: false, dir: NEXT });
+
+```
+
+At the bottom of the file, we set up a reducer for controlling the action of the Carousel utilizing a switch to set the `CarouselState` logic.
+
+```typescript
+function reducer(state: CarouselState, action: CarouselAction): CarouselState {
+  switch (action.type) {
+    case PREV:
+      return {
+        ...state,
+        dir: PREV,
+        sliding: true,
+        pos: state.pos === 0 ? action.numItems - 1 : state.pos - 1
+      };
+    case NEXT:
+      return {
+        ...state,
+        dir: NEXT,
+        sliding: true,
+        pos: state.pos === action.numItems - 1 ? 0 : state.pos + 1
+      };
+    case 'stopSliding':
+      return { ...state, sliding: false };
+    default:
+      return state;
+  }
+}
+```
+
+Then, building upon the reducer logic, the `<Carousel>` is constructed. We hold the number of items within `numItems`, and utilize the reducer within the `React.useReducer` hook.
+
+By creating the `slide`, as a `const`, we can utilize that to call within `handleSwiped` as an action that is called upon the user successfully execution of the pattern.
+
+It may help to briefly look at the `handlers` for a moment, and how we utilize `useSwipeable`. Within this, with each `onSwiped`, we call `handleSwiped`. So for each swipe the user takes within the text box above the carousel, we execute `handleSwiped` and pass along the `eventData`. If the `eventData.dir` matches the pattern for this indexed (`pIdx`) item, and the direction indicated, then we `setPIdx` to a greater number. 
+
+What does this do? Two things: it helps us know when the user successfully got to the end of the pattern, and activate the `slide` action, and it also controls the arrows activating the color within the `<PatternBox>` to give feedback to the user that they were successful in activating the steps of the pattern! 
+
+Two other important items to note: we utilized `onTouchStartOrOnMouseDown` to pass through `event.preventDefault()` as a callback, and used `touchEventOptions: {passive: false}` in case certain browsers ignored the `preventDefault()` callback bubbling up. 
+
+From there, the rest of the UI of the component is built. The `<PatternBox>` holds where the user swipes in order to interact with the Carousel itself, along with the arrows that give the feedback to the user that the pattern was successful. The `<CarouselContainer>` holds the Carousel display and items. Our Simple Pattern is complete!
+
+```typescript
+const Carousel: FunctionComponent<{children: ReactNode}> = (props) => {
+  const numItems = React.Children.count(props.children);
+  const [state, dispatch] = React.useReducer(reducer, getInitialState(numItems));
+
+  const slide = (dir: Direction) => {
+    dispatch({ type: dir, numItems });
+    setTimeout(() => {
+      dispatch({ type: 'stopSliding' });
+    }, 50);
+  };
+
+  const [pIdx, setPIdx] = React.useState(0);
+
+  const handleSwiped = (eventData: SwipeEventData) => {
+    if (eventData.dir === pattern[pIdx]) {
+      // user successfully got to the end of the pattern!
+      if (pIdx + 1 === pattern.length) {
+        setPIdx(pattern.length);
+        slide(NEXT);
+        setTimeout(() => {
+          setPIdx(0);
+        }, 50);
+      } else {
+        // user is cont. with the pattern
+        setPIdx((i) => (i += 1));
+      }
+    } else {
+      // user got the next pattern step wrong, reset pattern
+      setPIdx(0);
+    }
+  };
+
+  const handlers = useSwipeable({
+    onSwiped: handleSwiped,
+    onTouchStartOrOnMouseDown: (({ event }) => event.preventDefault()),
+    touchEventOptions: { passive: false },
+    preventScrollOnSwipe: true,
+    trackMouse: true
+  });
+
+  return (
+    <>
+      <PatternBox {...handlers}>
+        Swipe the pattern below, within this box, to make the carousel go to the next
+        slide
+        {`\n`}
+        <p style={{textAlign: 'center', paddingTop: '15px'}}>
+          Swipe:
+          <D><UpArrow active={pIdx > 0} /></D>
+          <D><DownArrow active={pIdx > 1} /></D>
+          <D><UpArrow active={pIdx > 2} /></D>
+          <D><DownArrow active={pIdx > 3} /></D>
+        </p>
+      </PatternBox>
+      <div style={{paddingBottom: '15px'}}>
+        <Wrapper>
+          <CarouselContainer dir={state.dir} sliding={state.sliding}>
+            {React.Children.map(props.children, (child, index) => (
+              <CarouselSlot
+                key={index}
+                order={getOrder(index, state.pos, numItems)}
+              >
+                {child}
+              </CarouselSlot>
+            ))}
+          </CarouselContainer>
+        </Wrapper>
+      </div>
+    </>
+  );
+};
+```
 
