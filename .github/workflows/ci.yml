@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           cache: 'yarn'
-          node-version: [18.x]
+          node-version: 18
 
       - name: Installation
         run: yarn --prefer-offline --frozen-lockfile --non-interactive
@@ -50,7 +50,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           cache: 'yarn'
-          node-version: [18.x]
+          node-version: 18
 
       - name: Installation
         run: yarn --prefer-offline --frozen-lockfile --non-interactive
