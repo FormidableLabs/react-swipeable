@@ -1,5 +1,11 @@
 # v7.0.0
 
+## 7.0.2
+
+### Patch Changes
+
+- Add react v19 to peer deps ([#357](https://github.com/FormidableLabs/react-swipeable/pull/357))
+
 ## 7.0.1
 
 ### Patch Changes
