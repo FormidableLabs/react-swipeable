@@ -23,65 +23,39 @@ jobs:
   check_and_build:
     name: Check and build codebase
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          node-version: [18.x]
 
-      - name: Get Yarn Cache Directory Path
-        id: cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Use Yarn Cache
-        uses: actions/cache@v2
-        id: cache
-        with:
-          path: ${{ steps.cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('./yarn.lock') }}
-
-      - name: Installation ${{ matrix.node-version }}
+      - name: Installation
         run: yarn --prefer-offline --frozen-lockfile --non-interactive
 
-      - name: Check Code ${{ matrix.node-version }}
+      - name: Check Code
         run: yarn check:ci
 
-      - name: Build Core ${{ matrix.node-version }}
+      - name: Build Core
         run: yarn build
 
-      - name: Check size ${{ matrix.node-version }}
+      - name: Check size
         run: yarn size
 
   code_coverage:
     name: Check code coverage
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          node-version: [18.x]
 
-      - name: Get Yarn Cache Directory Path
-        id: cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Use Yarn Cache
-        uses: actions/cache@v2
-        id: cache
-        with:
-          path: ${{ steps.cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('./yarn.lock') }}
-
-      - name: Installation ${{ matrix.node-version }}
+      - name: Installation
         run: yarn --prefer-offline --frozen-lockfile --non-interactive
 
-      - name: Build Code Coverage ${{ matrix.node-version }}
+      - name: Build Code Coverage
         run: yarn test:cover
 
       - name: Coveralls
