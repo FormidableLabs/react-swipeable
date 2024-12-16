@@ -1,5 +1,5 @@
 /* global document */
-import * as React from "react";
+import { MouseEvent, useRef, useMemo } from "react";
 import {
   AttachTouch,
   SwipeDirections,
@@ -91,7 +91,7 @@ function getHandlers(
 ): [
   {
     ref: (element: HTMLElement | null) => void;
-    onMouseDown?: (event: React.MouseEvent) => void;
+    onMouseDown?: (event: MouseEvent) => void;
   },
   AttachTouch
 ] {
@@ -368,13 +368,13 @@ function updateTransientState(
 
 export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
   const { trackMouse } = options;
-  const transientState = React.useRef({ ...initialState });
-  const transientProps = React.useRef<SwipeablePropsWithDefaultOptions>({
+  const transientState = useRef({ ...initialState });
+  const transientProps = useRef<SwipeablePropsWithDefaultOptions>({
     ...defaultProps,
   });
 
   // track previous rendered props
-  const previousProps = React.useRef<SwipeablePropsWithDefaultOptions>({
+  const previousProps = useRef<SwipeablePropsWithDefaultOptions>({
     ...transientProps.current,
   });
   previousProps.current = { ...transientProps.current };
@@ -392,7 +392,7 @@ export function useSwipeable(options: SwipeableProps): SwipeableHandlers {
     }
   }
 
-  const [handlers, attachTouch] = React.useMemo(
+  const [handlers, attachTouch] = useMemo(
     () =>
       getHandlers(
         (stateSetter) =>
